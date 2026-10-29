@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<!--
+  LISZENSI KONTEN:
+  Teks Arab (Al-Qur'an & Hadits) = DOMAIN PUBLIK.
+  Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini,
+  dirilis CC0 / DOMAIN PUBLIK untuk digunakan umat tanpa batas.
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dzikir Pagi & Petang ✦ NYALA</title>
+<meta name="description" content="Dzikir pagi dan petang sesuai sunnah (Hisnul Muslim) dengan penghitung, latin, arti, dan sumber hadits. Konten domain publik.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📿%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg-deep:#0e0c0d;--bg-soft:#171314;--card:#1e181a;--ink:#f2e4e6;--ink-soft:#c9aeb2;--ink-mute:#8a6f74;--rose:#d4a5a5;--rose-deep:#b76e79;--rose-soft:#e8c4c8;--gold:#e5c786;--gold-deep:#c9a35c;--line:rgba(212,165,165,.16);--line-strong:rgba(212,165,165,.34);--glow-rose:0 0 34px rgba(212,165,165,.22)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);line-height:1.6;min-height:100vh;background:radial-gradient(1100px 520px at 85% -8%,rgba(183,110,121,.20),transparent 60%),linear-gradient(180deg,var(--bg-deep),var(--bg-soft) 60%,#120f10)}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif}
+button{font-family:inherit;cursor:pointer;color:inherit}
+::selection{background:var(--rose-deep);color:#fff}
+header.top{position:sticky;top:0;z-index:50;background:rgba(14,12,13,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top-in{max-width:820px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-family:'Bricolage Grotesque';font-weight:800;font-size:1.05rem}
+.logo .word{background:linear-gradient(120deg,var(--rose-soft),var(--rose) 45%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.backlink{color:var(--ink-soft);text-decoration:none;font-weight:700;font-size:.78rem;border:1px solid var(--line-strong);border-radius:999px;padding:6px 12px}
+.chips{display:flex;gap:8px;margin-left:auto}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-weight:700;font-size:.76rem;border:1px solid var(--line-strong);color:var(--ink-soft)}
+.chip.gold{background:rgba(229,199,134,.1);border-color:rgba(229,199,134,.35);color:var(--gold)}
+main{max-width:820px;margin:0 auto;padding:20px 16px 60px}
+.intro{border:1px solid rgba(229,199,134,.35);background:rgba(229,199,134,.07);border-radius:16px;padding:14px 16px;margin-bottom:16px;font-size:.85rem;color:var(--ink-soft);font-weight:600}
+.intro b{color:var(--gold)}
+.license{margin-top:8px;font-size:.74rem;color:var(--ink-mute);border-top:1px dashed var(--line);padding-top:8px}
+.bar-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.ptoggle{display:flex;gap:8px}
+.pt{border:1px solid var(--line-strong);background:rgba(212,165,165,.06);border-radius:999px;padding:10px 18px;font-weight:800;font-size:.86rem;color:var(--ink-soft)}
+.pt.on{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff;border-color:var(--rose);box-shadow:var(--glow-rose)}
+.prog{flex:1;min-width:160px;font-weight:800;font-size:.82rem;color:var(--ink-soft);text-align:right}
+.dz{border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;background:rgba(0,0,0,.22)}
+.dz.done{border-color:var(--gold);box-shadow:0 0 0 3px rgba(229,199,134,.18)}
+.dz-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.dz-num{font-size:.68rem;font-weight:800;color:var(--gold);border:1px solid rgba(229,199,134,.4);border-radius:999px;padding:3px 10px}
+.dz-title{font-weight:800;font-size:.92rem;color:var(--rose-soft);flex:1}
+.arabic{font-family:'Amiri',serif;font-size:clamp(1.25rem,5vw,1.6rem);line-height:2.1;direction:rtl;text-align:right;margin-bottom:10px}
+.latin{font-size:.82rem;color:var(--rose-soft);font-style:italic;font-weight:600;margin-bottom:6px}
+.arti{font-size:.84rem;color:var(--ink-soft);font-weight:600;margin-bottom:8px}
+.src{font-size:.72rem;color:var(--ink-mute);font-weight:600;margin-bottom:12px}
+.ctr-row{display:flex;gap:10px;align-items:center}
+.ctr{min-width:96px;text-align:center;border:2px solid var(--rose);border-radius:999px;padding:10px 16px;font-weight:800;font-size:1rem;background:radial-gradient(circle at 32% 30%,rgba(232,196,200,.2),rgba(183,110,121,.12));transition:transform .1s}
+.ctr:active{transform:scale(.94)}
+.ctr.full{border-color:var(--gold);background:linear-gradient(120deg,var(--gold),var(--gold-deep));color:#241a0c}
+.ctr-bar{flex:1;height:12px;border-radius:999px;background:rgba(0,0,0,.4);border:1px solid var(--line);overflow:hidden}
+.ctr-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--rose-deep),var(--rose),var(--gold));transition:width .25s}
+#toasts{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:95;display:flex;flex-direction:column;gap:8px;align-items:center;max-width:94vw}
+.toast{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff;padding:11px 20px;border-radius:999px;font-weight:800;font-size:.86rem;box-shadow:0 10px 26px rgba(0,0,0,.5);animation:tIn .35s;border:1px solid var(--rose)}
+.toast.gold{background:linear-gradient(120deg,var(--gold),var(--gold-deep));color:#241a0c;border-color:var(--gold)}
+.toast.go{animation:tOut .3s forwards}
+@keyframes tIn{from{opacity:0;transform:translateY(24px) scale(.8)}to{opacity:1}}
+@keyframes tOut{to{opacity:0;transform:translateY(14px)}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="backlink" href="index.html">← NYALA</a>
+    <a class="backlink" href="quran.html">🕌 Qur'an</a>
+    <div class="logo">📿 <span class="word">DZIKIR PAGI & PETANG</span></div>
+    <div class="chips"><span class="chip" id="dStreak">🔥 0</span><span class="chip gold" id="dXP">0 XP</span></div>
+  </div>
+</header>
+<main>
+  <div class="intro">
+    <b>Waktu utama:</b> Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍
+    <div class="license">📜 <b>Lisensi:</b> Teks Arab (Al-Qur'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.</div>
+  </div>
+  <div class="bar-row">
+    <div class="ptoggle">
+      <button class="pt on" id="btnPagi">🌅 Pagi</button>
+      <button class="pt" id="btnPetang">🌇 Petang</button>
+    </div>
+    <div class="prog" id="progTxt">0 / 0 selesai</div>
+  </div>
+  <div id="list"></div>
+</main>
+<div id="toasts"></div>
+<script>
+(function(){
+'use strict';
+var KEY='nyala_v1', DPP='nyala_dzikir_pp_v1';
+function $(id){return document.getElementById(id);}
+function todayKey(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function loadMain(){try{var r=localStorage.getItem(KEY);if(r){var s=JSON.parse(r);if(s&&typeof s==='object')return s;}}catch(e){}return null;}
+function saveMain(f){try{localStorage.setItem(KEY,JSON.stringify(f));}catch(e){}}
+var main=loadMain()||{xp:0,streak:{count:0,last:''}};
+if(!main.streak)main.streak={count:0,last:''};
+function addXP(n,m){main.xp=(main.xp||0)+n;saveMain(main);toast('+'+n+' XP · '+m);renderChips();}
+function touchStreak(){var k=todayKey();if(main.streak.last===k)return;var y=new Date();y.setDate(y.getDate()-1);var yk=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0');main.streak.count=(main.streak.last===yk)?main.streak.count+1:1;main.streak.last=k;saveMain(main);renderChips();}
+function renderChips(){var a=$('dStreak');if(a)a.textContent='🔥 '+(main.streak.count||0);var b=$('dXP');if(b)b.textContent=(main.xp||0)+' XP';}
+function toast(m,g){var b=$('toasts');if(!b)return;var t=document.createElement('div');t.className='toast'+(g?' gold':'');t.textContent=m;b.appendChild(t);while(b.children.length>3)b.removeChild(b.firstChild);setTimeout(function(){t.classList.add('go');setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},320);},3000);}
+
+var dpp=loadDPP();
+function loadDPP(){try{var r=localStorage.getItem(DPP);if(r){var s=JSON.parse(r);if(s&&s.date===todayKey())return s;}}catch(e){}return{date:todayKey(),pagi:{},petang:{},doneP:false,doneE:false};}
+function saveDPP(){try{localStorage.setItem(DPP,JSON.stringify(dpp));}catch(e){}}
+
+var ADZKAR=[
+ {t:'Ayat Kursi',n:1,s:'QS. Al-Baqarah: 255 · HR. An-Nasa\'i & Al-Hakim (sahih)',
+  p:{ar:'اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ',
+     la:"Allahu la ilaha illa huwa, al-hayyu al-qayyum, la ta'khudzuhu sinatun wa la nawm, lahu ma fis-samawati wa ma fil-ardh, man dzalladzi yasyfa'u 'indahu illa bi-idznih, ya'lamu ma baina aidihim wa ma khalfahum, wa la yuhithuna bi-syai-in min 'ilmihi illa bima sya', wasi'a kursiyyuhus-samawati wal-ardh, wa la ya-uduhu hifzhuhuma, wa huwal-'aliyyul-'azhim.",
+     tr:'Allah, tidak ada Tuhan selain Dia; Yang Maha Hidup lagi terus-menerus mengurus makhluk-Nya; tidak mengantuk dan tidak tidur. Milik-Nya apa yang di langit dan di bumi... Kursi-Nya meliputi langit dan bumi, dan Dia Maha Tinggi lagi Maha Agung.'}},
+ {t:'Al-Ikhlas, Al-Falaq & An-Nas',n:3,s:'HR. Abu Dawud & Tirmidzi (sahih)',
+  p:{ar:'قُلْ هُوَ اللَّهُ أَحَدٌ اللَّهُ الصَّمَدُ لَمْ يَلِدْ وَلَمْ يُولَدْ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ ۝ قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ مِنْ شَرِّ مَا خَلَقَ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ ۝ قُلْ أَعُوذُ بِرَبِّ النَّاسِ مَلِكِ النَّاسِ إِلَهِ النَّاسِ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ مِنَ الْجِنَّةِ وَالنَّاسِ',
+     la:"Qul huwallahu ahad, allahush-shamad, lam yalid wa lam yulad, wa lam yakun lahu kufuwan ahad. · Qul a'udzu birabbil-falaq, min syarri ma khalaq, wa min syarri ghasiqin idza waqab, wa min syarrin-naffatsati fil-'uqad, wa min syarri hasidin idza hasad. · Qul a'udzu birabbin-nas, malikin-nas, ilahin-nas, min syarril-waswasil-khannas, alladzi yuwaswisu fi shudurin-nas, minal-jinnati wan-nas.",
+     tr:'Tiga surah perlindungan (Al-Ikhlas, Al-Falaq, An-Nas). Membacanya 3 kali pagi & petang mencukupkanmu dari segala sesuatu.'}},
+ {t:'Pembuka: Kerajaan Milik Allah',n:1,s:'HR. Muslim (sahih)',
+  p:{ar:'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ',
+     la:"Ashbahna wa ashbahal-mulku lillahi wal-hamdu lillah, la ilaha illallahu wahdahu la syarika lah, lahul-mulku wa lahul-hamdu wa huwa ala kulli syai-in qadir. Rabbi as-aluka khaira ma fi hadzal-yaumi wa khaira ma ba'dahu, wa a'udzu bika min syarri ma fi hadzal-yaumi wa syarri ma ba'dahu.",
+     tr:'Kami memasuki pagi dan kerajaan menjadi milik Allah... Ya Tuhanku, aku mohon kebaikan hari ini dan setelahnya, dan berlindung dari keburukannya.'},
+  e:{ar:'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا',
+     la:"Amsaina wa amsal-mulku lillahi wal-hamdu lillah, la ilaha illallahu wahdahu la syarika lah, lahul-mulku wa lahul-hamdu wa huwa ala kulli syai-in qadir. Rabbi as-aluka khaira ma fi hadzihil-lailati wa khaira ma ba'daha, wa a'udzu bika min syarri ma fi hadzihil-lailati wa syarri ma ba'daha.",
+     tr:'Kami memasuki petang dan kerajaan menjadi milik Allah... Ya Tuhanku, aku mohon kebaikan malam ini dan setelahnya, dan berlindung dari keburukannya.'}},
+ {t:'Sayyidul Istighfar (Penghulu Istighfar)',n:1,s:'HR. Bukhari (sahih)',
+  p:{ar:'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ',
+     la:"Allahumma anta rabbi la ilaha illa anta, khalaqtani wa ana abduka, wa ana ala ahdika wa wa'dika mastatha'tu, a'udzu bika min syarri ma shana'tu, abu-u laka bini'matika alayya, wa abu-u bidzanbi faghfir li fa-innahu la yaghfirudz-dzunuba illa anta.",
+     tr:'Ya Allah, Engkaulah Tuhanku, tiada tuhan selain Engkau. Engkau menciptakanku dan aku hamba-Mu... aku mengakui nikmat-Mu dan dosaku, maka ampunilah aku; tiada yang mengampuni dosa selain Engkau.'}},
+ {t:'Penyerahan Diri',n:1,s:'HR. Tirmidzi no. 3393 & Abu Dawud (sahih)',
+  p:{ar:'اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ',
+     la:"Allahumma bika ashbahna wa bika amsaina wa bika nahya wa bika namutu wa ilaikan-nusyur.",
+     tr:'Ya Allah, dengan-Mu kami memasuki pagi & petang, dengan-Mu kami hidup & mati, dan kepada-Mu kami kembali.'},
+  e:{ar:'اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ',
+     la:"Allahumma bika amsaina wa bika ashbahna wa bika nahya wa bika namutu wa ilaikal-mashir.",
+     tr:'Ya Allah, dengan-Mu kami memasuki petang & pagi, dengan-Mu kami hidup & mati, dan kepada-Mu tempat kembali.'}},
+ {t:'Persaksian Tauhid',n:4,s:'HR. Abu Dawud (sahih)',
+  p:{ar:'اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيعَ خَلْقِكَ أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ',
+     la:"Allahumma inni ashbahtu usy-hiduka wa usy-hidu hamalata arsyika wa mala-ikataka wa jami'a khalqika annaka antallahu la ilaha illa anta wahdaka la syarika lak, wa anna Muhammadan abduka wa rasuluk.",
+     tr:'Ya Allah, pagi ini aku mempersaksikan Engkau, para pemikul arsy-Mu, malaikat-Mu, dan seluruh makhluk-Mu bahwa Engkau Allah tiada tuhan selain Engkau, dan Muhammad hamba & utusan-Mu.'},
+  e:{ar:'اللَّهُمَّ إِنِّي أَمْسَيْتُ أُشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيعَ خَلْقِكَ أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ',
+     la:"Allahumma inni amsaitu usy-hiduka wa usy-hidu hamalata arsyika wa mala-ikataka wa jami'a khalqika annaka antallahu la ilaha illa anta wahdaka la syarika lak, wa anna Muhammadan abduka wa rasuluk.",
+     tr:'Ya Allah, petang ini aku mempersaksikan Engkau... bahwa Engkau Allah tiada tuhan selain Engkau, dan Muhammad hamba & utusan-Mu.'}},
+ {t:'Mohon Kesehatan',n:3,s:'HR. Abu Dawud & Ibnu Majah (sahih)',
+  p:{ar:'اللَّهُمَّ عَافِنِي فِي بَدَنِي اللَّهُمَّ عَافِنِي فِي سَمْعِي اللَّهُمَّ عَافِنِي فِي بَصَرِي لَا إِلَهَ إِلَّا أَنْتَ',
+     la:"Allahumma afini fi badani, Allahumma afini fi sam'i, Allahumma afini fi bashari, la ilaha illa anta.",
+     tr:'Ya Allah, sehatkanlah badanku, pendengaranku, dan penglihatanku; tiada tuhan selain Engkau.'}},
+ {t:'Cukuplah Allah',n:7,s:'HR. Abu Dawud (sahih)',
+  p:{ar:'حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ',
+     la:"Hasbiyallahu la ilaha illa huwa alaihi tawakkaltu wa huwa rabbul-arsyil-azhim.",
+     tr:'Cukuplah Allah bagiku, tiada tuhan selain Dia; kepada-Nya aku bertawakal, Dia Tuhan arsy yang agung.'}},
+ {t:'Perlindungan dari Bahaya',n:3,s:'HR. Abu Dawud & Tirmidzi (sahih)',
+  p:{ar:'بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ',
+     la:"Bismillahilladzi la yadurru ma'asmihi syai-un fil-ardi wa la fis-sama'i wa huwas-sami'ul-alim.",
+     tr:'Dengan nama Allah yang bersama nama-Nya tiada sesuatu pun membahayakan di bumi & langit; Dia Maha Mendengar lagi Maha Mengetahui.'}},
+ {t:'Ridha kepada Allah',n:3,s:'HR. Abu Dawud, Tirmidzi & An-Nasa\'i (sahih)',
+  p:{ar:'رَضِيتُ بِاللَّهِ رَبًّا وَبِالْإِسْلَامِ دِينًا وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا',
+     la:"Raditu billahi rabba wa bil-islami dina wa bi Muhammadin shallallahu alaihi wa sallama nabiyya.",
+     tr:'Aku ridha Allah sebagai Tuhan, Islam sebagai agama, dan Muhammad ﷺ sebagai nabi.'}},
+ {t:'Mohon Pertolongan',n:1,s:'HR. Al-Hakim (hasan)',
+  p:{ar:'يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ أَصْلِحْ لِي شَأْنِي كُلَّهُ وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ',
+     la:"Ya hayyu ya qayyum birahmatika astaghitsu, ash-lih li sya'ni kullahu wa la takilni ila nafsi tharfata ain.",
+     tr:'Wahai Yang Maha Hidup lagi Maha Mengurus, dengan rahmat-Mu aku memohon pertolongan; perbaikilah seluruh urusanku dan jangan serahkan aku pada diriku walau sekejap mata.'}},
+ {t:'Shalawat kepada Nabi ﷺ',n:10,s:'HR. Ath-Thabrani (hasan, Al-Albani)',
+  p:{ar:'اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ',
+     la:"Allahumma sholli wa sallim ala nabiyyina Muhammad. (10 kali)",
+     tr:'Ya Allah, limpahkanlah shalawat & salam kepada nabi kami Muhammad. (10 kali pagi & petang = mendapat syafaat beliau)'},},
+ {t:'Tasbih 100 Kali',n:100,s:'HR. Muslim (sahih)',
+  p:{ar:'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',
+     la:"Subhanallahi wa bihamdihi. (100 kali)",
+     tr:'Mahasuci Allah dan dengan memuji-Nya. (100 kali menghapus kesalahan & mendatangkan kebaikan)'},},
+ {t:'Tauhid 10 Kali',n:10,s:'HR. Bukhari & Muslim (sahih)',
+  p:{ar:'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ',
+     la:"La ilaha illallahu wahdahu la syarika lah, lahul-mulku wa lahul-hamdu wa huwa ala kulli syai-in qadir. (10 kali)",
+     tr:'Tiada tuhan selain Allah semata, tiada sekutu bagi-Nya; milik-Nya kerajaan & pujian, Dia Maha Kuasa atas segala sesuatu.'},},
+ {t:'Tasbih Timbangan Arsy (khusus pagi)',n:3,s:'HR. Muslim (sahih)',pagiOnly:true,
+  p:{ar:'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ عَدَدَ خَلْقِهِ وَرِضَا نَفْسِهِ وَزِنَةَ عَرْشِهِ وَمِدَادَ كَلِمَاتِهِ',
+     la:"Subhanallahi wa bihamdihi adada khalqihi wa ridha nafsihi wa zinata arsyihi wa midada kalimatihi. (3 kali)",
+     tr:'Mahasuci Allah sebanyak bilangan makhluk-Nya, ridha diri-Nya, timbangan arsy-Nya, dan tinta kalimat-Nya.'},},
+ {t:'Mohon Ilmu & Rezeki (khusus pagi)',n:1,s:'HR. Ibnu Majah (sahih)',pagiOnly:true,
+  p:{ar:'اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا',
+     la:"Allahumma inni as-aluka ilman nafi'an wa rizqan thayyiban wa amalan mutaqabbalan.",
+     tr:'Ya Allah, aku mohon ilmu bermanfaat, rezeki baik, dan amal yang diterima.'},},
+ {t:'Istighfar 100 Kali (harian)',n:100,s:'HR. Bukhari & Muslim (sahih)',
+  p:{ar:'أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ',
+     la:"Astaghfirullah wa atubu ilaih. (100 kali sehari)",
+     tr:'Aku memohon ampun kepada Allah dan bertaubat kepada-Nya. (100 kali sehari menghapus dosa walau sebanyak buih lautan)'}}
+];
+ADZKAR.forEach(function(it){if(!it.e)it.e=it.p;});
+
+var period='pagi';
+function itemsFor(){return ADZKAR.filter(function(it){return period==='pagi' ? true : !it.pagiOnly;});}
+function idxOf(it){return ADZKAR.indexOf(it);}
+function counts(){return period==='pagi'?dpp.pagi:dpp.petang;}
+function render(){
+  var box=$('list');if(!box)return;box.innerHTML='';
+  var list=itemsFor(),c=counts(),done=0;
+  list.forEach(function(it){
+    var i=idxOf(it),cur=c[i]||0,tg=it.n,isDone=cur>=tg;
+    if(isDone)done++;
+    var v=(period==='pagi'?it.p:it.e);
+    var card=document.createElement('div');card.className='dz'+(isDone?' done':'');
+    var top=document.createElement('div');top.className='dz-top';
+    var num=document.createElement('span');num.className='dz-num';num.textContent='×'+tg;
+    var ti=document.createElement('span');ti.className='dz-title';ti.textContent=it.t;
+    top.appendChild(num);top.appendChild(ti);card.appendChild(top);
+    var ar=document.createElement('div');ar.className='arabic';ar.textContent=v.ar;card.appendChild(ar);
+    var la=document.createElement('div');la.className='latin';la.textContent=v.la;card.appendChild(la);
+    var tr=document.createElement('div');tr.className='arti';tr.textContent=v.tr;card.appendChild(tr);
+    var sc=document.createElement('div');sc.className='src';sc.textContent='📚 '+it.s;card.appendChild(sc);
+    var row=document.createElement('div');row.className='ctr-row';
+    var btn=document.createElement('button');btn.className='ctr'+(isDone?' full':'');
+    btn.textContent=isDone?('✔ '+tg+'/'+tg):(cur+' / '+tg);
+    btn.setAttribute('aria-label','Hitung dzikir '+it.t);
+    btn.addEventListener('click',function(){tap(i,tg);});
+    var bar=document.createElement('div');bar.className='ctr-bar';
+    var fill=document.createElement('div');fill.className='ctr-fill';fill.style.width=Math.min(100,(cur/tg)*100)+'%';
+    bar.appendChild(fill);
+    row.appendChild(btn);row.appendChild(bar);card.appendChild(row);
+    box.appendChild(card);
+  });
+  var pt=$('progTxt');if(pt)pt.textContent=done+' / '+list.length+' selesai'+(done===list.length?' — Masya Allah, lengkap! 🌹':'');
+}
+function tap(i,tg){
+  var c=counts();var cur=c[i]||0;
+  if(cur>=tg)return;
+  cur++;c[i]=cur;saveDPP();
+  if(cur===tg){addXP(2,'Dzikir selesai 📿');checkAll();}
+  render();
+}
+function checkAll(){
+  var list=itemsFor(),c=counts(),all=list.every(function(it){return (c[idxOf(it)]||0)>=it.n;});
+  if(!all)return;
+  var flag=(period==='pagi')?dpp.doneP:dpp.doneE;
+  if(flag)return;
+  if(period==='pagi')dpp.doneP=true;else dpp.doneE=true;
+  saveDPP();touchStreak();addXP(10,'Dzikir '+period+' lengkap! 🌹');
+}
+function setPeriod(p){
+  period=p;
+  var bp=$('btnPagi'),be=$('btnPetang');
+  if(bp)bp.classList.toggle('on',p==='pagi');
+  if(be)be.classList.toggle('on',p==='petang');
+  render();
+}
+function init(){
+  renderChips();
+  var bp=$('btnPagi'),be=$('btnPetang');
+  if(bp)bp.addEventListener('click',function(){setPeriod('pagi');});
+  if(be)be.addEventListener('click',function(){setPeriod('petang');});
+  render();
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
+})();
+</script>
+</body>
+</html>
