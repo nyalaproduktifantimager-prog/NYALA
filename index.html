@@ -1565,18 +1565,18 @@ function bind(){
     if(v===null)return;var n=parseInt(v,10);if(isNaN(n))n=0;
     state.settings.offset=n;save();renderPrayers();updatePrayerCountdown();
   });
-  var adb=$('adhanBtn');
+  var adb=$('adzanBtn');
   if(adb)adb.addEventListener('click',function(){
     if(!prayerTimes)computePrayers();
     var np=nextPrayer();if(!np)return;
     var secs=Math.floor((np.date-new Date())/1000);
     if(secs<120){toast('Adzan '+np.label+' sebentar lagi — siap-siap sholat 🕌');return;}
-    setCustomTimerAdhan(secs,np.label);
+    setCustomTimerAdzan(secs,np.label);
     var el=document.getElementById('fokus');if(el)el.scrollIntoView({behavior:'smooth'});
     toast('🕌 Timer diset sampai adzan '+np.label+'. Gas!');
   });
-  function setCustomTimerAdhan(secs,label){
-    stopTimer();tMode='adhan';customLabel=label;tTotal=secs;tRemain=secs;
+  function setCustomTimerAdzan(secs,label){
+    stopTimer();tMode='adzan';customLabel=label;tTotal=secs;tRemain=secs;
     document.querySelectorAll('.mode-chip').forEach(function(b){b.classList.remove('on');});
     var cr=$('customRow');if(cr)cr.classList.remove('on');
     var sb=$('startBtn');if(sb)sb.textContent='▶ Mulai';renderTimer();
