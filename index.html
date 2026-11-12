@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>NYALA ✦ Anti Mager — Produktif dengan Elegan</title>
-<meta name="description" content="Teman produktif harian anti mager: Spiritual Corner, jadwal sholat, fokus sampai adhan, tasbih, tugas mikro, timer fokus custom & deep focus, pelacak kebiasaan, kebun progres, dan laporan mingguan shareable.">
+<meta name="description" content="Teman produktif harian anti mager: Spiritual Corner, jadwal sholat, fokus sampai adzan, tasbih, tugas mikro, timer fokus custom & deep focus, pelacak kebiasaan, kebun progres, dan laporan mingguan shareable.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌹%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -520,7 +520,7 @@ footer .heart{color:var(--rose);display:inline-block;animation:flick 2s ease-in-
         </div>
       </div>
       <div class="pr-list" id="prayerList"></div>
-      <button class="btn hot" id="adhanBtn" style="width:100%;margin-top:14px">🕌 Fokus Sampai Adhan</button>
+      <button class="btn hot" id="adhanBtn" style="width:100%;margin-top:14px">🕌 Fokus Sampai Adzan</button>
       <p class="pr-note" id="prayerNote">Dihitung otomatis di perangkat (metode Kemenag: Subuh 20°, Isya 18°).</p>
     </div>
 
@@ -651,12 +651,25 @@ footer .heart{color:var(--rose);display:inline-block;animation:flick 2s ease-in-
   <button id="resetBtn">Mulai ulang dari nol (hapus semua data)</button>
 </footer>
 
+<div id="welcomeOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+  <div style="max-width:420px;width:100%;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:26px 22px;text-align:center;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
+    <div style="font-size:2.6rem;">🌹</div>
+    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem;margin:8px 0 4px;color:#f2e4e6;">Selamat datang di NYALA</h2>
+    <p style="color:#c9aeb2;font-size:.88rem;font-weight:600;margin-bottom:14px;">Sebelum mulai, siapa nama panggilanmu?</p>
+    <input id="welcomeName" maxlength="20" placeholder="Ketik namamu di sini…" style="width:100%;border:1px solid rgba(212,165,165,.34);border-radius:14px;padding:12px 14px;font-weight:600;background:rgba(0,0,0,.3);color:#f2e4e6;text-align:center;">
+    <button id="welcomeSave" style="margin-top:12px;width:100%;border:none;border-radius:14px;padding:13px;font-weight:800;background:linear-gradient(120deg,#b76e79,#9c5a66);color:#fff;box-shadow:0 5px 0 #6f3f49;cursor:pointer;">Mulai Nyala 🔥</button>
+    <button id="welcomeSkip" style="margin-top:8px;background:none;border:none;color:#8a6f74;font-size:.78rem;font-weight:700;text-decoration:underline;cursor:pointer;">Lewati dulu</button>
+  </div>
+</div>
+
 <canvas id="cfx"></canvas>
 <div id="toasts" aria-live="polite"></div>
 
 <script>
 (function(){
 'use strict';
+var deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});
 var KEY='nyala_v1';
 function $(id){return document.getElementById(id);}
 function todayKey(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -1183,7 +1196,7 @@ function shareReport(){
 }
 
 var MODES={fokus:1500,kilat:120,rehat:300,deep50:3000,deep90:5400};
-var MODE_LABEL={fokus:'Fokus',kilat:'Kilat',rehat:'Rehat',deep50:'Deep 50',deep90:'Deep 90',custom:'Custom',adhan:'Adhan'};
+var MODE_LABEL={fokus:'Fokus',kilat:'Kilat',rehat:'Rehat',deep50:'Deep 50',deep90:'Deep 90',custom:'Custom',adhan:'Adzan'};
 var tMode='fokus',tTotal=1500,tRemain=1500,tTimer=null,tRunning=false,RING_C=678.58,customMin=25;
 var timerStartReal=0,timerPausedReal=0,timerPausedTotal=0;
 
@@ -1193,7 +1206,7 @@ function renderTimer(){
   var ml=$('modeLabel');
   if(ml){
     var txt;
-    if(tMode==='adhan'&&customLabel)txt='Menuju Adhan '+customLabel;
+    if(tMode==='adhan'&&customLabel)txt='Menuju Adzan '+customLabel;
     else if(tMode==='custom')txt='Custom · '+Math.round(tTotal/60)+' mnt';
     else txt=MODE_LABEL[tMode]||'';
     ml.textContent=txt;
@@ -1246,7 +1259,7 @@ function finishTimer(){
   state.totals.focusMin+=mins;save();touchStreak();
   var msg,xp;
   if(finishedMode==='kilat'){msg='Mode kilat 2 menit beres! ⚡';xp=30;}
-  else if(finishedMode==='adhan'){msg='Fokus sampai adhan tuntas! Waktunya sholat 🕌';xp=30;}
+  else if(finishedMode==='adhan'){msg='Fokus sampai adzan tuntas! Waktunya sholat 🕌';xp=30;}
   else if(finishedMode==='deep50'){msg='Deep Focus 50 menit tuntas! Ambis! 🚀';xp=60;}
   else if(finishedMode==='deep90'){msg='Deep Focus 90 menit tuntas! LEGENDARIS! 🚀';xp=100;}
   else if(finishedMode==='custom'){msg='Fokus custom '+mins+' menit beres! 💪';xp=Math.min(120,Math.max(20,mins));}
@@ -1262,7 +1275,7 @@ function renderTomatoes(){
   el.textContent=str+(s>12?' ×'+s:'')+' ('+s+' sesi)';
 }
 
-var HABIT_EMOJIS=['💧','📖','','🧘','️','🧹','🍎','💤'],HABIT_PICK='💧';
+var HABIT_EMOJIS=['💧','📖','','🧘','️','🧹','','💤'],HABIT_PICK='💧';
 function renderHabits(){
   var grid=$('habitGrid');if(!grid)return;grid.innerHTML='';
   var days=[];for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);days.push(d);}
@@ -1323,7 +1336,7 @@ function toggleHabitDay(h,dk,isToday){
   else{renderHabits();}
 }
 
-var PLANTS=['🌱','','🌷','','🌸','','🍄',''];
+var PLANTS=['🌱','','','','🌸','','',''];
 function renderGarden(){
   var row=$('plantsRow');if(!row)return;row.innerHTML='';
   var count=Math.min(2+state.totals.done,10);
@@ -1470,6 +1483,24 @@ function maybeReminder(){
   }catch(e){}
 }
 
+/* ===== KARTU SAMBUTAN (pengganti popup browser) ===== */
+function showWelcome(){
+  var ov=$('welcomeOverlay');if(!ov)return;
+  ov.style.display='flex';
+  var inp=$('welcomeName');
+  function done(skip){
+    try{localStorage.setItem('nyala_welcomed','1');}catch(e){}
+    ov.style.display='none';
+    if(!skip){
+      var n=((inp&&inp.value)||'').trim();
+      if(n){state.name=n.slice(0,20);save();renderGreeting();toast('Halo, '+state.name+'! Ayo nyalakan harimu ✨');}
+    }
+  }
+  var bs=$('welcomeSave');if(bs)bs.onclick=function(){done(false);};
+  var bk=$('welcomeSkip');if(bk)bk.onclick=function(){done(true);};
+  if(inp)inp.onkeydown=function(e){if(e.key==='Enter')done(false);};
+}
+
 function bind(){
   document.querySelectorAll('#moodRow .mood').forEach(function(b){b.addEventListener('click',function(){pickMood(parseInt(b.dataset.i,10));});});
   var ti=$('taskInput'),addBtn=$('addTaskBtn');
@@ -1542,7 +1573,7 @@ function bind(){
     if(secs<120){toast('Adzan '+np.label+' sebentar lagi — siap-siap sholat 🕌');return;}
     setCustomTimerAdhan(secs,np.label);
     var el=document.getElementById('fokus');if(el)el.scrollIntoView({behavior:'smooth'});
-    toast('🕌 Timer diset sampai adhan '+np.label+'. Gas!');
+    toast('🕌 Timer diset sampai adzan '+np.label+'. Gas!');
   });
   function setCustomTimerAdhan(secs,label){
     stopTimer();tMode='adhan';customLabel=label;tTotal=secs;tRemain=secs;
@@ -1588,11 +1619,8 @@ function bind(){
 
 function init(){
   sizeCanvas();ensureToday();
-  if(!state.name){
-    setTimeout(function(){
-      var n=prompt('Selamat datang di NYALA 🌹\nSebelum mulai, siapa nama panggilanmu?','');
-      if(n&&n.trim()){state.name=n.trim().slice(0,20);save();renderGreeting();toast('Halo, '+state.name+'! Ayo nyalakan harimu ✨');}
-    },600);
+  if(!state.name&&!localStorage.getItem('nyala_welcomed')){
+    setTimeout(function(){showWelcome();},600);
   }
   renderGreeting();renderHijri();computePrayers();renderTasbih();
   updateClock();
