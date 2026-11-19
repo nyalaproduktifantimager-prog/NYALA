@@ -426,6 +426,15 @@ footer .heart{color:var(--rose);display:inline-block;animation:flick 2s ease-in-
     <h3>🗓️ Jejak 14 hari terakhir</h3>
     <div class="h-strip" id="historyStrip"></div>
   </div>
+  <div class="card reveal" style="margin-top:clamp(20px,4vw,34px);padding:var(--pad-card)">
+    <h3 style="font-size:.95rem;font-weight:800;margin-bottom:10px;color:var(--ink-soft)">🌸 3 Hal yang Disyukuri Hari Ini</h3>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <input class="syukur-in" data-i="0" maxlength="80" placeholder="1. Contoh: hujan reda tepat sebelum berangkat…" style="border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;font-weight:600;font-size:.9rem;background:rgba(0,0,0,.3);color:var(--ink)">
+      <input class="syukur-in" data-i="1" maxlength="80" placeholder="2. Contoh: ada teman yang menyapa dulu…" style="border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;font-weight:600;font-size:.9rem;background:rgba(0,0,0,.3);color:var(--ink)">
+      <input class="syukur-in" data-i="2" maxlength="80" placeholder="3. Contoh: tubuhku kuat puasa hari ini…" style="border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;font-weight:600;font-size:.9rem;background:rgba(0,0,0,.3);color:var(--ink)">
+    </div>
+    <p style="margin-top:10px;font-size:.74rem;color:var(--ink-mute);font-weight:600" id="syukurNote">Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu. 🤍</p>
+  </div>
 </section>
 
 <section id="tugas">
@@ -682,7 +691,7 @@ var MON_SHORT=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov'
 
 function loadState(){try{var raw=localStorage.getItem(KEY);if(raw){var s=JSON.parse(raw);if(s&&typeof s==='object')return s;}}catch(e){}return null;}
 var saved=loadState();
-var state={name:'',xp:0,streak:{count:0,last:''},tasks:{},habits:[],totals:{done:0,focusMin:0},today:{key:'',mood:-1,hype:''},settings:{city:'Jakarta',offset:0,mode:'city',lat:0,lon:0},tasbih:{key:'',counts:{},done:{},log:{}}};
+var state={name:'',xp:0,streak:{count:0,last:''},tasks:{},habits:[],totals:{done:0,focusMin:0},today:{key:'',mood:-1,hype:''},settings:{city:'Jakarta',offset:0,mode:'city',lat:0,lon:0},tasbih:{key:'',counts:{},done:{},log:{}},gratitude:{}};
 if(saved){
   state.name=typeof saved.name==='string'?saved.name:'';
   state.xp=typeof saved.xp==='number'?saved.xp:0;
@@ -693,6 +702,7 @@ if(saved){
   if(saved.today&&typeof saved.today==='object')state.today={key:saved.today.key||'',mood:saved.today.mood!=null?saved.today.mood:-1,hype:saved.today.hype||''};
   if(saved.settings&&typeof saved.settings==='object')state.settings={city:saved.settings.city||'Jakarta',offset:parseInt(saved.settings.offset,10)||0,mode:saved.settings.mode==='gps'?'gps':'city',lat:saved.settings.lat||0,lon:saved.settings.lon||0};
   if(saved.tasbih&&typeof saved.tasbih==='object')state.tasbih={key:saved.tasbih.key||'',counts:saved.tasbih.counts||{},done:saved.tasbih.done||{},log:saved.tasbih.log||{}};
+  if(saved.gratitude&&typeof saved.gratitude==='object')state.gratitude=saved.gratitude;
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
 function ensureToday(){
@@ -1040,6 +1050,37 @@ function renderHistory(){
     var s2=document.createElement('span');s2.className='n';s2.textContent=done>0?done:d.getDate();
     cell.appendChild(s1);cell.appendChild(s2);strip.appendChild(cell);
   }
+}
+
+/* ===== 3 HAL YANG DISYUKURI ===== */
+function renderSyukur(){
+  var k=todayKey();
+  if(!state.gratitude)state.gratitude={};
+  var arr=state.gratitude[k]||['','',''];
+  document.querySelectorAll('.syukur-in').forEach(function(inp){
+    inp.value=arr[parseInt(inp.dataset.i,10)]||'';
+  });
+  updateSyukurNote();
+}
+function updateSyukurNote(){
+  var k=todayKey();
+  var arr=(state.gratitude&&state.gratitude[k])||['','',''];
+  var filled=arr.filter(function(s){return s&&s.trim();}).length;
+  var n=$('syukurNote');
+  if(n)n.textContent=filled>=3?'🌸 MasyaAllah, syukur hari ini lengkap. Semoga jadi kebiasaan indah!':('Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu. 🤍 ('+filled+'/3)');
+}
+function saveSyukur(inp){
+  var k=todayKey();
+  if(!state.gratitude)state.gratitude={};
+  if(!state.gratitude[k])state.gratitude[k]=['','',''];
+  state.gratitude[k][parseInt(inp.dataset.i,10)]=inp.value;
+  save();
+  var filled=state.gratitude[k].filter(function(s){return s&&s.trim();}).length;
+  if(filled===3&&!state.gratitude[k+'_done']){
+    state.gratitude[k+'_done']=true;save();
+    touchStreak();addXP(10,'Syukur hari ini lengkap 🌸');
+  }
+  updateSyukurNote();
 }
 
 function weekStats(){
@@ -1565,23 +1606,26 @@ function bind(){
     if(v===null)return;var n=parseInt(v,10);if(isNaN(n))n=0;
     state.settings.offset=n;save();renderPrayers();updatePrayerCountdown();
   });
-  var adb=$('adzanBtn');
+  var adb=$('adhanBtn');
   if(adb)adb.addEventListener('click',function(){
     if(!prayerTimes)computePrayers();
     var np=nextPrayer();if(!np)return;
     var secs=Math.floor((np.date-new Date())/1000);
     if(secs<120){toast('Adzan '+np.label+' sebentar lagi — siap-siap sholat 🕌');return;}
-    setCustomTimerAdzan(secs,np.label);
+    setCustomTimerAdhan(secs,np.label);
     var el=document.getElementById('fokus');if(el)el.scrollIntoView({behavior:'smooth'});
     toast('🕌 Timer diset sampai adzan '+np.label+'. Gas!');
   });
-  function setCustomTimerAdzan(secs,label){
-    stopTimer();tMode='adzan';customLabel=label;tTotal=secs;tRemain=secs;
+  function setCustomTimerAdhan(secs,label){
+    stopTimer();tMode='adhan';customLabel=label;tTotal=secs;tRemain=secs;
     document.querySelectorAll('.mode-chip').forEach(function(b){b.classList.remove('on');});
     var cr=$('customRow');if(cr)cr.classList.remove('on');
     var sb=$('startBtn');if(sb)sb.textContent='▶ Mulai';renderTimer();
   }
   var tb=$('tasbihBtn');if(tb)tb.addEventListener('click',tapTasbih);
+  document.querySelectorAll('.syukur-in').forEach(function(inp){
+    inp.addEventListener('input',function(){saveSyukur(inp);});
+  });
 
   var db=$('downloadBtn');if(db)db.addEventListener('click',downloadReport);
   var shb=$('shareBtn');if(shb)shb.addEventListener('click',shareReport);
@@ -1622,7 +1666,7 @@ function init(){
   if(!state.name&&!localStorage.getItem('nyala_welcomed')){
     setTimeout(function(){showWelcome();},600);
   }
-  renderGreeting();renderHijri();computePrayers();renderTasbih();
+  renderGreeting();renderHijri();computePrayers();renderTasbih();renderSyukur();
   updateClock();
   renderTasks();renderScore();renderHistory();renderTimer();renderTomatoes();
   renderHabits();renderGarden();buildWheel();renderReport();
@@ -1659,4 +1703,4 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 })();
 </script>
 </body>
-</html>
+  </html>
