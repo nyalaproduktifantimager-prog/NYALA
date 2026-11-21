@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>Qur'an Digital — NYALA</title>
-<meta name="description" content="Mushaf digital NYALA: teks Arab Utsmani, transliterasi Latin, terjemahan Indonesia/Inggris, murottal multi-qori per ayat & per surah dengan bismillah, serta pelacak hafalan.">
+<title>Taman Qur'an — NYALA</title>
+<meta name="description" content="Taman Qur'an NYALA: mushaf digital 114 surah / 30 juz, baca sendiri atau baca bareng murottal, ayat untuk hatimu, tracker hafalan, dan doa-doa sehari-hari.">
 <link rel="icon" href="icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,46 +13,55 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0e0c0d">
 <style>
-.q-wrap{max-width:900px;margin:0 auto;padding:0 clamp(14px,3vw,22px) 130px}
-.q-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0}
-.q-bar input[type="search"]{flex:1;min-width:190px;border:1px solid var(--line-strong);border-radius:14px;padding:12px 16px;font-weight:600;background:rgba(0,0,0,.3);color:var(--ink)}
-.q-bar input::placeholder{color:var(--ink-mute)}
-.q-bar select{border:1px solid var(--line-strong);border-radius:12px;padding:10px 12px;font-weight:700;font-size:.82rem;background:rgba(0,0,0,.35);color:var(--ink)}
-.q-toggle{display:inline-flex;align-items:center;gap:6px;border:1px dashed var(--line-strong);border-radius:999px;padding:8px 14px;font-size:.76rem;font-weight:800;color:var(--ink-soft);cursor:pointer;user-select:none}
-.q-toggle.on{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff;border-color:var(--rose);box-shadow:var(--glow-rose)}
-.q-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(255px,100%),1fr));gap:12px}
-.q-card{padding:14px 16px;display:flex;gap:12px;align-items:center;cursor:pointer;transition:.2s}
-.q-card:hover{transform:translateY(-3px);border-color:var(--rose);box-shadow:var(--glow-rose)}
-.q-num{width:38px;height:38px;min-width:38px;border-radius:12px;display:grid;place-items:center;font-family:'Bricolage Grotesque';font-weight:800;background:linear-gradient(135deg,var(--rose-deep),#8f4f5b);color:#fff}
-.q-names{flex:1;min-width:0}
-.q-names b{display:block;font-size:.94rem;color:var(--ink)}
-.q-names small{display:block;font-size:.71rem;color:var(--ink-mute);font-weight:600}
-.q-ar-name{font-family:'Amiri',serif;font-size:1.3rem;color:var(--gold);white-space:nowrap}
-.q-haf{font-size:.64rem;font-weight:800;color:var(--gold);border:1px solid rgba(229,199,134,.35);border-radius:999px;padding:3px 8px;white-space:nowrap}
-.q-head{padding:var(--pad-card);text-align:center;margin-bottom:14px}
-.q-head .ar{font-family:'Amiri',serif;font-size:clamp(1.8rem,6vw,2.6rem);color:var(--gold)}
-.q-head .tr{font-weight:800;font-size:1.05rem;color:var(--rose-soft);margin-top:4px}
-.q-head .meta{font-size:.75rem;color:var(--ink-mute);font-weight:600;margin-top:6px}
-.q-prog{height:10px;border-radius:999px;background:rgba(0,0,0,.4);border:1px solid var(--line);overflow:hidden;margin:12px auto 0;max-width:320px}
-.q-prog i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--rose-deep),var(--gold));transition:width .4s}
-.q-bismillah{font-family:'Amiri',serif;font-size:clamp(1.4rem,5vw,1.9rem);text-align:center;color:var(--rose-soft);margin:6px 0 16px}
-.q-ayah{padding:18px clamp(14px,3vw,22px);margin-bottom:12px}
-.q-ayah.playing{border-color:var(--gold);box-shadow:0 0 24px rgba(229,199,134,.25)}
-.q-ayah .ar{font-family:'Amiri',serif;font-size:clamp(1.5rem,5vw,2.1rem);line-height:2.1;text-align:right;direction:rtl;color:var(--ink);margin-bottom:10px}
-.q-ayah .latin{font-size:.8rem;font-style:italic;color:var(--ink-soft);font-weight:600;margin-bottom:8px;line-height:1.7}
-.q-ayah .trans{font-size:.88rem;color:var(--ink-soft);font-weight:600;line-height:1.7}
-.q-ayah .row{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
-.q-ayah .n{font-size:.68rem;font-weight:800;color:var(--gold);border:1px solid rgba(229,199,134,.35);border-radius:999px;padding:3px 9px}
-.q-mini{border:1px solid var(--line-strong);background:rgba(212,165,165,.08);border-radius:999px;padding:7px 13px;font-size:.73rem;font-weight:800;color:var(--ink-soft);cursor:pointer;transition:.2s}
-.q-mini:hover{border-color:var(--rose);color:var(--rose-soft)}
-.q-mini.on{background:linear-gradient(120deg,var(--gold),var(--gold-deep));color:#241a0c;border-color:var(--gold)}
-.q-player{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:80;display:none;align-items:center;gap:8px;max-width:min(600px,94vw);background:rgba(20,15,17,.95);backdrop-filter:blur(12px);border:1px solid var(--line-strong);border-radius:999px;padding:10px 16px;box-shadow:0 14px 34px rgba(0,0,0,.6)}
-.q-player.show{display:flex}
-.q-player button{border:none;background:rgba(212,165,165,.12);color:var(--rose-soft);width:38px;height:38px;min-width:38px;border-radius:50%;font-size:.95rem;cursor:pointer}
-.q-player button.main{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff}
-.q-player .lbl{flex:1;min-width:0;font-size:.74rem;font-weight:700;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.q-empty{text-align:center;padding:40px 20px;color:var(--ink-soft);font-weight:600}
-.q-resume{display:flex;gap:10px;align-items:center;border:1px dashed rgba(229,199,134,.4);background:rgba(229,199,134,.06);border-radius:16px;padding:12px 16px;margin-bottom:14px;font-size:.82rem;font-weight:700;color:var(--gold)}
+.tq-wrap{max-width:860px;margin:0 auto;padding:0 clamp(14px,3vw,22px) 90px}
+.tq-head{display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 0 6px}
+.tq-title{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(1.3rem,4.4vw,1.8rem);letter-spacing:1px;background:linear-gradient(120deg,var(--rose-soft),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tq-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.tq-card{padding:clamp(16px,3.4vw,24px);margin-top:16px}
+.tq-status{display:inline-flex;align-items:center;gap:8px;border:1px dashed rgba(229,199,134,.45);background:rgba(229,199,134,.07);border-radius:999px;padding:9px 16px;font-size:.8rem;font-weight:800;color:var(--gold);margin-bottom:14px}
+.tq-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.tq-row.one{grid-template-columns:1fr}
+.tq-select{width:100%;background:rgba(0,0,0,.35);color:var(--ink);border:1px solid var(--line-strong);border-radius:14px;padding:13px 14px;font-weight:800;font-size:.9rem}
+.tq-btns{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+.tq-surah{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid rgba(229,199,134,.35);background:rgba(229,199,134,.06);border-radius:16px;padding:14px 18px;margin-bottom:14px}
+.tq-surah b{font-family:'Bricolage Grotesque';font-size:1.15rem;color:var(--gold)}
+.tq-surah .ar{font-family:'Amiri',serif;font-size:1.4rem;color:var(--rose-soft)}
+.tq-surah small{font-size:.76rem;font-weight:700;color:var(--ink-soft)}
+.ayah{padding:16px clamp(14px,3vw,20px);margin-bottom:12px}
+.ayah.playing{border-color:var(--gold);box-shadow:0 0 24px rgba(229,199,134,.25)}
+.ayah .top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ayah .ref{font-size:.72rem;font-weight:800;color:var(--gold);border:1px solid rgba(229,199,134,.4);border-radius:999px;padding:5px 12px}
+.ayah .dengar{margin-left:auto;border:1px solid var(--line-strong);background:rgba(212,165,165,.08);border-radius:999px;padding:8px 16px;font-size:.78rem;font-weight:800;color:var(--ink-soft);cursor:pointer}
+.ayah .dengar:hover{border-color:var(--rose);color:var(--rose-soft)}
+.ayah .ar{font-family:'Amiri',serif;font-size:clamp(1.4rem,4.8vw,1.9rem);line-height:2.05;text-align:right;direction:rtl;color:var(--ink);margin-bottom:10px}
+.ayah .tr{font-size:.88rem;color:var(--ink-soft);font-weight:600;line-height:1.75}
+.mood-chips{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.mood-chip{border:1px solid var(--line-strong);background:rgba(212,165,165,.06);border-radius:999px;padding:11px 18px;font-weight:800;font-size:.88rem;color:var(--ink-soft);cursor:pointer;transition:.2s}
+.mood-chip:hover{transform:translateY(-3px);border-color:var(--rose)}
+.mood-chip.on{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff;border-color:var(--rose);box-shadow:var(--glow-rose)}
+.haf-bar{height:12px;border-radius:999px;background:rgba(0,0,0,.4);border:1px solid var(--line);overflow:hidden;margin:6px 0 10px}
+.haf-bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--rose-deep),var(--gold));transition:width .4s}
+.haf-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.76rem;font-weight:700;color:var(--ink-soft);margin-bottom:14px}
+.haf-legend span::before{content:'';display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+.haf-legend .l0::before{background:#3a3236}
+.haf-legend .l1::before{background:var(--rose-deep)}
+.haf-legend .l2::before{background:var(--gold)}
+.haf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:8px}
+.haf-cell{border:1px solid var(--line);border-radius:12px;padding:12px 4px;text-align:center;font-weight:800;font-size:.86rem;background:rgba(0,0,0,.28);color:var(--ink-soft);cursor:pointer;transition:.18s}
+.haf-cell:hover{transform:translateY(-3px);border-color:var(--rose)}
+.haf-cell.s1{background:rgba(183,110,121,.35);border-color:var(--rose);color:var(--rose-soft)}
+.haf-cell.s2{background:linear-gradient(135deg,var(--gold),var(--gold-deep));border-color:var(--gold);color:#241a0c;box-shadow:0 0 14px rgba(229,199,134,.35)}
+.doa-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.doa-tab{border:1px solid var(--line-strong);background:rgba(212,165,165,.06);border-radius:16px;padding:12px 20px;font-weight:800;font-size:.9rem;color:var(--ink-soft);cursor:pointer;transition:.2s}
+.doa-tab.on{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff;border-color:var(--rose);box-shadow:var(--glow-rose)}
+.doa{padding:18px clamp(14px,3vw,22px);margin-bottom:14px}
+.doa h3{font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:12px}
+.doa .ar{font-family:'Amiri',serif;font-size:clamp(1.35rem,4.6vw,1.8rem);line-height:2.05;text-align:right;direction:rtl;color:var(--ink);margin-bottom:12px}
+.doa .la{font-size:.82rem;font-style:italic;color:var(--rose-soft);font-weight:600;line-height:1.7;margin-bottom:8px}
+.doa .arti{font-size:.88rem;color:var(--ink-soft);font-weight:600;line-height:1.75;padding-bottom:10px;border-bottom:1px dashed var(--line-strong);margin-bottom:10px}
+.doa .man{font-size:.82rem;color:var(--gold);font-weight:700;line-height:1.6;margin-bottom:6px}
+.doa .src{font-size:.74rem;color:var(--ink-mute);font-weight:600}
+@media(max-width:560px){.tq-row{grid-template-columns:1fr}}
 </style>
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
@@ -61,72 +70,89 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 <body>
 <div class="aurora" aria-hidden="true"></div>
 <header class="top">
-  <div class="top-in">
-    <div class="logo"><a href="index.html" style="text-decoration:none;color:var(--ink-soft);font-weight:800;font-size:.85rem">← NYALA</a></div>
-    <nav class="links" aria-label="Navigasi"><a href="index.html#spiritual">Spiritual</a><a href="dzikir.html">📿 Dzikir</a><a href="quran.html" aria-current="true">🕌 Qur'an</a></nav>
-    <div class="chips"><span class="chip lvl" id="qHafChip">🕌 0 / 6236</span></div>
+  <div class="top-in" style="justify-content:center">
+    <a class="btn ghost small" href="index.html">← NYALA</a>
+    <a class="btn ghost small" href="dzikir.html">📿 Dzikir</a>
+  </div>
+  <div class="tq-head">
+    <div class="tq-title">🕌 TAMAN QUR'AN</div>
+    <div class="tq-chips">
+      <span class="chip" id="netChip">🌐 Online</span>
+      <span class="chip" id="streakChip">🔥 0</span>
+      <span class="chip lvl" id="xpChip">0 XP</span>
+    </div>
   </div>
 </header>
 
-<main class="q-wrap">
-  <section id="qListView">
-    <div class="sec-head" style="margin-top:26px">
-      <span class="sec-tag">MUSHAF</span>
-      <div><h2 data-id="Qur'an Digital" data-en="Digital Qur'an">Qur'an Digital</h2></div>
-      <p class="sec-sub" data-id="Teks Arab Utsmani, transliterasi, terjemahan, murottal per ayat & per surah dengan bismillah, dan pelacak hafalan. Teks Arab & Latin tidak pernah diterjemahkan." data-en="Uthmani Arabic text, transliteration, translation, per-ayah & full-surah murottal with bismillah, and a memorization tracker. Arabic & Latin text are never translated.">Teks Arab Utsmani, transliterasi, terjemahan, murottal per ayat & per surah dengan bismillah, dan pelacak hafalan. Teks Arab & Latin tidak pernah diterjemahkan.</p>
+<main class="tq-wrap">
+
+  <section>
+    <div class="sec-head" style="margin-top:18px">
+      <span class="sec-tag" data-id="A · BACA & DENGAR" data-en="A · READ & LISTEN">A · BACA & DENGAR</span>
+      <div><h2 data-id="Mushaf Digital 114 Surah / 30 Juz" data-en="Digital Mushaf: 114 Surahs / 30 Juz">Mushaf Digital 114 Surah / 30 Juz</h2></div>
+      <p class="sec-sub" data-id="Baca sendiri atau baca bareng murottal. 📖" data-en="Read on your own or read along with the murottal. 📖">Baca sendiri atau baca bareng murottal. 📖</p>
     </div>
-    <div class="q-resume" id="qResume" hidden>
-      <span>📖</span><span id="qResumeTxt">—</span>
-      <button class="q-mini" id="qResumeBtn" style="margin-left:auto" data-id="Lanjutkan" data-en="Resume">Lanjutkan</button>
+    <div class="card tq-card">
+      <span class="tq-status" id="cacheStatus" data-id="📦 Memuat data Qur'an…" data-en="📦 Loading Qur'an data…">📦 Memuat data Qur'an…</span>
+      <div class="tq-row">
+        <select class="tq-select" id="modeSel" aria-label="Mode baca">
+          <option value="surah" data-id="Per Surah" data-en="By Surah">Per Surah</option>
+          <option value="juz" data-id="Per Juz" data-en="By Juz">Per Juz</option>
+        </select>
+        <select class="tq-select" id="targetSel" aria-label="Pilih surah atau juz"></select>
+      </div>
+      <div class="tq-row one">
+        <select class="tq-select" id="qariSel" aria-label="Qori"></select>
+      </div>
+      <div class="tq-btns">
+        <button class="btn leafy on" id="btnSendiri">📖 <span data-id="Baca Sendiri" data-en="Read Myself">Baca Sendiri</span></button>
+        <button class="btn ghost" id="btnBareng">🎧 <span data-id="Baca Bareng" data-en="Read Along">Baca Bareng</span></button>
+        <button class="btn sunny" id="btnMurottal">▶ <span data-id="Murottal Surah" data-en="Full Surah Murottal">Murottal Surah</span></button>
+      </div>
+      <div class="tq-surah" id="surahInfo"></div>
+      <div id="ayahBox"></div>
     </div>
-    <div class="q-bar">
-      <input type="search" id="qSearch" placeholder="Cari surah…" aria-label="Cari surah">
-      <select id="qFilter" aria-label="Filter hafalan">
-        <option value="all" data-id="Semua surah" data-en="All surahs">Semua surah</option>
-        <option value="done" data-id="Sudah hafal" data-en="Memorized">Sudah hafal</option>
-        <option value="todo" data-id="Belum hafal" data-en="Not yet">Belum hafal</option>
-      </select>
-      <select id="qSort" aria-label="Urutkan">
-        <option value="num" data-id="Urutan mushaf" data-en="Mushaf order">Urutan mushaf</option>
-        <option value="name" data-id="Nama" data-en="Name">Nama</option>
-        <option value="haf" data-id="Progres hafalan" data-en="Memorization progress">Progres hafalan</option>
-      </select>
-    </div>
-    <div class="q-bar">
-      <label class="q-toggle on" id="qTransToggle"><input type="checkbox" checked hidden><span data-id="Terjemahan" data-en="Translation">Terjemahan</span></label>
-      <label class="q-toggle" id="qLatinToggle"><input type="checkbox" hidden><span data-id="Latin" data-en="Transliteration">Latin</span></label>
-      <label class="q-toggle on" id="qAutoToggle"><input type="checkbox" checked hidden><span data-id="Auto lanjut" data-en="Auto advance">Auto lanjut</span></label>
-      <select id="qReciter" aria-label="Qori"></select>
-    </div>
-    <div class="q-list" id="qList"></div>
-    <div class="q-empty" id="qLoading" data-id="Memuat mushaf…" data-en="Loading mushaf…">Memuat mushaf…</div>
   </section>
 
-  <section id="qReaderView" style="display:none">
-    <div class="q-bar" style="margin-top:26px">
-      <button class="btn ghost small" id="qBack">← <span data-id="Daftar surah" data-en="Surah list">Daftar surah</span></button>
-      <button class="btn sunny small" id="qFull">▶ <span data-id="Putar surah penuh" data-en="Play full surah">Putar surah penuh</span></button>
-      <button class="btn leafy small" id="qMarkAll" data-id="Tandai semua hafal" data-en="Mark all memorized">Tandai semua hafal</button>
-      <button class="btn ghost small" id="qResetHaf" data-id="Reset hafalan" data-en="Reset memorization">Reset hafalan</button>
+  <section>
+    <div class="sec-head">
+      <span class="sec-tag" data-id="B · AYAT UNTUK HATIMU" data-en="B · AN AYAH FOR YOUR HEART">B · AYAT UNTUK HATIMU</span>
+      <div><h2 data-id="Sedang Merasa Apa?" data-en="What Are You Feeling?">Sedang Merasa Apa?</h2></div>
+      <p class="sec-sub" data-id="Pilih keadaanmu — Allah sudah menyiapkan ayatnya untukmu. 🤍" data-en="Pick your state — Allah has already prepared its ayah for you. 🤍">Pilih keadaanmu — Allah sudah menyiapkan ayatnya untukmu. 🤍</p>
     </div>
-    <div class="card q-head">
-      <div class="ar arab" id="qTitleAr" lang="ar" dir="rtl">—</div>
-      <div class="tr" id="qTitleTr">—</div>
-      <div class="meta" id="qMeta">—</div>
-      <div class="q-prog"><i id="qProgFill"></i></div>
-    </div>
-    <div class="q-bismillah arab" id="qBismillah" lang="ar" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-    <div id="qAyahs"></div>
+    <div class="mood-chips" id="moodChips"></div>
+    <div id="moodResult"></div>
   </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-tag" data-id="C · TRACKER HAFALAN" data-en="C · MEMORIZATION TRACKER">C · TRACKER HAFALAN</span>
+      <div><h2 data-id="Perjalanan Huffaz-mu 🏆" data-en="Your Huffaz Journey 🏆">Perjalanan Huffaz-mu 🏆</h2></div>
+      <p class="sec-sub" data-id="Tap surah: abu-abu = belum, rose = proses, emas = hafal. Menandai hafal = +25 XP!" data-en="Tap a surah: grey = not yet, rose = in progress, gold = memorized. Marking memorized = +25 XP!">Tap surah: abu-abu = belum, rose = proses, emas = hafal. Menandai hafal = +25 XP!</p>
+    </div>
+    <div class="card tq-card">
+      <div class="haf-bar"><i id="hafFill"></i></div>
+      <div style="font-weight:800;font-size:.9rem;margin-bottom:8px" id="hafCount">0 / 114 surah dihafal</div>
+      <div class="haf-legend">
+        <span class="l0" data-id="Belum" data-en="Not yet">Belum</span>
+        <span class="l1" data-id="Proses" data-en="In progress">Proses</span>
+        <span class="l2" data-id="Hafal" data-en="Memorized">Hafal</span>
+      </div>
+      <div class="haf-grid" id="hafGrid"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-tag" data-id="D · DOA-DOA" data-en="D · SUPPLICATIONS">D · DOA-DOA</span>
+      <div><h2 data-id="Doa Sehari-hari, Nabi & Masa Kini" data-en="Daily, Prophets' & Modern Supplications">Doa Sehari-hari, Nabi & Masa Kini</h2></div>
+      <p class="sec-sub" data-id="Lengkap dengan teks Arab, latin, arti, manfaat, dan sumbernya. 🤲" data-en="Complete with Arabic text, transliteration, meaning, benefit, and source. 🤲">Lengkap dengan teks Arab, latin, arti, manfaat, dan sumbernya. 🤲</p>
+    </div>
+    <div class="doa-tabs" id="doaTabs"></div>
+    <div id="doaBox"></div>
+  </section>
+
 </main>
-
-<div class="q-player" id="qPlayer">
-  <button id="pPrev" aria-label="Previous">⏮</button>
-  <button id="pPlay" class="main" aria-label="Play / pause">▶</button>
-  <button id="pNext" aria-label="Next">⏭</button>
-  <span class="lbl" id="pLabel">—</span>
-  <button id="pClose" aria-label="Close">✕</button>
-</div>
 <div id="toasts" aria-live="polite"></div>
 
 <script src="i18n.js" defer></script>
@@ -138,251 +164,213 @@ function L(a,b){return window.__nyalaLang==='en'?b:a;}
 function toast(msg){var box=$('toasts');if(!box)return;var t=document.createElement('div');t.className='toast';t.textContent=msg;box.appendChild(t);while(box.children.length>3)box.removeChild(box.firstChild);setTimeout(function(){t.classList.add('go');setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},320);},3400);}
 var COUNTS=[7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
 var OFFSET=[];(function(){var s=0;for(var i=0;i<COUNTS.length;i++){OFFSET.push(s);s+=COUNTS[i];}})();
-var TOTAL=OFFSET[113]+COUNTS[113];
-var RECITERS=[
-{id:'ar.alafasy',name:'Mishary Rashid Alafasy'},
-{id:'ar.husary',name:'Mahmoud Khalil Al-Husary'},
-{id:'ar.abdurrahmaansudais',name:'Abdurrahman As-Sudais'},
-{id:'ar.abdulbasitmujawwad',name:'Abdul Basit (Mujawwad)'},
-{id:'ar.minshawi',name:'Mohamed Siddiq El-Minshawi'}
+var JUZ=[[1,1],[2,142],[2,253],[3,93],[4,148],[5,82],[6,111],[7,88],[8,41],[9,93],[11,6],[12,53],[15,1],[17,1],[18,75],[20,1],[21,112],[23,1],[25,21],[27,56],[29,46],[33,31],[36,28],[39,32],[41,47],[51,31],[57,1],[58,23],[67,1],[78,1]];
+var QARIS=[{id:'ar.alafasy',n:'Misyari Al-Afasi'},{id:'ar.husary',n:'Mahmoud Khalil Al-Husary'},{id:'ar.abdurrahmaansudais',n:'Abdurrahman As-Sudais'},{id:'ar.abdulbasitmujawwad',n:'Abdul Basit (Mujawwad)'},{id:'ar.minshawi',n:'Mohamed Siddiq El-Minshawi'}];
+var MOODS=[
+{e:'😢',id:'Sedih',en:'Sad',ref:'94:5',ar:'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا',tr:'Karena sesungguhnya bersama kesulitan ada kemudahan.',en2:'For indeed, with hardship comes ease.'},
+{e:'😰',id:'Cemas',en:'Anxious',ref:'13:28',ar:'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',tr:'Ingatlah, hanya dengan mengingati Allah hati menjadi tenteram.',en2:'Verily, in the remembrance of Allah do hearts find rest.'},
+{e:'🥰',id:'Bersyukur',en:'Grateful',ref:'14:7',ar:'لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ',tr:'Jika kamu bersyukur, pasti Aku akan menambah (nikmat) kepadamu.',en2:'If you are grateful, I will surely increase you.'},
+{e:'🌾',id:'Butuh Sabar',en:'Need Patience',ref:'2:153',ar:'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ',tr:'Sungguh, Allah beserta orang-orang yang sabar.',en2:'Indeed, Allah is with the patient.'},
+{e:'💼',id:'Memohon Rezeki',en:'Seeking Provision',ref:'65:3',ar:'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ',tr:'Barangsiapa bertawakal kepada Allah, niscaya Allah akan mencukupkan keperluannya.',en2:'Whoever relies upon Allah — He is sufficient for him.'},
+{e:'🌙',id:'Merasa Sendiri',en:'Feeling Alone',ref:'2:186',ar:'وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ',tr:'Dan apabila hamba-hamba-Ku bertanya tentang Aku, maka sesungguhnya Aku dekat.',en2:'And when My servants ask you about Me — indeed I am near.'},
+{e:'🤍',id:'Meminta Ampun',en:'Seeking Forgiveness',ref:'39:53',ar:'لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ ۚ إِنَّ اللَّهَ يَغْفِرُ الذُّنُوبَ جَمِيعًا',tr:'Janganlah berputus asa dari rahmat Allah; sesungguhnya Allah mengampuni dosa semuanya.',en2:'Do not despair of Allah’s mercy; indeed Allah forgives all sins.'},
+{e:'🛡',id:'Ingin Terlindungi',en:'Wanting Protection',ref:'2:255',ar:'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ',tr:'Allah, tidak ada tuhan selain Dia, Yang Mahahidup lagi terus-menerus mengurus makhluk-Nya; tidak mengantuk dan tidak tidur.',en2:'Allah — there is no deity except Him, the Ever-Living, the Sustainer; neither drowsiness nor sleep overtakes Him.'}
 ];
-var HKEY='nyala_hafalan_v1',QKEY='nyala_qari',LKEY='nyala_quran_last';
+var DOAS={
+daily:[
+{t:{id:'🍽 Sebelum Makan',en:'🍽 Before Eating'},ar:'بِسْمِ اللَّهِ. اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ',la:'Bismillah. Allahumma barik lana fima razaqtana wa qina ‘adzaban-nar.',tr:'Dengan nama Allah. Ya Allah, berkahilah rezeki kami dan jagalah kami dari api neraka.',te:'In the name of Allah. O Allah, bless our provision and protect us from the Fire.',m:'Membawa berkah pada makanan dan menjauhkan setan dari rezeki kita.',me:'Brings blessing to the food and keeps Shaytan away from our provision.',s:'HR. Abu Dawud & Ibnu Majah'},
+{t:{id:'🍽 Sesudah Makan',en:'🍽 After Eating'},ar:'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ',la:'Alhamdu lillahil ladzi ath‘amana wa saqana wa ja‘alana muslimin.',tr:'Segala puji bagi Allah yang memberi kami makan dan minum serta menjadikan kami muslim.',te:'Praise be to Allah who fed us, gave us drink, and made us Muslims.',m:'Menutup rezeki dengan syukur.',me:'Closes provision with gratitude.',s:'HR. Abu Dawud & Tirmidzi'},
+{t:{id:'🌙 Sebelum Tidur',en:'🌙 Before Sleeping'},ar:'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',la:'Bismika Allahumma amutu wa ahya.',tr:'Dengan nama-Mu ya Allah aku mati dan aku hidup.',te:'In Your name, O Allah, I die and I live.',m:'Menyerahkan nyawa dalam lindungan Allah.',me:'Entrusts the soul to Allah’s protection.',s:'HR. Bukhari'},
+{t:{id:'🌅 Bangun Tidur',en:'🌅 Waking Up'},ar:'الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ',la:'Alhamdu lillahil ladzi ahyaana ba‘da ma amaatana wa ilaihin nusyur.',tr:'Segala puji bagi Allah yang menghidupkan kami setelah mematikan kami, dan kepada-Nya kami dibangkitkan.',te:'Praise be to Allah who gave us life after death, and to Him is the resurrection.',m:'Membuka hari dengan syukur.',me:'Opens the day with gratitude.',s:'HR. Bukhari'},
+{t:{id:'🚪 Keluar Rumah',en:'🚪 Leaving Home'},ar:'بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',la:'Bismillah, tawakkaltu ‘alallah, wa la hawla wa la quwwata illa billah.',tr:'Dengan nama Allah, aku bertawakal kepada Allah; tiada daya dan kekuatan kecuali dengan Allah.',te:'In the name of Allah, I rely on Allah; there is no might nor power except with Allah.',m:'Penjagaan dari gangguan hingga kembali.',me:'Protection from harm until return.',s:'HR. Abu Dawud & Tirmidzi'},
+{t:{id:'🏠 Masuk Rumah',en:'🏠 Entering Home'},ar:'بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا',la:'Bismillahi walajna wa bismillahi kharajna wa ‘alallahi rabbina tawakkalna.',tr:'Dengan nama Allah kami masuk dan keluar, dan kepada Tuhan kami bertawakal.',te:'In Allah’s name we enter and exit, and upon our Lord we rely.',m:'Rumah terasa tenang dan diberkahi.',me:'Brings calm and blessing home.',s:'HR. Abu Dawud'}
+],
+prophets:[
+{t:{id:'🌿 Nabi Adam (QS 7:23)',en:'🌿 Prophet Adam (QS 7:23)'},ar:'رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ',la:'Rabbana zhalamna anfusana wa il lam taghfir lana wa tarhamna lanakunanna minal khasirin.',tr:'Ya Tuhan kami, kami telah menzalimi diri kami sendiri. Jika Engkau tidak mengampuni kami dan merahmati kami, niscaya kami termasuk orang yang rugi.',te:'Our Lord, we have wronged ourselves. If You do not forgive us and have mercy upon us, we will surely be among the losers.',m:'Pembuka pintu taubat yang paling sempurna.',me:'The most perfect opener of the door of repentance.',s:'QS. Al-A’raf: 23'},
+{t:{id:'🐋 Nabi Yunus (QS 21:87)',en:'🐋 Prophet Yunus (QS 21:87)'},ar:'لَّا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ',la:'La ilaha illa anta subhanaka inni kuntu minaz zhalimin.',tr:'Tiada tuhan selain Engkau, Mahasuci Engkau; sungguh aku termasuk orang-orang yang zalim.',te:'There is no deity except You; exalted are You. Indeed, I have been among the wrongdoers.',m:'Jalan keluar dari kesempitan yang terasa buntu.',me:'A way out of distress that feels hopeless.',s:'QS. Al-Anbiya: 87'},
+{t:{id:'🕊 Nabi Musa (QS 20:25-26)',en:'🕊 Prophet Musa (QS 20:25-26)'},ar:'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي',la:'Rabbisyrah li shadri wa yassir li amri.',tr:'Ya Tuhanku, lapangkanlah dadaku dan mudahkanlah urusanku.',te:'My Lord, expand my breast and ease my task.',m:'Kelapangan saat menghadapi tugas yang berat.',me:'Ease when facing heavy tasks.',s:'QS. Thaha: 25-26'},
+{t:{id:'🕌 Nabi Ibrahim (QS 14:40)',en:'🕌 Prophet Ibrahim (QS 14:40)'},ar:'رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِن ذُرِّيَّتِي ۚ رَبَّنَا وَتَقَبَّلْ دُعَاءِ',la:'Rabbij‘alni muqimash shalati wa min dzurriyyati, rabbana wa taqabbal du‘a.',tr:'Ya Tuhanku, jadikanlah aku dan anak cucuku orang yang tetap mendirikan sholat; ya Tuhan kami, perkenankanlah doaku.',te:'My Lord, make me and my descendants establishers of prayer; our Lord, accept my supplication.',m:'Doa keluarga yang menjaga sholat turun-temurun.',me:'A family prayer that keeps salat across generations.',s:'QS. Ibrahim: 40'},
+{t:{id:'👴 Nabi Zakariya (QS 21:89)',en:'👴 Prophet Zakariya (QS 21:89)'},ar:'رَبِّ لَا تَذَرْنِي فَرْدًا وَأَنتَ خَيْرُ الْوَارِثِينَ',la:'Rabbi la tadzarni fardan wa anta khairul waritsin.',tr:'Ya Tuhanku, janganlah Engkau biarkan aku seorang diri, dan Engkaulah ahli waris yang terbaik.',te:'My Lord, do not leave me alone, while You are the best of inheritors.',m:'Harapan akan keturunan & penerus yang saleh.',me:'Hope for righteous offspring & successors.',s:'QS. Al-Anbiya: 89'}
+],
+modern:[
+{t:{id:'🌅 Pembuka Hari',en:'🌅 Day Opener'},ar:'اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ',la:'Allahumma bika ashbahna wa bika amsaina wa bika nahya wa bika namutu wa ilaikan nusyur.',tr:'Ya Allah, dengan-Mu kami memasuki pagi dan petang, dengan-Mu kami hidup dan mati, dan kepada-Mu kami kembali.',te:'O Allah, by You we enter morning and evening, by You we live and die, and to You we return.',m:'Mengawali hari dengan penyerahan diri total kepada Allah.',me:'Begins the day with total surrender to Allah.',s:'HR. Tirmidzi'},
+{t:{id:'🧠 Overthinking / Cemas',en:'🧠 Overthinking / Anxious'},ar:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',la:'Hasbunallahu wa ni‘mal wakil.',tr:'Cukuplah Allah bagi kami dan Dia sebaik-baik pelindung.',te:'Allah is sufficient for us, and He is the best disposer of affairs.',m:'Meredam cemas, mengembalikan tawakal.',me:'Calms anxiety and restores reliance on Allah.',s:'QS. Ali Imran: 173'},
+{t:{id:'📚 Sebelum Belajar / Bekerja',en:'📚 Before Study / Work'},ar:'رَبِّ زِدْنِي عِلْمًا',la:'Rabbi zidni ‘ilma.',tr:'Ya Tuhanku, tambahkanlah ilmu kepadaku.',te:'My Lord, increase me in knowledge.',m:'Membuka fokus dan kemudahan memahami.',me:'Opens focus and ease of understanding.',s:'QS. Thaha: 114'},
+{t:{id:'🌙 Penutup Hari',en:'🌙 Day Closer'},ar:'اللَّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ دِقَّهُ وَجِلَّهُ وَأَوَّلَهُ وَآخِرَهُ',la:'Allahummaghfir li dzanbi kullahu, diqqahu wa jillahu, wa awwalahu wa akhirahu.',tr:'Ya Allah, ampunilah seluruh dosaku, yang kecil dan yang besar, yang awal dan yang akhir.',te:'O Allah, forgive all my sins, the small and the great, the first and the last.',m:'Tidur dengan hati yang ringan.',me:'Sleep with a light heart.',s:'HR. Muslim'}
+]};
+var HKEY='nyala_quran_hafalan_v1',QKEY='nyala_qari',VKEY='nyala_v1';
 var haf={};try{haf=JSON.parse(localStorage.getItem(HKEY)||'{}')||{};}catch(e){haf={};}
 function saveHaf(){try{localStorage.setItem(HKEY,JSON.stringify(haf));}catch(e){}}
-var reciter=RECITERS[0].id;try{var r0=localStorage.getItem(QKEY);if(r0)reciter=r0;}catch(e){}
-var SURAH=null,curSurah=0,curAyah=0,playing=false,queue=[],fullMode=false,autoNext=true,showTrans=true,showLatin=false;
-var enCache=null,enTried=false,latinCache=null,latinTried=false,undoBuf=null;
-var audio=new Audio();audio.preload='none';
-
-function norm(obj){
-  var out=[];
-  function push(num,name,ename,etran,ayahs){out.push({number:num,name:name||'',ename:ename||'',etran:etran||'',ayahs:ayahs});}
-  if(obj&&obj.data&&Array.isArray(obj.data.surahs)){obj.data.surahs.forEach(function(s){push(s.number,s.name,s.englishName,s.englishNameTranslation,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
-  else if(obj&&Array.isArray(obj.surahs)){obj.surahs.forEach(function(s){push(s.number,s.name,s.englishName,s.englishNameTranslation,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
-  else if(Array.isArray(obj)){
-    if(obj.length&&obj[0]&&Array.isArray(obj[0].ayahs)){obj.forEach(function(s){push(s.number,s.name,s.englishName,s.englishNameTranslation,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
-    else{var m={};obj.forEach(function(r){var sn=r.surah||r.sura||r.chapter,an=r.aya||r.ayah||r.verse;if(!m[sn])m[sn]=[];m[sn].push({n:an,text:r.text});});Object.keys(m).sort(function(a,b){return a-b;}).forEach(function(k){push(+k,'','','',m[k]);});}
-  }
-  else if(obj&&obj.quran&&Array.isArray(obj.quran)){return norm(obj.quran);}
-  out.sort(function(a,b){return a.number-b.number;});
-  return out;
-}
-function fetchJSON(url){return fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();});}
-function loadAll(){
-  var arP=fetchJSON('quran-uthmani.json').catch(function(){return fetchJSON('https://api.alquran.cloud/v1/quran/quran-uthmani');});
-  var idP=fetchJSON('id.indonesian.json').catch(function(){return fetchJSON('https://api.alquran.cloud/v1/quran/id.indonesian');});
-  return Promise.all([arP,idP]).then(function(res){
-    var ar=norm(res[0]),id=norm(res[1]);
-    var idMap={};id.forEach(function(s){idMap[s.number]={tr:{},nm:'',nmEn:''};s.ayahs.forEach(function(a){idMap[s.number].tr[a.n]=a.text;});idMap[s.number].nm=s.etran||s.ename;idMap[s.number].nmEn=s.ename;});
-    ar.forEach(function(s){
-      var rec=idMap[s.number]||{tr:{},nm:s.ename,nmEn:s.ename};
-      s.nameId=rec.nm||s.ename;s.nameEn=rec.nmEn||s.ename;
-      s.ayahs.forEach(function(a){a.id=rec.tr[a.n]||'';});
+var qari=QARIS[0].id;try{var q0=localStorage.getItem(QKEY);if(q0)qari=q0;}catch(e){}
+var SURAH=null,IDMAP=null,ENMAP=null,enTried=false,bareng=false,playingIdx=-1,audio=new Audio();audio.preload='none';
+function st(){try{return JSON.parse(localStorage.getItem(VKEY))||{};}catch(e){return {};}}
+function setXP(add){var s=st();s.xp=(s.xp||0)+add;try{localStorage.setItem(VKEY,JSON.stringify(s));}catch(e){}paintChips();}
+function paintChips(){var s=st();$('xpChip').textContent=(s.xp||0)+' XP';$('streakChip').textContent='🔥 '+((s.streak&&s.streak.count)||0);$('netChip').textContent=navigator.onLine?'🌐 '+L('Online','Online'):'📴 '+L('Offline','Offline');}
+window.addEventListener('online',paintChips);window.addEventListener('offline',paintChips);
+function norm(obj){var out=[];function push(n,a){out.push({number:n,ayahs:a});}
+ if(obj&&obj.data&&Array.isArray(obj.data.surahs)){obj.data.surahs.forEach(function(s){push(s.number,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
+ else if(obj&&Array.isArray(obj.surahs)){obj.surahs.forEach(function(s){push(s.number,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
+ else if(obj&&Array.isArray(obj.quran)){return norm(obj.quran);}
+ else if(Array.isArray(obj)){if(obj.length&&obj[0]&&Array.isArray(obj[0].ayahs)){obj.forEach(function(s){push(s.number,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}else{var m={};obj.forEach(function(r){var sn=r.surah||r.sura,an=r.aya||r.ayah;if(sn&&an){if(!m[sn])m[sn]={};m[sn][an]=r.text;}});Object.keys(m).forEach(function(s){push(+s,Object.keys(m[s]).map(function(a){return{n:+a,text:m[s][a]};}));});}}
+ out.sort(function(a,b){return a.number-b.number;});return out;}
+function fetchJSON(u){return fetch(u,{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();});}
+function chain(us){return us.reduce(function(p,u){return p.catch(function(){return fetchJSON(u);});},Promise.reject());}
+function gNum(s,a){return OFFSET[s-1]+a;}
+function load(){
+  chain(['quran-uthmani.json','https://api.alquran.cloud/v1/quran/quran-uthmani']).then(function(ar){
+    SURAH=norm(ar);
+    var idP=chain(['id.indonesian.json','https://api.alquran.cloud/v1/quran/id.indonesian']).then(function(o){var m={};norm(o).forEach(function(s){m[s.number]={};s.ayahs.forEach(function(a){m[s.number][a.n]=a.text;});});IDMAP=m;}).catch(function(){IDMAP={};});
+    idP.then(function(){
+      $('cacheStatus').textContent=L('📦 114 surah siap ✅ (dari cache HP)','📦 114 surahs ready ✅ (from phone cache)');
+      toast(L('✅ Data Qur\'an termuat!','✅ Qur\'an data loaded!'));
+      buildSelects();renderAyahs();
     });
-    return ar;
-  });
+  }).catch(function(){$('cacheStatus').textContent=L('⚠️ Gagal memuat data Qur\'an','⚠️ Failed to load Qur\'an data');});
+  if(window.__nyalaLang==='en')loadEN();
 }
 function loadEN(){
-  if(enCache)return Promise.resolve(enCache);
-  if(enTried)return Promise.resolve(enCache);
+  if(ENMAP||enTried)return Promise.resolve(ENMAP);
   enTried=true;
-  return fetchJSON('en.sahih.json').catch(function(){return fetchJSON('https://api.alquran.cloud/v1/quran/en.sahih');}).then(function(o){
-    var m={};norm(o).forEach(function(s){m[s.number]={};s.ayahs.forEach(function(a){m[s.number][a.n]=a.text;});});
-    enCache=m;return m;
-  }).catch(function(){enCache=null;return null;});
+  return chain(['en.sahih.json','https://api.alquran.cloud/v1/quran/en.sahih']).then(function(o){
+    var m={};norm(o).forEach(function(s){m[s.number]={};s.ayahs.forEach(function(a){m[s.number][a.n]=a.text;});});ENMAP=m;return m;
+  }).catch(function(){ENMAP=null;return null;});
 }
-function loadLatin(){
-  if(latinCache)return Promise.resolve(latinCache);
-  if(latinTried)return Promise.resolve(latinCache);
-  latinTried=true;
-  return fetchJSON('https://api.alquran.cloud/v1/quran/en.transliteration').then(function(o){
-    var m={};norm(o).forEach(function(s){m[s.number]={};s.ayahs.forEach(function(a){m[s.number][a.n]=a.text;});});
-    latinCache=m;return m;
-  }).catch(function(){latinCache=null;return null;});
+function buildSelects(){
+  var t=$('targetSel');t.innerHTML='';
+  if($('modeSel').value==='surah'){SURAH.forEach(function(s){var o=document.createElement('option');o.value=s.number;o.textContent=s.number+'. '+(s.ename||'');t.appendChild(o);});}
+  else{for(var j=1;j<=30;j++){var o2=document.createElement('option');o2.value=j;o2.textContent=L('Juz ','Juz ')+j;t.appendChild(o2);}}
+  var qs=$('qariSel');qs.innerHTML='';QARIS.forEach(function(q){var o=document.createElement('option');o.value=q.id;o.textContent='🎙 '+q.n;qs.appendChild(o);});qs.value=qari;
 }
-function hafCount(sn){return Object.keys(haf[sn]||{}).length;}
-function hafTotal(){var n=0;for(var s in haf)n+=Object.keys(haf[s]).length;return n;}
-function isHaf(sn,an){return !!(haf[sn]&&haf[sn][an]);}
-function setHaf(sn,an,v){if(!haf[sn])haf[sn]={};if(v)haf[sn][an]=1;else delete haf[sn][an];saveHaf();}
-function chip(){$('qHafChip').textContent='🕌 '+hafTotal()+' / '+TOTAL;}
-function gNum(sn,an){return OFFSET[sn-1]+an;}
-
-function renderList(){
-  var box=$('qList');if(!box||!SURAH)return;
-  var q=($('qSearch').value||'').toLowerCase().trim(),f=$('qFilter').value,sort=$('qSort').value;
-  var rows=SURAH.filter(function(s){
-    if(q&&!(String(s.number).indexOf(q)>-1||(s.nameEn||'').toLowerCase().indexOf(q)>-1||(s.nameId||'').toLowerCase().indexOf(q)>-1))return false;
-    var full=hafCount(s.number)>=COUNTS[s.number-1];
-    if(f==='done'&&!full)return false;
-    if(f==='todo'&&full)return false;
-    return true;
-  });
-  if(sort==='name')rows.sort(function(a,b){return (a.nameEn||'').localeCompare(b.nameEn||'');});
-  else if(sort==='haf')rows.sort(function(a,b){return (hafCount(b.number)/COUNTS[b.number-1])-(hafCount(a.number)/COUNTS[a.number-1]);});
-  box.innerHTML='';
-  rows.forEach(function(s){
-    var card=document.createElement('div');card.className='card q-card';card.setAttribute('role','button');card.tabIndex=0;
-    var num=document.createElement('span');num.className='q-num';num.textContent=s.number;
-    var names=document.createElement('span');names.className='q-names';
-    var b=document.createElement('b');b.textContent=L(s.nameId||s.nameEn,s.nameEn||s.nameId);
-    var sm=document.createElement('small');sm.textContent=L(COUNTS[s.number-1]+' ayat · '+hafCount(s.number)+' hafal',COUNTS[s.number-1]+' ayahs · '+hafCount(s.number)+' memorized');
-    names.appendChild(b);names.appendChild(sm);
-    var ar=document.createElement('span');ar.className='q-ar-name arab';ar.setAttribute('lang','ar');ar.textContent=s.name;
-    var hf=document.createElement('span');hf.className='q-haf';hf.textContent=hafCount(s.number)>=COUNTS[s.number-1]?'✔':(hafCount(s.number)+'/'+COUNTS[s.number-1]);
-    card.appendChild(num);card.appendChild(names);card.appendChild(ar);card.appendChild(hf);
-    function open(){openSurah(s.number);}
-    card.addEventListener('click',open);
-    card.addEventListener('keydown',function(e){if(e.key==='Enter')open();});
+function currentList(){
+  if(!SURAH)return[];
+  if($('modeSel').value==='surah'){var sn=+$('targetSel').value||1;var s=SURAH[sn-1];return s?s.ayahs.map(function(a){return{s:sn,n:a.n,ar:a.text};}):[];}
+  var j=+$('targetSel').value||1,stt=JUZ[j-1],end=j<30?JUZ[j]:[115,1];var out=[];
+  for(var s=stt[0];s<end[0];s++){var startA=(s===stt[0])?stt[1]:1;var endA=COUNTS[s-1];for(var a=startA;a<=endA;a++)out.push({s:s,n:a,ar:ayahText(s,a)});}
+  if(j<30){for(var a2=end[1];a2<=COUNTS[end[0]-1];a2++){} }
+  return out;
+}
+function ayahText(s,n){var sr=SURAH[s-1];if(!sr)return'';for(var i=0;i<sr.ayahs.length;i++){if(sr.ayahs[i].n===n)return sr.ayahs[i].text;}return'';}
+function ayahTr(s,n){var en=(window.__nyalaLang==='en'&&ENMAP&&ENMAP[s]&&ENMAP[s][n]);if(en)return en;return (IDMAP&&IDMAP[s]&&IDMAP[s][n])||'';}
+function renderAyahs(){
+  var box=$('ayahBox');if(!box||!SURAH)return;
+  var list=currentList();box.innerHTML='';
+  if($('modeSel').value==='surah'){
+    var sn=+$('targetSel').value||1,s=SURAH[sn-1];
+    $('surahInfo').style.display='flex';
+    $('surahInfo').innerHTML='';
+    var b=document.createElement('b');b.textContent=s.ename||('Surah '+sn);
+    var ar=document.createElement('span');ar.className='ar arab';ar.setAttribute('lang','ar');ar.textContent=s.name;
+    var sm=document.createElement('small');sm.textContent=COUNTS[sn-1]+' '+L('ayat','ayahs')+' · '+(s.revelationType==='Medinan'?L('Madaniyah','Madaniyah'):L('Makkiyah','Makkiyah'));
+    $('surahInfo').appendChild(b);$('surahInfo').appendChild(ar);$('surahInfo').appendChild(sm);
+  }else{$('surahInfo').style.display='none';}
+  list.forEach(function(it,i){
+    var card=document.createElement('div');card.className='card ayah';card.id='ayah-'+it.s+'-'+it.n;
+    var top=document.createElement('div');top.className='top';
+    var ref=document.createElement('span');ref.className='ref';ref.textContent=it.s+':'+it.n;
+    var dn=document.createElement('button');dn.className='dengar';dn.textContent='▶ '+L('dengar','listen');
+    dn.addEventListener('click',function(){playFrom(i,list);});
+    top.appendChild(ref);top.appendChild(dn);card.appendChild(top);
+    var a=document.createElement('div');a.className='ar arab';a.setAttribute('lang','ar');a.setAttribute('dir','rtl');a.textContent=it.ar;card.appendChild(a);
+    var tr=document.createElement('div');tr.className='tr';tr.setAttribute('data-ayah',it.s+':'+it.n);tr.textContent=ayahTr(it.s,it.n);card.appendChild(tr);
     box.appendChild(card);
   });
-  $('qLoading').style.display=rows.length?'none':'block';
-  if(!rows.length)$('qLoading').textContent=L('Tidak ada hasil','No results');
-  chip();
 }
-function openSurah(sn){
-  curSurah=sn;curAyah=0;
-  try{localStorage.setItem(LKEY,String(sn));}catch(e){}
-  $('qListView').style.display='none';$('qReaderView').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
-  renderReader();
+function playFrom(i,list){
+  stopAudio();bareng=false;playingIdx=i;
+  var it=list[i];
+  var q=[];
+  if(it.n===1&&it.s!==1&&it.s!==9)q.push(gNum(1,1));
+  q.push(gNum(it.s,it.n));
+  playQueue(q,list,i);
 }
-function renderReader(){
-  var s=null;for(var i=0;i<SURAH.length;i++){if(SURAH[i].number===curSurah)s=SURAH[i];}
-  if(!s)return;
-  $('qTitleAr').textContent=s.name;
-  $('qTitleTr').textContent=L(s.nameId||s.nameEn,s.nameEn||s.nameId);
-  $('qMeta').textContent=L('Surah ke-'+s.number+' · '+COUNTS[s.number-1]+' ayat · '+hafCount(s.number)+' hafal','Surah '+s.number+' · '+COUNTS[s.number-1]+' ayahs · '+hafCount(s.number)+' memorized');
-  $('qProgFill').style.width=Math.round(100*hafCount(s.number)/COUNTS[s.number-1])+'%';
-  $('qBismillah').style.display=(curSurah===9)?'none':'block';
-  var box=$('qAyahs');box.innerHTML='';
-  s.ayahs.forEach(function(a){
-    var card=document.createElement('div');card.className='card q-ayah';card.id='ayah-'+a.n;
-    var ar=document.createElement('div');ar.className='ar arab';ar.setAttribute('lang','ar');ar.setAttribute('dir','rtl');ar.textContent=a.text;
-    card.appendChild(ar);
-    if(showLatin){var lt=document.createElement('div');lt.className='latin';lt.textContent=(latinCache&&latinCache[curSurah]&&latinCache[curSurah][a.n])||L('Transliterasi dimuat saat online…','Transliteration loads when online…');card.appendChild(lt);}
-    if(showTrans){
-      var tr=document.createElement('div');tr.className='trans';
-      var txt=(window.__nyalaLang==='en'&&enCache&&enCache[curSurah]&&enCache[curSurah][a.n])||a.id||'';
-      tr.textContent=txt;
-      card.appendChild(tr);
-    }
-    var row=document.createElement('div');row.className='row';
-    var n=document.createElement('span');n.className='n';n.textContent=s.number+':'+a.n;
-    var play=document.createElement('button');play.className='q-mini';play.textContent='▶ '+L('Murottal','Recite');
-    play.addEventListener('click',function(){playAyah(a.n);});
-    var hafB=document.createElement('button');hafB.className='q-mini'+(isHaf(curSurah,a.n)?' on':'');
-    hafB.textContent=isHaf(curSurah,a.n)?'✔ '+L('Hafal','Memorized'):L('Tandai hafal','Mark memorized');
-    hafB.addEventListener('click',function(){setHaf(curSurah,a.n,!isHaf(curSurah,a.n));renderReader();renderList();toast(isHaf(curSurah,a.n)?L('Ditandai hafal ✔','Marked memorized ✔'):L('Tanda hafal dilepas','Memorization mark removed'));});
-    row.appendChild(n);row.appendChild(play);row.appendChild(hafB);
-    card.appendChild(row);box.appendChild(card);
-  });
-  chip();
+function playQueue(q,list,i){
+  if(!q.length){if(bareng&&i+1<list.length){playFrom(i+1,list);}else{playingIdx=-1;clearPlaying();}return;}
+  var g=q.shift();
+  audio.src='https://cdn.islamic.network/quran/audio/128/'+qari+'/'+g+'.mp3';
+  audio.play().catch(function(){toast(L('Audio gagal dimuat — cek koneksi','Audio failed — check connection'));playingIdx=-1;clearPlaying();});
+  highlight(list[i]);
+  audio.onended=function(){playQueue(q,list,i);};
 }
-function reciterName(){for(var i=0;i<RECITERS.length;i++){if(RECITERS[i].id===reciter)return RECITERS[i].name;}return reciter;}
-function paintPlayer(){
-  $('qPlayer').classList.add('show');
-  $('pPlay').textContent=playing?'⏸':'▶';
-  $('pLabel').textContent=fullMode?L('Surah penuh ','Full surah ')+curSurah+' · '+reciterName():L('Qur\'an ','Qur\'an ')+curSurah+':'+curAyah+' · '+reciterName();
+function highlight(it){
+  clearPlaying();
+  var el=$('ayah-'+it.s+'-'+it.n);if(el){el.classList.add('playing');el.scrollIntoView({behavior:'smooth',block:'center'});}
 }
-function markPlaying(){
-  document.querySelectorAll('.q-ayah').forEach(function(el){el.classList.remove('playing');});
-  var el=$('ayah-'+curAyah);if(el){el.classList.add('playing');el.scrollIntoView({behavior:'smooth',block:'center'});}
-}
-function startQueue(){
-  if(!queue.length){playing=false;paintPlayer();return;}
-  var g=queue.shift();
-  audio.src='https://cdn.islamic.network/quran/audio/128/'+reciter+'/'+g+'.mp3';
-  playing=true;
-  audio.play().catch(function(){toast(L('Audio gagal dimuat — cek koneksi','Audio failed to load — check connection'));playing=false;paintPlayer();});
-  paintPlayer();markPlaying();
-}
-function playAyah(an){
-  fullMode=false;curAyah=an;queue=[];
-  if(an===1&&curSurah!==1&&curSurah!==9)queue.push(gNum(1,1));
-  queue.push(gNum(curSurah,an));
-  startQueue();
-}
-function playFull(){
-  fullMode=true;queue=[];curAyah=0;
-  audio.src='https://cdn.islamic.network/quran/audio-surah/128/'+reciter+'/'+curSurah+'.mp3';
-  playing=true;
-  audio.play().catch(function(){toast(L('Audio surah gagal dimuat — cek koneksi','Surah audio failed — check connection'));playing=false;});
-  paintPlayer();
-  document.querySelectorAll('.q-ayah').forEach(function(el){el.classList.remove('playing');});
-}
-audio.addEventListener('ended',function(){
-  if(queue.length){startQueue();return;}
-  if(fullMode){playing=false;paintPlayer();toast(L('Surah selesai 🌹','Surah finished 🌹'));return;}
-  if(autoNext&&curAyah<COUNTS[curSurah-1]){playAyah(curAyah+1);}
-  else{playing=false;paintPlayer();}
-});
-audio.addEventListener('error',function(){
-  if(!playing)return;
-  if(queue.length){startQueue();return;}
-  toast(L('Audio gagal diputar','Audio failed to play'));playing=false;paintPlayer();
-});
-function stopAudio(){audio.pause();playing=false;queue=[];fullMode=false;$('qPlayer').classList.remove('show');document.querySelectorAll('.q-ayah').forEach(function(el){el.classList.remove('playing');});}
-
+function clearPlaying(){document.querySelectorAll('.ayah.playing').forEach(function(e){e.classList.remove('playing');});}
+function stopAudio(){audio.pause();audio.onended=null;playingIdx=-1;clearPlaying();}
 function bind(){
-  var rs=$('qReciter');
-  RECITERS.forEach(function(r){var o=document.createElement('option');o.value=r.id;o.textContent=r.name;rs.appendChild(o);});
-  rs.value=reciter;
-  rs.addEventListener('change',function(){reciter=rs.value;try{localStorage.setItem(QKEY,reciter);}catch(e){}if(playing){if(fullMode)playFull();else if(curAyah)playAyah(curAyah);}else paintPlayer();});
-  $('qSearch').addEventListener('input',renderList);
-  $('qFilter').addEventListener('change',renderList);
-  $('qSort').addEventListener('change',renderList);
-  function tog(el,get,set){el.addEventListener('click',function(e){e.preventDefault();var v=!get();set(v);el.classList.toggle('on',v);var inp=el.querySelector('input');if(inp)inp.checked=v;});}
-  tog($('qTransToggle'),function(){return showTrans;},function(v){showTrans=v;if(curSurah)renderReader();});
-  tog($('qLatinToggle'),function(){return showLatin;},function(v){
-    showLatin=v;
-    if(v){loadLatin().then(function(m){if(curSurah)renderReader();if(!m)toast(L('Transliterasi butuh koneksi internet','Transliteration needs internet'));});}
-    else if(curSurah)renderReader();
+  $('modeSel').addEventListener('change',function(){buildSelects();renderAyahs();});
+  $('targetSel').addEventListener('change',renderAyahs);
+  $('qariSel').addEventListener('change',function(){qari=$('qariSel').value;try{localStorage.setItem(QKEY,qari);}catch(e){}if(playingIdx>-1){var list=currentList();playFrom(playingIdx,list);}});
+  $('btnSendiri').addEventListener('click',function(){bareng=false;stopAudio();setBtn('btnSendiri');});
+  $('btnBareng').addEventListener('click',function(){bareng=true;setBtn('btnBareng');var list=currentList();if(list.length)playFrom(0,list);});
+  $('btnMurottal').addEventListener('click',function(){
+    if($('modeSel').value!=='surah'){toast(L('Murottal surah: pilih mode Per Surah','Full surah: choose By Surah mode'));return;}
+    stopAudio();bareng=false;setBtn('btnMurottal');
+    var sn=+$('targetSel').value||1;
+    audio.src='https://cdn.islamic.network/quran/audio-surah/128/'+qari+'/'+sn+'.mp3';
+    audio.onended=function(){clearPlaying();};
+    audio.play().catch(function(){toast(L('Murottal gagal dimuat — cek koneksi','Murottal failed — check connection'));});
   });
-  tog($('qAutoToggle'),function(){return autoNext;},function(v){autoNext=v;});
-  $('qBack').addEventListener('click',function(){stopAudio();$('qReaderView').style.display='none';$('qListView').style.display='block';renderList();window.scrollTo({top:0,behavior:'smooth'});});
-  $('qFull').addEventListener('click',playFull);
-  $('qMarkAll').addEventListener('click',function(){for(var i=1;i<=COUNTS[curSurah-1];i++)setHaf(curSurah,i,true);renderReader();renderList();toast(L('Semua ayat ditandai hafal ✔','All ayahs marked memorized ✔'));});
-  $('qResetHaf').addEventListener('click',function(){
-    undoBuf=JSON.parse(JSON.stringify(haf[curSurah]||{}));
-    haf[curSurah]={};saveHaf();renderReader();renderList();
-    var t=toast(L('Hafalan surah ini direset — tap untuk undo','This surah\'s memorization reset — tap to undo'));
-    if(t){t.style.cursor='pointer';t.addEventListener('click',function(){if(undoBuf){haf[curSurah]=undoBuf;undoBuf=null;saveHaf();renderReader();renderList();toast(L('Dikembalikan ✔','Restored ✔'));}});}
+  function setBtn(id){['btnSendiri','btnBareng','btnMurottal'].forEach(function(b){var el=$(b);el.classList.toggle('on',b===id);el.classList.toggle('leafy',b===id);el.classList.toggle('ghost',b!==id&&b!=='btnMurottal');el.classList.toggle('sunny',b==='btnMurottal');});}
+  var mc=$('moodChips');
+  MOODS.forEach(function(m,i){
+    var b=document.createElement('button');b.className='mood-chip';b.setAttribute('data-id',m.e+' '+m.id);b.setAttribute('data-en',m.e+' '+m.en);b.textContent=m.e+' '+m.id;
+    b.addEventListener('click',function(){
+      mc.querySelectorAll('.mood-chip').forEach(function(x){x.classList.remove('on');});b.classList.add('on');
+      var box=$('moodResult');box.innerHTML='';
+      var card=document.createElement('div');card.className='card ayah';
+      var top=document.createElement('div');top.className='top';
+      var ref=document.createElement('span');ref.className='ref';ref.textContent=m.ref;
+      var dn=document.createElement('button');dn.className='dengar';dn.textContent='▶ '+L('dengar','listen');
+      dn.addEventListener('click',function(){var p=m.ref.split(':');var s=+p[0],n=+p[1];var q=(n===1&&s!==1&&s!==9)?[gNum(1,1),gNum(s,n)]:[gNum(s,n)];playQueue(q,[{s:s,n:n}],0);});
+      top.appendChild(ref);top.appendChild(dn);card.appendChild(top);
+      var a=document.createElement('div');a.className='ar arab';a.setAttribute('lang','ar');a.setAttribute('dir','rtl');a.textContent=m.ar;card.appendChild(a);
+      var tr=document.createElement('div');tr.className='tr';tr.setAttribute('data-id',m.tr);tr.setAttribute('data-en',m.en2);tr.textContent=L(m.tr,m.en2);card.appendChild(tr);
+      box.appendChild(card);
+    });
+    mc.appendChild(b);
   });
-  $('pPlay').addEventListener('click',function(){
-    if(playing){audio.pause();playing=false;}
-    else{
-      playing=true;
-      if(queue.length)startQueue();
-      else if(fullMode)playFull();
-      else if(curAyah)playAyah(curAyah);
-      else playAyah(1);
-    }
-    paintPlayer();
+  renderHaf();
+  var tabs=$('doaTabs');
+  [['daily','🌅','Sehari-hari','Daily'],['prophets','🕌','Doa Para Nabi','Prophets’ Duas'],['modern','🕰','Masa Kini','Modern']].forEach(function(t){
+    var b=document.createElement('button');b.className='doa-tab'+(t[0]==='daily'?' on':'');b.setAttribute('data-id',t[1]+' '+t[2]);b.setAttribute('data-en',t[1]+' '+t[3]);b.textContent=t[1]+' '+t[2];
+    b.addEventListener('click',function(){tabs.querySelectorAll('.doa-tab').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderDoa(t[0]);});
+    tabs.appendChild(b);
   });
-  $('pPrev').addEventListener('click',function(){if(!fullMode&&curAyah>1)playAyah(curAyah-1);});
-  $('pNext').addEventListener('click',function(){if(!fullMode&&curAyah<COUNTS[curSurah-1])playAyah(curAyah+1);});
-  $('pClose').addEventListener('click',stopAudio);
-  $('qResumeBtn').addEventListener('click',function(){var l=0;try{l=parseInt(localStorage.getItem(LKEY)||'0',10);}catch(e){}if(l)openSurah(l);});
-  new MutationObserver(function(){if(curSurah)renderReader();renderList();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  renderDoa('daily');
+  new MutationObserver(function(){renderAyahs();paintChips();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 }
-function init(){
-  bind();
-  loadAll().then(function(ar){
-    SURAH=ar;renderList();
-    var last=0;try{last=parseInt(localStorage.getItem(LKEY)||'0',10);}catch(e){}
-    if(last&&SURAH[last-1]){
-      $('qResume').hidden=false;
-      $('qResumeTxt').textContent=L('Lanjutan bacaan: ','Resume reading: ')+(SURAH[last-1].nameId||SURAH[last-1].nameEn)+' ('+last+')';
-      $('qResumeBtn').setAttribute('data-target',last);
-      $('qResumeBtn').onclick=function(){openSurah(last);};
-    }
-    if(window.__nyalaLang==='en'){loadEN().then(function(m){if(!m)toast(L('Terjemahan English belum ada — unggah en.sahih.json atau butuh koneksi','English translation missing — upload en.sahih.json or connect'));});}
-  }).catch(function(){$('qLoading').textContent=L('Gagal memuat mushaf — cek koneksi lalu muat ulang','Failed to load mushaf — check connection then reload');});
-  new MutationObserver(function(){
-    if(window.__nyalaLang==='en'){loadEN().then(function(m){if(curSurah)renderReader();if(!m)toast(L('Terjemahan English belum tersedia — unggah en.sahih.json','English translation unavailable — upload en.sahih.json'));});}
-    else if(curSurah)renderReader();
-  }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+function renderHaf(){
+  var grid=$('hafGrid');grid.innerHTML='';
+  var done=0;
+  for(var s=1;s<=114;s++){
+    var v=haf[s]||0;if(v===2)done++;
+    var c=document.createElement('button');c.className='haf-cell'+(v===1?' s1':v===2?' s2':'');c.textContent=s;
+    c.setAttribute('aria-label','Surah '+s);
+    c.addEventListener('click',function(){
+      var n=+this.textContent;var cur=haf[n]||0;var nx=(cur+1)%3;
+      if(nx===2&&cur!==2){setXP(25);toast(L('🏆 Surah '+n+' ditandai hafal! +25 XP','🏆 Surah '+n+' marked memorized! +25 XP'));}
+      if(nx===0)delete haf[n];else haf[n]=nx;saveHaf();renderHaf();
+    });
+    grid.appendChild(c);
+  }
+  $('hafFill').style.width=Math.round(done/114*100)+'%';
+  $('hafCount').textContent=done+' / 114 '+L('surah dihafal','surahs memorized');
 }
+function renderDoa(key){
+  var box=$('doaBox');box.innerHTML='';
+  (DOAS[key]||[]).forEach(function(d){
+    var card=document.createElement('div');card.className='card doa';
+    var h=document.createElement('h3');h.setAttribute('data-id',d.t.id);h.setAttribute('data-en',d.t.en);h.textContent=L(d.t.id,d.t.en);card.appendChild(h);
+    var a=document.createElement('div');a.className='ar arab';a.setAttribute('lang','ar');a.setAttribute('dir','rtl');a.textContent=d.ar;card.appendChild(a);
+    var la=document.createElement('div');la.className='la latin';la.textContent=d.la;card.appendChild(la);
+    var ar2=document.createElement('div');ar2.className='arti';ar2.setAttribute('data-id',d.tr);ar2.setAttribute('data-en',d.te);ar2.textContent=L(d.tr,d.te);card.appendChild(ar2);
+    var m=document.createElement('div');m.className='man';m.setAttribute('data-id','✨ Manfaat: '+d.m);m.setAttribute('data-en','✨ Benefit: '+d.me);m.textContent=L('✨ Manfaat: '+d.m,'✨ Benefit: '+d.me);card.appendChild(m);
+    var s2=document.createElement('div');s2.className='src';s2.setAttribute('data-id','📚 Sumber: '+d.s);s2.setAttribute('data-en','📚 Source: '+d.s);s2.textContent=L('📚 Sumber: '+d.s,'📚 Source: '+d.s);card.appendChild(s2);
+    box.appendChild(card);
+  });
+}
+function init(){paintChips();bind();load();}
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
 })();
 </script>
