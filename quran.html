@@ -163,9 +163,9 @@ function L(a,b){return window.__nyalaLang==='en'?b:a;}
 function toast(msg){var box=$('toasts');if(!box)return;var t=document.createElement('div');t.className='toast';t.textContent=msg;box.appendChild(t);while(box.children.length>3)box.removeChild(box.firstChild);setTimeout(function(){t.classList.add('go');setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},320);},3400);}
 window.addEventListener('error',function(e){
   var el=$('cacheTxt');
-  if(el)el.textContent='⚠️ '+(e&&e.message?e.message:'error');
+  if(el)el.textContent="⚠️ "+(e&&e.message?e.message:"error");
 });
-var NAMES=['Al-Faatihah','Al-Baqara','Aal-i-Imraan','An-Nisaa','Al-Maaida','Al-An’aam','Al-A’raaf','Al-Anfaal','At-Tauba','Yunus','Hud','Yusuf','Ar-Ra’d','Ibrahim','Al-Hijr','An-Nahl','Al-Israa','Al-Kahf','Maryam','Thaa-Haa','Al-Anbiyaa','Al-Hajj','Al-Mu’minuun','An-Nuur','Al-Furqaan','Ash-Shu’araa','An-Naml','Al-Qasas','Al-Ankabuut','Ar-Ruum','Luqman','As-Sajda','Al-Ahzaab','Saba','Faatir','Yaa-Seen','As-Saaffaat','Shaad','Az-Zumar','Ghafir','Fusshilat','Ash-Shuura','Az-Zukhruf','Ad-Dukhaan','Al-Jaathiya','Al-Ahqaaf','Muhammad','Al-Fath','Al-Hujuraat','Qaaf','Adh-Dhaariyat','At-Tuur','An-Najm','Al-Qamar','Ar-Rahmaan','Al-Waaqia','Al-Hadid','Al-Mujaadila','Al-Hashr','Al-Mumtahana','As-Saff','Al-Jumu’ah','Al-Munaafiquun','At-Taghaabun','At-Talaaq','At-Tahriim','Al-Mulk','Al-Qalam','Al-Haaqqa','Al-Ma’aarij','Nooh','Al-Jinn','Al-Muzzammil','Al-Muddaththir','Al-Qiyaama','Al-Insaan','Al-Mursalaat','An-Naba','An-Naazi’aat','Abasa','At-Takwir','Al-Infitaar','Al-Mutaffifin','Al-Insyiqaaq','Al-Buruuj','At-Taariq','Al-A’laa','Al-Ghaashiya','Al-Fajr','Al-Balad','Ash-Shams','Al-Lail','Adh-Dhuhaa','Al-Insyirah','At-Tin','Al-Alaq','Al-Qadr','Al-Bayyina','Az-Zalzala','Al-Aadiyaat','Al-Qaari’ah','At-Takaatsur','Al-Asr','Al-Humaza','Al-Fiil','Quraisy','Al-Maa’uun','Al-Kautsar','Al-Kaafiruun','An-Nasr','Al-Masad','Al-Ikhlaas','Al-Falaq','An-Naas'];
+var NAMES=["Al-Faatihah","Al-Baqara","Aal-i-Imraan","An-Nisaa","Al-Maaida","Al-An'aam","Al-A'raaf","Al-Anfaal","At-Tauba","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Israa","Al-Kahf","Maryam","Thaa-Haa","Al-Anbiyaa","Al-Hajj","Al-Mu'minuun","An-Nuur","Al-Furqaan","Ash-Shu'araa","An-Naml","Al-Qasas","Al-Ankabuut","Ar-Ruum","Luqman","As-Sajda","Al-Ahzaab","Saba","Faatir","Yaa-Seen","As-Saaffaat","Shaad","Az-Zumar","Ghafir","Fusshilat","Ash-Shuura","Az-Zukhruf","Ad-Dukhaan","Al-Jaathiya","Al-Ahqaaf","Muhammad","Al-Fath","Al-Hujuraat","Qaaf","Adh-Dhaariyat","At-Tuur","An-Najm","Al-Qamar","Ar-Rahmaan","Al-Waaqia","Al-Hadid","Al-Mujaadila","Al-Hashr","Al-Mumtahana","As-Saff","Al-Jumu'ah","Al-Munaafiquun","At-Taghaabun","At-Talaaq","At-Tahriim","Al-Mulk","Al-Qalam","Al-Haaqqa","Al-Ma'aarij","Nooh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyaama","Al-Insaan","Al-Mursalaat","An-Naba","An-Naazi'aat","Abasa","At-Takwir","Al-Infitaar","Al-Mutaffifin","Al-Insyiqaaq","Al-Buruuj","At-Taariq","Al-A'laa","Al-Ghaashiya","Al-Fajr","Al-Balad","Ash-Shams","Al-Lail","Adh-Dhuhaa","Al-Insyirah","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyina","Az-Zalzala","Al-Aadiyaat","Al-Qaari'ah","At-Takaatsur","Al-Asr","Al-Humaza","Al-Fiil","Quraisy","Al-Maa'uun","Al-Kautsar","Al-Kaafiruun","An-Nasr","Al-Masad","Al-Ikhlaas","Al-Falaq","An-Naas"];
 var COUNTS=[7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
 var MED=[2,3,4,5,8,9,13,22,24,33,47,48,49,55,57,58,59,60,61,62,63,64,65,66,76,98,99,110];
 var OFFSET=[];(function(){var s=0;for(var i=0;i<COUNTS.length;i++){OFFSET.push(s);s+=COUNTS[i];}})();
@@ -247,8 +247,8 @@ function setXP(add){var s=st();s.xp=(s.xp||0)+add;try{localStorage.setItem(VKEY,
 function paintChips(){var s=st();$('xpChip').textContent=(s.xp||0)+' XP';$('streakChip').textContent='🔥 '+((s.streak&&s.streak.count)||0);$('netChip').textContent=navigator.onLine?'🌐 '+L('Online','Online'):'📴 '+L('Offline','Offline');}
 window.addEventListener('online',paintChips);window.addEventListener('offline',paintChips);
 function setTitle(){
-  var t=$('tqTitle');if(t)t.textContent=L('🕌 TAMAN QUR’AN','🕌 GARDEN QUR’AN');
-  document.title=L('Taman Qur’an — NYALA','Garden Qur’an — NYALA');
+  var t=$('tqTitle');if(t)t.textContent=L("🕌 TAMAN QUR'AN","🕌 GARDEN QUR'AN");
+  document.title=L("Taman Qur'an — NYALA","Garden Qur'an — NYALA");
 }
 function norm(obj){var out=[];function push(n,a){out.push({number:n,ayahs:a});}
  if(obj&&obj.data&&Array.isArray(obj.data.surahs)){obj.data.surahs.forEach(function(s){push(s.number,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
@@ -259,13 +259,13 @@ function norm(obj){var out=[];function push(n,a){out.push({number:n,ayahs:a});}
 function cachedJSON(url){
   return caches.open(CCACHE).then(function(c){return c.match(url);}).then(function(hit){
     if(hit)return hit.json();
-    return fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);var cp=r.clone();caches.open(CCACHE).then(function(c2){c2.put(url,cp);}).catch(function(){});return r.json();});
+    return fetch(url).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);var cp=r.clone();caches.open(CCACHE).then(function(c2){c2.put(url,cp);}).catch(function(){});return r.json();});
   });
 }
 function fetchJSON(url,ms){
   var ctl=('AbortController' in window)?new AbortController():null;
   var t=ctl?setTimeout(function(){ctl.abort();},ms||60000):null;
-  return fetch(url,{cache:'no-store',signal:ctl?ctl.signal:undefined}).then(function(r){if(t)clearTimeout(t);if(!r.ok)throw new Error('HTTP '+r.status);var cp=r.clone();caches.open(CCACHE).then(function(c2){c2.put(url,cp);}).catch(function(){});return r.json();});
+  return fetch(url,{cache:'no-store',signal:ctl?ctl.signal:undefined}).then(function(r){if(t)clearTimeout(t);if(!r.ok)throw new Error("HTTP "+r.status);var cp=r.clone();caches.open(CCACHE).then(function(c2){c2.put(url,cp);}).catch(function(){});return r.json();});
 }
 function gNum(s,a){return OFFSET[s-1]+a;}
 function startElapsed(){
@@ -482,7 +482,7 @@ function init(){
   for(var i=0;i<steps.length;i++){
     try{steps[i]();}catch(e){
       var el=$('cacheTxt');
-      if(el)el.textContent='⚠️ '+(e&&e.message?e.message:'error');
+      if(el)el.textContent="⚠️ "+(e&&e.message?e.message:"error");
     }
   }
 }
@@ -490,4 +490,4 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 })();
 </script>
 </body>
-</html>
+  </html>
