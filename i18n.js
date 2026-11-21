@@ -1,5 +1,7 @@
-/* NYALA i18n v4 — sakelar ID/EN + mute global + sinkronisasi reload service worker.
-   Teks Arab & transliterasi TIDAK PERNAH diterjemahkan. Tulisan pengguna TIDAK PERNAH diterjemahkan. */
+/* NYALA i18n v5 — sakelar ID/EN + mute global.
+   Menerjemahkan SELURUH tulisan Indonesia (termasuk judul halaman) via kamus + pola.
+   Teks Arab & transliterasi latin TIDAK PERNAH diterjemahkan.
+   Tulisan buatan pengguna (tugas, syukur, nama, habit) TIDAK PERNAH diterjemahkan. */
 (function(){
 'use strict';
 var LS='nyala_lang', LM='nyala_muted', lang='id', muted=false;
@@ -23,7 +25,12 @@ var MO_EN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','De
 var HIJRI={'Muharam':'Muharram','Safar':'Safar','Rabiulawal':'Rabi al-Awwal','Rabiulakhir':'Rabi al-Thani','Jumadilawal':'Jumada al-Ula','Jumadilakhir':'Jumada al-Akhirah','Rajab':'Rajab',"Sya'ban":"Sha'ban",'Ramadan':'Ramadan','Syawal':'Shawwal','Zulkaidah':'Dhu al-Qadah','Zulhijah':'Dhu al-Hijjah'};
 var PRAY={'Subuh':'Fajr','Dzuhur':'Dhuhr','Ashr':'Asr','Maghrib':'Maghrib','Isya':'Isha'};
 var MAP={
-'Hari Ini':'Today','Tugas':'Tasks','Fokus':'Focus','Spiritual':'Spiritual','Kebiasaan':'Habits','Kebun':'Garden','Roda':'Wheel','Laporan':'Report','📿 Dzikir':'📿 Dhikr',
+'Hari Ini':'Today','Tugas':'Tasks','Fokus':'Focus','Spiritual':'Spiritual','Kebiasaan':'Habits','Kebun':'Garden','Roda':'Wheel','Laporan':'Report','📿 Dzikir':'📿 Dhikr','Dzikir':'Dhikr',
+'🕌 TAMAN QUR'AN':'🕌 GARDEN QUR'AN','TAMAN QUR'AN':'GARDEN QUR'AN',
+'📿 DZIKIR PAGI & PETANG':'📿 MORNING & EVENING DHIKR','DZIKIR PAGI & PETANG':'MORNING & EVENING DHIKR',
+'Memuat data Qur'an…':'Loading Qur'an data…',
+'0 / 114 surah dihafal':'0 / 114 surahs memorized',
+'Belum':'Not yet','Proses':'In progress','Hafal':'Memorized',
 'SELAMAT PAGI ☀️':'GOOD MORNING ☀️','SELAMAT SIANG 🌤️':'GOOD AFTERNOON 🌤️','SELAMAT SORE 🌇':'GOOD EVENING 🌇','SELAMAT MALAM 🌙':'GOOD NIGHT 🌙',
 'Hei,':'Hey,','Kawan':'Friend',
 'Matahari udah start duluan. Yuk mulai pelan-pelan 🌅':'The sun already started. Let us begin gently 🌅',
@@ -50,16 +57,16 @@ var MAP={
 'Gas sekarang mumpung lagi on fire! ⚡':'Go now while you are on fire! ⚡',
 'Kamu lagi mode turbo — jangan lupa minum air ya 😄':'You are in turbo mode — remember to drink water 😄',
 '⚡ Gas 2 Menit':'⚡ Go 2 Minutes','🎲 Bingung mulai?':'🎲 Not sure where to start?','🌱 Intip Kebunku':'🌱 Peek at my garden',
-'📋 Skor Hari Ini':'📋 Today’s Score','beres hari ini':'done today',
+'📋 Skor Hari Ini':'📋 Today's Score','beres hari ini':'done today',
 'tugas total':'tasks total','habit aktif':'active habits','hari konsisten':'consistent days',
 '🗓️ Jejak 14 hari terakhir':'🗓️ Last 14 days trail','(tap tanggal untuk rincian)':'(tap a date for details)',
-'🌸 3 Hal yang Disyukuri Hari Ini':'🌸 3 Things I’m Grateful for Today',
+'🌸 3 Hal yang Disyukuri Hari Ini':'🌸 3 Things I'm Grateful for Today',
 '1. Contoh: hujan reda tepat sebelum berangkat…':'1. e.g. the rain stopped right before I left…',
 '2. Contoh: ada teman yang menyapa dulu…':'2. e.g. a friend said hi first…',
 '3. Contoh: tubuhku kuat puasa hari ini…':'3. e.g. my body was strong enough to fast today…',
 'Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu. 🤍':'Write 3 small things you are grateful for today — saved automatically on your phone. 🤍',
 'Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu.':'Write 3 small things you are grateful for today — saved automatically on your phone.',
-'🌸 MasyaAllah, syukur hari ini lengkap. Semoga jadi kebiasaan indah!':'🌸 MasyaAllah, today’s gratitude is complete. May it become a beautiful habit!',
+'🌸 MasyaAllah, syukur hari ini lengkap. Semoga jadi kebiasaan indah!':'🌸 MasyaAllah, today's gratitude is complete. May it become a beautiful habit!',
 '01 · MISI HARIAN':'01 · DAILY MISSIONS','02 · MODE FOKUS':'02 · FOCUS MODE','03 · SPIRITUAL CORNER':'03 · SPIRITUAL CORNER','04 · RITUAL HARIAN':'04 · DAILY RITUALS','05 · BUKTI PROGRES':'05 · PROOF OF PROGRESS','06 · ANTI BINGUNG':'06 · ANTI-CONFUSION','07 · LAPORAN MINGGUAN':'07 · WEEKLY REPORT',
 'Papan Tugas Anti-Mager':'Anti-Sluggish Task Board','Timer Nyalakan Fokus':'Ignite-Your-Focus Timer','Produktif Dunia, Tenang Ibadah':'Productive in Life, Calm in Worship','Pelacak Kebiasaan':'Habit Tracker','Kebun Nyalamu':'Your Garden of Light','Roda Semangat':'Wheel of Momentum','Sepekan Barakahku':'My Blessed Week',
 'Rahasianya: mulai dari yang':'The secret: start with the','paling kecil':'smallest one',
@@ -77,12 +84,12 @@ var MAP={
 'Papan masih kosong nih…':'The board is still empty…','Klik salah satu saran di atas, atau tulis tugasmu sendiri. Yang kecil aja dulu!':'Tap a suggestion above, or write your own task. Start small!',
 'Pilih ritmemu 🎧':'Pick your rhythm 🎧','Selesai satu sesi =':'Finish one session =','(Deep Focus sampai':'(Deep Focus up to',') dan tomat 🍅 masuk koleksi.':') and tomatoes 🍅 join your collection.','masuk koleksi.':'join your collection.',
 '🍅 Fokus 25':'🍅 Focus 25','⚡ Kilat 2':'⚡ Quick 2','🌿 Rehat 5':'🌿 Break 5','⏱️ Atur sendiri:':'⏱️ Custom:','Pakai':'Use','▶ Mulai':'▶ Start','↺ Ulang':'↺ Reset','Kurangi 5 menit':'Minus 5 minutes','Tambah 5 menit':'Plus 5 minutes','Tap untuk ketik angka persis':'Tap to type an exact number',
-'Koleksi hari ini:':'Today’s collection:','belum ada — ayo mulai!':'none yet — let’s start!',
+'Koleksi hari ini:':'Today's collection:','belum ada — ayo mulai!':'none yet — let's start!',
 'Menghitung…':'Calculating…','Pilih kota atau GPS':'Choose city or GPS','📍 Otomatis (GPS saya)':'📍 Automatic (my GPS)','Hitung ulang jadwal':'Recalculate schedule','Koreksi menit jadwal adzan':'Adjust adhan minutes',
 '🕌 Fokus Sampai Adzan':'🕌 Focus Until Adhan','Dihitung otomatis di perangkat (metode Kemenag: Subuh 20°, Isya 18°).':'Computed on-device (Kemenag method: Fajr 20°, Isha 18°).','📍 Lokasimu (GPS)':'📍 Your location (GPS)',
 'Subuh':'Fajr','Dzuhur':'Dhuhr','Ashr':'Asr','Maghrib':'Maghrib','Isya':'Isha',
 '📿 Tasbih Digital':'📿 Digital Tasbih','Target dzikir harianmu — tap lingkaran untuk berdzikir.':'Your daily dhikr target — tap the circle to count.','Hitung dzikir':'Count dhikr',
-'➕ Kebiasaan baru:':'➕ New habit:','misal: Tilawah 1 halaman':'e.g. Read 1 page of Qur’an','Tambah Kebiasaan':'Add habit','✔ Hari ini beres!':'✔ Done today!','Tandai Beres Hari Ini':'Mark done today','Hapus kebiasaan':'Delete habit',
+'➕ Kebiasaan baru:':'➕ New habit:','misal: Tilawah 1 halaman':'e.g. Read 1 page of Qur'an','Tambah Kebiasaan':'Add habit','✔ Hari ini beres!':'✔ Done today!','Tandai Beres Hari Ini':'Mark done today','Hapus kebiasaan':'Delete habit',
 'TUGAS SELESAI SEPANJANG MASA':'TASKS COMPLETED ALL-TIME','MENIT FOKUS TERKUMPUL':'FOCUS MINUTES COLLECTED','HARI BERUNTUN CHECK-IN':'CONSECUTIVE CHECK-IN DAYS','Kebun progres':'Progress garden',
 'Masih benih nih — siram dengan satu tugas kecil 🌰':'Still a seed — water it with one small task 🌰','Kecambah pertama muncul! Jangan berhenti 🌱':'First sprout appeared! Do not stop 🌱','Akarmu menguat, lanjutkan ritmenya 🌿':'Your roots strengthen, keep the rhythm 🌿','Daunnya rimbun — fokusmu juga 🍃':'The leaves are lush — so is your focus 🍃','Mulai berbunga. Kamu keren! 🌷':'Starting to bloom. You are amazing! 🌷','Kebunmu hampir jadi hutan! 🌳':'Your garden is almost a forest! 🌳','Legendaris. Kebunmu subur maksimal 🏆':'Legendary. Your garden is maximally lush 🏆',
 'Kaum Rebahan 🛋️':'The Loungers 🛋️','Mulai Geliat 🥱':'Starting to Stir 🥱','Pemanasan ☕':'Warming Up ☕','Mode Gas ⚡':'Go Mode ⚡','Pejuang Fokus 🔥':'Focus Warrior 🔥','Pendekar Produktif ⚔️':'Productivity Knight ⚔️','Master Anti-Mager 👑':'Anti-Sluggish Master 👑',
@@ -110,7 +117,7 @@ var MAP={
 '⏱️ Timer-mu masih jalan dari tadi — semangat!':'⏱️ Your timer has been running all along — keep going!','🔀 Urutan tugas diperbarui':'🔀 Task order updated','⭐ Ditandai prioritas — naik ke atas!':'⭐ Marked priority — moved to the top!','Prioritas dilepas':'Priority removed','⭐ Tugas prioritas selalu di kelompok atas':'⭐ Priority tasks always stay in the top group',
 '⚡ Mode kilat nyala! 2 menit aja, janji.':'⚡ Quick mode on! Just 2 minutes, promise.','Jeda dulu, tarik napas 🌬️':'Paused — take a breath 🌬️','Timer diulang ↺':'Timer reset ↺','🌿 Rehat selesai. Segar? Lanjut gas!':'🌿 Break finished. Refreshed? Keep going!',
 'Mode kilat 2 menit beres! ⚡':'Quick 2-minute session done! ⚡','Fokus sampai adzan tuntas! Waktunya sholat 🕌':'Focus until adhan complete! Time to pray 🕌','Deep Focus 50 menit tuntas! Ambis! 🚀':'Deep Focus 50 minutes done! Ambitious! 🚀','Deep Focus 90 menit tuntas! LEGENDARIS! 🚀':'Deep Focus 90 minutes done! LEGENDARY! 🚀','Satu sesi fokus tuntas! 🍅':'One focus session done! 🍅',
-'Kebiasaan baru ditanam! 🌱':'New habit planted! 🌱','Syukur hari ini lengkap 🌸':'Today’s gratitude complete 🌸','Hari konsisten: ≥70% tugas beres! 🔥':'Consistent day: ≥70% tasks done! 🔥','Check-in mood dulu ☺️':'Mood check-in first ☺️','Prioritas beres! 🌟':'Priority done! 🌟','Satu tugas tumbang!':'One task down!','Ditambahkan! Sekarang gas kerjakan 🚀':'Added! Now go do it 🚀','Misi roda masuk ke papan! Gas! 🚀':'Wheel mission added to the board! Go! 🚀',
+'Kebiasaan baru ditanam! 🌱':'New habit planted! 🌱','Syukur hari ini lengkap 🌸':'Today's gratitude complete 🌸','Hari konsisten: ≥70% tugas beres! 🔥':'Consistent day: ≥70% tasks done! 🔥','Check-in mood dulu ☺️':'Mood check-in first ☺️','Prioritas beres! 🌟':'Priority done! 🌟','Satu tugas tumbang!':'One task down!','Ditambahkan! Sekarang gas kerjakan 🚀':'Added! Now go do it 🚀','Misi roda masuk ke papan! Gas! 🚀':'Wheel mission added to the board! Go! 🚀',
 'Tulis dulu tugasnya ya ✍️':'Write the task first ✍️','Tulis tugasnya dulu, lalu tandai ⭐':'Write the task first, then mark ⭐','Isi dulu nama kebiasaannya ✍️':'Fill in the habit name first ✍️',
 'Cadangan terunduh! Simpan file-nya di tempat aman 💾':'Backup downloaded! Keep the file somewhere safe 💾','Gagal membuat cadangan 😔':'Failed to create backup 😔','File cadangan tidak valid 😔':'Invalid backup file 😔','Data dipulihkan! Memuat ulang… 📂':'Data restored! Reloading… 📂','Gagal membaca file cadangan 😔':'Failed to read backup file 😔','💾 Tips: cadangkan datamu lewat tombol di bawah halaman ya.':'💾 Tip: back up your data with the button at the bottom of the page.',
 'Jadwal dihitung ulang ✅':'Schedule recalculated ✅','Mendeteksi lokasimu… 📍':'Detecting your location… 📍','Lokasi terdeteksi! Jadwal disesuaikan 📍':'Location detected! Schedule adjusted 📍','GPS ditolak — pilih kota manual ya 🙏':'GPS denied — please pick a city manually 🙏','GPS tidak didukung browser ini 😔':'GPS not supported by this browser 😔',
@@ -120,7 +127,7 @@ var MAP={
 '← NYALA':'← NYALA','DZIKIR PAGI & PETANG':'MORNING & EVENING DHIKR','Pagi':'Morning','Petang':'Evening','Ayat Kursi':'Ayat al-Kursi (The Throne Verse)','Cari dzikir…':'Search dhikr…','Cari surah…':'Search surah…',
 'Waktu utama:':'Prime time:','📜 Lisensi:':'📜 License:',
 'Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍':'morning dhikr after Fajr until sunrise; evening dhikr after Asr until sunset (allowed after Maghrib). Tap the counter circle according to the recommended count. 🤍',
-'Teks Arab (Al-Qur\'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.':'Arabic text (Qur\'an & hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction.',
+'Teks Arab (Al-Qur'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.':'Arabic text (Qur'an & hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction.',
 'NYALA ✦ Anti Mager — Produktif dengan Elegan':'NYALA ✦ Anti Mager — Productive with Grace'
 };
 function idx(a,v){for(var i=0;i<a.length;i++){if(a[i]===v)return i;}return -1;}
@@ -163,6 +170,7 @@ var PAT=[
 {re:/^Hapus kebiasaan "(.+)"\?$/,f:function(m){return 'Delete habit "'+m[1]+'"?';}},
 {re:/^Pulihkan data dari cadangan (.+)\? Data saat ini akan ditimpa\.$/,f:function(m){return 'Restore data from backup '+m[1]+'? Current data will be overwritten.';}},
 {re:/^(\d+) \/ (\d+) selesai$/,f:function(m){return m[1]+' / '+m[2]+' done';}},
+{re:/^Memuat data Qur'an… (\d+)s$/,f:function(m){return 'Loading Qur'an data… '+m[1]+'s';}},
 {re:/^\((\d+:\d+)\) (.+) — NYALA$/,f:function(m){return '('+m[1]+') '+tr(m[2])+' — NYALA';}}
 ];
 var ARABIC=/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
