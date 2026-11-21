@@ -1,5 +1,5 @@
-/* NYALA i18n v2 — sakelar ID/EN + mute global.
-   Teks Arab (Qur'an, doa, hadis) & transliterasi Latin TIDAK PERNAH diterjemahkan.
+/* NYALA i18n v3 — sakelar ID/EN + mute global.
+   Pencocokan tahan spasi/enter/nbsp. Teks Arab & transliterasi TIDAK PERNAH diterjemahkan.
    Tulisan buatan pengguna (tugas, syukur, nama, habit) TIDAK PERNAH diterjemahkan. */
 (function(){
 'use strict';
@@ -15,7 +15,7 @@ var PRAY={'Subuh':'Fajr','Dzuhur':'Dhuhr','Ashr':'Asr','Maghrib':'Maghrib','Isya
 var MAP={
 'Hari Ini':'Today','Tugas':'Tasks','Fokus':'Focus','Spiritual':'Spiritual','Kebiasaan':'Habits','Kebun':'Garden','Roda':'Wheel','Laporan':'Report','📿 Dzikir':'📿 Dhikr',
 'SELAMAT PAGI ☀️':'GOOD MORNING ☀️','SELAMAT SIANG 🌤️':'GOOD AFTERNOON 🌤️','SELAMAT SORE 🌇':'GOOD EVENING 🌇','SELAMAT MALAM 🌙':'GOOD NIGHT 🌙',
-'Hei, ':'Hey, ',
+'Hei,':'Hey,','Kawan':'Friend',
 'Matahari udah start duluan. Yuk mulai pelan-pelan 🌅':'The sun already started. Let us begin gently 🌅',
 'Energi masih ada — gas tipis-tipis aja ☀️':'Still got energy — just a little push ☀️',
 'Sore gini enak buat beresin satu hal kecil 🍵':'Evenings are perfect for finishing one small thing 🍵',
@@ -41,20 +41,21 @@ var MAP={
 'Kamu lagi mode turbo — jangan lupa minum air ya 😄':'You are in turbo mode — remember to drink water 😄',
 '⚡ Gas 2 Menit':'⚡ Go 2 Minutes','🎲 Bingung mulai?':'🎲 Not sure where to start?','🌱 Intip Kebunku':'🌱 Peek at my garden',
 '📋 Skor Hari Ini':'📋 Today’s Score','beres hari ini':'done today',
-' tugas total':' tasks total',' habit aktif':' active habits',' hari konsisten':' consistent days',
-'🗓️ Jejak 14 hari terakhir ':'🗓️ Last 14 days trail ','(tap tanggal untuk rincian)':'(tap a date for details)',
+'tugas total':'tasks total','habit aktif':'active habits','hari konsisten':'consistent days',
+'🗓️ Jejak 14 hari terakhir':'🗓️ Last 14 days trail','(tap tanggal untuk rincian)':'(tap a date for details)',
 '🌸 3 Hal yang Disyukuri Hari Ini':'🌸 3 Things I’m Grateful for Today',
 '1. Contoh: hujan reda tepat sebelum berangkat…':'1. e.g. the rain stopped right before I left…',
 '2. Contoh: ada teman yang menyapa dulu…':'2. e.g. a friend said hi first…',
 '3. Contoh: tubuhku kuat puasa hari ini…':'3. e.g. my body was strong enough to fast today…',
 'Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu. 🤍':'Write 3 small things you are grateful for today — saved automatically on your phone. 🤍',
+'Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu.':'Write 3 small things you are grateful for today — saved automatically on your phone.',
 '🌸 MasyaAllah, syukur hari ini lengkap. Semoga jadi kebiasaan indah!':'🌸 MasyaAllah, today’s gratitude is complete. May it become a beautiful habit!',
 '01 · MISI HARIAN':'01 · DAILY MISSIONS','02 · MODE FOKUS':'02 · FOCUS MODE','03 · SPIRITUAL CORNER':'03 · SPIRITUAL CORNER','04 · RITUAL HARIAN':'04 · DAILY RITUALS','05 · BUKTI PROGRES':'05 · PROOF OF PROGRESS','06 · ANTI BINGUNG':'06 · ANTI-CONFUSION','07 · LAPORAN MINGGUAN':'07 · WEEKLY REPORT',
 'Papan Tugas Anti-Mager':'Anti-Sluggish Task Board','Timer Nyalakan Fokus':'Ignite-Your-Focus Timer','Produktif Dunia, Tenang Ibadah':'Productive in Life, Calm in Worship','Pelacak Kebiasaan':'Habit Tracker','Kebun Nyalamu':'Your Garden of Light','Roda Semangat':'Wheel of Momentum','Sepekan Barakahku':'My Blessed Week',
-'Rahasianya: mulai dari yang ':'The secret: start with the ','paling kecil':'smallest one',
+'Rahasianya: mulai dari yang':'The secret: start with the','paling kecil':'smallest one',
 '. Centang satu, dapat XP + konfeti. Serius. ⭐ = prioritas selalu di atas · ▲▼ atau tahan ⠿ lalu seret = atur urutan.':'. Check one off, earn XP + confetti. Seriously. ⭐ = priorities always on top · ▲▼ or hold ⠿ then drag = reorder.',
-'Nggak mood? ':'Not in the mood? ','Kilat 2 menit':'Quick 2 minutes','. Lagi ambis? ':'. Feeling ambitious? ','Deep Focus 50/90 menit':'Deep Focus 50/90 minutes',
-' — atau atur sendiri menitnya. XP sampai +100! 🚀 Timer tetap jalan walau aplikasi diminimkan.':' — or set your own minutes. Up to +100 XP! 🚀 The timer keeps running even when the app is minimized.',
+'Nggak mood?':'Not in the mood?','Kilat 2 menit':'Quick 2 minutes','. Lagi ambis?':'. Feeling ambitious?','Deep Focus 50/90 menit':'Deep Focus 50/90 minutes',
+'— atau atur sendiri menitnya. XP sampai +100! 🚀 Timer tetap jalan walau aplikasi diminimkan.':'— or set your own minutes. Up to +100 XP! 🚀 The timer keeps running even when the app is minimized.',
 'Kerjaan jalan, sholat tetap nomor satu. 🕌':'Work goes on, prayer stays number one. 🕌',
 'Kebiasaan kecil yang diulang = perubahan besar. Ceklis hari ini, +10 XP per habit!':'Small repeated habits = big change. Check in today, +10 XP per habit!',
 'Setiap tugas yang beres menumbuhkan tanaman baru. Makin rajin, makin rimbun 🌸':'Every finished task grows a new plant. The more consistent, the lusher 🌸',
@@ -64,17 +65,18 @@ var MAP={
 '+ Tambah':'+ Add','⭐ Prioritas':'⭐ Priority','Tandai sebagai prioritas':'Mark as priority',
 '💧 Minum segelas air':'💧 Drink a glass of water','🧹 Rapikan meja 2 menit':'🧹 Tidy your desk for 2 minutes','📖 Baca 1 halaman buku':'📖 Read 1 page of a book','💬 Balas 1 chat tertunda':'💬 Reply to 1 pending chat','🙆 Stretching ringan':'🙆 Light stretching',
 'Papan masih kosong nih…':'The board is still empty…','Klik salah satu saran di atas, atau tulis tugasmu sendiri. Yang kecil aja dulu!':'Tap a suggestion above, or write your own task. Start small!',
-'Pilih ritmemu 🎧':'Pick your rhythm 🎧','Selesai satu sesi = ':'Finish one session = ',' (Deep Focus sampai ':' (Deep Focus up to ',') dan tomat ':') and tomatoes ',' masuk koleksi.':' join your collection.',
+'Pilih ritmemu 🎧':'Pick your rhythm 🎧','Selesai satu sesi =':'Finish one session =','(Deep Focus sampai':'(Deep Focus up to',') dan tomat 🍅 masuk koleksi.':') and tomatoes 🍅 join your collection.','masuk koleksi.':'join your collection.',
 '🍅 Fokus 25':'🍅 Focus 25','⚡ Kilat 2':'⚡ Quick 2','🌿 Rehat 5':'🌿 Break 5','⏱️ Atur sendiri:':'⏱️ Custom:','Pakai':'Use','▶ Mulai':'▶ Start','↺ Ulang':'↺ Reset','Kurangi 5 menit':'Minus 5 minutes','Tambah 5 menit':'Plus 5 minutes','Tap untuk ketik angka persis':'Tap to type an exact number',
-'Koleksi hari ini: ':'Today’s collection: ','belum ada — ayo mulai!':'none yet — let’s start!',
+'Koleksi hari ini:':'Today’s collection:','belum ada — ayo mulai!':'none yet — let’s start!',
 'Menghitung…':'Calculating…','Pilih kota atau GPS':'Choose city or GPS','📍 Otomatis (GPS saya)':'📍 Automatic (my GPS)','Hitung ulang jadwal':'Recalculate schedule','Koreksi menit jadwal adzan':'Adjust adhan minutes',
 '🕌 Fokus Sampai Adzan':'🕌 Focus Until Adhan','Dihitung otomatis di perangkat (metode Kemenag: Subuh 20°, Isya 18°).':'Computed on-device (Kemenag method: Fajr 20°, Isha 18°).','📍 Lokasimu (GPS)':'📍 Your location (GPS)',
+'Subuh':'Fajr','Dzuhur':'Dhuhr','Ashr':'Asr','Maghrib':'Maghrib','Isya':'Isha',
 '📿 Tasbih Digital':'📿 Digital Tasbih','Target dzikir harianmu — tap lingkaran untuk berdzikir.':'Your daily dhikr target — tap the circle to count.','Hitung dzikir':'Count dhikr',
 '➕ Kebiasaan baru:':'➕ New habit:','misal: Tilawah 1 halaman':'e.g. Read 1 page of Qur’an','Tambah Kebiasaan':'Add habit','✔ Hari ini beres!':'✔ Done today!','Tandai Beres Hari Ini':'Mark done today','Hapus kebiasaan':'Delete habit',
 'TUGAS SELESAI SEPANJANG MASA':'TASKS COMPLETED ALL-TIME','MENIT FOKUS TERKUMPUL':'FOCUS MINUTES COLLECTED','HARI BERUNTUN CHECK-IN':'CONSECUTIVE CHECK-IN DAYS','Kebun progres':'Progress garden',
 'Masih benih nih — siram dengan satu tugas kecil 🌰':'Still a seed — water it with one small task 🌰','Kecambah pertama muncul! Jangan berhenti 🌱':'First sprout appeared! Do not stop 🌱','Akarmu menguat, lanjutkan ritmenya 🌿':'Your roots strengthen, keep the rhythm 🌿','Daunnya rimbun — fokusmu juga 🍃':'The leaves are lush — so is your focus 🍃','Mulai berbunga. Kamu keren! 🌷':'Starting to bloom. You are amazing! 🌷','Kebunmu hampir jadi hutan! 🌳':'Your garden is almost a forest! 🌳','Legendaris. Kebunmu subur maksimal 🏆':'Legendary. Your garden is maximally lush 🏆',
 'Kaum Rebahan 🛋️':'The Loungers 🛋️','Mulai Geliat 🥱':'Starting to Stir 🥱','Pemanasan ☕':'Warming Up ☕','Mode Gas ⚡':'Go Mode ⚡','Pejuang Fokus 🔥':'Focus Warrior 🔥','Pendekar Produktif ⚔️':'Productivity Knight ⚔️','Master Anti-Mager 👑':'Anti-Sluggish Master 👑',
-'Putar rodanya 🎰':'Spin the wheel 🎰','Apa pun hasilnya, kerjakan ':'Whatever it lands on, do it ','sekarang':'now',' — maksimal 2 menit. Nggak pakai mikir, nggak pakai nanti.':' — max 2 minutes. No overthinking, no later.','🎡 PUTAR SEKARANG':'🎡 SPIN NOW','GAS!':'GO!',
+'Putar rodanya 🎰':'Spin the wheel 🎰','Apa pun hasilnya, kerjakan':'Whatever it lands on, do it','sekarang':'now','— maksimal 2 menit. Nggak pakai mikir, nggak pakai nanti.':'— max 2 minutes. No overthinking, no later.','🎡 PUTAR SEKARANG':'🎡 SPIN NOW','GAS!':'GO!',
 '💧 Minum segelas air!':'💧 Drink a glass of water!','💪 Push-up / squat 5 kali!':'💪 5 push-ups / squats!','🧹 Rapikan meja 2 menit!':'🧹 Tidy your desk for 2 minutes!','✍️ Tulis 3 hal yang kamu syukuri!':'✍️ Write 3 things you are grateful for!','🧘 Stretching leher & bahu 1 menit!':'🧘 Neck & shoulder stretch for 1 minute!','📖 Baca 1 halaman buku!':'📖 Read 1 page of a book!','💌 Kirim pesan semangat ke 1 teman!':'💌 Send an encouraging message to 1 friend!','🌬️ Napas 4-7-8 tiga putaran!':'🌬️ 4-7-8 breathing, three rounds!',
 'Kerjakan sekarang, maksimal 2 menit ⏱️':'Do it now, max 2 minutes ⏱️','✅ Jadikan tugas':'✅ Make it a task',
 '🌹 Sepekan Barakahku':'🌹 My Blessed Week','✅ TUGAS BERES':'✅ TASKS DONE','⏱️ MENIT FOKUS':'⏱️ FOCUS MINUTES','🌿 HABIT TERCEKLIS':'🌿 HABITS CHECKED','📿 DZIKIR':'📿 DHIKR','📸 Unduh Gambar':'📸 Download image','📤 Share ke Story':'📤 Share to Story','Gambar 9:16 dengan branding NYALA — siap tempel ke IG Story / Status WA.':'9:16 image with NYALA branding — ready for IG Story / WA Status.',
@@ -91,11 +93,12 @@ var MAP={
 '"Mager itu wajar. Menyerah itu pilihan — dan kamu nggak harus milih itu."':'"Feeling sluggish is normal. Giving up is a choice — and you do not have to make it."',
 '"Orang produktif bukan yang selalu semangat, tapi yang tetap jalan walau nggak mood."':'"Productive people are not always motivated; they keep going even when not in the mood."',
 '"Yang berat itu bukan pekerjaannya, tapi memulainya."':'"The hard part is not the work, it is starting."',
-'Dibuat dengan ':'Made with ',' biar kamu nggak mager lagi.':' so you never stall again.','Semua datamu tersimpan aman di perangkat ini — tanpa akun, tanpa ribet.':'All your data stays safely on this device — no account, no fuss.','Kolaborasi: ':'Collaboration: ','💾 Cadangkan data':'💾 Back up data','📂 Pulihkan data':'📂 Restore data','Mulai ulang dari nol (hapus semua data)':'Start over from zero (erase all data)',
+'🔀 Kocok semangat lagi':'🔀 Shuffle more spirit',
+'Dibuat dengan':'Made with','biar kamu nggak mager lagi.':'so you never stall again.','Semua datamu tersimpan aman di perangkat ini — tanpa akun, tanpa ribet.':'All your data stays safely on this device — no account, no fuss.','Kolaborasi:':'Collaboration:','💾 Cadangkan data':'💾 Back up data','📂 Pulihkan data':'📂 Restore data','Mulai ulang dari nol (hapus semua data)':'Start over from zero (erase all data)',
 'Selamat datang di NYALA':'Welcome to NYALA','Sebelum mulai, siapa nama panggilanmu?':'Before we start, what should we call you?','Ketik namamu di sini…':'Type your name here…','Mulai Nyala 🔥':'Ignite 🔥','Lewati dulu':'Skip for now',
 'Tidak ada tugas tercatat hari itu.':'No tasks recorded that day.','🌸 Syukur hari itu:':'🌸 Gratitude that day:','📥 Bawa tugas belum selesai ke hari ini':'📥 Carry unfinished tasks to today',
 '⏱️ Timer-mu masih jalan dari tadi — semangat!':'⏱️ Your timer has been running all along — keep going!','🔀 Urutan tugas diperbarui':'🔀 Task order updated','⭐ Ditandai prioritas — naik ke atas!':'⭐ Marked priority — moved to the top!','Prioritas dilepas':'Priority removed','⭐ Tugas prioritas selalu di kelompok atas':'⭐ Priority tasks always stay in the top group',
-'⚡ Mode kilat nyala! 2 menit aja, janji.':'⚡ Quick mode on! Just 2 minutes, promise.','Jeda dulu, tarik napas 🌬️':'Paused — take a breath 🌬️','Timer diulang ↺':'Timer reset ↺',' Rehat selesai. Segar? Lanjut gas!':'🌿 Break finished. Refreshed? Keep going!',
+'⚡ Mode kilat nyala! 2 menit aja, janji.':'⚡ Quick mode on! Just 2 minutes, promise.','Jeda dulu, tarik napas 🌬️':'Paused — take a breath 🌬️','Timer diulang ↺':'Timer reset ↺','🌿 Rehat selesai. Segar? Lanjut gas!':'🌿 Break finished. Refreshed? Keep going!',
 'Mode kilat 2 menit beres! ⚡':'Quick 2-minute session done! ⚡','Fokus sampai adzan tuntas! Waktunya sholat 🕌':'Focus until adhan complete! Time to pray 🕌','Deep Focus 50 menit tuntas! Ambis! 🚀':'Deep Focus 50 minutes done! Ambitious! 🚀','Deep Focus 90 menit tuntas! LEGENDARIS! 🚀':'Deep Focus 90 minutes done! LEGENDARY! 🚀','Satu sesi fokus tuntas! 🍅':'One focus session done! 🍅',
 'Kebiasaan baru ditanam! 🌱':'New habit planted! 🌱','Syukur hari ini lengkap 🌸':'Today’s gratitude complete 🌸','Hari konsisten: ≥70% tugas beres! 🔥':'Consistent day: ≥70% tasks done! 🔥','Check-in mood dulu ☺️':'Mood check-in first ☺️','Prioritas beres! 🌟':'Priority done! 🌟','Satu tugas tumbang!':'One task down!','Ditambahkan! Sekarang gas kerjakan 🚀':'Added! Now go do it 🚀','Misi roda masuk ke papan! Gas! 🚀':'Wheel mission added to the board! Go! 🚀',
 'Tulis dulu tugasnya ya ✍️':'Write the task first ✍️','Tulis tugasnya dulu, lalu tandai ⭐':'Write the task first, then mark ⭐','Isi dulu nama kebiasaannya ✍️':'Fill in the habit name first ✍️',
@@ -104,11 +107,10 @@ var MAP={
 'Gagal membuat gambar 😔':'Failed to create image 😔','Gambar tersimpan! Tinggal upload ke IG Story 📸':'Image saved! Just upload to IG Story 📸',
 'Yakin mau menghapus SEMUA data NYALA di perangkat ini?':'Are you sure you want to erase ALL NYALA data on this device?','Beneran yakin? Streak dan XP-mu akan hilang 😢':'Really sure? Your streak and XP will be lost 😢',
 'Berapa menit? (1–180)':'How many minutes? (1–180)','Koreksi jadwal adzan (menit). Contoh: -2 atau 3':'Adhan schedule offset (minutes). e.g. -2 or 3','Siapa nama panggilanmu? 😊':'What should we call you? 😊',
-'← NYALA':'← NYALA','DZIKIR PAGI & PETANG':'MORNING & EVENING DHIKR','Pagi':'Morning','Petang':'Evening','Ayat Kursi':'Ayat al-Kursi (The Throne Verse)',
+'← NYALA':'← NYALA','DZIKIR PAGI & PETANG':'MORNING & EVENING DHIKR','Pagi':'Morning','Petang':'Evening','Ayat Kursi':'Ayat al-Kursi (The Throne Verse)','Cari dzikir…':'Search dhikr…','Cari surah…':'Search surah…',
 'Waktu utama: Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍':'Prime time: morning dhikr after Fajr until sunrise; evening dhikr after Asr until sunset (allowed after Maghrib). Tap the counter circle according to the recommended count. 🤍',
-'📜 Lisensi: Teks Arab (Al-Qur\'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.':'📜 License: Arabic text (Qur\'an & Hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction.',
-'NYALA ✦ Anti Mager — Produktif dengan Elegan':'NYALA ✦ Anti Mager — Productive with Grace',
-'Cari surah…':'Search surah…','Terjemahan':'Translation','Transliterasi':'Transliteration','Murottal':'Recitation','Hafalan':'Memorization','Tandai hafal':'Mark memorized','Sudah hafal':'Memorized','Belum hafal':'Not yet memorized','Putar':'Play','Jeda':'Pause','Sebelumnya':'Previous','Berikutnya':'Next','Tutup':'Close','Kembali':'Back','Selesai':'Done','Batal':'Cancel','Simpan':'Save','Hapus':'Delete','Cari':'Search','Semua':'All','Terjemah':'Translation','Arab':'Arabic','Indonesia':'Indonesian','Inggris':'English','Bahasa':'Language','Pengaturan':'Settings','Tentang':'About','Bantuan':'Help','Privasi':'Privacy','Kebijakan Privasi':'Privacy Policy','Gratis':'Free','Tanpa akun':'No account','Data lokal':'Local data','Unduh':'Download','Bagikan':'Share','Salin':'Copy','Tersalin!':'Copied!','Gagal':'Failed','Berhasil':'Success','Memuat…':'Loading…','Gagal memuat':'Failed to load','Coba lagi':'Retry','Tidak ada hasil':'No results','hari ini':'today','kemarin':'yesterday','besok':'tomorrow','pekan ini':'this week','minggu ini':'this week','bulan ini':'this month'
+'📜 Lisensi: Teks Arab (Al-Qur\'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.':'📜 License: Arabic text (Qur\'an & hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction.',
+'NYALA ✦ Anti Mager — Produktif dengan Elegan':'NYALA ✦ Anti Mager — Productive with Grace'
 };
 function idx(a,v){for(var i=0;i<a.length;i++){if(a[i]===v)return i;}return -1;}
 var PAT=[
@@ -153,11 +155,14 @@ var PAT=[
 {re:/^\((\d+:\d+)\) (.+) — NYALA$/,f:function(m){return '('+m[1]+') '+tr(m[2])+' — NYALA';}}
 ];
 var ARABIC=/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
+function core(s){return String(s).replace(/\u00a0/g,' ').replace(/^\s+/,'').replace(/\s+$/,'');}
 function tr(s){
   if(typeof s!=='string')return s;
-  if(ARABIC.test(s))return s;
-  if(Object.prototype.hasOwnProperty.call(MAP,s))return MAP[s];
-  for(var i=0;i<PAT.length;i++){var m=s.match(PAT[i].re);if(m)return PAT[i].f(m);}
+  var c=core(s);
+  if(!c)return s;
+  if(ARABIC.test(c))return s;
+  if(Object.prototype.hasOwnProperty.call(MAP,c))return MAP[c];
+  for(var i=0;i<PAT.length;i++){var m=c.match(PAT[i].re);if(m)return PAT[i].f(m);}
   return s;
 }
 window.__nyalaT=function(s,dir){return dir==='en'?tr(s):s;};
@@ -170,7 +175,9 @@ function trText(node,refresh){
   var cur=node.nodeValue;if(cur==null)return;
   if(refresh||!origT.has(node))origT.set(node,cur);
   var orig=origT.get(node);
-  var out=lang==='en'?tr(orig):orig;
+  var want=lang==='en'?tr(orig):core(orig);
+  var lead=/^\s*/.exec(cur)[0],trail=/\s*$/.exec(cur)[0];
+  var out=(lang==='en')?(lead+want+trail):orig;
   if(out!==cur){applying=true;node.nodeValue=out;applying=false;}
 }
 var ATTRS=['placeholder','title','aria-label'];
@@ -220,7 +227,6 @@ try{
   var _ft=CanvasRenderingContext2D.prototype.fillText;
   CanvasRenderingContext2D.prototype.fillText=function(t,x,y,mw){return _ft.call(this,lang==='en'?tr(String(t)):t,x,y,mw);};
 }catch(e){}
-/* ===== mute global: satu tombol membungkam semua efek suara ===== */
 try{
   var AC=window.AudioContext||window.webkitAudioContext;
   if(AC&&window.GainNode){
@@ -236,7 +242,7 @@ try{
   }
 }catch(e){}
 var style=document.createElement('style');
-style.textContent='.nyala-tools{display:inline-flex;align-items:center;gap:6px;vertical-align:middle}.nyala-lang{display:inline-flex;gap:4px;padding:3px;border:1px solid rgba(212,165,165,.34);border-radius:999px;background:rgba(212,165,165,.10)}.nyala-lang button,.nyala-mute{border:none;background:transparent;color:#c9aeb2;font:800 .72rem/1 "Plus Jakarta Sans",system-ui,sans-serif;padding:6px 11px;border-radius:999px;cursor:pointer;letter-spacing:.6px}.nyala-lang button.on{background:linear-gradient(120deg,#b76e79,#9c5a66);color:#fff;box-shadow:0 0 14px rgba(212,165,165,.35)}.nyala-mute{border:1px solid rgba(212,165,165,.34);background:rgba(212,165,165,.10);font-size:.85rem;padding:6px 10px}.nyala-mute.off{color:#8a6f74;text-decoration:line-through}.nyala-tools.floating{position:fixed;top:10px;right:10px;z-index:120;background:rgba(14,12,13,.88);backdrop-filter:blur(8px);padding:6px;border-radius:999px;border:1px solid rgba(212,165,165,.34)}html{scrollbar-color:#b76e79 #171314;scrollbar-width:thin}::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:#171314}::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#b76e79,#8f4f5b);border-radius:999px;border:2px solid #171314}::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#d4a5a5,#b76e79)}';
+style.textContent='[hidden]{display:none!important}.nyala-tools{display:inline-flex;align-items:center;gap:6px;vertical-align:middle}.nyala-lang{display:inline-flex;gap:4px;padding:3px;border:1px solid rgba(212,165,165,.34);border-radius:999px;background:rgba(212,165,165,.10)}.nyala-lang button,.nyala-mute{border:none;background:transparent;color:#c9aeb2;font:800 .72rem/1 "Plus Jakarta Sans",system-ui,sans-serif;padding:6px 11px;border-radius:999px;cursor:pointer;letter-spacing:.6px}.nyala-lang button.on{background:linear-gradient(120deg,#b76e79,#9c5a66);color:#fff;box-shadow:0 0 14px rgba(212,165,165,.35)}.nyala-mute{border:1px solid rgba(212,165,165,.34);background:rgba(212,165,165,.10);font-size:.85rem;padding:6px 10px}.nyala-mute.off{color:#8a6f74}.nyala-tools.floating{position:fixed;top:10px;right:10px;z-index:120;background:rgba(14,12,13,.88);backdrop-filter:blur(8px);padding:6px;border-radius:999px;border:1px solid rgba(212,165,165,.34)}html{scrollbar-color:#b76e79 #171314;scrollbar-width:thin}::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:#171314}::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#b76e79,#8f4f5b);border-radius:999px;border:2px solid #171314}::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#d4a5a5,#b76e79)}';
 document.head.appendChild(style);
 var tools=document.createElement('div');
 tools.className='nyala-tools';
@@ -247,7 +253,7 @@ var mute=document.createElement('button');
 mute.type='button';mute.className='nyala-mute';mute.setAttribute('aria-label','Mute / unmute sound');
 function paint(){
   box.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.dataset.l===lang);b.setAttribute('aria-pressed',b.dataset.l===lang?'true':'false');});
-  mute.textContent=muted?'🔕':'';
+  mute.textContent=muted?'🔕':'🔔';
   mute.classList.toggle('off',muted);
   mute.setAttribute('aria-pressed',muted?'true':'false');
   mute.title=muted?'Sound off — tap to unmute':'Sound on — tap to mute';
