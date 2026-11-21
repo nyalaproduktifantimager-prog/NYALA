@@ -24,6 +24,10 @@ input,select{font-family:inherit}
 img,svg{max-width:100%;height:auto}
 ::selection{background:var(--rose-deep);color:#fff}
 :focus-visible{outline:3px solid var(--rose);outline-offset:3px;border-radius:8px}
+#toasts{pointer-events:none}
+.toast{pointer-events:auto}
+#welcomeOverlay,#dayOverlay{overflow:auto}
+#welcomeOverlay>div,#dayOverlay>div{margin:auto}
 .aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .aurora::before,.aurora::after{content:'';position:absolute;width:60vmax;height:60vmax;border-radius:50%;filter:blur(70px);opacity:.5;mix-blend-mode:screen}
 .aurora::before{background:radial-gradient(circle,rgba(183,110,121,.32),transparent 60%);top:-20vmax;right:-15vmax;animation:aurA 22s ease-in-out infinite alternate}
