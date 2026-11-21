@@ -1,4 +1,4 @@
-/* NYALA — app.js */
+/* NYALA — app.js (versi bersih, tanpa corruption) */
 (function(){
 'use strict';
 var deferredPrompt=null;
@@ -12,7 +12,6 @@ function fmtTime(sec){return pad2(Math.floor(sec/60))+':'+pad2(sec%60);}
 var DAY_NAMES=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 var DAY_SHORT=['Mg','Sn','Sl','Rb','Km','Jm','Sb'];
 var MON_SHORT=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-
 function loadState(){try{var raw=localStorage.getItem(KEY);if(raw){var s=JSON.parse(raw);if(s&&typeof s==='object')return s;}}catch(e){}return null;}
 var saved=loadState();
 var state={name:'',xp:0,streak:{count:0,last:''},tasks:{},habits:[],totals:{done:0,focusMin:0},today:{key:'',mood:-1,hype:''},settings:{city:'Jakarta',offset:0,mode:'city',lat:0,lon:0},tasbih:{key:'',counts:{},done:{},log:{}},gratitude:{},consistency:{days:0,rewarded:{}}};
@@ -44,7 +43,6 @@ function touchStreak(){
   state.streak.count=(state.streak.last===daysAgoKey(1))?state.streak.count+1:1;
   state.streak.last=k;save();
 }
-
 var LEVELS=[
   {min:0,name:'Kaum Rebahan 🛋️'},{min:80,name:'Mulai Geliat 🥱'},{min:200,name:'Pemanasan ☕'},
   {min:380,name:'Mode Gas ⚡'},{min:620,name:'Pejuang Fokus 🔥'},{min:950,name:'Pendekar Produktif ⚔️'},
@@ -56,7 +54,6 @@ var GARDEN_SUBS=[
   'Mulai berbunga. Kamu keren! 🌷','Kebunmu hampir jadi hutan! 🌳','Legendaris. Kebunmu subur maksimal 🏆'
 ];
 function levelOf(xp){var lv=0;for(var i=0;i<LEVELS.length;i++){if(xp>=LEVELS[i].min)lv=i;}return lv;}
-
 var audioCtx=null;
 function chime(){try{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();var notes=[523.25,659.25,783.99],t0=audioCtx.currentTime;notes.forEach(function(f,i){var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0.0001,t0+i*0.11);g.gain.exponentialRampToValueAtTime(0.16,t0+i*0.11+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t0+i*0.11+0.45);o.connect(g);g.connect(audioCtx.destination);o.start(t0+i*0.11);o.stop(t0+i*0.11+0.5);});}catch(e){}}
 function toast(msg,gold){var box=$('toasts');if(!box)return;var t=document.createElement('div');t.className='toast'+(gold?' gold':'');t.textContent=msg;box.appendChild(t);while(box.children.length>3)box.removeChild(box.firstChild);setTimeout(function(){t.classList.add('go');setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},320);},3000);}
@@ -95,25 +92,23 @@ function addXP(n,msg){
   if(after>before){setTimeout(function(){burst(120);chime();toast('🎉 NAIK LEVEL! Sekarang: '+LEVELS[after].name,true);},450);}
   renderScore();renderGarden();renderReport();
 }
-
 var CITIES=[
-{n:'Banda Aceh',la:5.55,lo:95.32,tz:7},{n:'Medan',la:3.59,lo:98.67,tz:7},{n:'Padang',la:-0.95,lo:100.35,tz:7},
-{n:'Pekanbaru',la:0.51,lo:101.45,tz:7},{n:'Tanjung Pinang',la:0.92,lo:104.46,tz:7},{n:'Jambi',la:-1.61,lo:103.61,tz:7},
-{n:'Palembang',la:-2.99,lo:104.76,tz:7},{n:'Pangkal Pinang',la:-2.13,lo:106.12,tz:7},{n:'Bengkulu',la:-3.80,lo:102.27,tz:7},
-{n:'Bandar Lampung',la:-5.43,lo:105.26,tz:7},{n:'Serang',la:-6.12,lo:106.15,tz:7},{n:'Jakarta',la:-6.20,lo:106.82,tz:7},
-{n:'Bandung',la:-6.91,lo:107.61,tz:7},{n:'Semarang',la:-6.97,lo:110.42,tz:7},{n:'Yogyakarta',la:-7.80,lo:110.36,tz:7},
-{n:'Surabaya',la:-7.25,lo:112.75,tz:7},{n:'Pontianak',la:-0.03,lo:109.33,tz:7},{n:'Palangkaraya',la:-2.21,lo:113.92,tz:7},
-{n:'Denpasar',la:-8.65,lo:115.22,tz:8},{n:'Mataram',la:-8.65,lo:116.32,tz:8},{n:'Kupang',la:-10.18,lo:123.60,tz:8},
-{n:'Banjarmasin',la:-3.32,lo:114.59,tz:8},{n:'Samarinda',la:-0.50,lo:117.15,tz:8},{n:'Tanjung Selor',la:2.84,lo:117.36,tz:8},
-{n:'Manado',la:1.47,lo:124.84,tz:8},{n:'Gorontalo',la:0.54,lo:123.06,tz:8},{n:'Palu',la:-0.90,lo:119.85,tz:8},
-{n:'Mamuju',la:-2.68,lo:118.88,tz:8},{n:'Makassar',la:-5.15,lo:119.43,tz:8},{n:'Kendari',la:-3.97,lo:122.60,tz:8},
-{n:'Ambon',la:-3.70,lo:128.18,tz:9},{n:'Sofifi',la:0.73,lo:127.95,tz:9},{n:'Jayapura',la:-2.53,lo:140.72,tz:9},
-{n:'Manokwari',la:-0.86,lo:134.06,tz:9},{n:'Merauke',la:-8.47,lo:140.33,tz:9},{n:'Nabire',la:-3.36,lo:135.55,tz:9},
-{n:'Wamena',la:-4.10,lo:138.95,tz:9},{n:'Sorong',la:-0.88,lo:131.25,tz:9}
+  {n:'Banda Aceh',la:5.55,lo:95.32,tz:7},{n:'Medan',la:3.59,lo:98.67,tz:7},{n:'Padang',la:-0.95,lo:100.35,tz:7},
+  {n:'Pekanbaru',la:0.51,lo:101.45,tz:7},{n:'Tanjung Pinang',la:0.92,lo:104.46,tz:7},{n:'Jambi',la:-1.61,lo:103.61,tz:7},
+  {n:'Palembang',la:-2.99,lo:104.76,tz:7},{n:'Pangkal Pinang',la:-2.13,lo:106.12,tz:7},{n:'Bengkulu',la:-3.80,lo:102.27,tz:7},
+  {n:'Bandar Lampung',la:-5.43,lo:105.26,tz:7},{n:'Serang',la:-6.12,lo:106.15,tz:7},{n:'Jakarta',la:-6.20,lo:106.82,tz:7},
+  {n:'Bandung',la:-6.91,lo:107.61,tz:7},{n:'Semarang',la:-6.97,lo:110.42,tz:7},{n:'Yogyakarta',la:-7.80,lo:110.36,tz:7},
+  {n:'Surabaya',la:-7.25,lo:112.75,tz:7},{n:'Pontianak',la:-0.03,lo:109.33,tz:7},{n:'Palangkaraya',la:-2.21,lo:113.92,tz:7},
+  {n:'Denpasar',la:-8.65,lo:115.22,tz:8},{n:'Mataram',la:-8.65,lo:116.32,tz:8},{n:'Kupang',la:-10.18,lo:123.60,tz:8},
+  {n:'Banjarmasin',la:-3.32,lo:114.59,tz:8},{n:'Samarinda',la:-0.50,lo:117.15,tz:8},{n:'Tanjung Selor',la:2.84,lo:117.36,tz:8},
+  {n:'Manado',la:1.47,lo:124.84,tz:8},{n:'Gorontalo',la:0.54,lo:123.06,tz:8},{n:'Palu',la:-0.90,lo:119.85,tz:8},
+  {n:'Mamuju',la:-2.68,lo:118.88,tz:8},{n:'Makassar',la:-5.15,lo:119.43,tz:8},{n:'Kendari',la:-3.97,lo:122.60,tz:8},
+  {n:'Ambon',la:-3.70,lo:128.18,tz:9},{n:'Sofifi',la:0.73,lo:127.95,tz:9},{n:'Jayapura',la:-2.53,lo:140.72,tz:9},
+  {n:'Manokwari',la:-0.86,lo:134.06,tz:9},{n:'Merauke',la:-8.47,lo:140.33,tz:9},{n:'Nabire',la:-3.36,lo:135.55,tz:9},
+  {n:'Wamena',la:-4.10,lo:138.95,tz:9},{n:'Sorong',la:-0.88,lo:131.25,tz:9}
 ];
 var PRAYER_KEYS=[['Fajr','Subuh'],['Dhuhr','Dzuhur'],['Asr','Ashr'],['Maghrib','Maghrib'],['Isha','Isya']];
 var prayerTimes=null,prayerComputedKey='',customLabel='';
-
 function rad(d){return d*Math.PI/180;}
 function deg(r){return r*180/Math.PI;}
 function fixA(a){a=a%360;return a<0?a+360:a;}
@@ -171,7 +166,6 @@ function updateClock(){
   updatePrayerCountdown();
 }
 setInterval(updateClock,1000);
-
 function renderHijri(){
   var el=$('hijriDate');if(!el)return;
   var NAMES=["Muharam","Safar","Rabiulawal","Rabiulakhir","Jumadilawal","Jumadilakhir","Rajab","Sya'ban","Ramadan","Syawal","Zulkaidah","Zulhijah"];
@@ -234,7 +228,6 @@ function renderPrayers(){
     note.textContent=loc+' · metode Kemenag · koreksi '+((state.settings&&state.settings.offset)||0)+' mnt via ⚙️';
   }
 }
-
 var DHIKR=[{id:'subhan',t:'Subhanallah',tg:33},{id:'hamd',t:'Alhamdulillah',tg:33},{id:'akbar',t:'Allahu Akbar',tg:34},{id:'tahlil',t:'La ilaha illallah',tg:100},{id:'istighfar',t:'Astaghfirullah',tg:100}];
 var curDhikr='subhan';
 function renderTasbih(){
@@ -270,7 +263,6 @@ function tapTasbih(){
   }
   save();renderTasbih();
 }
-
 var MOOD_META=[{e:'🫠',pct:25,label:'Mode mager terdeteksi'},{e:'😪',pct:40,label:'Mode hemat energi'},{e:'😌',pct:60,label:'Mode stabil'},{e:'😊',pct:80,label:'Mode cerah'},{e:'🤩',pct:95,label:'Mode turbo!'}];
 var MOOD_LINES=[
   ['Nggak apa-apa, kita curi start 2 menit aja — sisanya bonus 🐢','Rebahan boleh, tapi sambil nunggu timer kilat ya 😉','Gerak dikiiit aja dulu. Mood biasanya nyusul belakangan 🐌'],
@@ -292,7 +284,6 @@ function pickMood(i){
   var hb=$('hypeBubble');if(hb){hb.textContent='💬 '+line;hb.classList.add('show');}
   if(first){touchStreak();addXP(5,'Check-in mood dulu ☺️');}
 }
-
 var SUGGESTIONS=['💧 Minum segelas air','🧹 Rapikan meja 2 menit','📖 Baca 1 halaman buku','💬 Balas 1 chat tertunda','🙆 Stretching ringan'];
 function getTasks(){var k=todayKey();if(!state.tasks[k])state.tasks[k]={items:[]};return state.tasks[k].items;}
 function addTask(text,pri){
@@ -407,7 +398,6 @@ function toggleTask(t,btn){
   }
   renderTasks();renderScore();renderGarden();renderHistory();renderReport();
 }
-
 function dayCounts(){var items=getTasks(),done=0;items.forEach(function(t){if(t.done)done++;});return{done:done,total:items.length};}
 function renderScore(){
   var c=dayCounts(),pct=c.total?Math.round(c.done/c.total*100):0;
@@ -440,7 +430,6 @@ function renderScore(){
     yn.style.display='block';
   }
 }
-
 function checkConsistency(){
   if(!state.consistency)state.consistency={days:0,rewarded:{}};
   var pk=daysAgoKey(1);
@@ -455,7 +444,6 @@ function checkConsistency(){
     setTimeout(function(){addXP(25,'Hari konsisten: ≥70% tugas beres! 🔥');},1200);
   }
 }
-
 function renderHistory(){
   var strip=$('historyStrip');if(!strip)return;strip.innerHTML='';
   for(var i=13;i>=0;i--){
@@ -472,7 +460,6 @@ function renderHistory(){
     cell.appendChild(s1);cell.appendChild(s2);strip.appendChild(cell);
   }
 }
-
 var dayOvKey='';
 function showDay(dk){
   dayOvKey=dk;
@@ -520,7 +507,6 @@ function bindDayOverlay(){
     toast('📥 '+undone.length+' tugas dibawa ke hari ini. Semangat!');
   };
 }
-
 function renderSyukur(){
   var k=todayKey();
   if(!state.gratitude)state.gratitude={};
@@ -550,7 +536,6 @@ function saveSyukur(inp){
   }
   updateSyukurNote();
 }
-
 function weekStats(){
   var days=[];for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);days.push(d);}
   var s={days:[],tasks:0,focus:0,sessions:0,habits:0,dhikr:0};
@@ -705,12 +690,10 @@ function shareReport(){
     },'image/png');
   });
 }
-
 var MODES={fokus:1500,kilat:120,rehat:300,deep50:3000,deep90:5400};
 var MODE_LABEL={fokus:'Fokus',kilat:'Kilat',rehat:'Rehat',deep50:'Deep 50',deep90:'Deep 90',custom:'Custom',adhan:'Adzan'};
 var tMode='fokus',tTotal=1500,tRemain=1500,tTimer=null,tRunning=false,RING_C=678.58,customMin=25;
 var timerStartReal=0,timerPausedReal=0,timerPausedTotal=0;
-
 function renderTimer(){
   var tt=$('timeText');if(tt)tt.textContent=fmtTime(Math.max(0,tRemain));
   var fg=$('ringFg');if(fg)fg.style.strokeDashoffset=String(RING_C*(1-tRemain/tTotal));
@@ -738,7 +721,6 @@ function setCustomMode(mins){
   var sb=$('startBtn');if(sb)sb.textContent='▶ Mulai';renderTimer();
 }
 function stopTimer(){if(tTimer){clearInterval(tTimer);tTimer=null;}tRunning=false;timerStartReal=0;timerPausedReal=0;timerPausedTotal=0;try{localStorage.removeItem('nyala_timer_v1');}catch(e){}}
-
 function persistTimer(){
   try{
     if(tRunning&&timerStartReal>0){
@@ -770,7 +752,6 @@ function restoreTimer(){
     }
   }catch(e){}
 }
-
 function tickTimer(){
   if(timerStartReal>0){
     var elapsed=Math.floor((Date.now()-timerStartReal-timerPausedTotal)/1000);
@@ -782,7 +763,6 @@ function tickTimer(){
   }
   renderTimer();
 }
-
 function startTimer(){
   if(tRunning){stopTimer();var sb=$('startBtn');if(sb)sb.textContent='▶ Lanjut';renderTimer();toast('Jeda dulu, tarik napas 🌬️');return;}
   if(tRemain<=0)tRemain=tTotal;
@@ -790,7 +770,6 @@ function startTimer(){
   var sb=$('startBtn');if(sb)sb.textContent='⏸ Jeda';chime();
   tTimer=setInterval(tickTimer,1000);renderTimer();persistTimer();
 }
-
 function finishTimer(){
   stopTimer();var finishedMode=tMode;var doneSecs=tTotal;tRemain=tTotal;
   var sb=$('startBtn');if(sb)sb.textContent='▶ Mulai';renderTimer();
@@ -817,8 +796,7 @@ function renderTomatoes(){
   var str='';for(var i=0;i<Math.min(s,12);i++)str+='🍅';
   el.textContent=str+(s>12?' ×'+s:'')+' ('+s+' sesi)';
 }
-
-var HABIT_EMOJIS=['💧','📖','','🧘','️','🧹','','💤'],HABIT_PICK='💧';
+var HABIT_EMOJIS=['💧','📖','🧘','🧹','🍎','💤'],HABIT_PICK='💧';
 function renderHabits(){
   var grid=$('habitGrid');if(!grid)return;grid.innerHTML='';
   var days=[];for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);days.push(d);}
@@ -878,8 +856,7 @@ function toggleHabitDay(h,dk,isToday){
   if(isToday){chime();burst(28);touchStreak();addXP(10,'Habit "'+h.name+'" beres! 💪');renderHistory();renderReport();}
   else{renderHabits();}
 }
-
-var PLANTS=['🌱','','','','🌸','','',''];
+var PLANTS=['🌱','🌿','🌸','🌺','🌻','🌷','🌹','🌳'];
 function renderGarden(){
   var row=$('plantsRow');if(!row)return;row.innerHTML='';
   var count=Math.min(2+state.totals.done,10);
@@ -895,7 +872,6 @@ function renderGarden(){
   var gf=$('gFocus');if(gf)gf.textContent=state.totals.focusMin;
   var gst=$('gStreak');if(gst)gst.textContent=state.streak.count;
 }
-
 var WHEEL_OPTS=[
   {e:'💧',t:'Minum segelas air',c:'#5a3a45'},{e:'💪',t:'Push-up / squat 5 kali',c:'#b76e79'},
   {e:'🧹',t:'Rapikan meja 2 menit',c:'#e5c786'},{e:'✍️',t:'Tulis 3 hal yang kamu syukuri',c:'#8f4f5b'},
@@ -938,7 +914,6 @@ function spinWheel(){
     burst(50);spinning=false;if(sb)sb.disabled=false;
   },3950);
 }
-
 var QUOTES=[
   {q:'"Mulai aja dulu. Sempurnanya sambil jalan."',b:'MANTRA NYALA'},
   {q:'"Kamu nggak perlu hebat buat mulai, tapi perlu mulai buat jadi hebat."',b:'ZIG ZIGLAR'},
@@ -963,7 +938,6 @@ function shuffleQuote(){
       qt.classList.remove('faded');qb.classList.remove('faded');renderReport();},300);
   }
 }
-
 function initReveal(){
   var els=document.querySelectorAll('.reveal');
   if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in');});return;}
@@ -972,7 +946,6 @@ function initReveal(){
   },{threshold:0.12});
   els.forEach(function(e){obs.observe(e);});
 }
-
 function renderGreeting(){
   var d=new Date(),h=d.getHours(),k='';
   if(h>=4&&h<10)k='SELAMAT PAGI ☀️';else if(h>=10&&h<15)k='SELAMAT SIANG 🌤️';
@@ -985,7 +958,6 @@ function renderGreeting(){
   var dc=$('dateChip');if(dc)dc.textContent=DAY_NAMES[d.getDay()]+', '+d.getDate()+' '+MON_SHORT[d.getMonth()];
   var nc=$('nameChip');if(nc)nc.textContent=state.name||'Kawan';
 }
-
 function doBackup(){
   try{
     var keys=['nyala_v1','nyala_quran_cache_v1','nyala_dzikir_pp_v1'];
@@ -1024,7 +996,6 @@ function maybeReminder(){
     }
   }catch(e){}
 }
-
 function showWelcome(){
   var ov=$('welcomeOverlay');if(!ov)return;
   ov.style.display='flex';
@@ -1041,7 +1012,6 @@ function showWelcome(){
   var bk=$('welcomeSkip');if(bk)bk.onclick=function(){done(true);};
   if(inp)inp.onkeydown=function(e){if(e.key==='Enter')done(false);};
 }
-
 function bind(){
   document.querySelectorAll('#moodRow .mood').forEach(function(b){b.addEventListener('click',function(){pickMood(parseInt(b.dataset.i,10));});});
   var ti=$('taskInput'),addBtn=$('addTaskBtn');
@@ -1058,7 +1028,6 @@ function bind(){
   var st=$('startBtn');if(st)st.addEventListener('click',startTimer);
   var rt=$('resetTimerBtn');if(rt)rt.addEventListener('click',function(){setMode(tMode==='custom'?'fokus':tMode);toast('Timer diulang ↺');});
   document.querySelectorAll('.mode-chip').forEach(function(b){b.addEventListener('click',function(){setMode(b.dataset.mode);});});
-
   var cv=$('customVal');
   function renderCustomVal(){if(cv)cv.textContent=customMin;}
   var mm2=$('minMinus');
@@ -1074,7 +1043,6 @@ function bind(){
   var uc=$('useCustom');
   if(uc)uc.addEventListener('click',function(){setCustomMode(customMin);toast('⏱️ Timer custom '+customMin+' menit siap. Gas!');});
   renderCustomVal();
-
   var sel=$('citySelect');
   if(sel){
     var g=document.createElement('option');g.value='__gps';g.textContent='📍 Otomatis (GPS saya)';sel.appendChild(g);
@@ -1126,10 +1094,8 @@ function bind(){
   document.querySelectorAll('.syukur-in').forEach(function(inp){
     inp.addEventListener('input',function(){saveSyukur(inp);});
   });
-
   var db=$('downloadBtn');if(db)db.addEventListener('click',downloadReport);
   var shb=$('shareBtn');if(shb)shb.addEventListener('click',shareReport);
-
   var sp1=$('spinBtn'),sp2=$('spinBtn2');
   if(sp1)sp1.addEventListener('click',spinWheel);
   if(sp2)sp2.addEventListener('click',spinWheel);
@@ -1161,7 +1127,6 @@ function bind(){
   bindDayOverlay();
   document.addEventListener('pointerdown',function(){try{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}},{once:true});
 }
-
 function init(){
   sizeCanvas();ensureToday();checkConsistency();
   if(!state.name&&!localStorage.getItem('nyala_welcomed')){
@@ -1185,10 +1150,8 @@ function init(){
   }
   bind();initReveal();maybeReminder();
 }
-
 document.addEventListener('visibilitychange',function(){
   if(!document.hidden&&tRunning){tickTimer();}
 });
-
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
 })();
