@@ -1,0 +1,14 @@
+{
+  "name": "NYALA — Anti Mager",
+  "short_name": "NYALA",
+  "description": "Teman produktif harian anti mager dengan spiritual corner, jadwal sholat, tasbih, dzikir pagi-petang, dan mushaf digital.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e0c0d",
+  "theme_color": "#0e0c0d",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

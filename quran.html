@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taman Qur'an ✦ NYALA</title>
+<meta name="description" content="Mushaf digital 114 surah / 30 juz, murottal 9 qori, ayat untuk hatimu, tracker hafalan, dan kumpulan doa.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🕌%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+<style>
+:root{--bg-deep:#0e0c0d;--bg-soft:#171314;--card:#1e181a;--card-2:#241c1f;--ink:#f2e4e6;--ink-soft:#c9aeb2;--ink-mute:#8a6f74;--rose:#d4a5a5;--rose-deep:#b76e79;--rose-soft:#e8c4c8;--rose-pale:#f0dcdd;--gold:#e5c786;--gold-deep:#c9a35c;--line:rgba(212,165,165,.16);--line-strong:rgba(212,165,165,.34);--shadow:0 18px 44px -18px rgba(0,0,0,.7);--glow-rose:0 0 34px rgba(212,165,165,.22);--r-card:clamp(18px,2.4vw,26px);--pad-card:clamp(18px,3.4vw,30px)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);line-height:1.6;min-height:100vh;background:radial-gradient(1100px 520px at 85% -8%,rgba(183,110,121,.20),transparent 60%),radial-gradient(800px 480px at -10% 30%,rgba(212,165,165,.10),transparent 55%),linear-gradient(180deg,var(--bg-deep) 0%,var(--bg-soft) 55%,#120f10 100%)}
+h1,h2,h3{font-family:'Bricolage Grotesque','Plus Jakarta Sans',sans-serif}
+button,select{font-family:inherit;cursor:pointer;color:inherit}
+::selection{background:var(--rose-deep);color:var(--ink)}
+:focus-visible{outline:3px solid var(--rose);outline-offset:3px;border-radius:8px}
+header.top{position:sticky;top:0;z-index:50;background:rgba(14,12,13,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top-in{max-width:900px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Bricolage Grotesque';font-weight:800;font-size:1.15rem}
+.logo .word{background:linear-gradient(120deg,var(--rose-soft),var(--rose) 45%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.backlink{color:var(--ink-soft);text-decoration:none;font-weight:700;font-size:.8rem;border:1px solid var(--line-strong);border-radius:999px;padding:7px 14px;transition:.2s}
+.backlink:hover{background:rgba(212,165,165,.1)}
+.chips{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-weight:700;font-size:.78rem;border:1px solid var(--line-strong);background:rgba(212,165,165,.06);color:var(--ink-soft)}
+.chip.gold{background:rgba(229,199,134,.1);border-color:rgba(229,199,134,.35);color:var(--gold)}
+main{max-width:900px;margin:0 auto;padding:20px 16px 60px}
+section{margin-bottom:44px}
+.sec-head{margin-bottom:16px}
+.sec-tag{font-family:'Bricolage Grotesque';font-weight:800;font-size:.7rem;letter-spacing:2.5px;padding:6px 13px;border-radius:999px;display:inline-block;transform:rotate(-2deg);color:#fff;background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);box-shadow:var(--glow-rose)}
+.sec-head h2{font-size:clamp(1.4rem,4.5vw,2rem);font-weight:800;margin-top:8px;color:var(--rose-soft)}
+.sec-sub{color:var(--ink-soft);font-size:.88rem;max-width:600px;margin-top:4px}
+.card{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--line-strong);border-radius:var(--r-card);box-shadow:var(--shadow);padding:var(--pad-card)}
+.btn{border:1px solid var(--line-strong);border-radius:14px;padding:11px 18px;font-weight:800;font-size:.9rem;background:rgba(212,165,165,.08);color:var(--ink);box-shadow:0 4px 0 rgba(0,0,0,.4);transition:.16s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 8px 0 rgba(0,0,0,.4)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.4)}
+.btn.hot{background:linear-gradient(120deg,var(--rose-deep),#9c5a66);color:#fff;border-color:transparent;box-shadow:0 5px 0 #6f3f49,var(--glow-rose)}
+.btn.sunny{background:linear-gradient(120deg,var(--gold),var(--gold-deep));color:#241a0c;border-color:transparent;box-shadow:0 5px 0 #8a6f3c}
+.btn.on{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff;border-color:var(--rose);box-shadow:var(--glow-rose)}
+.q-select{background:rgba(0,0,0,.35);color:var(--ink);border:1px solid var(--line-strong);border-radius:11px;padding:10px 12px;font-weight:700;font-size:.85rem;max-width:100%}
+.q-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.q-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.sync-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;padding:10px 12px;border:1px dashed rgba(229,199,134,.4);border-radius:14px;background:rgba(229,199,134,.05)}
+.surah-info{border:1px solid rgba(229,199,134,.35);background:rgba(229,199,134,.07);border-radius:16px;padding:12px 16px;margin-bottom:14px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.surah-info:empty{display:none}
+.surah-info .nm{font-family:'Bricolage Grotesque';font-weight:800;font-size:1.15rem;color:var(--gold)}
+.surah-info .ar{font-family:'Amiri',serif;font-size:1.3rem;color:var(--rose-soft)}
+.surah-info .meta{font-size:.76rem;font-weight:700;color:var(--ink-soft)}
+.ayah{border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:12px;background:rgba(0,0,0,.22);transition:.2s}
+.ayah.playing{border-color:var(--gold);box-shadow:0 0 0 3px rgba(229,199,134,.22),var(--glow-rose);background:rgba(229,199,134,.07)}
+.ayah.basmalah{background:rgba(229,199,134,.06);border-color:rgba(229,199,134,.3)}
+.ayah.basmalah .arabic{text-align:center}
+.ayah-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ayah-badge{font-size:.68rem;font-weight:800;color:var(--gold);border:1px solid rgba(229,199,134,.4);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.ayah-play{margin-left:auto;border:1px solid var(--line-strong);background:transparent;border-radius:999px;padding:5px 12px;font-size:.74rem;font-weight:800;color:var(--ink-soft);transition:.2s}
+.ayah-play:hover{background:rgba(212,165,165,.1);color:var(--rose-soft)}
+.arabic{font-family:'Amiri',serif;font-size:clamp(1.3rem,5vw,1.7rem);line-height:2.2;direction:rtl;text-align:right;color:var(--ink)}
+.ayah-tr{margin-top:8px;font-size:.86rem;color:var(--ink-soft);font-weight:600}
+.surah-head{font-family:'Bricolage Grotesque';font-weight:800;color:var(--rose-soft);margin:18px 0 10px;font-size:1.05rem;border-bottom:1px solid var(--line);padding-bottom:6px}
+.reco-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.r-chip{border:1px solid var(--line-strong);background:rgba(212,165,165,.06);color:var(--ink-soft);border-radius:999px;padding:9px 15px;font-weight:800;font-size:.8rem;transition:.2s}
+.r-chip:hover{transform:translateY(-2px);border-color:var(--rose)}
+.r-chip.on{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff;border-color:var(--rose);box-shadow:var(--glow-rose)}
+.haf-bar{height:14px;border-radius:999px;background:rgba(0,0,0,.4);border:1px solid var(--line);overflow:hidden;margin:10px 0 6px}
+.haf-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--rose-deep),var(--rose),var(--gold));border-radius:999px;transition:width .6s}
+.haf-txt{font-size:.8rem;font-weight:800;color:var(--ink-soft);margin-bottom:14px}
+.haf-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.7rem;font-weight:700;color:var(--ink-mute);margin-bottom:12px}
+.haf-legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:5px;vertical-align:-2px}
+.haf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:6px}
+.haf-cell{border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.25);padding:9px 0;text-align:center;font-weight:800;font-size:.78rem;color:var(--ink-soft);transition:.2s}
+.haf-cell:hover{transform:scale(1.05)}
+.haf-cell.st1{border-color:var(--rose);color:var(--rose-soft);background:rgba(212,165,165,.12)}
+.haf-cell.st2{border-color:var(--gold);color:#241a0c;background:linear-gradient(120deg,var(--gold),var(--gold-deep))}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.doa-card{border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;background:rgba(0,0,0,.22)}
+.doa-t{font-weight:800;font-size:.95rem;color:var(--gold);margin-bottom:8px}
+.doa-ar{font-family:'Amiri',serif;font-size:1.35rem;line-height:2.2;direction:rtl;text-align:right;margin-bottom:8px}
+.doa-la{font-size:.82rem;color:var(--rose-soft);font-weight:600;font-style:italic;margin-bottom:6px}
+.doa-id{font-size:.84rem;color:var(--ink-soft);font-weight:600}
+.doa-m{margin-top:8px;font-size:.78rem;color:var(--gold);font-weight:700;border-top:1px dashed var(--line);padding-top:8px}
+.doa-s{margin-top:4px;font-size:.72rem;color:var(--ink-mute);font-weight:600}
+footer.collab{text-align:center;padding:24px 16px 40px;color:var(--ink-soft);font-size:.85rem;font-weight:600;border-top:1px dashed var(--line-strong);margin-top:20px}
+#toasts{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:95;display:flex;flex-direction:column;gap:8px;align-items:center;max-width:94vw}
+.toast{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff;padding:11px 20px;border-radius:999px;font-weight:800;font-size:.86rem;box-shadow:0 10px 26px rgba(0,0,0,.5);animation:tIn .35s;max-width:92vw;overflow:hidden;text-overflow:ellipsis;border:1px solid var(--rose)}
+.toast.gold{background:linear-gradient(120deg,var(--gold),var(--gold-deep));color:#241a0c;border-color:var(--gold)}
+.toast.go{animation:tOut .3s forwards}
+@keyframes tIn{from{opacity:0;transform:translateY(24px) scale(.8)}to{opacity:1}}
+@keyframes tOut{to{opacity:0;transform:translateY(14px)}}
+@media(max-width:560px){.q-controls select{flex:1;min-width:120px}.chips{margin-left:0;width:100%;justify-content:center}.top-in{justify-content:center}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="backlink" href="index.html">← NYALA</a>
+    <a class="backlink" href="dzikir.html">📿 Dzikir</a>
+    <div class="logo">🕌 <span class="word">TAMAN QUR'AN</span></div>
+    <div class="chips">
+      <span class="chip" id="netStatus">🔄 Memuat…</span>
+      <span class="chip" id="qStreak">🔥 0</span>
+      <span class="chip gold" id="qXP">0 XP</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="sec-head">
+    <span class="sec-tag">A · BACA & DENGAR</span>
+    <h2>Mushaf Digital 114 Surah / 30 Juz</h2>
+    <p class="sec-sub">Baca sendiri atau baca bareng murottal. 📖</p>
+  </div>
+  <div class="card">
+    <div class="sync-row"><span class="chip gold" id="storedChip">📦 Memuat data…</span></div>
+    <div class="q-controls">
+      <select class="q-select" id="viewMode"><option value="surah">Per Surah</option><option value="juz">Per Juz</option></select>
+      <select class="q-select" id="surahSelect" style="flex:1;min-width:140px"></select>
+      <select class="q-select" id="juzSelect" style="display:none;flex:1;min-width:120px"></select>
+      <select class="q-select" id="qariSelect"></select>
+    </div>
+    <div class="q-actions">
+      <button class="btn on" id="modeSendiri">📖 Baca Sendiri</button>
+      <button class="btn" id="modeBareng">🎧 Baca Bareng</button>
+      <button class="btn sunny" id="playSurahBtn">▶ Murottal Surah</button>
+      <button class="btn hot" id="seqStart" style="display:none">▶ Mulai Baca Bareng</button>
+      <button class="btn" id="seqStop" style="display:none">⏹ Berhenti</button>
+    </div>
+    <div class="surah-info" id="surahInfo"></div>
+    <div id="ayahList"></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <span class="sec-tag">B · AYAT UNTUK HATIMU</span>
+    <h2>Sedang Merasa Apa?</h2>
+    <p class="sec-sub">Pilih keadaanmu — Allah sudah menyiapkan ayatnya untukmu. 🤍</p>
+  </div>
+  <div class="reco-chips" id="recoChips"></div>
+  <div id="recoResult"></div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <span class="sec-tag">C · TRACKER HAFALAN</span>
+    <h2>Perjalanan Huffaz-mu 🏆</h2>
+    <p class="sec-sub">Tap surah: abu-abu = belum, rose = proses, emas = hafal. Menandai hafal = <b>+25 XP</b>!</p>
+  </div>
+  <div class="card">
+    <div class="haf-bar"><div class="haf-fill" id="hafFill"></div></div>
+    <div class="haf-txt" id="hafTxt">0 / 114 surah dihafal</div>
+    <div class="haf-legend">
+      <span><i style="background:rgba(0,0,0,.4);border:1px solid var(--line)"></i>Belum</span>
+      <span><i style="background:rgba(212,165,165,.35)"></i>Proses</span>
+      <span><i style="background:var(--gold)"></i>Hafal</span>
+    </div>
+    <div class="haf-grid" id="hafGrid"></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <span class="sec-tag">D · DOA-DOA</span>
+    <h2>Doa Sehari-hari, Nabi & Masa Kini</h2>
+    <p class="sec-sub">Lengkap dengan teks Arab, latin, arti, <b>manfaat</b>, dan <b>sumber</b>nya. 🤲</p>
+  </div>
+  <div class="tabs">
+    <button class="btn on" id="tabHarian">🌤️ Sehari-hari</button>
+    <button class="btn" id="tabNabi">🕌 Doa Para Nabi</button>
+    <button class="btn" id="tabKini">🕰️ Masa Kini</button>
+  </div>
+  <div id="doaList"></div>
+</section>
+
+</main>
+
+<footer class="collab">
+  <span style="display:inline-flex;align-items:center;gap:8px;justify-content:center;">
+    <img src="logo-wfh.png" onerror="this.onerror=null;this.src='logo-wfh.svg';" alt="Logo Muslimah WFH" style="width:30px;height:30px;border-radius:8px;object-fit:contain;">
+    Kolaborasi: <b>Muslimah WFH</b> × <b>Juariah</b>
+  </span>
+</footer>
+
+<div id="toasts"></div>
+
+<script>
+(function(){
+'use strict';
+var KEY='nyala_v1';
+var QURAN_CACHE_KEY='nyala_quran_cache_v1';
+function $(id){return document.getElementById(id);}
+
+function loadState(){try{var r=localStorage.getItem(KEY);if(r){var s=JSON.parse(r);if(s&&typeof s==='object')return s;}}catch(e){}return null;}
+var saved=loadState();
+var state={xp:0,streak:{count:0,last:''},quran:{hafal:{},last:1,lastJuz:1}};
+if(saved){
+  state.xp=typeof saved.xp==='number'?saved.xp:0;
+  if(saved.streak&&typeof saved.streak==='object')state.streak={count:saved.streak.count||0,last:saved.streak.last||''};
+  if(saved.quran&&typeof saved.quran==='object')state.quran={hafal:saved.quran.hafal||{},last:saved.quran.last||1,lastJuz:saved.quran.lastJuz||1};
+}
+function save(){try{var f=loadState()||{};f.xp=state.xp;f.streak=state.streak;f.quran=state.quran;localStorage.setItem(KEY,JSON.stringify(f));}catch(e){}}
+function todayKey(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function touchStreak(){var k=todayKey();if(state.streak.last===k)return;var y=new Date();y.setDate(y.getDate()-1);var yk=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0');state.streak.count=(state.streak.last===yk)?state.streak.count+1:1;state.streak.last=k;save();renderChips();}
+function addXP(n,m){state.xp+=n;save();toast('+'+n+' XP · '+m);renderChips();}
+function renderChips(){var a=$('qStreak');if(a)a.textContent='🔥 '+state.streak.count;var b=$('qXP');if(b)b.textContent=state.xp+' XP';}
+function updateNetStatus(){var el=$('netStatus');if(!el)return;if(navigator.onLine){el.style.display='';el.textContent='🌐 Online';}else{el.style.display='none';}}
+window.addEventListener('online',updateNetStatus);
+window.addEventListener('offline',updateNetStatus);
+
+function toast(m,g){
+  var b=$('toasts');if(!b)return;
+  var t=document.createElement('div');t.className='toast'+(g?' gold':'');t.textContent=m;
+  b.appendChild(t);
+  while(b.children.length>3)b.removeChild(b.firstChild);
+  setTimeout(function(){t.classList.add('go');setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},320);},3000);
+}
+
+var META=[["Al-Faatihah",7,"M","الفاتحة"],["Al-Baqarah",286,"D","البقرة"],["Aali Imraan",200,"D","آل عمران"],["An-Nisaa",176,"D","النساء"],["Al-Maa-idah",120,"D","المائدة"],["Al-An-aam",165,"M","الأنعام"],["Al-A-raaf",206,"M","الأعراف"],["Al-Anfaal",75,"D","الأنفال"],["At-Tawbah",129,"D","التوبة"],["Yuunus",109,"M","يونس"],["Huud",123,"M","هود"],["Yuusuf",111,"M","يوسف"],["Ar-Ra-d",43,"D","الرعد"],["Ibraahiim",52,"D","إبراهيم"],["Al-Hijr",99,"M","الحجر"],["An-Nahl",128,"M","النحل"],["Al-Israa",111,"M","الإسراء"],["Al-Kahf",110,"M","الكهف"],["Maryam",98,"M","مريم"],["Taa Haa",135,"M","طه"],["Al-Anbiyaa",112,"M","الأنبياء"],["Al-Hajj",78,"D","الحج"],["Al-Mu-minuun",118,"M","المؤمنون"],["An-Nuur",64,"D","النور"],["Al-Furqaan",77,"M","الفرقان"],["Asy-Syu-araa",227,"M","الشعراء"],["An-Naml",93,"M","النمل"],["Al-Qashash",88,"M","القصص"],["Al-Ankabuut",69,"M","العنكبوت"],["Ar-Ruum",60,"M","الروم"],["Luqman",34,"M","لقمان"],["As-Sajdah",30,"M","السجدة"],["Al-Ahzaab",73,"D","الأحزاب"],["Saba",54,"M","سبأ"],["Faathir",45,"M","فاطر"],["Yaa Siin",83,"M","يس"],["Ash-Shaaffaat",182,"M","الصافات"],["Shaad",88,"M","ص"],["Az-Zumar",75,"M","الزمر"],["Ghaafir",85,"M","غافر"],["Fushshilat",54,"M","فصلت"],["Asy-Syuura",53,"M","الشورى"],["Az-Zukhruf",89,"M","الزخرف"],["Ad-Dukhaan",59,"M","الدخان"],["Al-Jaatsiyah",37,"M","الجاثية"],["Al-Ahqaaf",35,"M","الأحقاف"],["Muhammad",38,"D","محمد"],["Al-Fath",29,"D","الفتح"],["Al-Hujuraat",18,"D","الحجرات"],["Qaaf",45,"M","ق"],["Adz-Dzaariyaat",60,"M","الذاريات"],["Ath-Thuur",49,"M","الطور"],["An-Najm",62,"M","النجم"],["Al-Qamar",55,"M","القمر"],["Ar-Rahmaan",78,"D","الرحمن"],["Al-Waaqi-ah",96,"M","الواقعة"],["Al-Hadiid",29,"D","الحديد"],["Al-Mujaadilah",22,"D","المجادلة"],["Al-Hasyr",24,"D","الحشر"],["Al-Mumtahanah",13,"D","الممتحنة"],["Ash-Shaff",14,"D","الصف"],["Al-Jumu-ah",11,"D","الجمعة"],["Al-Munaafiquun",11,"D","المنافقون"],["At-Taghaabun",18,"D","التغابن"],["Ath-Thalaaq",12,"D","الطلاق"],["At-Tahriim",12,"D","التحريم"],["Al-Mulk",30,"M","الملك"],["Al-Qalam",52,"M","القلم"],["Al-Haaqqah",52,"M","الحاقة"],["Al-Ma-aarij",44,"M","المعارج"],["Nuuh",28,"M","نوح"],["Al-Jinn",28,"M","الجن"],["Al-Muzzammil",20,"M","المزمل"],["Al-Muddatstsir",56,"M","المدثر"],["Al-Qiyaamah",40,"M","القيامة"],["Al-Insaan",31,"D","الإنسان"],["Al-Mursalaat",50,"M","المرسلات"],["An-Naba",40,"M","النبأ"],["An-Naazi-aat",46,"M","النازعات"],["-Abasa",42,"M","عبس"],["At-Takwiir",29,"M","التكوير"],["Al-Infithaar",19,"M","الانفطار"],["Al-Muthaffifiin",36,"M","المطففين"],["Al-Insyiqaaq",25,"M","الانشقاق"],["Al-Buruuj",22,"M","البروج"],["Ath-Thaariq",17,"M","الطارق"],["Al-A-laa",19,"M","الأعلى"],["Al-Ghaasyiyah",26,"M","الغاشية"],["Al-Fajr",30,"M","الفجر"],["Al-Balad",20,"M","البلد"],["Asy-Syams",15,"M","الشمس"],["Al-Lail",21,"M","الليل"],["Adh-Dhuhaa",11,"M","الضحى"],["Al-Insyiraah",8,"M","الشرح"],["At-Tiin",8,"M","التين"],["Al--Alaq",19,"M","العلق"],["Al-Qadr",5,"M","القدر"],["Al-Bayyinah",8,"D","البينة"],["Az-Zalzalah",8,"D","الزلزلة"],["Al--Aadiyaat",11,"M","العاديات"],["Al-Qaari-ah",11,"M","القارعة"],["At-Takaatsur",8,"M","التكاثر"],["Al--Ashr",3,"M","العصر"],["Al-Humazah",9,"M","الهمزة"],["Al-Fiil",5,"M","الفيل"],["Quraisy",4,"M","قريش"],["Al-Maa-uun",7,"M","الماعون"],["Al-Kautsar",3,"M","الكوثر"],["Al-Kaafiruun",6,"M","الكافرون"],["An-Nashr",3,"D","النصر"],["Al-Lahab",5,"M","المسد"],["Al-Ikhlaash",4,"M","الإخلاص"],["Al-Falaq",5,"M","الفلق"],["An-Naas",6,"M","الناس"]];
+
+var QARIS=[{k:'05',n:'🎙️ Misyari Al-Afasi'},{k:'10',n:'🎙️ Mahmoud Al-Husary'},{k:'12',n:'🎙️ Ahmed Al-Ajamy'},{k:'13',n:'🎙️ Muhammad Ayyoub'},{k:'14',n:'🎙️ Maher Al-Muaiqly'},{k:'01',n:'🎙️ Abdullah Al-Juhany'},{k:'02',n:'🎙️ Abdul Muhsin Al-Qasim'},{k:'04',n:'🎙️ Ibrahim Al-Dossari'},{k:'06',n:'🎙️ Yasser Al-Dosari'}];
+
+var DB=null, AY=[], seqOn=false, seqI=0, seqRewarded=false, viewMode='surah';
+var player=new Audio();
+player.setAttribute('playsinline','');
+player.setAttribute('preload','auto');
+player.style.display='none';
+if(document.body){document.body.appendChild(player);}
+function keepAudioAlive(){
+  try{
+    if('mediaSession' in navigator){
+      navigator.mediaSession.metadata=new MediaMetadata({title:'Taman Qur\'an — NYALA',artist:'Murottal',album:'NYALA'});
+      navigator.mediaSession.playbackState='playing';
+    }
+  }catch(e){}
+  try{
+    if('wakeLock' in navigator){navigator.wakeLock.request('screen').catch(function(){});}
+  }catch(e){}
+}
+document.addEventListener('visibilitychange',function(){if(!document.hidden)keepAudioAlive();});
+
+function pad3(n){return ('00'+n).slice(-3);}
+var BASMALAH_AR='بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
+var BASMALAH_ID='Dengan menyebut nama Allah Yang Maha Pemurah lagi Maha Penyayang.';
+
+function normAr(s){return s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g,'').replace(/\u0671/g,'\u0627');}
+function stripBasmalah(t){if(!t)return t;var toks=t.split(/\s+/);if(toks.length>4&&normAr(toks[0])==='بسم'&&normAr(toks[1])==='الله'&&normAr(toks[2])==='الرحمن'&&normAr(toks[3])==='الرحيم'){return toks.slice(4).join(' ');}return t;}
+
+function renderBasmalah(box){
+  var div=document.createElement('div');div.className='ayah basmalah';
+  var ar=document.createElement('div');ar.className='arabic';ar.textContent=BASMALAH_AR;
+  var tr=document.createElement('div');tr.className='ayah-tr';tr.textContent=BASMALAH_ID;
+  div.appendChild(ar);div.appendChild(tr);box.appendChild(div);
+}
+
+function loadDB(cb){
+  try{
+    var cached=localStorage.getItem(QURAN_CACHE_KEY);
+    if(cached){DB=JSON.parse(cached);setStored('📦 114 surah siap ✅ (dari cache HP)');cb(true);return;}
+  }catch(e){}
+  setStored('📥 Mengunduh data…');
+  fetchFromLocal(function(ok){
+    if(ok){cb(true);return;}
+    fetchFromAPI(function(ok2){cb(ok2);});
+  });
+}
+function setStored(t){var el=$('storedChip');if(el)el.textContent=t;}
+function processData(arData,idData){
+  var arSurahs=arData.data?arData.data.surahs:arData.surahs;
+  var idSurahs=idData.data?idData.data.surahs:idData.surahs;
+  DB={};
+  for(var i=0;i<arSurahs.length;i++){
+    var s=arSurahs[i],t=idSurahs[i]||null;
+    DB[s.number]=s.ayahs.map(function(a,idx){
+      return{g:a.number,n:a.numberInSurah,j:a.juz||1,ar:a.text,
+        id:(t&&t.ayahs&&t.ayahs[idx])?t.ayahs[idx].text:'',
+        sNum:s.number,sName:s.englishName||s.name};
+    });
+  }
+  try{localStorage.setItem(QURAN_CACHE_KEY,JSON.stringify(DB));}catch(e){}
+  setStored('📦 114 surah siap ✅ (tersimpan di HP)');
+}
+function fetchFromLocal(cb){
+  Promise.all([
+    fetch('quran-uthmani.json').then(function(r){if(!r.ok)throw 0;return r.json();}),
+    fetch('id.indonesian.json').then(function(r){if(!r.ok)throw 0;return r.json();})
+  ]).then(function(js){processData(js[0],js[1]);cb(true);}).catch(function(){cb(false);});
+}
+function fetchFromAPI(cb){
+  Promise.all([
+    fetch('https://api.alquran.cloud/v1/quran/quran-uthmani').then(function(r){return r.json();}),
+    fetch('https://api.alquran.cloud/v1/quran/id.indonesian').then(function(r){return r.json();})
+  ]).then(function(js){processData(js[0],js[1]);cb(true);}).catch(function(){setStored('⚠️ Gagal memuat. Pastikan terhubung internet.');cb(false);});
+}
+
+var AUDIO_EVERY={'05':'Alafasy_128kbps','10':'Husary_128kbps','12':'Ahmed_ibn_Ali_al-Ajamy_128kbps','13':'Muhammad_Ayyoub_128kbps','14':'Maher_AlMuaiqly_128kbps','01':'Alafasy_128kbps','02':'Alafasy_128kbps','04':'Alafasy_128kbps','06':'Alafasy_128kbps'};
+var AUDIO_IN={'05':'ar.alafasy','10':'ar.husary','12':'ar.ahmedajamy','13':'ar.muhammadayyoub','14':'ar.mahermuaiqly','01':'ar.alafasy','02':'ar.alafasy','04':'ar.alafasy','06':'ar.alafasy'};
+var EQURAN_QARIS=['01','02','04','05','06'];
+function getQariName(k){var m={'01':'Abdullah-Al-Juhany','02':'Abdul-Muhsin-Al-Qasim','04':'Ibrahim-Al-Dossari','05':'Misyari-Rasyid-Al-Afasi','06':'Yasser-Al-Dosari'};return m[k]||'Misyari-Rasyid-Al-Afasi';}
+function getSelectedQari(){var el=$('qariSelect');return el?el.value:'05';}
+
+function ayahUrls(ay,qk){
+  var u=[];
+  if(EQURAN_QARIS.indexOf(qk)>=0)u.push('https://cdn.equran.id/audio-partial/'+getQariName(qk)+'/'+pad3(ay.s)+pad3(ay.a)+'.mp3');
+  u.push('https://everyayah.com/data/'+(AUDIO_EVERY[qk]||'Alafasy_128kbps')+'/'+pad3(ay.s)+pad3(ay.a)+'.mp3');
+  if(ay.g)u.push('https://cdn.islamic.network/quran/audio/128/'+(AUDIO_IN[qk]||'ar.alafasy')+'/'+ay.g+'.mp3');
+  if(EQURAN_QARIS.indexOf(qk)<0)u.push('https://cdn.equran.id/audio-partial/Misyari-Rasyid-Al-Afasi/'+pad3(ay.s)+pad3(ay.a)+'.mp3');
+  return u;
+}
+function basmalahUrls(qk){
+  var u=[];
+  if(EQURAN_QARIS.indexOf(qk)>=0)u.push('https://cdn.equran.id/audio-partial/'+getQariName(qk)+'/001001.mp3');
+  u.push('https://everyayah.com/data/'+(AUDIO_EVERY[qk]||'Alafasy_128kbps')+'/001001.mp3');
+  u.push('https://cdn.islamic.network/quran/audio/128/'+(AUDIO_IN[qk]||'ar.alafasy')+'/1.mp3');
+  u.push('https://everyayah.com/data/Alafasy_128kbps/001001.mp3');
+  return u;
+}
+function playFromUrls(u,onend,onfail){
+  keepAudioAlive();
+  var i=0;
+  function nx(){
+    if(i>=u.length){if(onfail)onfail();return;}
+    player.src=u[i];i++;
+    player.onended=function(){if(onend)onend();};
+    player.onerror=function(){nx();};
+    var p=player.play();
+    if(p&&p['catch'])p['catch'](function(){});
+  }
+  nx();
+}
+function playGlobal(ay,onend,onfail,skipBas){
+  var qk=getSelectedQari();
+  var nb=(ay.n===1&&ay.s!==1&&ay.s!==9&&qk!=='12'&&!skipBas);
+  if(nb){
+    playFromUrls(basmalahUrls(qk),function(){playFromUrls(ayahUrls(ay,qk),onend,onfail);},function(){playFromUrls(ayahUrls(ay,qk),onend,onfail);});
+  }else{
+    playFromUrls(ayahUrls(ay,qk),onend,onfail);
+  }
+}
+function playAyahChain(list,idx,qk,onend,onfail){
+  if(idx>=list.length){if(onend)onend();return;}
+  var a=list[idx];
+  highlight(a.el);
+  playFromUrls(ayahUrls(a,qk),function(){playAyahChain(list,idx+1,qk,onend,onfail);},function(){playAyahChain(list,idx+1,qk,onend,onfail);});
+}
+
+function renderInfo(nm,cnt,type,ar){
+  var el=$('surahInfo');if(!el)return;el.innerHTML='';
+  var a=document.createElement('span');a.className='nm';a.textContent=nm;el.appendChild(a);
+  if(ar){var b=document.createElement('span');b.className='ar';b.textContent=ar;el.appendChild(b);}
+  var c=document.createElement('span');c.className='meta';c.textContent=cnt+' ayat'+(type?' · '+type:'');el.appendChild(c);
+}
+function highlight(el){
+  document.querySelectorAll('.ayah.playing').forEach(function(x){x.classList.remove('playing');});
+  if(el){el.classList.add('playing');el.scrollIntoView({block:'center',behavior:'smooth'});}
+}
+function clearHighlight(el){if(el)el.classList.remove('playing');}
+
+function renderAyahs(list,grouped){
+  stopSeq();
+  var box=$('ayahList');if(!box)return;box.innerHTML='';AY=[];
+  var lastS=0;
+  list.forEach(function(a){
+    if(grouped&&a.sNum!==lastS){
+      lastS=a.sNum;
+      var hd=document.createElement('div');hd.className='surah-head';hd.textContent='QS '+a.sNum+' · '+a.sName;
+      box.appendChild(hd);
+      if(a.sNum!==1&&a.sNum!==9)renderBasmalah(box);
+    }
+    if(!grouped&&a===list[0]&&a.sNum!==1&&a.sNum!==9){renderBasmalah(box);}
+    var div=document.createElement('div');div.className='ayah';
+    var top=document.createElement('div');top.className='ayah-top';
+    var bd=document.createElement('span');bd.className='ayah-badge';bd.textContent=a.sNum+':'+a.n;
+    var pl=document.createElement('button');pl.className='ayah-play';pl.textContent='▶ dengar';
+    pl.addEventListener('click',function(){
+      highlight(div);
+      playGlobal(a,function(){clearHighlight(div);},function(){toast('Audio tidak tersedia 😔');});
+    });
+    top.appendChild(bd);top.appendChild(pl);
+    var arText=(a.n===1&&a.sNum!==1&&a.sNum!==9)?stripBasmalah(a.ar):a.ar;
+    var ar=document.createElement('div');ar.className='arabic';ar.textContent=arText;
+    div.appendChild(top);div.appendChild(ar);
+    if(a.id){var tr=document.createElement('div');tr.className='ayah-tr';tr.textContent=a.id;div.appendChild(tr);}
+    box.appendChild(div);
+    AY.push({g:a.g,s:a.sNum,a:a.n,el:div});
+  });
+}
+function loadSurah(n){
+  state.quran.last=n;save();
+  if(!DB)return;
+  var m=META[n-1];
+  renderInfo(m[0],m[1],m[2]==='D'?'Madaniyah':'Makkiyah',m[3]);
+  renderAyahs(DB[n]||[],false);
+}
+function loadJuz(j){
+  state.quran.lastJuz=j;save();
+  if(!DB)return;
+  var list=[];
+  for(var s=1;s<=114;s++){
+    var su=DB[s];if(!su)continue;
+    for(var i=0;i<su.length;i++){if(su[i].j===j)list.push(su[i]);}
+  }
+  renderInfo('Juz '+j,list.length,'','');
+  renderAyahs(list,true);
+}
+
+function startSeq(){
+  if(!AY.length){toast('Muat dulu ayatnya ya 😊');return;}
+  seqOn=true;seqI=0;seqRewarded=false;
+  var bs=$('seqStop');if(bs)bs.style.display='';
+  toast('🎧 Baca bareng dimulai…');
+  nextSeq();
+}
+function nextSeq(){
+  if(!seqOn)return;
+  if(seqI>=AY.length){
+    stopSeq();
+    if(!seqRewarded){seqRewarded=true;touchStreak();addXP(10,"Muroja'ah selesai! 🌹");}
+    return;
+  }
+  var a=AY[seqI];
+  highlight(a.el);
+  playGlobal(a,function(){seqI++;nextSeq();},function(){seqI++;nextSeq();},true);
+}
+function stopSeq(){
+  seqOn=false;
+  player.pause();
+  player.onended=null;
+  player.onerror=null;
+  document.querySelectorAll('.ayah.playing').forEach(function(x){x.classList.remove('playing');});
+  var s=$('seqStop');if(s)s.style.display='none';
+}
+function playSurahFull(){
+  if(!DB){toast('Data Qur\'an belum termuat 😔');return;}
+  var n=parseInt($('surahSelect').value,10);
+  var qk=getSelectedQari();
+  var list=DB[n];
+  if(!list||!list.length){toast('Data surah belum ada 😔');return;}
+  stopSeq();
+  toast('🎧 Memutar murottal…');
+  var start=function(){
+    playAyahChain(list,0,qk,function(){toast('✅ Murottal surah selesai 🌹');},function(){toast('Audio tidak tersedia 😔');});
+  };
+  if(n!==1&&n!==9&&qk!=='12'){playFromUrls(basmalahUrls(qk),start,start);}else{start();}
+}
+
+var SITUATIONS=[
+  {id:'sedih',l:'😢 Sedih',p:[{s:94,a:[1,8]},{s:93,a:[1,11]}]},
+  {id:'cemas',l:'😰 Cemas',p:[{s:13,a:[28,28]},{s:39,a:[53,53]}]},
+  {id:'syukur',l:'🥰 Bersyukur',p:[{s:14,a:[7,7]},{s:55,a:[13,13]}]},
+  {id:'sabar',l:'🌾 Butuh Sabar',p:[{s:2,a:[153,153]},{s:3,a:[200,200]}]},
+  {id:'rezeki',l:'💼 Memohon Rezeki',p:[{s:65,a:[2,3]},{s:67,a:[15,15]}]},
+  {id:'sendiri',l:'🌙 Merasa Sendiri',p:[{s:50,a:[16,16]},{s:2,a:[186,186]}]},
+  {id:'ampun',l:'🤍 Meminta Ampun',p:[{s:39,a:[53,53]},{s:4,a:[110,110]}]},
+  {id:'lindung',l:'🛡️ Ingin Terlindungi',p:[{s:2,a:[255,255]},{s:113,a:[1,5]}]}
+];
+function buildReco(){
+  var b=$('recoChips');if(!b)return;
+  SITUATIONS.forEach(function(s){
+    var x=document.createElement('button');x.className='r-chip';x.textContent=s.l;
+    x.addEventListener('click',function(){
+      b.querySelectorAll('.r-chip').forEach(function(y){y.classList.remove('on');});
+      x.classList.add('on');showReco(s);
+    });
+    b.appendChild(x);
+  });
+}
+function showReco(s){
+  var out=$('recoResult');if(!out)return;out.innerHTML='';
+  if(!DB){out.innerHTML='<p style="color:var(--ink-soft)">Data belum termuat. Buka saat terhubung internet dulu ya 🙏</p>';return;}
+  s.p.forEach(function(p){
+    var su=DB[p.s];if(!su)return;
+    su.forEach(function(a){
+      if(a.n<p.a[0]||a.n>p.a[1])return;
+      var div=document.createElement('div');div.className='ayah';
+      var top=document.createElement('div');top.className='ayah-top';
+      var bd=document.createElement('span');bd.className='ayah-badge';bd.textContent=a.sNum+':'+a.n;
+      var pl=document.createElement('button');pl.className='ayah-play';pl.textContent='▶ dengar';
+      pl.addEventListener('click',function(){highlight(div);playGlobal(a,function(){clearHighlight(div);},function(){toast('Audio tidak tersedia 😔');});});
+      top.appendChild(bd);top.appendChild(pl);
+      var arText=(a.n===1&&a.sNum!==1&&a.sNum!==9)?stripBasmalah(a.ar):a.ar;
+      var ar=document.createElement('div');ar.className='arabic';ar.textContent=arText;
+      div.appendChild(top);div.appendChild(ar);
+      if(a.id){var tr=document.createElement('div');tr.className='ayah-tr';tr.textContent=a.id;div.appendChild(tr);}
+      out.appendChild(div);
+    });
+  });
+}
+
+function buildHafGrid(){
+  var g=$('hafGrid');if(!g)return;g.innerHTML='';
+  for(var i=1;i<=114;i++){
+    (function(n){
+      var st=(state.quran.hafal[n])||0;
+      var c=document.createElement('button');c.className='haf-cell st'+st;c.textContent=n;c.title=META[n-1][0];
+      c.addEventListener('click',function(){cycleHaf(n,c);});
+      g.appendChild(c);
+    })(i);
+  }
+  renderHafProg();
+}
+function cycleHaf(n,c){
+  var cur=(state.quran.hafal[n])||0;
+  var nx=(cur+1)%3;
+  state.quran.hafal[n]=nx;save();
+  c.className='haf-cell st'+nx;
+  if(nx===2&&cur!==2){touchStreak();addXP(25,'Surah '+META[n-1][0]+' HAFAL! 🏆');}
+  else{toast(META[n-1][0]+': '+(nx===0?'belum':(nx===1?'proses 🌱':'hafal 🏆')));}
+  renderHafProg();
+}
+function renderHafProg(){
+  var h=0;
+  for(var k in state.quran.hafal){if(state.quran.hafal[k]===2)h++;}
+  var f=$('hafFill');if(f)f.style.width=Math.round(h/114*100)+'%';
+  var t=$('hafTxt');
+  if(t)t.textContent=h+' / 114 surah dihafal'+(h>=30?' — Masya Allah, Khatam Hafizh! 🏆':'');
+}
+
+/* ===== DOA ===== */
+var DOA_HARIAN=[
+  {t:'🍽️ Sebelum Makan',ar:'بِسْمِ اللهِ، اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ',la:"Bismillah. Allahumma barik lana fima razaqtana wa qina adzaban-nar.",id:'Dengan nama Allah. Ya Allah, berkahilah rezeki kami dan jagalah kami dari api neraka.',m:'Membawa berkah pada makanan dan menjauhkan setan dari rezeki kita.',s:'HR. Abu Dawud & Ibnu Majah'},
+  {t:'🍽️ Sesudah Makan',ar:'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ',la:"Alhamdulillahilladzi ath'amana wa saqana wa ja'alana muslimin.",id:'Segala puji bagi Allah yang memberi kami makan dan minum, serta menjadikan kami muslim.',m:'Menjadi sebab diampuninya dosa dan menumbuhkan syukur.',s:'HR. Abu Dawud & Tirmidzi'},
+  {t:'🌙 Sebelum Tidur',ar:'بِاسْمِكَ اللَّهُمَّ أَحْيَا وَبِاسْمِكَ أَمُوتُ',la:"Bismika Allahumma ahya wa bismika amut.",id:'Dengan nama-Mu ya Allah aku hidup, dan dengan nama-Mu aku mati.',m:'Perlindungan selama tidur; bila wafat, wafat dalam fitrah.',s:'HR. Bukhari & Muslim'},
+  {t:'🌅 Bangun Tidur',ar:'الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ',la:"Alhamdulillahilladzi ahyana ba'da ma amatana wa ilaihin-nusyur.",id:'Segala puji bagi Allah yang menghidupkan kami setelah mematikan kami.',m:'Membuka hari dengan syukur dan pengingat kebangkitan.',s:'HR. Bukhari'},
+  {t:'🚪 Masuk Kamar Mandi',ar:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبْثِ وَالْخَبَائِثِ',la:"Allahumma inni a'udzu bika minal-khubutsi wal-khabaits.",id:'Ya Allah, aku berlindung kepada-Mu dari godaan setan laki-laki dan perempuan.',m:'Menjadi penghalang antara pandangan jin dan aurat kita.',s:'HR. Bukhari & Muslim'},
+  {t:'🚪 Keluar Kamar Mandi',ar:'غُفْرَانَكَ الْحَمْدُ لِلَّهِ الَّذِي أَذْهَبَ عَنِّي الْأَذَى وَعَافَانِي',la:"Ghufrānaka, alhamdulillāhil-ladzī adzhaba 'annil-adzā wa 'āfānī.",id:'Ya Allah, aku memohon ampunan-Mu. Segala puji bagi Allah yang telah menghilangkan penyakit dariku dan menyehatkanku.',m:'Mengajarkan istighfar sekaligus syukur atas kesehatan setelah membuang kotoran.',s:'HR. Abu Dawud, Ibnu Majah & Tirmidzi'},
+  {t:'💧 Sesudah Wudu',ar:'أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ',la:"Asyhadu an la ilaha illallah wahdahu la syarika lah, wa asyhadu anna Muhammadan abduhu wa rasuluh.",id:'Aku bersaksi tiada tuhan selain Allah, dan Muhammad hamba dan utusan-Nya.',m:'Dibukakan delapan pintu surga untuk dipilihnya.',s:'HR. Muslim'},
+  {t:'🏠 Masuk Rumah',ar:'بِسْمِ اللهِ وَلَجْنَا وَبِسْمِ اللهِ خَرَجْنَا وَعَلَى اللهِ تَوَكَّلْنَا',la:"Bismillahi walajna wa bismillahi kharajna wa alallahi tawakkalna.",id:'Dengan nama Allah kami masuk dan keluar, dan kepada Allah kami bertawakal.',m:'Rumah diberkahi dan hati tertaut pada tawakal.',s:'HR. Abu Dawud'},
+  {t:'🚶 Keluar Rumah',ar:'بِسْمِ اللهِ تَوَكَّلْتُ عَلَى اللهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ',la:"Bismillahi tawakkaltu alallahi wa la hawla wa la quwwata illa billah.",id:'Dengan nama Allah, aku bertawakal kepada-Nya.',m:'Dijamin petunjuk, perlindungan, dan kecukupan dari Allah.',s:'HR. Abu Dawud & Tirmidzi'},
+  {t:'🕌 Masuk Masjid',ar:'اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ',la:"Allahumma-ftah li abwaba rahmatik.",id:'Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu.',m:'Memohon dibukakan pintu rahmat saat memasuki rumah Allah.',s:'HR. Muslim'},
+  {t:'🕌 Keluar Masjid',ar:'اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ',la:"Allahumma inni as'aluka min fadlik.",id:'Ya Allah, aku memohon kepada-Mu dari karunia-Mu.',m:'Memohon karunia Allah saat kembali ke urusan dunia.',s:'HR. Muslim'},
+  {t:'📢 Mendengar Adzan',ar:'اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ',la:"Allāhumma rabba hādzihid-da'watit-tāmmah wash-shalātil-qā'imah, āti Muhammadanil-wasīlata wal-fadīlah, wab'atshu maqāmam-mahmūdanil-ladzī wa'adtah.",id:'Ya Allah, Tuhan pemilik seruan yang sempurna dan shalat yang didirikan ini, berikanlah kepada Nabi Muhammad wasilah dan keutamaan, dan bangkitkanlah beliau pada kedudukan terpuji yang telah Engkau janjikan.',m:'Barangsiapa membaca doa ini setelah adzan, ia berhak mendapatkan syafaat Nabi ﷺ di hari kiamat.',s:'HR. Bukhari (no. 614)'},
+  {t:'👨 Untuk Kedua Orang Tua',ar:'رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا',la:"Rabbighfir li wa liwalidayya warhamhuma kama rabbayani shaghira.",id:'Ya Tuhanku, ampunilah aku dan kedua orang tuaku.',m:'Bentuk birrul walidain; doa anak saleh yang pahalanya tak terputus.',s:'QS. Al-Isra: 24 & HR. Muslim'},
+  {t:'🌧️ Ketika Hujan',ar:'اللَّهُمَّ صَيِّبًا نَافِعًا',la:"Allahumma shayyiban nafi'an.",id:'Ya Allah, turunkanlah hujan yang bermanfaat.',m:'Mengubah hujan menjadi rahmat yang bermanfaat.',s:'HR. Bukhari'},
+  {t:'😤 Ketika Marah',ar:'أَعُوذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ',la:"A'udzu billahi minasy-syaithanir-rajim.",id:'Aku berlindung kepada Allah dari setan yang terkutuk.',m:'Meredam amarah dan mengusir bisikan setan.',s:'HR. Bukhari & Muslim'},
+  {t:'🚗 Ketika Berkendara',ar:'سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ',la:"Subhanalladzi sakhkhara lana hadza wa ma kunna lahu muqrinin wa inna ila rabbina lamunqalibun.",id:'Mahasuci Tuhan yang menundukkan semua ini bagi kami.',m:'Perlindungan dalam perjalanan dan pengingat pulang kepada Allah.',s:'QS. Az-Zukhruf: 13-14'},
+  {t:'📚 Sebelum Belajar',ar:'رَبِّ زِدْنِي عِلْمًا وَارْزُقْنِي فَهْمًا',la:"Rabbi zidnī 'ilmā warzuqnī fahmā.",id:'Ya Tuhanku, tambahkanlah ilmuku dan anugerahkanlah aku pemahaman.',m:'Membuka hati dan pikiran untuk menerima ilmu; bentuk tawakal kepada Allah sebelum belajar.',s:'QS. Thaha: 114'}
+];
+var DOA_NABI=[
+  {t:'🌿 Nabi Adam (QS 7:23)',ar:'رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ',la:"Rabbanā zhalamnā anfusanā wa il lam taghfir lanā wa tarhamnā lanakūnanna minal-khāsirīn.",id:'Ya Tuhan kami, kami telah menzalimi diri kami sendiri. Jika Engkau tidak mengampuni kami dan merahmati kami, niscaya kami termasuk orang-orang yang merugi.',m:'Pembuka pintu taubat yang paling sempurna; mengakui dosa sekaligus memohon ampun dan rahmat.',s:'QS. Al-A\'raf: 23'},
+  {t:'🐋 Nabi Yunus (QS 21:87)',ar:'لَا إِلَهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ',la:"La ilaha illa anta subhanaka inni kuntu minazh-zhalimin.",id:'Tidak ada tuhan selain Engkau, Mahasuci Engkau. Sungguh aku termasuk orang-orang yang zalim.',m:'Jalan keluar dari kesempitan.',s:'QS. Al-Anbiya: 87'},
+  {t:'🏔️ Nabi Musa (QS 20:25-28)',ar:'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِّن لِّسَانِي يَفْقَهُوا قَوْلِي',la:"Rabbisyrah lī shadrī wa yassir lī amrī wahlul 'uqdatam min lisānī yafqahū qawlī.",id:'Ya Tuhanku, lapangkanlah dadaku, mudahkanlah urusanku, dan lepaskanlah kekakuan dari lidahku, agar mereka memahami perkataanku.',m:'Kelapangan dada, kemudahan urusan, dan kelancaran berbicara — cocok sebelum presentasi, wawancara, atau berdakwah.',s:'QS. Thaha: 25-28'},
+  {t:'🕋 Nabi Ibrahim (QS 14:40)',ar:'رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِن ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاءِ',la:"Rabbij'alni muqimash-shalati wa min dhurriyyati rabbana wa taqabbal du'a.",id:'Ya Tuhanku, jadikanlah aku dan keturunanku orang yang mendirikan sholat.',m:'Istiqamah sholat bagi diri dan keturunan.',s:'QS. Ibrahim: 40'},
+  {t:'👑 Nabi Sulaiman (QS 27:19)',ar:'رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ وَعَلَى وَالِدَيَّ وَأَنْ أَعْمَلَ صَالِحًا تَرْضَاهُ',la:"Rabbi awzi'nī an asykura ni'matakal-latī an'amta 'alayya wa 'alā wālidayya wa an a'mala shālihan tardhāh.",id:'Ya Tuhanku, ilhamkanlah aku untuk mensyukuri nikmat-Mu yang telah Engkau anugerahkan kepadaku dan kepada kedua orang tuaku, dan agar aku mengerjakan amal saleh yang Engkau ridhai.',m:'Melatih syukur atas nikmat pribadi dan keluarga, sekaligus memohon taufik untuk amal saleh.',s:'QS. An-Naml: 19'},
+  {t:'🤲 Nabi Zakariya (QS 21:89)',ar:'رَبِّ لَا تَذَرْنِي فَرْدًا وَأَنتَ خَيْرُ الْوَارِثِينَ',la:"Rabbi la tadzarni fardan wa anta khairul-waritsin.",id:'Ya Tuhanku, janganlah Engkau biarkan aku hidup seorang diri.',m:'Permohonan keturunan yang saleh.',s:'QS. Al-Anbiya: 89-90'},
+  {t:'💧 Nabi Musa (QS 28:24)',ar:'رَبِّ إِنِّي لِمَا أَنزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ',la:"Rabbi inni lima anzalta ilayya min khairin faqir.",id:'Ya Tuhanku, sesungguhnya aku sangat memerlukan kebaikan.',m:'Pembuka pintu rezeki.',s:'QS. Al-Qashash: 24'},
+  {t:'🌹 Rasulullah (QS 2:201)',ar:'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',la:"Rabbana atina fid-dunya hasanah wa fil-akhirati hasanah wa qina adzaban-nar.",id:'Ya Tuhan kami, berilah kami kebaikan di dunia dan di akhirat.',m:'Merangkum kebaikan dunia-akhirat.',s:'QS. Al-Baqarah: 201'},
+  {t:'🌊 Nabi Nuh (QS 71:28)',ar:'رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ',la:"Rabbighfir li wa liwalidayya wa lil-mu'minina wal-mu'minat.",id:'Ya Tuhanku, ampunilah aku, kedua orang tuaku, dan semua orang beriman.',m:'Ampunan meluas.',s:'QS. Nuh: 28'},
+  {t:'🤒 Nabi Ayyub (QS 21:83)',ar:'أَنِّي مَسَّنِيَ الضُّرُّ وَأَنتَ أَرْحَمُ الرَّاحِمِينَ',la:"Anni massaniyad-dlurru wa anta arhamur-rahimin.",id:'Sesungguhnya aku telah ditimpa penyakit, padahal Engkau Maha Penyayang.',m:'Adab mengadu kepada Allah.',s:'QS. Al-Anbiya: 83-84'},
+  {t:'💞 Rasulullah (QS 3:8)',ar:'رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً',la:"Rabbana la tuzigh qulubana ba'da idz hadaitana wahab lana min ladunka rahmah.",id:'Ya Tuhan kami, janganlah Engkau condongkan hati kami kepada kesesatan.',m:'Peneguh hati.',s:'QS. Ali Imran: 8'},
+  {t:'🕊️ Rasulullah (QS 2:286)',ar:'رَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِن قَبْلِنَا رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا أَنتَ مَوْلَانَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ',la:"Rabbanā lā tu'ākhidznā in nasīnā aw akhtha'nā. Rabbanā wa lā tahmil 'alaynā ishran kamā hamaltahu 'alal-ladzīna min qablinā. Rabbanā wa lā tuhammilnā mā lā thāqata lanā bih. Wa'fu 'annā waghfir lanā warhamnā. Anta mawlānā fanshurnā 'alal-qawmil-kāfirīn.",id:'Ya Tuhan kami, janganlah Engkau hukum kami jika kami lupa atau tersalah. Ya Tuhan kami, janganlah Engkau bebankan kepada kami beban yang berat sebagaimana kepada orang-orang sebelum kami. Ya Tuhan kami, janganlah Engkau pikulkan kepada kami apa yang tidak sanggup kami memikulnya. Maafkanlah kami, ampunilah kami, dan rahmatilah kami. Engkaulah pelindung kami, maka tolonglah kami menghadapi orang-orang kafir.',m:'Barangsiapa membaca dua ayat terakhir Al-Baqarah di malam hari, maka keduanya mencukupinya.',s:'QS. Al-Baqarah: 286 & HR. Bukhari-Muslim'}
+];
+var DOA_KINI=[
+  {t:'🌅 Pembuka Hari',ar:'اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ',la:"Allāhumma bika ashbahnā wa bika amsaynā wa bika nahyā wa bika namūtu wa ilaikan-nusyūr.",id:'Ya Allah, dengan-Mu kami memasuki waktu pagi, dengan-Mu kami memasuki waktu sore, dengan-Mu kami hidup, dengan-Mu kami mati, dan kepada-Mu tempat kembali.',m:'Mengawali hari dengan penyerahan diri total kepada Allah.',s:'HR. Abu Dawud (no. 5068) & Tirmidzi'},
+  {t:'🧠 Overthinking / Cemas',ar:'حَسْبُنَا اللهُ وَنِعْمَ الْوَكِيلُ',la:"Hasbunallahu wa ni'mal-wakil.",id:'Cukuplah Allah menjadi penolong kami.',m:'Menenangkan hati dan menyerahkan hasil kepada Allah.',s:'QS. Ali Imran: 173'},
+  {t:'👨 Keluarga di Era Digital',ar:'رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا',la:"Rabbana hab lana min azwajina wa dhurriyyatina qurrata a'yun waj'alna lil-muttaqina imama.",id:'Ya Tuhan kami, anugerahkanlah pasangan dan keturunan penyejuk hati.',m:'Keluarga menjadi penyejuk hati dan teladan takwa.',s:'QS. Al-Furqan: 74'},
+  {t:'📱 Tergoda Membandingkan Diri',ar:'اللَّهُمَّ يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ',la:"Allahumma ya muqallibal-qulub tsabbit qalbi ala dinik.",id:'Ya Allah, teguhkanlah hatiku di atas agama-Mu.',m:'Menjaga hati dari iri dan gelisah.',s:'HR. Tirmidzi'},
+  {t:'🌊 Ilmu Tak Bermanfaat',ar:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عِلْمٍ لَا يَنْفَعُ وَمِنْ قَلْبٍ لَا يَخْشَعُ وَمِنْ نَفْسٍ لَا تَشْبَعُ',la:"Allahumma inni a'udzu bika min ilmin la yanfa', wa min qalbin la yakhsya', wa min nafsin la tasyba'.",id:'Ya Allah, aku berlindung dari ilmu yang tidak bermanfaat.',m:'Filter batin: ilmu bermanfaat, hati khusyuk, jiwa qanaah.',s:'HR. Muslim'},
+  {t:'🥹 Syukur saat Senang',ar:'الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ',la:"Alhamdulillahilladzi bi ni'matihi tatimmush-shalihat.",id:'Segala puji bagi Allah yang dengan nikmat-Nya segala kebaikan menjadi sempurna.',m:'Menyempurnakan nikmat dengan syukur.',s:'HR. Ibnu Majah'},
+  {t:'💳 Keuangan Seret',ar:'اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ',la:"Allahummakfini bihalalika an haramika wa aghnini bifadlika amman siwaka.",id:'Ya Allah, cukupkanlah aku dengan yang halal.',m:'Kecukupan dengan yang halal.',s:'HR. Tirmidzi'},
+  {t:'🎯 Rezeki, Ilmu & Amal',ar:'اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا',la:"Allāhumma innī as'aluka 'ilman nāfi'an wa rizqan thayyiban wa 'amalan mutaqabbalan.",id:'Ya Allah, aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang baik, dan amal yang diterima.',m:'Merangkum kebutuhan dunia-akhirat: ilmu, rezeki halal, dan ibadah yang diterima.',s:'HR. Ibnu Majah (no. 925)'}
+];
+function renderDoa(l){
+  var b=$('doaList');if(!b)return;b.innerHTML='';
+  (l||[]).forEach(function(d){
+    var c=document.createElement('div');c.className='doa-card';
+    var t=document.createElement('div');t.className='doa-t';t.textContent=d.t;
+    var ar=document.createElement('div');ar.className='doa-ar';ar.textContent=d.ar;
+    var la=document.createElement('div');la.className='doa-la';la.textContent=d.la;
+    var id=document.createElement('div');id.className='doa-id';id.textContent=d.id;
+    c.appendChild(t);c.appendChild(ar);c.appendChild(la);c.appendChild(id);
+    if(d.m){var m=document.createElement('div');m.className='doa-m';m.textContent='✨ Manfaat: '+d.m;c.appendChild(m);}
+    if(d.s){var s2=document.createElement('div');s2.className='doa-s';s2.textContent='📚 Sumber: '+d.s;c.appendChild(s2);}
+    b.appendChild(c);
+  });
+}
+
+function init(){
+  updateNetStatus();
+  renderChips();
+  var ss=$('surahSelect'),js2=$('juzSelect'),vm=$('viewMode'),qs=$('qariSelect');
+  if(ss){for(var s=1;s<=114;s++){var o=document.createElement('option');o.value=s;o.textContent=s+'. '+META[s-1][0];ss.appendChild(o);}}
+  if(js2){for(var j=1;j<=30;j++){var o2=document.createElement('option');o2.value=j;o2.textContent='Juz '+j;js2.appendChild(o2);}}
+  if(qs){QARIS.forEach(function(q){var o3=document.createElement('option');o3.value=q.k;o3.textContent=q.n;qs.appendChild(o3);});}
+  if(ss)ss.value=String(state.quran.last||1);
+  if(js2)js2.value=String(state.quran.lastJuz||1);
+  if(ss)ss.addEventListener('change',function(){loadSurah(parseInt(ss.value,10));});
+  if(js2)js2.addEventListener('change',function(){loadJuz(parseInt(js2.value,10));});
+  if(vm)vm.addEventListener('change',function(){
+    viewMode=vm.value;
+    var isJ=(viewMode==='juz');
+    if(ss)ss.style.display=isJ?'none':'';
+    if(js2)js2.style.display=isJ?'':'none';
+    var ps=$('playSurahBtn');if(ps)ps.style.display=isJ?'none':'';
+    if(isJ)loadJuz(parseInt(js2.value,10));
+    else if(ss)loadSurah(parseInt(ss.value,10));
+  });
+  var mS=$('modeSendiri'),mB=$('modeBareng'),bS=$('seqStart'),bSt=$('seqStop');
+  if(mS)mS.addEventListener('click',function(){mS.classList.add('on');mB.classList.remove('on');if(bS)bS.style.display='none';if(bSt)bSt.style.display='none';stopSeq();});
+  if(mB)mB.addEventListener('click',function(){mB.classList.add('on');mS.classList.remove('on');if(bS)bS.style.display='';toast('🎧 Mode baca bareng aktif');});
+  if(bS)bS.addEventListener('click',startSeq);
+  if(bSt)bSt.addEventListener('click',function(){stopSeq();toast('Sesi berhenti 🌿');});
+  var psb=$('playSurahBtn');if(psb)psb.addEventListener('click',playSurahFull);
+  var tH=$('tabHarian'),tN=$('tabNabi'),tK=$('tabKini');
+  function setTab(a,b,c,l){
+    if(tH)tH.classList.toggle('on',a);
+    if(tN)tN.classList.toggle('on',b);
+    if(tK)tK.classList.toggle('on',c);
+    renderDoa(l);
+  }
+  if(tH)tH.addEventListener('click',function(){setTab(true,false,false,DOA_HARIAN);});
+  if(tN)tN.addEventListener('click',function(){setTab(false,true,false,DOA_NABI);});
+  if(tK)tK.addEventListener('click',function(){setTab(false,false,true,DOA_KINI);});
+  renderDoa(DOA_HARIAN);
+  buildReco();
+  buildHafGrid();
+  loadDB(function(ok){
+    if(ok){
+      toast('✅ Data Qur\'an termuat!',true);
+      if(vm&&vm.value==='juz'&&js2)loadJuz(parseInt(js2.value,10));
+      else if(ss)loadSurah(parseInt(ss.value,10));
+    }else{
+      toast('⚠️ Gagal memuat data. Pastikan terhubung internet.');
+    }
+  });
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
+})();
+</script>
+</body>
+</html>
