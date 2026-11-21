@@ -1,4 +1,4 @@
-/* NYALA app.js — VERSI STABIL FINAL (FIXED SYNTAX) */
+/* NYALA app.js — VERSI FINAL STABIL (VALIDASI MANUAL) */
 (function(){
 'use strict';
 var deferredPrompt=null;
@@ -63,7 +63,7 @@ var notes=[523.25,659.25,783.99],t0=audioCtx.currentTime;
 notes.forEach(function(f,i){
 var o=audioCtx.createOscillator(),g=audioCtx.createGain();
 o.type='sine';o.frequency.value=f;
-// FIXED: Operator perkalian (*) ditambahkan kembali
+// FIXED: Operator perkalian (*) ditambahkan
 g.gain.setValueAtTime(0.0001,t0+i*0.11);
 g.gain.exponentialRampToValueAtTime(0.16,t0+i*0.11+0.02);
 g.gain.exponentialRampToValueAtTime(0.0001,t0+i*0.11+0.45);
@@ -94,7 +94,7 @@ if(!ctxC)ctxC=cfx.getContext('2d');
 for(var i=0;i<n;i++){
 parts.push({
 x:x!=null?x:Math.random()*cfx.width,
-// FIXED: Operator perkalian (*) ditambahkan kembali
+// FIXED: Operator perkalian (*) ditambahkan
 y:y!=null?y:Math.random()*cfx.height*0.3,
 vx:(Math.random()-0.5)*7,
 vy:Math.random()-4-1,
@@ -167,7 +167,7 @@ return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;
 }
 function sunPos(jd){
 var D=jd-2451545.0;
-// FIXED: Operator perkalian (*) ditambahkan kembali
+// FIXED: Operator perkalian (*) ditambahkan
 var g=rad(fixA(357.529+0.98560028*D));
 var q=fixA(280.459+0.98564736*D);
 var L=rad(fixA(q+1.915*Math.sin(g)+0.020*Math.sin(2*g)));
@@ -337,9 +337,9 @@ var MOOD_META=[
 {e:'🤩',pct:95,label:'Mode turbo!'}
 ];
 var MOOD_LINES=[
-['Nggak apa-apa, kita curi start 2 menit aja — sisanya bonus 🐢','Rebahan boleh, tapi sambil nunggu timer kilat ya 😉','Gerak dikiiit aja dulu. Mood biasanya nyusul belakangan 🐌'],
-['Mode hemat energi: pilih satu hal yang paling ringan ','Kamu tetap keren walau pelan. Istirahat juga bagian dari progres ','Rehat 5 menit dulu, lanjut kalau sudah siap 🌿'],
-['Mulai dari yang 2 menit aja. Pelan tapi jalan 👌','Satu langkah kecil > seribu niat. Yuk mulai?','Pemanasan dulu: pilih satu tugas termudah ☕'],
+['Nggak apa-apa, kita curi start 2 menit aja — sisanya bonus 🐢','Rebahan boleh, tapi sambil nunggu timer kilat ya 😉','Gerak dikiiit aja dulu. Mood biasanya nyusul belakangan '],
+['Mode hemat energi: pilih satu hal yang paling ringan ','Kamu tetap keren walau pelan. Istirahat juga bagian dari progres ','Rehat 5 menit dulu, lanjut kalau sudah siap '],
+['Mulai dari yang 2 menit aja. Pelan tapi jalan 👌','Satu langkah kecil > seribu niat. Yuk mulai?','Pemanasan dulu: pilih tugas termudah ☕'],
 ['Mood bagus = waktu emas. Gas satu prioritas! ✨','Senyum dulu, lalu hajar satu tugas kecil 😄','Energi positifmu pas banget buat fokus sebentar 🌈'],
 ['Wah, energi penuh! Sikat tugas paling susah dulu 🔥','Gas sekarang mumpung lagi on fire! ⚡','Kamu lagi mode turbo — jangan lupa minum air ya 😄']
 ];
@@ -443,7 +443,7 @@ function attachGrip(li,t){
 var grip=li.querySelector('.t-grip');
 if(!grip)return;
 var pid=null,timer=null,startX=0,startY=0,dragging=false;
-// FIXED: Typo 'func tion' diperbaiki menjadi 'function'
+// FIXED: Typo 'func tion' diperbaiki menjadi 'function', '&&' diperbaiki
 grip.addEventListener('pointerdown',function(e){
 if(e.pointerType==='mouse' && e.button!==0)return;
 pid=e.pointerId;startX=e.clientX;startY=e.clientY;dragging=false;
