@@ -1,9 +1,8 @@
-/* NYALA i18n v8 — MESIN SAJA. Tidak menyimpan kamus apa pun di sini.
-   Tombol ID/EN + mute dipasang TERLEBIH DAHULU dan tidak bergantung pada data terjemahan,
-   sehingga sakelar tidak akan pernah hilang meski file kamus bermasalah.
-   Kamus dibaca dari i18n-dict.json (aman: gagal baca = tetap ID, tombol tetap ada).
+/* NYALA i18n v9 — mesin ringan: hasil terjemahan di-cache (memo), observer di-debounce
+   + circuit breaker, tidak pernah menimpa teks hasil terjemahan sendiri.
+   Tombol ID/EN + mute dipasang lebih dulu, tidak bergantung pada kamus.
    Teks Arab & transliterasi latin tidak pernah diterjemahkan.
-   Tulisan buatan pengguna (tugas, syukur, nama, habit) tidak pernah diterjemahkan. */
+   Tulisan buatan pengguna tidak pernah diterjemahkan. */
 (function(){
 'use strict';
 var LS="nyala_lang", LM="nyala_muted", lang="id", muted=false;
@@ -15,7 +14,7 @@ try{
   if(navigator.serviceWorker){
     navigator.serviceWorker.addEventListener("message",function(ev){
       if(ev.data==="NYALA_RELOAD"){
-        var k="nyala_sw_reload_v8";
+        var k="nyala_sw_reload_v9";
         try{ if(!sessionStorage.getItem(k)){ sessionStorage.setItem(k,"1"); setTimeout(function(){location.reload();},350); } }catch(e2){}
       }
     });
@@ -75,37 +74,44 @@ var PAT=[
 
 var ARABIC=/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
 function core(s){return String(s).replace(/\u00a0/g," ").replace(/^\s+/,"").replace(/\s+$/,"");}
+var memo=new Map();
+function D(){return window.__nyalaDict||{};}
 function tr(s){
   if(typeof s!=="string")return s;
   var c=core(s);
   if(!c)return s;
   if(ARABIC.test(c))return s;
-  var D=window.__nyalaDict||{};
-  if(Object.prototype.hasOwnProperty.call(D,c))return D[c];
-  for(var i=0;i<PAT.length;i++){var m=c.match(PAT[i].re);if(m)return PAT[i].f(m);}
-  return s;
+  if(memo.has(c))return memo.get(c);
+  var out=c;
+  var d=D();
+  if(Object.prototype.hasOwnProperty.call(d,c))out=d[c];
+  else{
+    for(var i=0;i<PAT.length;i++){var m=c.match(PAT[i].re);if(m){out=PAT[i].f(m);break;}}
+  }
+  memo.set(c,out);
+  return out;
 }
 window.__nyalaT=function(s,dir){return dir==="en"?tr(s):s;};
 
-var origT=new WeakMap(),origA=new WeakMap(),origB=new WeakMap(),applying=false;
+var origT=new WeakMap(),origA=new WeakMap(),origB=new WeakMap(),ours=new WeakSet(),applying=false;
 var SKIP=".d-chip,[lang=\"ar\"],[dir=\"rtl\"],.arab,.arabic,.latin,.translit,.transliteration,[data-en],.t-text,.h-name,#nameChip,#dayOvList,#dayOvSyukur,.nyala-tools";
 function protectedEl(el){return !!(el&&el.closest&&el.closest(SKIP));}
 function trText(node,refresh){
   if(applying||protectedEl(node.parentElement))return;
   var cur=node.nodeValue;if(cur==null)return;
-  if(refresh||!origT.has(node))origT.set(node,cur);
+  if(!origT.has(node)||!ours.has(node))origT.set(node,cur);
   var orig=origT.get(node);
   var want=lang==="en"?tr(orig):core(orig);
   var lead=/^\s*/.exec(cur)[0],trail=/\s*$/.exec(cur)[0];
   var out=(lang==="en")?(lead+want+trail):orig;
-  if(out!==cur){applying=true;node.nodeValue=out;applying=false;}
+  if(out!==cur){applying=true;node.nodeValue=out;applying=false;ours.add(node);}
 }
 var ATTRS=["placeholder","title","aria-label"];
-function trAttr(el,name,refresh){
+function trAttr(el,name){
   if(applying||protectedEl(el))return;
   var cur=el.getAttribute(name);if(cur==null)return;
   var store=origA.get(el);if(!store){store={};origA.set(el,store);}
-  if(refresh||!(name in store))store[name]=cur;
+  if(!(name in store))store[name]=cur;
   var out=lang==="en"?tr(store[name]):store[name];
   if(out!==cur){applying=true;el.setAttribute(name,out);applying=false;}
 }
@@ -113,21 +119,15 @@ function bilingualEl(el){
   if(!el||!el.hasAttribute||!el.hasAttribute("data-en"))return;
   if(!origB.has(el))origB.set(el,el.textContent);
   var want=lang==="en"?el.getAttribute("data-en"):(el.getAttribute("data-id")||origB.get(el));
-  if(want!=null&&el.textContent!==want){applying=true;el.textContent=want;applying=false;}
-}
-function bilingual(root){
-  if(!root||!root.querySelectorAll)return;
-  bilingualEl(root);
-  var list=root.querySelectorAll("[data-en]");
-  for(var i=0;i<list.length;i++)bilingualEl(list[i]);
+  if(want!=null&&el.textContent!==want){applying=true;el.textContent=want;applying=false;ours.add(el);}
 }
 function walk(root){
   if(!root)return;
   if(root.nodeType===3){trText(root,false);return;}
   if(root.nodeType!==1&&root.nodeType!==9)return;
   if(root.nodeType===1){
-    bilingual(root);
-    for(var a=0;a<ATTRS.length;a++)trAttr(root,ATTRS[a],false);
+    bilingualEl(root);
+    for(var a=0;a<ATTRS.length;a++)trAttr(root,ATTRS[a]);
     if(protectedEl(root))return;
   }
   var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT,null,false);
@@ -135,8 +135,8 @@ function walk(root){
   while(n){
     if(n.nodeType===3)trText(n,false);
     else if(n.nodeType===1){
-      if(n.hasAttribute&&n.hasAttribute("data-en")){bilingual(n);}
-      else if(!protectedEl(n)){for(var b=0;b<ATTRS.length;b++)trAttr(n,ATTRS[b],false);}
+      if(n.hasAttribute&&n.hasAttribute("data-en")){bilingualEl(n);}
+      else if(!protectedEl(n)){for(var b=0;b<ATTRS.length;b++)trAttr(n,ATTRS[b]);}
     }
     n=w.nextNode();
   }
@@ -159,7 +159,6 @@ function paint(){
   mute.textContent=muted?"🔕":"🔔";
   mute.classList.toggle("off",muted);
   mute.setAttribute("aria-pressed",muted?"true":"false");
-  mute.title=muted?"Sound off — tap to unmute":"Sound on — tap to mute";
 }
 function setLang(l){
   lang=l;window.__nyalaLang=l;
@@ -182,7 +181,10 @@ window.confirm=function(msg){return _c.call(window,lang==="en"?tr(String(msg)):m
 window.prompt=function(msg,def){return _p.call(window,lang==="en"?tr(String(msg)):msg,def);};
 try{
   var _ft=CanvasRenderingContext2D.prototype.fillText;
-  CanvasRenderingContext2D.prototype.fillText=function(t,x,y,mw){return _ft.call(this,lang==="en"?tr(String(t)):t,x,y,mw);};
+  CanvasRenderingContext2D.prototype.fillText=function(t,x,y,mw){
+    if(lang==="en"&&typeof t==="string"&&/[A-Za-zÀ-ÿ]/.test(t)){t=tr(t);}
+    return _ft.call(this,t,x,y,mw);
+  };
 }catch(e){}
 try{
   var AC=window.AudioContext||window.webkitAudioContext;
@@ -199,24 +201,46 @@ try{
   }
 }catch(e){}
 
+/* Observer ringan: ditunda per frame, hanya body, dengan pemutus arus. */
 try{
+  var pending=new Set(),raf=0,storm=0,stormT=0,paused=false;
+  function flush(){
+    raf=0;
+    if(paused||pending.size===0)return;
+    var arr=[];pending.forEach(function(n){arr.push(n);});pending.clear();
+    storm+=arr.length;
+    if(!stormT){stormT=setTimeout(function(){stormT=0;storm=0;},1000);}
+    if(storm>2500){paused=true;setTimeout(function(){paused=false;storm=0;},1500);return;}
+    for(var i=0;i<arr.length;i++){
+      var n=arr[i];
+      if(!n||!n.isConnected&&n.nodeType===3)continue;
+      if(n.nodeType===3)trText(n,true);
+      else if(n.nodeType===1)walk(n);
+    }
+  }
+  function enqueue(n){
+    if(paused||applying)return;
+    pending.add(n);
+    if(!raf)raf=requestAnimationFrame(flush);
+  }
   var mo=new MutationObserver(function(muts){
-    if(applying)return;
     for(var i=0;i<muts.length;i++){
       var mu=muts[i];
-      if(mu.type==="characterData"){trText(mu.target,true);}
-      else if(mu.type==="attributes"){trAttr(mu.target,mu.attributeName,true);}
+      if(mu.type==="characterData"){enqueue(mu.target);}
       else if(mu.type==="childList"){
-        for(var j=0;j<mu.addedNodes.length;j++){var nd=mu.addedNodes[j];if(nd.nodeType===3)trText(nd,true);else if(nd.nodeType===1)walk(nd);}
+        for(var j=0;j<mu.addedNodes.length;j++){enqueue(mu.addedNodes[j]);}
       }
     }
   });
-  mo.observe(document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:ATTRS});
+  mo.observe(document.body,{childList:true,subtree:true,characterData:true});
 }catch(e){}
 
+/* Muat kamus; setelah tiba, cache dibersihkan lalu terjemahan ulang sekali. */
 try{
-  fetch("i18n-dict.json?nv=8",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("http");return r.json();}).then(function(d){
-    window.__nyalaDict=d||{};applyAll();
+  fetch("i18n-dict.json?nv=9",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("http");return r.json();}).then(function(d){
+    window.__nyalaDict=d||{};
+    memo.clear();
+    applyAll();
   }).catch(function(){ window.__nyalaDict=window.__nyalaDict||{}; });
 }catch(e){ window.__nyalaDict=window.__nyalaDict||{}; }
 })();
