@@ -348,8 +348,9 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   <button id="resetBtn">Mulai ulang dari nol (hapus semua data)</button>
 </footer>
 
-<div id="welcomeOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
-  <div style="max-width:420px;width:100%;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:26px 22px;text-align:center;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
+<div id="welcomeOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow:auto;">
+  <div style="max-width:420px;width:100%;margin:auto;position:relative;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:26px 22px;text-align:center;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
+    <button id="welcomeClose" aria-label="Tutup" style="position:absolute;top:10px;right:12px;border:none;background:none;color:#8a6f74;font-size:1.1rem;font-weight:800;cursor:pointer;">✕</button>
     <div style="font-size:2.6rem;">🌹</div>
     <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem;margin:8px 0 4px;color:#f2e4e6;">Selamat datang di NYALA</h2>
     <p style="color:#c9aeb2;font-size:.88rem;font-weight:600;margin-bottom:14px;">Sebelum mulai, siapa nama panggilanmu?</p>
@@ -359,8 +360,8 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   </div>
 </div>
 
-<div id="dayOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
-  <div style="max-width:460px;width:100%;max-height:80vh;overflow:auto;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:22px 20px;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
+<div id="dayOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow:auto;">
+  <div style="max-width:460px;width:100%;max-height:80vh;overflow:auto;margin:auto;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:22px 20px;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
       <h3 id="dayOvTitle" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.05rem;color:#f2e4e6;">—</h3>
       <button id="dayOvClose" style="border:none;background:none;color:#8a6f74;font-size:1.1rem;font-weight:800;cursor:pointer;">✕</button>
@@ -394,7 +395,14 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     },{rootMargin:'-45% 0px -50% 0px',threshold:0});
     Object.keys(map).forEach(function(id){var s=document.getElementById(id);if(s)obs.observe(s);});
   }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',spy);}else{spy();}
+  function overlayFix(){
+    var ov=document.getElementById('welcomeOverlay');if(!ov)return;
+    ov.addEventListener('click',function(e){if(e.target===ov){var k=document.getElementById('welcomeSkip');if(k)k.click();}});
+    var c=document.getElementById('welcomeClose');
+    if(c)c.addEventListener('click',function(){var k=document.getElementById('welcomeSkip');if(k)k.click();});
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){spy();overlayFix();});}
+  else{spy();overlayFix();}
 })();
 </script>
 </body>
