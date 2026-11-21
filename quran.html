@@ -2,912 +2,464 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>Taman Qur'an — NYALA</title>
+<link rel="icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<!-- Font tambahan untuk Arab jika belum ada di styles.css global -->
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0e0c0d">
 <style>
-/* Tambahan CSS minimal khusus Quran agar elemen baru rapi tanpa mengubah tema utama */
-.arabic-text { font-family: 'Amiri', serif; direction: rtl; text-align: right; line-height: 2.2; }
-.chips-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-.chips-scroll::-webkit-scrollbar { display: none; }
-.chip-filter { white-space: nowrap; padding: 6px 14px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; border: 1px solid var(--line-strong); background: rgba(212,165,165,0.06); color: var(--ink-soft); cursor: pointer; transition: 0.2s; }
-.chip-filter.on { background: linear-gradient(120deg, #b76e79, #8f4f5b); color: #fff; border-color: transparent; box-shadow: 0 0 14px rgba(212,165,165,0.3); }
-.doa-card-custom { background: linear-gradient(160deg, var(--card), var(--card-2)); border: 1px solid var(--line-strong); border-radius: var(--r-card); padding: clamp(18px, 3vw, 24px); margin-bottom: 16px; position: relative; overflow: hidden; }
-.doa-card-custom::before { content:''; position:absolute; inset:0; pointer-events:none; opacity:.05; background: radial-gradient(400px 150px at 100% 0%, var(--rose-soft), transparent 70%); }
-.doa-title-custom { font-size: 1.2rem; font-weight: 800; color: var(--rose); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-.doa-arabic-custom { font-size: 1.9rem; color: var(--rose-soft, #e8c4c8); margin-bottom: 12px; }
-.doa-latin-custom { font-style: italic; color: var(--gold); font-size: 0.95rem; margin-bottom: 10px; line-height: 1.5; }
-.doa-meaning-custom { color: #c9aeb2; font-size: 0.95rem; line-height: 1.6; margin-bottom: 14px; }
-.doa-meta-custom { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.75rem; color: #8a6f74; font-weight: 700; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
-.tag-grade { padding: 3px 8px; border-radius: 6px; background: rgba(229,199,134,0.1); color: var(--gold); }
-.tag-grade.sahih { background: rgba(212,165,165,0.15); color: var(--rose); }
-.tag-grade.muttafaq { background: rgba(229,199,134,0.2); color: var(--gold); border: 1px solid rgba(229,199,134,0.4); }
-.doa-benefit-custom { margin-top: 12px; padding: 10px; background: rgba(229,199,134,0.06); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #e0d0b0; }
-.doa-actions-custom { display: flex; gap: 8px; margin-top: 14px; }
-.btn-action-custom { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--line); background: rgba(0,0,0,0.2); color: var(--ink); font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s; text-align: center; }
-.btn-action-custom:hover { background: var(--rose); color: #fff; border-color: var(--rose); }
-.btn-action-custom.active { background: var(--gold); color: #241a0c; border-color: var(--gold); }
-.empty-box-custom { text-align: center; padding: 40px; color: var(--ink-mute); border: 1px dashed var(--line-strong); border-radius: 18px; }
-input.quran-search { width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0,0,0,0.3); color: var(--ink); font-size: 0.95rem; margin-bottom: 20px; box-sizing: border-box; }
-input.quran-search:focus { outline: none; border-color: var(--rose); box-shadow: 0 0 0 3px rgba(212,165,165,0.15); }
+.tq-wrap{max-width:860px;margin:0 auto;padding:0 clamp(14px,3vw,22px) 90px}
+.tq-head{display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 0 6px}
+.tq-title{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(1.3rem,4.4vw,1.8rem);letter-spacing:1px;background:linear-gradient(120deg,var(--rose-soft),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tq-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.tq-card{padding:clamp(16px,3.4vw,24px);margin-top:16px}
+.tq-status{display:inline-flex;align-items:center;gap:8px;border:1px dashed rgba(229,199,134,.45);background:rgba(229,199,134,.07);border-radius:999px;padding:9px 16px;font-size:.8rem;font-weight:800;color:var(--gold);margin-bottom:14px}
+.tq-status button{border:none;background:rgba(229,199,134,.18);color:var(--gold);border-radius:999px;padding:5px 12px;font:800 .72rem 'Plus Jakarta Sans',sans-serif;cursor:pointer;margin-left:8px}
+.tq-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.tq-row.one{grid-template-columns:1fr}
+.tq-select{width:100%;background:rgba(0,0,0,.35);color:var(--ink);border:1px solid var(--line-strong);border-radius:14px;padding:13px 14px;font-weight:800;font-size:.9rem}
+.tq-btns{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+.tq-surah{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid rgba(229,199,134,.35);background:rgba(229,199,134,.06);border-radius:16px;padding:14px 18px;margin-bottom:14px}
+.tq-surah:empty{display:none}
+.tq-surah b{font-family:'Bricolage Grotesque';font-size:1.15rem;color:var(--gold)}
+.tq-surah .ar{font-family:'Amiri',serif;font-size:1.4rem;color:var(--rose-soft)}
+.tq-surah small{font-size:.76rem;font-weight:700;color:var(--ink-soft)}
+.ayah{padding:16px clamp(14px,3vw,20px);margin-bottom:12px}
+.ayah.playing{border-color:var(--gold);box-shadow:0 0 24px rgba(229,199,134,.25)}
+.ayah .top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ayah .ref{font-size:.72rem;font-weight:800;color:var(--gold);border:1px solid rgba(229,199,134,.4);border-radius:999px;padding:5px 12px}
+.ayah .dengar{margin-left:auto;border:1px solid var(--line-strong);background:rgba(212,165,165,.08);border-radius:999px;padding:8px 16px;font-size:.78rem;font-weight:800;color:var(--ink-soft);cursor:pointer}
+.ayah .dengar:hover{border-color:var(--rose);color:var(--rose-soft)}
+.ayah .ar{font-family:'Amiri',serif;font-size:clamp(1.4rem,4.8vw,1.9rem);line-height:2.05;text-align:right;direction:rtl;color:var(--ink);margin-bottom:10px}
+.ayah .tr{font-size:.88rem;color:var(--ink-soft);font-weight:600;line-height:1.75}
+.mood-chips{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.mood-chip{border:1px solid var(--line-strong);background:rgba(212,165,165,.06);border-radius:999px;padding:11px 18px;font-weight:800;font-size:.88rem;color:var(--ink-soft);cursor:pointer;transition:.2s}
+.mood-chip:hover{transform:translateY(-3px);border-color:var(--rose)}
+.mood-chip.on{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff;border-color:var(--rose);box-shadow:var(--glow-rose)}
+.haf-bar{height:12px;border-radius:999px;background:rgba(0,0,0,.4);border:1px solid var(--line);overflow:hidden;margin:6px 0 10px}
+.haf-bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--rose-deep),var(--gold));transition:width .4s}
+.haf-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.76rem;font-weight:700;color:var(--ink-soft);margin-bottom:14px}
+.haf-legend span::before{content:'';display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+.haf-legend .l0::before{background:#3a3236}
+.haf-legend .l1::before{background:var(--rose-deep)}
+.haf-legend .l2::before{background:var(--gold)}
+.haf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:8px}
+.haf-cell{border:1px solid var(--line);border-radius:12px;padding:12px 4px;text-align:center;font-weight:800;font-size:.86rem;background:rgba(0,0,0,.28);color:var(--ink-soft);cursor:pointer;transition:.18s}
+.haf-cell:hover{transform:translateY(-3px);border-color:var(--rose)}
+.haf-cell.s1{background:rgba(183,110,121,.35);border-color:var(--rose);color:var(--rose-soft)}
+.haf-cell.s2{background:linear-gradient(135deg,var(--gold),var(--gold-deep));border-color:var(--gold);color:#241a0c;box-shadow:0 0 14px rgba(229,199,134,.35)}
+.doa-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.doa-tab{border:1px solid var(--line-strong);background:rgba(212,165,165,.06);border-radius:16px;padding:12px 20px;font-weight:800;font-size:.9rem;color:var(--ink-soft);cursor:pointer;transition:.2s}
+.doa-tab.on{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff;border-color:var(--rose);box-shadow:var(--glow-rose)}
+.doa{padding:18px clamp(14px,3vw,22px);margin-bottom:14px}
+.doa h3{font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:12px}
+.doa .ar{font-family:'Amiri',serif;font-size:clamp(1.35rem,4.6vw,1.8rem);line-height:2.05;text-align:right;direction:rtl;color:var(--ink);margin-bottom:12px}
+.doa .la{font-size:.82rem;font-style:italic;color:var(--rose-soft);font-weight:600;line-height:1.7;margin-bottom:8px}
+.doa .arti{font-size:.88rem;color:var(--ink-soft);font-weight:600;line-height:1.75;padding-bottom:10px;border-bottom:1px dashed var(--line-strong);margin-bottom:10px}
+.doa .man{font-size:.82rem;color:var(--gold);font-weight:700;line-height:1.6;margin-bottom:6px}
+.doa .src{font-size:.74rem;color:var(--ink-mute);font-weight:600}
+@media(max-width:560px){.tq-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
+<div class="aurora" aria-hidden="true"></div>
 <header class="top">
-    <div class="top-in">
-        <a href="index.html" class="logo"><span class="flame">🌹</span><span class="word">NYALA</span><small>Anti Mager</small></a>
-        <nav class="links">
-            <a href="index.html">Home</a>
-            <a href="dzikir.html">Dzikir</a>
-            <a href="quran.html" class="on">Qur'an</a>
-        </nav>
-        <!-- Placeholder for i18n tools if needed -->
+  <div class="top-in" style="justify-content:center">
+    <a class="btn ghost small" href="index.html">← NYALA</a>
+    <a class="btn ghost small" href="dzikir.html">📿 Dzikir</a>
+  </div>
+  <div class="tq-head">
+    <div class="tq-title" id="tqTitle">🕌 TAMAN QUR'AN</div>
+    <div class="tq-chips">
+      <span class="chip" id="netChip">🌐 Online</span>
+      <span class="chip" id="streakChip">🔥 0</span>
+      <span class="chip lvl" id="xpChip">0 XP</span>
     </div>
+  </div>
 </header>
-
-<main style="max-width: 1160px; margin: 0 auto; padding: 0 clamp(14px, 3vw, 22px) 40px;">
-
-    <!-- A · BACA & DENGAR -->
-    <section>
-        <div class="sec-head">
-            <span class="sec-tag">A · BACA & DENGAR</span>
-            <h2>Mushaf Digital 114 Surah</h2>
-        </div>
-        <p class="sec-sub">Baca sendiri atau baca bareng murottal. </p>
-        
-        <input type="text" id="searchSurah" class="quran-search" placeholder="Cari nama surah atau nomor...">
-        <div id="surahList" class="spirit-grid" style="grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;">
-            <div class="empty-box">📦 Memuat data Qur'an…</div>
-        </div>
-    </section>
-
-    <!-- READER VIEW (Hidden by default) -->
-    <section id="reader-view" style="display:none;">
-        <div class="sec-head">
-            <button onclick="closeReader()" class="btn ghost small">← Kembali</button>
-            <h2 id="readerTitle" style="margin:0;">Surah</h2>
-        </div>
-        <div id="ayahContainer" style="margin-top: 20px;"></div>
-        <audio id="quranAudio" controls style="width:100%; margin-top:20px; border-radius:12px;"></audio>
-    </section>
-
-    <!-- B · AYAT UNTUK HATIMU -->
-    <section>
-        <div class="sec-head">
-            <span class="sec-tag">B · AYAT UNTUK HATIMU</span>
-            <h2>Sedang Merasa Apa?</h2>
-        </div>
-        <p class="sec-sub">Pilih keadaanmu — Allah sudah menyiapkan ayat-ayatnya untukmu. 🤍</p>
-        
-        <div class="chips-scroll" id="moodList" style="margin-bottom: 20px;">
-            <!-- Injected by JS -->
-        </div>
-        <div id="verseDisplay" class="card" style="text-align:center; display:none; padding: 30px;">
-            <!-- Injected by JS -->
-        </div>
-    </section>
-
-    <!-- C · TRACKER HAFALAN -->
-    <section>
-        <div class="sec-head">
-            <span class="sec-tag">C · TRACKER HAFALAN</span>
-            <h2>Perjalanan Huffaz-mu 🏆</h2>
-        </div>
-        <p class="sec-sub">Tap surah: abu-abu = belum, rose = proses, emas = hafal. Menandai hafal = +25 XP!</p>
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">
-            <span class="chip" style="background:#333; color:#888; border-color:#444;">Belum</span>
-            <span class="chip" style="background:rgba(212,165,165,0.2); color:var(--rose); border-color:var(--rose);">Proses</span>
-            <span class="chip" style="background:rgba(229,199,134,0.2); color:var(--gold); border-color:var(--gold);">Hafal</span>
-        </div>
-        <div id="hafalanGrid" class="spirit-grid" style="grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;">
-            <!-- Injected by JS -->
-        </div>
-    </section>
-
-    <!-- D · DOA-DOA (LENGKAP 45+) -->
-    <section>
-        <div class="sec-head">
-            <span class="sec-tag">D · DOA-DOA</span>
-            <h2>Kumpulan Doa Sahih</h2>
-        </div>
-        <p class="sec-sub">Doa-doa pilihan sesuai kondisi kehidupan manusia. Lengkap dengan teks Arab, latin, arti, manfaat, dan sumbernya. 🤲</p>
-
-        <!-- Filter Chips -->
-        <div class="chips-scroll" id="doaChips" style="margin-bottom: 20px;">
-            <div class="chip-filter on" data-filter="all">Semua Do'a</div>
-            <div class="chip-filter" data-filter="nabi">Doa Nabi & Rasul</div>
-            <div class="chip-filter" data-filter="malam">Penjaga Malam</div>
-            <div class="chip-filter" data-filter="harian">Harian</div>
-            <div class="chip-filter" data-filter="kesehatan">Kesehatan</div>
-            <div class="chip-filter" data-filter="rezeki">Rezeki & Usaha</div>
-            <div class="chip-filter" data-filter="keluarga">Keluarga</div>
-            <div class="chip-filter" data-filter="fav">Favorit ★</div>
-        </div>
-
-        <!-- Search -->
-        <input type="text" id="doaSearch" class="quran-search" placeholder="Cari doa (misal: sakit, utang, tidur)...">
-
-        <!-- List -->
-        <div id="doaList">
-            <!-- Injected by JS -->
-        </div>
-    </section>
-
+<main class="tq-wrap">
+  <section>
+    <div class="sec-head" style="margin-top:18px">
+      <span class="sec-tag">A · BACA & DENGAR</span>
+      <div><h2>Mushaf Digital 114 Surah / 30 Juz</h2></div>
+      <p class="sec-sub">Baca sendiri atau baca bareng murottal. 📖</p>
+    </div>
+    <div class="card tq-card">
+      <span class="tq-status" id="cacheStatus">📦 <span id="cacheTxt">Memuat data Qur'an…</span></span>
+      <div class="tq-row">
+        <select class="tq-select" id="modeSel" aria-label="Mode baca"></select>
+        <select class="tq-select" id="targetSel" aria-label="Pilih surah atau juz"></select>
+      </div>
+      <div class="tq-row one">
+        <select class="tq-select" id="qariSel" aria-label="Qori"></select>
+      </div>
+      <div class="tq-btns">
+        <button class="btn leafy" id="btnSendiri">📖 <span id="lbSendiri">Baca Sendiri</span></button>
+        <button class="btn ghost" id="btnBareng">🎧 <span id="lbBareng">Baca Bareng</span></button>
+        <button class="btn sunny" id="btnMurottal">▶ <span id="lbMurottal">Murottal Surah</span></button>
+      </div>
+      <div class="tq-surah" id="surahInfo"></div>
+      <div id="ayahBox"></div>
+    </div>
+  </section>
+  <section>
+    <div class="sec-head">
+      <span class="sec-tag">B · AYAT UNTUK HATIMU</span>
+      <div><h2>Sedang Merasa Apa?</h2></div>
+      <p class="sec-sub">Pilih keadaanmu — Allah sudah menyiapkan ayat-ayatnya untukmu. 🤍</p>
+    </div>
+    <div class="mood-chips" id="moodChips"></div>
+    <div id="moodResult"></div>
+  </section>
+  <section>
+    <div class="sec-head">
+      <span class="sec-tag">C · TRACKER HAFALAN</span>
+      <div><h2>Perjalanan Huffaz-mu 🏆</h2></div>
+      <p class="sec-sub">Tap surah: abu-abu = belum, rose = proses, emas = hafal. Menandai hafal = +25 XP!</p>
+    </div>
+    <div class="card tq-card">
+      <div class="haf-bar"><i id="hafFill"></i></div>
+      <div style="font-weight:800;font-size:.9rem;margin-bottom:8px" id="hafCount">0 / 114 surah dihafal</div>
+      <div class="haf-legend">
+        <span class="l0">Belum</span>
+        <span class="l1">Proses</span>
+        <span class="l2">Hafal</span>
+      </div>
+      <div class="haf-grid" id="hafGrid"></div>
+    </div>
+  </section>
+  <section>
+    <div class="sec-head">
+      <span class="sec-tag">D · DOA-DOA</span>
+      <div><h2>Doa Sehari-hari, Para Nabi & Rasulullah ﷺ</h2></div>
+      <p class="sec-sub">Lengkap dengan teks Arab, latin, arti, manfaat, dan sumber sahih. 🤲</p>
+    </div>
+    <div class="doa-tabs" id="doaTabs"></div>
+    <div id="doaBox"></div>
+  </section>
 </main>
-
+<div id="toasts" aria-live="polite"></div>
+<script src="i18n.js" defer></script>
 <script>
-/* --- DATABASE DOA LENGKAP (45+ Item - Valid & Sahih) --- */
-const DOA_DATA = [
-    // === NABI & RASUL (15 Doa) ===
-    {
-        category: ['nabi'], title: 'Doa Taubat Nabi Adam', condition: ['menyesal', 'salah', 'dosa', 'taubat'],
-        arabic: 'رَبَّنَا ظَلَمْنَا أَنْفُسَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ',
-        latin: 'Rabbana zhalamna anfusana wa in lam taghfir lana wa tarhamna lanakunanna minal-khasirin',
-        meaning: 'Ya Tuhan kami, kami telah menzalimi diri kami sendiri. Jika Engkau tidak mengampuni kami dan menyayangi kami, niscaya kami termasuk orang yang rugi.',
-        source: 'QS. Al-A\'raf: 23', grade: 'sahih', benefit: 'Doa pertama manusia saat menyesal; diajarkan langsung oleh Allah kepada Nabi Adam.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Ayyub Saat Sakit', condition: ['sakit', 'penyakit', 'ujian', 'kesabaran'],
-        arabic: 'أَنِّي مَسَّنِيَ الضُّرُّ وَأَنْتَ أَرْحَمُ الرَّاحِمِينَ',
-        latin: 'Anni massaniyadh-dhurru wa anta arhamur-rahimin',
-        meaning: 'Sungguh, aku telah ditimpa penyakit, dan Engkau Tuhan Yang Maha Penyayang di antara semua penyayang.',
-        source: 'QS. Al-Anbiya: 83', grade: 'sahih', benefit: 'Allah memuji kesabarannya dan segera mengangkat penyakitnya.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Yunus Dalam Kegelapan', condition: ['sedih', 'gelisah', 'susah', 'depresi', 'kesulitan'],
-        arabic: 'لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ',
-        latin: 'La ilaha illa anta subhanaka inni kuntu minazh-zhalimin',
-        meaning: 'Tidak ada tuhan selain Engkau. Maha Suci Engkau. Sungguh aku termasuk orang-orang yang zalim.',
-        source: 'QS. Al-Anbiya: 87', grade: 'sahih', benefit: 'Doa mustajab untuk menghilangkan kesedihan dan kesulitan.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Musa: Kelapangan Dada', condition: ['gugup', 'bicara', 'ujian', 'presentasi', 'wawancara'],
-        arabic: 'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي',
-        latin: 'Rabbishrah li sadri wa yassir li amri',
-        meaning: 'Ya Tuhanku, lapangkanlah dadaku, dan mudahkanlah urusanku.',
-        source: 'QS. Taha: 25-28', grade: 'sahih', benefit: 'Dibaca sebelum menghadapi tugas berat, ujian, atau berbicara di depan umum.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Yusuf: Akhir Yang Baik', condition: ['kematian', 'husnul khatimah', 'sukses', 'akhir hayat'],
-        arabic: 'فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ أَنْتَ وَلِيِّي فِي الدُّنْيَا وَالْآخِرَةِ تَوَفَّنِي مُسْلِمًا وَأَلْحِقْنِي بِالصَّالِحِينَ',
-        latin: 'Fatiras-samawati wal-ardh, anta waliyyi fid-dunya wal-akhirah, tawaffani musliman wa alhiqni bish-shalihin',
-        meaning: 'Wahai Pencipta langit dan bumi, Engkaulah pelindungku di dunia dan akhirat. Matikanlah aku dalam keadaan muslim dan gabungkanlah aku dengan orang-orang saleh.',
-        source: 'QS. Yusuf: 101', grade: 'sahih', benefit: 'Doa husnul khatimah di puncak keberhasilan, bukan hanya saat susah.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Ibrahim: Anak Saleh', condition: ['anak', 'keturunan', 'keluarga', 'doa orang tua'],
-        arabic: 'رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاءِ',
-        latin: 'Rabbij'alni muqimash-shalati wa min dzurriyyati rabbana wa taqabbal du'a',
-        meaning: 'Ya Tuhanku, jadikanlah aku dan anak cucuku orang yang tetap melaksanakan salat. Ya Tuhan kami, kabulkanlah doaku.',
-        source: 'QS. Ibrahim: 40', grade: 'sahih', benefit: 'Doa agar keturunan menjadi generasi yang shaleh dan menjaga shalat.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Zakaria: Keturunan Baik', condition: ['anak', 'keturunan', 'pasangan', 'doa suami istri'],
-        arabic: 'رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ',
-        latin: 'Rabbi hab li min ladunka dzurriyyatan thayyibah innaka sami'ud-du'a',
-        meaning: 'Ya Tuhanku, berikanlah kepadaku dari sisi-Mu keturunan yang baik. Sungguh Engkau Maha Mendengar doa.',
-        source: 'QS. Ali Imran: 38', grade: 'sahih', benefit: 'Doa untuk memohon keturunan yang baik dan shaleh.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Sulaiman: Syukur Nikmat', condition: ['syukur', 'nikmat', 'berkah', 'rasa terima kasih'],
-        arabic: 'رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ وَعَلَىٰ وَالِدَيَّ',
-        latin: 'Rabbi awzi'ni an ashkura ni'matakallati an'amta 'alayya wa 'ala walidayya',
-        meaning: 'Ya Tuhanku, berilah aku ilham untuk tetap mensyukuri nikmat-Mu yang telah Engkau anugerahkan kepadaku dan kepada kedua orang tuaku.',
-        source: 'QS. An-Naml: 19', grade: 'sahih', benefit: 'Doa untuk selalu bersyukur atas nikmat Allah dan tidak lupa berterima kasih.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Nuh: Ampunan', condition: ['ampunan', 'dosa', 'taubat', 'pengampunan'],
-        arabic: 'رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِمَنْ دَخَلَ بَيْتِيَ مُؤْمِنًا وَلِلْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ',
-        latin: 'Rabbighfir li wa liwalidayya wa liman dakhala baytiya mu'minan wa lil-mu'minina wal-mu'minat',
-        meaning: 'Ya Tuhanku, ampunilah aku, ibu bapakku, siapa saja yang masuk ke rumahku dengan beriman dan semua orang yang beriman laki-laki dan perempuan.',
-        source: 'QS. Nuh: 28', grade: 'sahih', benefit: 'Doa luas untuk memohon ampunan bagi diri sendiri, keluarga, dan seluruh umat beriman.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Ibrahim: Kota Aman', condition: ['keamanan', 'kota', 'negara', 'kedamaian'],
-        arabic: 'رَبِّ اجْعَلْ هَٰذَا بَلَدًا آمِنًا وَارْزُقْ أَهْلَهُ مِنَ الثَّمَرَاتِ مَنْ آمَنَ مِنْهُمْ بِاللَّهِ وَالْيَوْمِ الْآخِرِ',
-        latin: 'Rabbij'al hadza baladan aminan warzuq ahlahu minats-thamarati man amana minhum billahi wal-yawmil-akhir',
-        meaning: 'Ya Tuhanku, jadikanlah negeri ini negeri yang aman, dan berikanlah rezeki berupa buah-buahan kepada penduduknya yang beriman kepada Allah dan hari akhir.',
-        source: 'QS. Al-Baqarah: 126', grade: 'sahih', benefit: 'Doa untuk keamanan dan ketentraman suatu negeri serta rezeki bagi penduduknya.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Musa: Rezeki', condition: ['rezeki', 'makanan', 'kebutuhan', 'pertolongan'],
-        arabic: 'رَبِّ إِنِّي لِمَا أَنْزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ',
-        latin: 'Rabbi inni lima anzalta ilayya min khairin faqir',
-        meaning: 'Ya Tuhanku, sesungguhnya aku sangat memerlukan segala kebaikan yang Engkau turunkan kepadaku.',
-        source: 'QS. Al-Qasas: 24', grade: 'sahih', benefit: 'Doa saat membutuhkan pertolongan dan rezeki dari Allah.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Ibrahim: Ilmu Hikmah', condition: ['ilmu', 'hikmah', 'kepintaran', 'kebijaksanaan'],
-        arabic: 'رَبِّ هَبْ لِي حُكْمًا وَأَلْحِقْنِي بِالصَّالِحِينَ',
-        latin: 'Rabbi hab li hukman wa alhiqni bish-shalihin',
-        meaning: 'Ya Tuhanku, berikanlah kepadaku ilmu hikmah dan masukkanlah aku ke dalam golongan orang-orang yang saleh.',
-        source: 'QS. Asy-Syu'ara: 83', grade: 'sahih', benefit: 'Doa untuk memohon ilmu yang bermanfaat dan kebijaksanaan.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Luth: Keselamatan Keluarga', condition: ['keluarga', 'keselamatan', 'perlindungan', 'anak istri'],
-        arabic: 'رَبِّ نَجِّنِي وَأَهْلِي مِمَّا يَعْمَلُونَ',
-        latin: 'Rabbi najjini wa ahli mimma ya'malun',
-        meaning: 'Ya Tuhanku, selamatkanlah aku dan keluargaku dari akibat perbuatan mereka.',
-        source: 'QS. Asy-Syu'ara: 169', grade: 'sahih', benefit: 'Doa untuk menyelamatkan keluarga dari pengaruh buruk dan kemaksiatan.'
-    },
-    {
-        category: ['nabi'], title: 'Doa Nabi Isa: Meja Dari Langit', condition: ['rezeki', 'mukjizat', 'pertolongan', 'keajaiban'],
-        arabic: 'اللَّهُمَّ رَبَّنَا أَنْزِلْ عَلَيْنَا مَائِدَةً مِنَ السَّمَاءِ تَكُونُ لَنَا عِيدًا لِأَوَّلِنَا وَآخِرِنَا',
-        latin: 'Allahumma rabbana anzil 'alayna ma'idatan minas-sama'i takunu lana 'idan li-awwalina wa akhirina',
-        meaning: 'Ya Allah, Tuhan kami, turunkanlah kepada kami hidangan dari langit yang menjadi hari raya bagi kami, bagi orang-orang sebelum dan sesudah kami.',
-        source: 'QS. Al-Ma'idah: 114', grade: 'sahih', benefit: 'Doa untuk memohon rezeki yang berlimpah dan menjadi berkah bagi banyak orang.'
-    },
-    
-    // === RASULULLAH  (15 Doa) ===
-    {
-        category: ['rasul'], title: 'Sayyidul Istighfar', condition: ['taubat', 'pagi', 'petang', 'dosa', 'istighfar'],
-        arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ',
-        latin: 'Allahumma anta rabbi la ilaha illa anta, khalaqtani wa ana abduka... faghfir li fa innahu la yaghfirudz-dzunuba illa anta',
-        meaning: 'Ya Allah, Engkau Tuhanku, tiada tuhan selain Engkau... Aku mengakui nikmat-Mu dan dosaku, maka ampunilah aku...',
-        source: 'HR. Bukhari 6306', grade: 'sahih', narrator: 'Syaddad bin Aus',
-        benefit: 'Siapa membacanya dengan yakin di siang hari lalu meninggal, ia masuk surga. Begitu juga di malam hari.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Kebaikan Dunia Akhirat', condition: ['semua', 'harapan', 'masa depan', 'kebaikan'],
-        arabic: 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',
-        latin: 'Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan wa qina adzaban-nar',
-        meaning: 'Ya Tuhan kami, berikanlah kami kebaikan di dunia dan kebaikan di akhirat, dan peliharalah kami dari azab neraka.',
-        source: 'HR. Bukhari & Muslim', grade: 'muttafaq', narrator: 'Anas bin Malik',
-        benefit: 'Doa yang paling sering dibaca oleh Rasulullah ﷺ.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Jauh Dari Utang & Kegelisahan', condition: ['utang', 'stres', 'lemah', 'takut', 'kecemasan'],
-        arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ',
-        latin: 'Allahumma inni a\'udzu bika minal-hammi wal-hazan, wal-ajzi wal-kasal... wa dhala\'id-dayni wa ghalabatir-rijal',
-        meaning: 'Ya Allah, aku berlindung kepada-Mu dari kegelisahan, kesedihan, kelemahan, kemalasan, kekikiran, ketakutan, beban utang, dan tekanan orang.',
-        source: 'HR. Bukhari 6369', grade: 'sahih', narrator: 'Anas bin Malik',
-        benefit: 'Obat untuk kesehatan mental, semangat, dan kemandirian ekonomi.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Keteguhan Hati', condition: ['ragu', 'iman', 'keteguhan', 'konsisten'],
-        arabic: 'يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ',
-        latin: 'Ya muqallibal-qulub, tsabbit qalbi ala dinik',
-        meaning: 'Wahai Yang membolak-balikkan hati, teguhkanlah hatiku di atas agama-Mu.',
-        source: 'HR. At-Tirmidzi 3522', grade: 'hasan', narrator: 'Anas bin Malik',
-        benefit: 'Nabi ﷺ sendiri sering membacanya karena hati mudah berubah.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Petunjuk & Takwa', condition: ['petunjuk', 'takwa', 'hidayah', 'kebenaran'],
-        arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى',
-        latin: 'Allahumma inni as-alukal-huda wat-tuqa wal-'afafa wal-ghina',
-        meaning: 'Ya Allah, aku memohon kepada-Mu petunjuk, ketakwaan, kehormatan diri, dan kekayaan hati.',
-        source: 'HR. Muslim 2721', grade: 'sahih', narrator: 'Abdullah bin Mas\'ud',
-        benefit: 'Empat kebutuhan pokok seorang mukmin dalam satu doa.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Dalam Sujud', condition: ['sujud', 'shalat', 'dekat allah', 'permintaan'],
-        arabic: 'اللَّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ، دِقَّهُ وَجِلَّهُ، وَأَوَّلَهُ وَآخِرَهُ، وَعَلَانِيَتَهُ وَسِرَّهُ',
-        latin: 'Allahummaghfir li dzanbi kullahu, diqqahu wa jillahu, wa awwalahu wa akhirahu, wa 'alaniyatahu wa sirrah',
-        meaning: 'Ya Allah, ampunilah seluruh dosaku: yang kecil dan yang besar, yang awal dan yang akhir, yang terang-terangan dan yang tersembunyi.',
-        source: 'HR. Muslim 483', grade: 'sahih', narrator: 'Abu Hurairah',
-        benefit: 'Sujud adalah posisi terdekat hamba dengan Tuhannya.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Sebelum Salam', condition: ['shalat', 'perlindungan', 'akhir shalat', 'tasyahud'],
-        arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ جَهَنَّمَ، وَمِنْ عَذَابِ الْقَبْرِ، وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ، وَمِنْ شَرِّ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ',
-        latin: 'Allahumma inni a\'udzu bika min \'adzabi jahannam, wa min \'adzabil-qabr, wa min fitnatil-mahya wal-mamat, wa min syarri fitnatil-masihid-dajjal',
-        meaning: 'Ya Allah, aku berlindung kepada-Mu dari azab Jahanam, azab kubur, fitnah kehidupan dan kematian, serta kejahatan fitnah Al-Masih Ad-Dajjal.',
-        source: 'HR. Bukhari 1377 & Muslim 588', grade: 'muttafaq', narrator: 'Abu Hurairah',
-        benefit: 'Diperintahkan dibaca pada tasyahud akhir setiap shalat.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Takwa & Kesucian Jiwa', condition: ['tazkiyah', 'kesucian', 'jiwa', 'hati'],
-        arabic: 'اللَّهُمَّ آتِ نَفْسِي تَقْوَاهَا، وَزَكِّهَا أَنْتَ خَيْرُ مَنْ زَكَّاهَا، أَنْتَ وَلِيُّهَا وَمَوْلَاهَا',
-        latin: 'Allahumma ati nafsi taqwaha, wa zakkiha anta khayru man zakkaha, anta waliyyuha wa mawlaha',
-        meaning: 'Ya Allah, berikanlah ketakwaan pada jiwaku dan sucikanlah ia; Engkau sebaik-baik yang menyucikannya, Engkau pelindung dan penguasanya.',
-        source: 'HR. Muslim 2722', grade: 'sahih', narrator: 'Abu Hurairah',
-        benefit: 'Doa penyucian hati dari penyakit batin.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Penjaga Nikmat', condition: ['nikmat', 'berkah', 'perlindungan', 'syukur'],
-        arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ، وَتَحَوُّلِ عَافِيَتِكَ، وَفُجَاءَةِ نِقْمَتِكَ، وَجَمِيعِ سَخَطِكَ',
-        latin: 'Allahumma inni a\'udzu bika min zawali ni\'matik, wa tahawwuli \'afiyatik, wa fuja\'ati niqmatik, wa jamii\'i sakhathik',
-        meaning: 'Ya Allah, aku berlindung kepada-Mu dari hilangnya nikmat-Mu, berubahnya kesehatan dari-Mu, datangnya siksa-Mu secara tiba-tiba, dan segala kemurkaan-Mu.',
-        source: 'HR. Muslim 2739', grade: 'sahih', narrator: 'Ibn Umar',
-        benefit: 'Doa saat hidup sedang lapang agar tidak tercabut.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Istikharah', condition: ['pilihan', 'keputusan', 'istikharah', 'baik buruk'],
-        arabic: 'اللَّهُمَّ إِنِّي أَسْتَخِيرُكَ بِعِلْمِكَ، وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ، وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ',
-        latin: 'Allahumma inni astakhiruka bi\'ilmik, wa astaqdiruka biqudratik, wa as-aluka min fadhlikal-\'azhim...',
-        meaning: 'Ya Allah, aku memohon pilihan terbaik dengan ilmu-Mu, memohon kekuatan dengan kuasa-Mu, dan memohon karunia-Mu yang besar...',
-        source: 'HR. Al-Bukhari 1166', grade: 'sahih', narrator: 'Jabir bin Abdullah',
-        benefit: 'Dibaca setelah dua rakaat shalat sunnah saat ragu memutuskan; menyebut keperluannya pada bagian "urusan ini".'
-    },
-    {
-        category: ['rasul'], title: 'Doa Memulai Segala Sesuatu', condition: ['awal', 'memulai', 'bismillah', 'aktivitas'],
-        arabic: 'بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ',
-        latin: 'Bismillahilladzi la yadhurru ma\'asmihii syai\'un fil-ardhi wa la fis-sama\'i wa huwas-sami\'ul-\'alim',
-        meaning: 'Dengan nama Allah yang bersama nama-Nya tidak ada sesuatu pun di bumi maupun di langit yang dapat membahayakan; Dia Maha Mendengar, Maha Mengetahui.',
-        source: 'HR. Abu Dawud 5088 & At-Tirmidzi 3388', grade: 'sahih', narrator: 'Utsman bin Affan',
-        benefit: 'Dibaca 3× pagi dan petang: tidak ada yang membahayakannya.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Ridha Kepada Allah', condition: ['ridha', 'islam', 'nabi', 'kepuasan'],
-        arabic: 'رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا',
-        latin: 'Radhitu billahi rabban, wa bil-islami dinan, wa bi-muhammadin shallallahu \'alaihi wa sallama nabiyyan',
-        meaning: 'Aku ridha Allah sebagai Tuhan, Islam sebagai agama, dan Muhammad ﷺ sebagai nabi.',
-        source: 'HR. Abu Dawud 5072 & At-Tirmidzi 3389', grade: 'hasan', narrator: 'Sa\'ad bin Abi Waqqash',
-        benefit: 'Allah berjanji meridhainya pada hari kiamat.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Setelah Wudu', condition: ['wudu', 'bersuci', 'syahadat', 'kesucian'],
-        arabic: 'أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ',
-        latin: 'Asyhadu an la ilaha illallahu wahdahu la syarika lah, wa asyhadu anna muhammadan \'abduhu wa rasuluh',
-        meaning: 'Aku bersaksi tiada tuhan selain Allah semata, tiada sekutu bagi-Nya, dan aku bersaksi Muhammad adalah hamba dan rasul-Nya.',
-        source: 'HR. Muslim 234 & At-Tirmidzi 55', grade: 'sahih', narrator: 'Uqbah bin Amir',
-        benefit: '"Delapan pintu surga dibuka baginya, ia masuk dari pintu mana saja yang ia kehendaki."'
-    },
-    {
-        category: ['rasul'], title: 'Doa Masuk Masjid', condition: ['masjid', 'masuk', 'rahmat', 'tempat ibadah'],
-        arabic: 'اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ',
-        latin: 'Allahummaftah li abwaba rahmatik',
-        meaning: 'Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu.',
-        source: 'HR. Muslim 713', grade: 'sahih', narrator: 'Abu Humaid / Abu Usaid',
-        benefit: 'Rahmat di dalam masjid, karunia saat kembali bekerja.'
-    },
-    {
-        category: ['rasul'], title: 'Doa Keluar Masjid', condition: ['masjid', 'keluar', 'karunia', 'berkah'],
-        arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ',
-        latin: 'Allahumma inni as-aluka min fadhlik',
-        meaning: 'Ya Allah, aku memohon karunia-Mu.',
-        source: 'HR. Muslim 713', grade: 'sahih', narrator: 'Abu Humaid / Abu Usaid',
-        benefit: 'Karunia saat kembali bekerja setelah beribadah.'
-    },
-    
-    // === PENJAGA MALAM (5 Doa) ===
-    {
-        category: ['malam', 'rasul'], title: 'Ayat Kursi Sebelum Tidur', condition: ['tidur', 'malam', 'perlindungan', 'takut', 'setan'],
-        arabic: 'اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ',
-        latin: 'Allahu la ilaha illa huwal-hayyul-qayyum, la ta\'khuzuhu sinatuw wa la nawm, lahu ma fis-samawati wa ma fil-ardh...',
-        meaning: 'Allah, tiada tuhan selain Dia, Yang Maha Hidup lagi terus-menerus mengurus makhluk-Nya. Dia tidak dilanda kantuk dan tidak tidur. Milik-Nya apa yang di langit dan di bumi...',
-        source: 'QS. Al-Baqarah: 255', grade: 'sahih', narrator: 'Abu Hurairah',
-        benefit: 'Dalam hadis Abu Hurairah (HR. al-Bukhari, Kitab al-Wakalah): "Akan selalu ada penjaga dari Allah, dan setan tidak mendekatimu sampai pagi."'
-    },
-    {
-        category: ['malam', 'rasul'], title: 'Dua Ayat Terakhir Al-Baqarah', condition: ['tidur', 'malam', 'perlindungan', 'cukup', 'keamanan'],
-        arabic: 'آمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِنْ رَبِّهِ وَالْمُؤْمِنُونَ كُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِنْ رُسُلِهِ وَقَالُوا سَمِعْنَا وَأَطَعْنَا غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ ۝ لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَسِينَا أَوْ أَخْطَأْنَا رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِنْ قَبْلِنَا رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا أَنْتَ مَوْلَانَا فَانْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ',
-        latin: 'Amanar-rasulu bima unzila ilaihi mir rabbihil-wal-mu\'minun, kullun amana billahi wa mala\'ikatihi wa kutubihi wa rusulihi...',
-        meaning: 'Rasul dan orang-orang beriman membenarkan apa yang diturunkan kepadanya dari Tuhannya. Masing-masing beriman kepada Allah, malaikat-Nya, kitab-kitab-Nya, dan rasul-rasul-Nya...',
-        source: 'QS. Al-Baqarah: 285-286', grade: 'muttafaq', narrator: 'Abu Mas\'ud al-Anshari',
-        benefit: '"Barangsiapa membaca dua ayat terakhir Al-Baqarah pada malam hari, keduanya mencukupinya." (HR. al-Bukhari & Muslim)'
-    },
-    {
-        category: ['malam', 'rasul'], title: 'Doa Tidur', condition: ['tidur', 'serah diri', 'mati hidup', 'pasrah'],
-        arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',
-        latin: 'Bismika-llahumma amutu wa ahya',
-        meaning: 'Dengan nama-Mu ya Allah, aku mati dan aku hidup.',
-        source: 'HR. Bukhari', grade: 'sahih', narrator: 'Hudzaifah',
-        benefit: 'Mengingat bahwa tidur adalah kematian kecil dan bangun adalah kebangkitan.'
-    },
-    {
-        category: ['malam', 'rasul'], title: 'Doa Berbaring', condition: ['tidur', 'berbaring', 'sisi kanan', 'istirahat'],
-        arabic: 'بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي وَبِكَ أَرْفَعُهُ، إِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ',
-        latin: 'Bismika rabbi wadha\'tu janbi wa bika arfa\'uh, in amsakta nafsi farhamha, wa in arsaltaha fahfazhha bima tahfazhu bihi \'ibadakas-shalihin',
-        meaning: 'Dengan nama-Mu, ya Tuhanku, aku letakkan lambungku dan dengan-Mu aku mengangkatnya. Jika Engkau menahan jiwaku, sayangilah ia; jika Engkau melepaskannya, peliharalah ia sebagaimana Engkau memelihara hamba-hamba-Mu yang saleh.',
-        source: 'HR. Bukhari & Muslim', grade: 'muttafaq', narrator: 'Abu Hurairah',
-        benefit: 'Doa menyerahkan tidur dan bangun kepada Allah.'
-    },
-    {
-        category: ['malam', 'rasul'], title: 'Tasbih Sebelum Tidur', condition: ['tidur', 'tasbih', 'tahmid', 'takbir'],
-        arabic: 'سُبْحَانَ اللَّهِ ×٣، الْحَمْدُ لِلَّهِ ×٣٣، اللَّهُ أَكْبَرُ ×٣٤',
-        latin: 'Subhanallah ×33, al-hamdulillah ×33, Allahu akbar ×34',
-        meaning: 'Maha Suci Allah (33×), segala puji bagi Allah (33×), Allah Maha Besar (34×).',
-        source: 'HR. Bukhari & Muslim', grade: 'muttafaq', narrator: 'Ali bin Abi Thalib',
-        benefit: 'Nabi ﷺ kepada Fatimah & Ali: "Ini lebih baik bagi kalian daripada seorang pembantu."'
-    },
-    
-    // === HARIAN (10 Doa) ===
-    {
-        category: ['harian'], title: 'Doa Keluar Rumah', condition: ['keluar rumah', 'pergi', 'aktivitas', 'perlindungan'],
-        arabic: 'بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',
-        latin: 'Bismillah, tawakkaltu \'alallah, wa la hawla wa la quwwata illa billah',
-        meaning: 'Dengan nama Allah, aku bertawakal kepada Allah; tiada daya dan kekuatan kecuali dengan Allah.',
-        source: 'HR. Abu Dawud 5095 & At-Tirmidzi 3426', grade: 'sahih', narrator: 'Anas bin Malik',
-        benefit: 'Dikatakan kepadanya: "Engkau telah diberi petunjuk, dicukupi, dan dilindungi", lalu setan menjauh.'
-    },
-    {
-        category: ['harian'], title: 'Doa Masuk Rumah', condition: ['masuk rumah', 'pulang', 'berkah', 'kedamaian'],
-        arabic: 'بِسْمِ اللَّهِ وَلَجْنَا، وَبِسْمِ اللَّهِ خَرَجْنَا، وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا',
-        latin: 'Bismillahi walajna, wa bismillahi kharajna, wa \'alallah rabbina tawakkalna',
-        meaning: 'Dengan nama Allah kami masuk, dengan nama Allah kami keluar, dan kepada Allah Tuhan kami bertawakkal.',
-        source: 'HR. Abu Dawud', grade: 'sahih', narrator: 'Anas bin Malik',
-        benefit: 'Membawa keberkahan dan perlindungan saat memasuki rumah.'
-    },
-    {
-        category: ['harian'], title: 'Doa Masuk Kamar Kecil', condition: ['toilet', 'kamar kecil', 'perlindungan', 'setan'],
-        arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ',
-        latin: 'Allahumma inni a\'udzu bika minal-khubutsi wal-khabaits',
-        meaning: 'Ya Allah, aku berlindung kepada-Mu dari setan laki-laki dan setan perempuan.',
-        source: 'HR. Al-Bukhari 142 & Muslim 375', grade: 'muttafaq', narrator: 'Anas bin Malik',
-        benefit: 'Perlindungan di tempat yang tidak dibacakan dzikir.'
-    },
-    {
-        category: ['harian'], title: 'Doa Keluar Kamar Kecil', condition: ['toilet', 'kamar kecil', 'keluar', 'ampunan'],
-        arabic: 'غُفْرَانَكَ',
-        latin: 'Ghufranak',
-        meaning: 'Aku memohon ampunan-Mu.',
-        source: 'HR. Abu Dawud 30 & At-Tirmidzi 7', grade: 'sahih', narrator: 'Aisyah',
-        benefit: 'Adab keluar dari tempat najis.'
-    },
-    {
-        category: ['harian'], title: 'Doa Sebelum Makan', condition: ['makan', 'berkah', 'bismillah', 'rezeki'],
-        arabic: 'بِسْمِ اللَّهِ',
-        latin: 'Bismillah',
-        meaning: 'Dengan nama Allah.',
-        source: 'HR. Al-Bukhari 5376 & Abu Dawud 3767', grade: 'sahih', narrator: 'Ibn Abbas / Aisyah',
-        benefit: 'Menutup celah setan ikut makan.'
-    },
-    {
-        category: ['harian'], title: 'Doa Setelah Makan', condition: ['makan', 'syukur', 'rezeki', 'terima kasih'],
-        arabic: 'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ',
-        latin: 'Alhamdulillahilladzi ath\'amani hadza wa razaqanihi min ghairi haulin minni wa la quwwah',
-        meaning: 'Segala puji bagi Allah yang memberi makan ini kepadaku dan merezekikannya tanpa daya dan kekuatan dariku.',
-        source: 'HR. Abu Dawud 4023 & At-Tirmidzi 3458', grade: 'hasan', narrator: 'Mu\'adz bin Anas',
-        benefit: '"Diampuni dosanya yang telah lalu."'
-    },
-    {
-        category: ['harian'], title: 'Doa Bersin', condition: ['bersin', 'etika', 'sosial', 'doa sesama'],
-        arabic: 'الْحَمْدُ لِلَّهِ — يَرْحَمُكَ اللَّهُ — يَهْدِيكُمُ اللَّهُ وَيُصْلِحُ بَالَكُمْ',
-        latin: 'Al-hamdulillah — Yarhamukallah — Yahdikumullahu wa yushlihu balakum',
-        meaning: 'Yang bersin: "Segala puji bagi Allah." Yang mendengar: "Semoga Allah menyayangimu." Yang bersin menjawab: "Semoga Allah memberi kalian petunjuk dan memperbaiki keadaan kalian."',
-        source: 'HR. Al-Bukhari 6224', grade: 'sahih', narrator: 'Abu Hurairah',
-        benefit: 'Hak sesama muslim yang disebut Nabi ﷺ.'
-    },
-    {
-        category: ['harian'], title: 'Doa Saat Marah', condition: ['marah', 'emosi', 'kontrol diri', 'tenang'],
-        arabic: 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ',
-        latin: 'A\'udzu billahi minasy-syaitanir-rajim',
-        meaning: 'Aku berlindung kepada Allah dari setan yang terkutuk.',
-        source: 'HR. Al-Bukhari 3282 & Muslim 2610', grade: 'muttafaq', narrator: 'Sulaiman bin Shurad',
-        benefit: '"Jika ia mengucapkannya, hilanglah apa yang ia rasakan (amarahnya)."'
-    },
-    {
-        category: ['harian'], title: 'Doa Saat Musibah', condition: ['musibah', 'ujian', 'sabar', 'kehilangan'],
-        arabic: 'إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ، اللَّهُمَّ أْجُرْنِي فِي مُصِيبَتِي وَأَخْلِفْ لِي خَيْرًا مِنْهَا',
-        latin: 'Inna lillahi wa inna ilaihi raji\'un, Allahumma\'jurni fi mushibati wa akhlif li khairan minha',
-        meaning: 'Sungguh kami milik Allah dan kepada-Nya kami kembali. Ya Allah, berilah aku pahala dalam musibahku dan gantikanlah dengan yang lebih baik.',
-        source: 'HR. Muslim 918', grade: 'sahih', narrator: 'Ummu Salamah',
-        benefit: 'Ummu Salamah: setelah suaminya wafat, Allah mengganti dengan Rasulullah ﷺ sebagai suami.'
-    },
-    {
-        category: ['harian'], title: 'Doa Penutup Majelis', condition: ['majelis', 'pertemuan', 'rapat', 'penutup'],
-        arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ',
-        latin: 'Subhanaka-llahumma wa bihamdik, asyhadu an la ilaha illa anta, astaghfiruka wa atubu ilayk',
-        meaning: 'Maha Suci Engkau, ya Allah, dan segala puji bagi-Mu. Aku bersaksi tiada tuhan selain Engkau; aku memohon ampun dan bertaubat kepada-Mu.',
-        source: 'HR. At-Tirmidzi 3433', grade: 'sahih', narrator: 'Abu Hurairah',
-        benefit: '"Ia menjadi penghapus (kesalahan) yang terjadi dalam majelis itu."'
-    },
-    
-    // === KESEHATAN (5 Doa) ===
-    {
-        category: ['kesehatan'], title: 'Doa Kesembuhan', condition: ['sakit', 'obat', 'sembuh', 'penyakit'],
-        arabic: 'اللَّهُمَّ رَبَّ النَّاسِ، أَذْهِبِ الْبَأْسَ، اشْفِ أَنْتَ الشَّافِي، لَا شَافِيَ إِلَّا أَنْتَ، شِفَاءً لَا يُغَادِرُ سَقَمًا',
-        latin: 'Allahumma rabban-nas, adzhibil-ba\'sa, isyfi antasy-syafi, la syafiya illa anta, syifa\'an la yughadiru saqaman',
-        meaning: 'Ya Allah, Tuhan manusia, hilangkanlah penyakit ini. Sembuhkanlah, Engkau Yang Maha Menyembuhkan, tiada penyembuh selain Engkau, kesembuhan yang tidak meninggalkan penyakit.',
-        source: 'HR. Al-Bukhari 5743 & Muslim 2191', grade: 'muttafaq', narrator: 'Aisyah',
-        benefit: 'Nabi ﷺ membacakannya sambil mengusap orang yang sakit.'
-    },
-    {
-        category: ['kesehatan'], title: 'Doa Untuk Orang Sakit', condition: ['sakit', 'doakan', 'jenguk', 'kesembuhan'],
-        arabic: 'أَسْأَلُ اللَّهَ الْعَظِيمَ رَبَّ الْعَرْشِ الْعَظِيمِ أَنْ يَشْفِيَكَ',
-        latin: 'As\'alullahal-\'azhim, rabbal-\'arsyil-\'azhim, an yasyfiyaka',
-        meaning: 'Aku memohon kepada Allah Yang Maha Agung, Tuhan \'Arsy yang agung, agar menyembuhkanmu.',
-        source: 'HR. Abu Dawud 3106 & At-Tirmidzi 2083', grade: 'sahih', narrator: 'Ibn Abbas',
-        benefit: '"Tidak ada muslim yang ajal belum tiba, lalu didoakan tujuh kali, kecuali ia disembuhkan."'
-    },
-    {
-        category: ['kesehatan'], title: 'Doa Saat Mimpi Buruk', condition: ['mimpi buruk', 'takut', 'malam', 'perlindungan'],
-        arabic: 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ',
-        latin: 'A\'udzu billahi minasy-syaitanir-rajim',
-        meaning: 'Aku berlindung kepada Allah dari setan yang terkutuk.',
-        source: 'HR. Muslim 2261-2262', grade: 'sahih', narrator: 'Abu Qatadah / Jabir',
-        benefit: 'Nabi ﷺ: mimpi buruk tidak akan membahayakannya.'
-    },
-    {
-        category: ['kesehatan'], title: 'Doa Gelisah & Nyeri', condition: ['gelisah', 'nyeri', 'sakit', 'kecemasan'],
-        arabic: 'بِسْمِ اللَّهِ ×٣ — أَعُوذُ بِاللَّهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا أَجِدُ وَأُحَاذِرُ ×٧',
-        latin: 'Bismillah ×3 — A\'udzu billahi wa qudratihi min syarri ma ajidu wa uhaziru ×7',
-        meaning: 'Dengan nama Allah (3×). Aku berlindung kepada Allah dan kuasa-Nya dari keburukan yang aku rasakan dan yang aku khawatirkan (7×, sambil menempelkan tangan pada bagian yang sakit).',
-        source: 'HR. Muslim 2202', grade: 'sahih', narrator: 'Utsman bin Abil \'Ash',
-        benefit: 'Utsman bin Abil \'Ash disembuhkan dari nyeri yang lama mengganggunya.'
-    },
-    {
-        category: ['kesehatan'], title: 'Doa Saat Hujan', condition: ['hujan', 'rezeki', 'berkah', 'turun hujan'],
-        arabic: 'اللَّهُمَّ صَيِّبًا نَافِعًا',
-        latin: 'Allahumma shayyiban nafi\'a',
-        meaning: 'Ya Allah, jadikanlah ia hujan yang bermanfaat.',
-        source: 'HR. Al-Bukhari 1032', grade: 'sahih', narrator: 'Aisyah',
-        benefit: 'Waktu hujan termasuk saat doa dikabulkan.'
-    },
-    
-    // === REZEKI & USAHA (5 Doa) ===
-    {
-        category: ['rezeki'], title: 'Doa Pelunasan Utang', condition: ['utang', 'hutang', 'lunas', 'bebas'],
-        arabic: 'اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ',
-        latin: 'Allahummakfini bihalalika \'an haramik, wa aghnini bifadhlika \'amman siwak',
-        meaning: 'Ya Allah, cukupkanlah aku dengan yang halal dari-Mu sehingga aku tak butuh yang haram, dan kayakanlah aku dengan karunia-Mu sehingga aku tak bergantung kepada selain-Mu.',
-        source: 'HR. At-Tirmidzi 3563', grade: 'hasan', narrator: 'Ali bin Abi Thalib',
-        benefit: 'Nabi ﷺ: seandainya utangmu sebesar gunung, Allah akan melunasinya untukmu.'
-    },
-    {
-        category: ['rezeki'], title: 'Doa Naik Kendaraan', condition: ['kendaraan', 'transportasi', 'perjalanan', 'mobil'],
-        arabic: 'سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ',
-        latin: 'Subhanalladzi sakhkhara lana hadza wa ma kunna lahu muqrinin, wa inna ila rabbina lamunqalibun',
-        meaning: 'Maha Suci Dia yang menundukkan ini bagi kami, sedang kami tidak mampu menguasainya; dan sungguh kepada Tuhan kami kami akan kembali.',
-        source: 'HR. Abu Dawud 2602 & At-Tirmidzi 3446', grade: 'sahih', narrator: 'Ibn Umar',
-        benefit: 'Nabi ﷺ membacanya saat menaik kendaraan (lihat juga QS Az-Zukhruf 13-14).'
-    },
-    {
-        category: ['rezeki'], title: 'Doa Perjalanan', condition: ['safar', 'perjalanan', 'jauh', 'liburan'],
-        arabic: 'اللَّهُمَّ إِنَّا نَسْأَلُكَ فِي سَفَرِنَا هَذَا الْبِرَّ وَالتَّقْوَى وَمِنَ الْعَمَلِ مَا تَرْضَى، اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا وَاطْوِ عَنَّا بُعْدَهُ',
-        latin: 'Allahumma inna nas-aluka fi safarina hadzal-birra wat-taqwa wa minal-\'amali ma tarda, Allahumma hawwin \'alayna safarana hadza wathwi \'anna bu\'dah',
-        meaning: 'Ya Allah, kami memohon dalam perjalanan ini kebaikan, ketakwaan, dan amal yang Engkau ridhai. Ya Allah, mudahkanlah perjalanan kami dan dekatkanlah yang jauh.',
-        source: 'HR. Muslim 1342', grade: 'sahih', narrator: 'Ibn Umar',
-        benefit: 'Doa safar yang menjaga niat sekaligus keluarga yang ditinggalkan.'
-    },
-    {
-        category: ['rezeki'], title: 'Doa Pulang Perjalanan', condition: ['pulang', 'kembali', 'sampai', 'tiba'],
-        arabic: 'آيِبُونَ تَائِبُونَ عَابِدُونَ لِرَبِّنَا حَامِدُونَ',
-        latin: 'Ayibuna ta\'ibuna \'abiduna lirabbina hamidun',
-        meaning: 'Kami kembali, bertaubat, beribadah, dan memuji Tuhan kami.',
-        source: 'HR. Muslim 1344', grade: 'sahih', narrator: 'Abu Hurairah',
-        benefit: 'Nabi ﷺ mengucapkannya saat pulang dari perjalanan.'
-    },
-    {
-        category: ['rezeki'], title: 'Doa Berbuka Puasa', condition: ['puasa', 'buka', 'iftar', 'ramadhan'],
-        arabic: 'ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الْأَجْرُ إِنْ شَاءَ اللَّهُ',
-        latin: 'Dzahabazh-zhama\'u wabtallatil-\'uruqu wa tsabatal-ajru insya\'allah',
-        meaning: 'Telah hilang rasa haus, urat-urat telah basah, dan pahala telah tetap, insya Allah.',
-        source: 'HR. Abu Dawud 2357', grade: 'hasan', narrator: 'Ibn Umar',
-        benefit: 'Riwayat yang lebih kuat daripada redaksi "Allahumma laka shumtu…" yang lemah.'
-    },
-    
-    // === KELUARGA (5 Doa) ===
-    {
-        category: ['keluarga'], title: 'Doa Untuk Kedua Orang Tua', condition: ['orang tua', 'ibu', 'bapak', 'berbakti'],
-        arabic: 'رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا',
-        latin: 'Rabbirhamhuma kama rabbayani shaghira',
-        meaning: 'Ya Tuhanku, sayangilah keduanya sebagaimana mereka telah mendidik aku waktu kecil.',
-        source: 'QS. Al-Isra: 24', grade: 'sahih', benefit: 'Perintah langsung setelah larangan berkata "ah" kepada orang tua.'
-    },
-    {
-        category: ['keluarga'], title: 'Doa Pasangan & Keturunan', condition: ['pasangan', 'istri', 'suami', 'anak', 'keluarga'],
-        arabic: 'رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا',
-        latin: 'Rabbana hab lana min azwajina wa dzurriyyatina qurrata a\'yunin waj\'alna lil-muttaqina imama',
-        meaning: 'Ya Tuhan kami, jadikanlah pasangan dan keturunan kami penyejuk mata, dan jadikanlah kami pemimpin bagi orang-orang yang bertakwa.',
-        source: 'QS. Al-Furqan: 74', grade: 'sahih', benefit: 'Ciri hamba Rahman: peduli keselamatan keluarga, bukan hanya diri.'
-    },
-    {
-        category: ['keluarga'], title: 'Doa Takziah', condition: ['kematian', 'duka', 'belasungkawa', 'hiburan'],
-        arabic: 'إِنَّ لِلَّهِ مَا أَخَذَ، وَلَهُ مَا أَعْطَى، وَكُلُّ شَيْءٍ عِنْدَهُ بِأَجَلٍ مُسَمًّى، فَلْتَصْبِرْ وَلْتَحْتَسِبْ',
-        latin: 'Inna lillahi ma akhadza, wa lahu ma a\'tha, wa kullu syai\'in \'indahu bi-ajalin musamma, faltashbir waltahtasib',
-        meaning: 'Sungguh milik Allah apa yang Dia ambil dan milik-Nya apa yang Dia berikan; segala sesuatu di sisi-Nya punya waktu yang ditetapkan. Maka bersabarlah dan harapkanlah pahala.',
-        source: 'HR. Al-Bukhari 1284 & Muslim 923', grade: 'muttafaq', narrator: 'Usamah bin Zaid',
-        benefit: 'Pesan Nabi  saat putri beliau kehilangan anaknya.'
-    },
-    {
-        category: ['keluarga'], title: 'Doa Talbiyah Haji & Umrah', condition: ['haji', 'umrah', 'talbiyah', 'ibadah'],
-        arabic: 'لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ',
-        latin: 'Labbayka-llahumma labbayk, labbayka la syarika laka labbayk, innal-hamda wan-ni\'mata laka wal-mulk, la syarika lak',
-        meaning: 'Aku memenuhi panggilan-Mu, ya Allah, aku memenuhi panggilan-Mu. Tiada sekutu bagi-Mu, aku memenuhi panggilan-Mu. Sungguh pujian, nikmat, dan kerajaan adalah milik-Mu; tiada sekutu bagi-Mu.',
-        source: 'HR. Al-Bukhari 1549 & Muslim 1184', grade: 'muttafaq', narrator: 'Ibn Umar',
-        benefit: 'Kalimat yang Nabi ﷺ terus ucapkan sepanjang ihram.'
-    },
-    {
-        category: ['keluarga'], title: 'Doa Setelah Adzan', condition: ['adzan', 'shalat', 'wasilah', 'syafaat'],
-        arabic: 'اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ، وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ',
-        latin: 'Allahumma rabba hadzihid-da\'watit-tammah wash-shalatil-qaimah, ati muhammadanil-wasilata wal-fadhilah, wab\'atshu maqaman mahmudanil-ladzi wa\'adtah',
-        meaning: 'Ya Allah, Tuhan panggilan yang sempurna dan shalat yang didirikan, berikanlah kepada Muhammad kedudukan wasilah dan keutamaan, dan angkatlah dia ke tempat terpuji yang Engkau janjikan.',
-        source: 'HR. Al-Bukhari 614', grade: 'sahih', narrator: 'Jabir bin Abdullah',
-        benefit: '"Siapa membacanya setelah adzan, ia berhak mendapat syafaatku pada hari kiamat."'
-    }
+(function(){
+'use strict';
+function $(id){return document.getElementById(id);}
+function L(a,b){return window.__nyalaLang==='en'?b:a;}
+function toast(msg){var box=$('toasts');if(!box)return;var t=document.createElement('div');t.className='toast';t.textContent=msg;box.appendChild(t);setTimeout(function(){t.classList.add('go');setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},320);},3000);}
+
+var NAMES=["Al-Faatihah","Al-Baqara","Aal-i-Imraan","An-Nisaa","Al-Maaida","Al-An'aam","Al-A'raaf","Al-Anfaal","At-Tauba","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Israa","Al-Kahf","Maryam","Thaa-Haa","Al-Anbiyaa","Al-Hajj","Al-Mu'minuun","An-Nuur","Al-Furqaan","Ash-Shu'araa","An-Naml","Al-Qasas","Al-Ankabuut","Ar-Ruum","Luqman","As-Sajda","Al-Ahzaab","Saba","Faatir","Yaa-Seen","As-Saaffaat","Shaad","Az-Zumar","Ghafir","Fusshilat","Ash-Shuura","Az-Zukhruf","Ad-Dukhaan","Al-Jaathiya","Al-Ahqaaf","Muhammad","Al-Fath","Al-Hujuraat","Qaaf","Adh-Dhaariyat","At-Tuur","An-Najm","Al-Qamar","Ar-Rahmaan","Al-Waaqia","Al-Hadid","Al-Mujaadila","Al-Hashr","Al-Mumtahana","As-Saff","Al-Jumu'ah","Al-Munaafiquun","At-Taghaabun","At-Talaaq","At-Tahriim","Al-Mulk","Al-Qalam","Al-Haaqqa","Al-Ma'aarij","Nooh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyaama","Al-Insaan","Al-Mursalaat","An-Naba","An-Naazi'aat","Abasa","At-Takwir","Al-Infitaar","Al-Mutaffifin","Al-Insyiqaaq","Al-Buruuj","At-Taariq","Al-A'laa","Al-Ghaashiya","Al-Fajr","Al-Balad","Ash-Shams","Al-Lail","Adh-Dhuhaa","Al-Insyirah","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyina","Az-Zalzala","Al-Aadiyaat","Al-Qaari'ah","At-Takaatsur","Al-Asr","Al-Humaza","Al-Fiil","Quraisy","Al-Maa'uun","Al-Kautsar","Al-Kaafiruun","An-Nasr","Al-Masad","Al-Ikhlaas","Al-Falaq","An-Naas"];
+var COUNTS=[7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
+var MED=[2,3,4,5,8,9,13,22,24,33,47,48,49,55,57,58,59,60,61,62,63,64,65,66,76,98,99,110];
+var OFFSET=[];(function(){var s=0;for(var i=0;i<COUNTS.length;i++){OFFSET.push(s);s+=COUNTS[i];}})();
+var JUZ=[[1,1],[2,142],[2,253],[3,93],[4,148],[5,82],[6,111],[7,88],[8,41],[9,93],[11,6],[12,53],[15,1],[17,1],[18,75],[20,1],[21,112],[23,1],[25,21],[27,56],[29,46],[33,31],[36,28],[39,32],[41,47],[51,31],[57,1],[58,23],[67,1],[78,1]];
+var QARIS=[{id:'ar.alafasy',n:'Misyari Al-Afasi'},{id:'ar.husary',n:'Mahmoud Khalil Al-Husary'},{id:'ar.abdurrahmaansudais',n:'Abdurrahman As-Sudais'},{id:'ar.abdulbasitmujawwad',n:'Abdul Basit (Mujawwad)'},{id:'ar.minshawi',n:'Mohamed Siddiq El-Minshawi'}];
+
+var MOODS=[
+{e:'😢',id:'Sedih',en:'Sad',list:[{ref:'94:5',ar:'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا',tr:'Karena sesungguhnya bersama kesulitan ada kemudahan.',en2:'For indeed, with hardship comes ease.'},{ref:'94:6',ar:'إِنَّ مَعَ الْعُسْرِ يُسْرًا',tr:'Sesungguhnya bersama kesulitan ada kemudahan.',en2:'Indeed, with hardship comes ease.'},{ref:'12:87',ar:'يَا بَنِيَّ اذْهَبُوا فَتَحَسَّسُوا مِن يُوسُفَ وَأَخِيهِ وَلَا تَيْأَسُوا مِن رَّوْحِ اللَّهِ ۖ إِنَّهُ لَا يَيْأَسُ مِن رَّوْحِ اللَّهِ إِلَّا الْقَوْمُ الْكَافِرُونَ',tr:'Hai anak-anakku, pergilah kamu, maka carilah berita tentang Yusuf dan saudaranya dan jangan kamu berputus asa dari rahmat Allah.',en2:'O my sons, go and search for Joseph and his brother and despair not of relief from Allah.'}]},
+{e:'😰',id:'Cemas',en:'Anxious',list:[{ref:'13:28',ar:'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',tr:'Ingatlah, hanya dengan mengingat Allah hati menjadi tenteram.',en2:'Unquestionably, by the remembrance of Allah hearts are assured.'},{ref:'3:139',ar:'وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنتُمُ الْأَعْلَوْنَ إِن كُنتُم مُّؤْمِنِينَ',tr:'Janganlah kamu bersikap lemah, dan janganlah (pula) kamu bersedih hati.',en2:'So do not weaken and do not grieve, for you will be superior if you are believers.'},{ref:'10:62',ar:'أَلَا إِنَّ أَوْلِيَاءَ اللَّهِ لَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ',tr:'Ingatlah, sesungguhnya wali-wali Allah itu, tidak ada kekhawatiran terhadap mereka.',en2:'Unquestionably, the allies of Allah will have no fear, nor will they grieve.'}]},
+{e:'🥰',id:'Bersyukur',en:'Grateful',list:[{ref:'14:7',ar:'لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ',tr:'Sesungguhnya jika kamu bersyukur, pasti Kami akan menambah (nikmat) kepadamu.',en2:'If you are grateful, I will surely increase you.'},{ref:'2:152',ar:'فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ',tr:'Karena itu, ingatlah kamu kepada-Ku niscaya Aku ingat (pula) kepadamu.',en2:'So remember Me; I will remember you. And be grateful to Me.'},{ref:'16:53',ar:'وَمَا بِكُم مِّن نِّعْمَةٍ فَمِنَ اللَّهِ',tr:'Dan apa saja nikmat yang ada pada kamu, maka dari Allah-lah (datangnya).',en2:'And whatever you have of favor - it is from Allah.'}]},
+{e:'🌾',id:'Butuh Sabar',en:'Need Patience',list:[{ref:'2:153',ar:'يَا أَيُّهَا الَّذِينَ آمَنُوا اسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ ۚ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ',tr:'Hai orang-orang yang beriman, jadikanlah sabar dan shalat sebagai penolongmu.',en2:'O you who have believed, seek help through patience and prayer.'},{ref:'39:10',ar:'إِنَّمَا يُوَفَّى الصَّابِرُونَ أَجْرَهُم بِغَيْرِ حِسَابٍ',tr:'Sesungguhnya hanya orang-orang yang bersabarlah yang dicukupkan pahala mereka tanpa batas.',en2:'Indeed, the patient will be given their reward without account.'},{ref:'3:200',ar:'يَا أَيُّهَا الَّذِينَ آمَنُوا اصْبِرُوا وَصَابِرُوا وَرَابِطُوا وَاتَّقُوا اللَّهَ لَعَلَّكُمْ تُفْلِحُونَ',tr:'Hai orang-orang yang beriman, bersabarlah kamu dan kuatkanlah kesabaranmu.',en2:'O you who have believed, persevere and endure and remain stationed and fear Allah.'}]},
+{e:'💼',id:'Memohon Rezeki',en:'Seeking Provision',list:[{ref:'65:3',ar:'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ',tr:'Barangsiapa bertawakkal kepada Allah niscaya Allah akan mencukupkan (keperluan)nya.',en2:'And whoever relies upon Allah - then He is sufficient for him.'},{ref:'65:2',ar:'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ',tr:'Barangsiapa bertakwa kepada Allah niscaya Dia akan mengadakan baginya jalan keluar.',en2:'And whoever fears Allah - He will make for him a way out.'},{ref:'51:58',ar:'إِنَّ اللَّهَ هُوَ الرَّزَّاقُ ذُو الْقُوَّةِ الْمَتِينُ',tr:'Sesungguhnya Allah Dialah Maha Pemberi rezeki Yang mempunyai kekuatan lagi sangat kokoh.',en2:'Indeed, it is Allah who is the [continual] Provider, the firm possessor of strength.'}]},
+{e:'🌙',id:'Merasa Sendiri',en:'Feeling Alone',list:[{ref:'2:186',ar:'وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ',tr:'Dan apabila hamba-hamba-Ku bertanya kepadamu tentang Aku, maka (jawablah), bahwasanya Aku adalah dekat.',en2:'And when My servants ask you concerning Me - indeed I am near.'},{ref:'50:16',ar:'وَنَحْنُ أَقْرَبُ إِلَيْهِ مِنْ حَبْلِ الْوَرِيدِ',tr:'Dan Kami lebih dekat kepadanya daripada urat lehernya.',en2:'And We are closer to him than [his] jugular vein.'},{ref:'58:7',ar:'مَا يَكُونُ مِن نَّجْوَىٰ ثَلَاثَةٍ إِلَّا هُوَ رَابِعُهُمْ',tr:'Tiada pembicaraan rahasia antara tiga orang, melainkan Dialah yang keempatnya.',en2:'There is in no private conversation three but that He is the fourth of them.'}]},
+{e:'🤍',id:'Meminta Ampun',en:'Seeking Forgiveness',list:[{ref:'39:53',ar:'قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ',tr:'Katakanlah: "Hai hamba-hamba-Ku yang malampaui batas terhadap diri mereka sendiri, janganlah kamu berputus asa dari rahmat Allah."',en2:'Say, "O My servants who have transgressed against themselves, do not despair of the mercy of Allah.'},{ref:'4:110',ar:'وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا',tr:'Dan barangsiapa yang mengerjakan kejahatan dan menganiaya dirinya, kemudian ia mohon ampun kepada Allah.',en2:'And whoever does a wrong or wrongs himself but then seeks forgiveness of Allah.'},{ref:'110:3',ar:'فَسَبِّحْ بِحَمْدِ رَبِّكَ وَاسْتَغْفِرْهُ',tr:'Maka bertasbihlah dengan memuji Tuhanmu dan mohonlah ampunan kepada-Nya.',en2:'Then exalt [Him] with praise of your Lord and ask forgiveness of Him.'}]},
+{e:'🛡',id:'Ingin Terlindungi',en:'Wanting Protection',list:[{ref:'2:255',ar:'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ',tr:'Allah, tidak ada Tuhan (yang berhak disembah) melainkan Dia Yang Hidup kekal.',en2:'Allah - there is no deity except Him, the Ever-Living, the Sustainer.'},{ref:'3:173',ar:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',tr:'Cukuplah Allah bagi Kami dan Dia sebaik-baik Pelindung.',en2:'Sufficient for us is Allah, and [He is] the best Disposer of affairs.'},{ref:'113:1',ar:'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ',tr:'Katakanlah: "Aku berlindung kepada Tuhan Yang Menguasai subuh".',en2:'Say, "I seek refuge in the Lord of daybreak."'}]},
+{e:'😠',id:'Marah',en:'Angry',list:[{ref:'3:134',ar:'الَّذِينَ يُنفِقُونَ فِي السَّرَّاءِ وَالضَّرَّاءِ وَالْكَاظِمِينَ الْغَيْظَ وَالْعَافِينَ عَنِ النَّاسِ',tr:'(yaitu) orang-orang yang menafkahkan (hartanya), baik di waktu lapang maupun sempit, dan orang-orang yang menahan amarahnya.',en2:'Who spend during ease and hardship and who restrain anger and who pardon the people.'},{ref:'41:34',ar:'وَلَا تَسْتَوِي الْحَسَنَةُ وَلَا السَّيِّئَةُ ۚ ادْفَعْ بِالَّتِي هِيَ أَحْسَنُ',tr:'Dan tidaklah sama kebaikan dan kejahatan. Tolaklah (kejahatan itu) dengan cara yang lebih baik.',en2:'And not equal are the good deed and the bad. Repel [evil] by that [deed] which is better.'},{ref:'3:159',ar:'فَبِمَا رَحْمَةٍ مِّنَ اللَّهِ لِنتَ لَهُمْ',tr:'Maka disebabkan rahmat dari Allah-lah kamu berlaku lemah lembut terhadap mereka.',en2:'So by mercy from Allah, you were lenient with them.'}]},
+{e:'🧭',id:'Bingung',en:'Confused',list:[{ref:'1:6',ar:'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',tr:'Tunjukilah kami jalan yang lurus.',en2:'Guide us to the straight path.'},{ref:'27:62',ar:'أَمَّن يُجِيبُ الْمُضْطَرَّ إِذَا دَعَاهُ وَيَكْشِفُ السُّوءَ',tr:'Atau siapakah yang memperkenankan (doa) orang yang dalam kesulitan apabila ia berdoa kepada-Nya.',en2:'Or who responds to the desperate one when he calls upon Him and removes evil.'},{ref:'42:10',ar:'وَمَا اخْتَلَفْتُمْ فِيهِ مِن شَيْءٍ فَحُكْمُهُ إِلَى اللَّهِ',tr:'Dan tentang apa pun kamu berbeda pendapat, maka keputusannya kembali kepada Allah.',en2:'And whatever you differ over - its ruling is to Allah.'}]}
 ];
 
-/* --- DATA MOOD (AYAT UNTUK HATIMU) --- */
-const MOODS = [
-    { id: 'tenang', label: 'Tenang', verse: 'الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُمْ بِذِكْرِ اللَّهِ', trans: '(Yaitu) orang-orang yang beriman dan hati mereka menjadi tenang dengan mengingat Allah.', ref: 'QS. Ar-Ra\'d: 28' },
-    { id: 'sedih', label: 'Sedih', verse: 'وَلَا تَحْزَنُوا إِنَّ اللَّهَ مَعَنَا', trans: 'Dan janganlah kamu bersedih, sesungguhnya Allah bersama kita.', ref: 'QS. Al-Anfal: 46' },
-    { id: 'lelah', label: 'Lelah', verse: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا', trans: 'Maka sesungguhnya bersama kesulitan ada kemudahan.', ref: 'QS. Ash-Sharh: 5' },
-    { id: 'takut', label: 'Takut', verse: 'قَالَ لَا تَخَافَا  إِنَّنِي مَعَكُمَا', trans: 'Dia berfirman, "Janganlah kamu berdua takut, sebab Aku bersama kamu."', ref: 'QS. Taha: 46' },
-    { id: 'butuh', label: 'Butuh Rezeki', verse: 'وَمَنْ يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ', trans: 'Barangsiapa bertawakal kepada Allah, niscaya Allah akan mencukupkannya.', ref: 'QS. At-Talaq: 3' }
-];
+var DOAS={
+daily:[
+{t:{id:'🍽 Sebelum Makan',en:'🍽 Before Eating'},ar:'بِسْمِ اللَّهِ',la:'Bismillah',tr:'Dengan nama Allah.',te:'In the name of Allah.',m:'Membawa berkah pada makanan dan menjauhkan setan dari rezeki kita.',me:'Brings blessing to the food and keeps Shaytan away from our provision.',s:'HR. Abu Dawud, Tirmidzi'},
+{t:{id:'🍽 Sesudah Makan',en:'🍽 After Eating'},ar:'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ',la:'Alhamdu lillahil ladzi ath\'amana wa saqana wa ja\'alana muslimin.',tr:'Segala puji bagi Allah yang memberi kami makan dan minum serta menjadikan kami muslim.',te:'Praise be to Allah who fed us, gave us drink, and made us Muslims.',m:'Menutup rezeki dengan syukur.',me:'Closes provision with gratitude.',s:'HR. Abu Dawud, Tirmidzi'},
+{t:{id:'🌙 Sebelum Tidur',en:'🌙 Before Sleeping'},ar:'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',la:'Bismika Allahumma amutu wa ahya.',tr:'Dengan nama-Mu ya Allah aku mati dan aku hidup.',te:'In Your name, O Allah, I die and I live.',m:'Menyerahkan nyawa dalam lindungan Allah.',me:'Entrusts the soul to Allah\'s protection.',s:'HR. Bukhari'},
+{t:{id:'🌅 Bangun Tidur',en:'🌅 Waking Up'},ar:'الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ',la:'Alhamdu lillahil ladzi ahyaana ba\'da ma amaatana wa ilaihin nusyur.',tr:'Segala puji bagi Allah yang menghidupkan kami setelah mematikan kami, dan kepada-Nya kami dibangkitkan.',te:'Praise be to Allah who gave us life after death, and to Him is the resurrection.',m:'Membuka hari dengan syukur.',me:'Opens the day with gratitude.',s:'HR. Bukhari'},
+{t:{id:'🚪 Keluar Rumah',en:'🚪 Leaving Home'},ar:'بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',la:'Bismillah, tawakkaltu \'alallah, wa la hawla wa la quwwata illa billah.',tr:'Dengan nama Allah, aku bertawakal kepada Allah; tiada daya dan kekuatan kecuali dengan Allah.',te:'In the name of Allah, I rely on Allah; there is no might nor power except with Allah.',m:'Penjagaan dari gangguan hingga kembali.',me:'Protection from harm until return.',s:'HR. Abu Dawud, Tirmidzi'},
+{t:{id:'🏠 Masuk Rumah',en:'🏠 Entering Home'},ar:'بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا',la:'Bismillahi walajna wa bismillahi kharajna wa \'alallahi rabbina tawakkalna.',tr:'Dengan nama Allah kami masuk dan keluar, dan kepada Tuhan kami bertawakal.',te:'In Allah\'s name we enter and exit, and upon our Lord we rely.',m:'Rumah terasa tenang dan diberkahi.',me:'Brings calm and blessing home.',s:'HR. Abu Dawud'},
+{t:{id:'🕌 Masuk Masjid',en:'🕌 Entering Mosque'},ar:'اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ',la:'Allahummaftah li abwaba rahmatik.',tr:'Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu.',te:'O Allah, open for me the doors of Your mercy.',m:'Mendapat rahmat Allah saat beribadah.',me:'Receiving Allah\'s mercy during worship.',s:'HR. Muslim'},
+{t:{id:'🚪 Keluar Masjid',en:'🚪 Leaving Mosque'},ar:'اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ',la:'Allahumma inni as-aluka min fadlik.',tr:'Ya Allah, sesungguhnya aku memohon kepada-Mu dari karunia-Mu.',te:'O Allah, I ask You from Your bounty.',m:'Mendapat karunia rezeki dari Allah.',me:'Receiving sustenance from Allah.',s:'HR. Muslim'},
+{t:{id:'🧼 Sebelum Wudhu',en:'🧼 Before Ablution'},ar:'بِسْمِ اللَّهِ',la:'Bismillah.',tr:'Dengan nama Allah.',te:'In the name of Allah.',m:'Menyucikan niat sebelum ibadah.',me:'Purifying intention before worship.',s:'HR. Abu Dawud, Ibnu Majah'},
+{t:{id:'💧 Sesudah Wudhu',en:'💧 After Ablution'},ar:'أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ',la:'Asyhadu alla ilaha illallah wahdahu la syarika lah wa asyhadu anna Muhammadan \'abduhu wa rasuluh.',tr:'Aku bersaksi bahwa tiada tuhan selain Allah Yang Maha Esa, tidak ada sekutu bagi-Nya, dan aku bersaksi bahwa Muhammad adalah hamba dan utusan-Nya.',te:'I bear witness that there is no deity except Allah alone, without partner, and I bear witness that Muhammad is His servant and messenger.',m:'Dibukakan 8 pintu surga.',me:'Eight gates of Paradise opened.',s:'HR. Muslim, Tirmidzi'},
+{t:{id:'📣 Mendengar Adzan',en:'📣 Hearing Adhan'},ar:'اللَّهُمَّ رَبَّ هَٰذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ',la:'Allahumma rabba hadzihid da\'watit tammah was shalatil qa\'imah, ati Muhammadanil wasilata wal fadilah, wab\'athhu maqamam mahmudan alladzi wa\'adtah.',tr:'Ya Allah, Tuhan pemilik seruan yang sempurna ini dan shalat yang akan didirikan, berikanlah kepada Muhammad wasilah dan keutamaan, dan bangkitkanlah dia pada tempat yang terpuji yang telah Engkau janjikan kepadanya.',te:'O Allah, Lord of this perfect call and established prayer, grant Muhammad the intercession and favor, and raise him to the praised station that You have promised him.',m:'Mendapat syafaat Nabi ﷺ di hari kiamat.',me:'Receiving the Prophet\'s ﷺ intercession on Judgment Day.',s:'HR. Bukhari'},
+{t:{id:'🚗 Naik Kendaraan',en:'🚗 Riding Transport'},ar:'سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَٰذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَىٰ رَبِّنَا لَمُنقَلِبُونَ',la:'Subhanalladzi sakhkhara lana hadza wa ma kunna lahu muqrinin, wa inna ila rabbina lamunqalibun.',tr:'Mahasuci Tuhan yang telah menundukkan semua ini bagi kami padahal kami sebelumnya tidak mampu menguasainya, dan sesungguhnya kami akan kembali kepada Tuhan kami.',te:'Glory to Him who has subjected this to us, and we could never have it [by our efforts]. And indeed we, to our Lord, will surely return.',m:'Perjalanan aman dan diberkahi.',me:'Safe and blessed journey.',s:'QS. Az-Zukhruf: 13-14'},
+{t:{id:'🌙 Melihat Bulan Sabit',en:'🌙 Seeing Crescent Moon'},ar:'اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْيُمْنِ وَالْإِيمَانِ وَالسَّلَامَةِ وَالْإِسْلَامِ رَبِّي وَرَبُّكَ اللَّهُ',la:'Allahumma ahillahu \'alaina bil yumni wal iman, was salamati wal Islam, rabbi wa rabbukallah.',tr:'Ya Allah, munculkanlah bulan ini kepada kami dengan keberkahan dan iman, keselamatan dan Islam. Tuhanku dan Tuhanmu ialah Allah.',te:'O Allah, bring this moon to us with blessing and faith, safety and Islam. My Lord and your Lord is Allah.',m:'Bulan yang diberkahi.',me:'A blessed month.',s:'HR. Tirmidzi, Darimi'},
+{t:{id:'🤧 Saat Bersin',en:'🤧 When Sneezing'},ar:'الْحَمْدُ لِلَّهِ',la:'Alhamdulillah.',tr:'Segala puji bagi Allah.',te:'Praise be to Allah.',m:'Sunnah Rasulullah ﷺ.',me:'Sunnah of the Prophet ﷺ.',s:'HR. Bukhari'},
+{t:{id:'🛏 Sebelum Berhubungan Suami Istri',en:'🛏 Before Intimacy'},ar:'بِسْمِ اللَّهِ، اللَّهُمَّ جَنِّبْنَا الشَّيْطَانَ وَجَنِّبِ الشَّيْطَانَ مَا رَزَقْتَنَا',la:'Bismillah, Allahumma jannibnasy syaithan wa jannibisy syaithana ma razaqtana.',tr:'Dengan nama Allah. Ya Allah, jauhkanlah kami dari setan dan jauhkanlah setan dari rezeki (anak) yang Engkau anugerahkan kepada kami.',te:'In the name of Allah. O Allah, keep Shaytan away from us and keep Shaytan away from what You have blessed us with.',m:'Jika dikaruniai anak, setan tidak akan mengganggunya.',me:'If blessed with a child, Shaytan will not harm it.',s:'HR. Bukhari, Muslim'},
+{t:{id:'🌊 Naik Kapal/Laut',en:'🌊 Boarding a Ship'},ar:'بِسْمِ اللَّهِ مَجْرَاهَا وَمُرْسَاهَا ۚ إِنَّ رَبِّي لَغَفُورٌ رَّحِيمٌ',la:'Bismillahi majraha wa mursaaha, inna rabbi laghafurur rahim.',tr:'Dengan nama Allah (yang menjalankan) kapal ini berlayar dan berlabuh. Sesungguhnya Tuhanku benar-benar Maha Pengampun lagi Maha Penyayang.',te:'In the name of Allah is its course and its anchoring. Indeed, my Lord is Forgiving and Merciful.',m:'Keselamatan di perjalanan laut.',me:'Safety at sea.',s:'QS. Hud: 41'},
+{t:{id:'⚔️ Saat Bertemu Musuh/Kesulitan',en:'⚔️ Facing Difficulty'},ar:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',la:'Hasbunallahu wa ni\'mal wakil.',tr:'Cukuplah Allah bagi kami dan Dia adalah sebaik-baik pelindung.',te:'Allah is sufficient for us, and He is the best disposer of affairs.',m:'Pertolongan Allah atas musuh/kesulitan.',me:'Allah\'s help against enemies/difficulties.',s:'QS. Ali Imran: 173'},
+{t:{id:'🏪 Masuk Pasar',en:'🏪 Entering Market'},ar:'لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ يُحْيِي وَيُمِيتُ وَهُوَ حَيٌّ لَا يَمُوتُ بِيَدِهِ الْخَيْرُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ',la:'La ilaha illallahu wahdahu la syarika lah, lahul mulku wa lahul hamdu, yuhyi wa yumit, wa huwa hayyun la yamut, bi yadihil khair, wa huwa \'ala kulli syai-in qadir.',tr:'Tiada tuhan selain Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Milik-Nya kerajaan dan bagi-Nya segala puji. Dia menghidupkan dan mematikan. Dia Mahahidup dan tidak mati. Di tangan-Nya segala kebaikan dan Dia Mahakuasa atas segala sesuatu.',te:'There is no deity but Allah alone, without partner. His is the dominion and His is the praise. He gives life and causes death. He is Ever-Living and does not die. In His Hand is all good, and He is over all things competent.',m:'Mendapat 10.000 kebaikan, dihapus 10.000 dosa, dinaikkan 10.000 derajat.',me:'10,000 good deeds recorded, 10,000 sins erased, 10,000 ranks raised.',s:'HR. Tirmidzi, Hakim'},
+{t:{id:'🌧 Saat Hujan',en:'🌧 When It Rains'},ar:'اللَّهُمَّ صَيِّبًا نَافِعًا',la:'Allahumma shayyiban nafi\'an.',tr:'Ya Allah, turunkanlah hujan yang bermanfaat.',te:'O Allah, let it be a beneficial rain.',m:'Hujan menjadi rahmat, bukan murka.',me:'Rain becomes mercy, not wrath.',s:'HR. Bukhari'},
+{t:{id:'🌬 Saat Angin Kencang',en:'🌬 Strong Wind'},ar:'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَهَا وَخَيْرَ مَا فِيهَا وَخَيْرَ مَا أُرْسِلَتْ بِهِ، وَأَعُوذُ بِكَ مِنْ شَرِّهَا وَشَرِّ مَا فِيهَا وَشَرِّ مَا أُرْسِلَتْ بِهِ',la:'Allahumma inni as-aluka khairaha wa khaira ma fiha wa khaira ma ursilat bih, wa a\'udzu bika min syarriha wa syarri ma fiha wa syarri ma ursilat bih.',tr:'Ya Allah, aku memohon kepada-Mu kebaikan angin ini, kebaikan yang ada padanya, dan kebaikan yang dibawanya. Dan aku berlindung kepada-Mu dari kejahatan angin ini, kejahatan yang ada padanya, dan kejahatan yang dibawanya.',te:'O Allah, I ask You for the good of this wind, the good within it, and the good it brings. And I seek refuge in You from its evil, the evil within it, and the evil it brings.',m:'Terlindungi dari bahaya angin.',me:'Protected from wind\'s harm.',s:'HR. Abu Dawud'}
+],
+prophets:[
+{t:{id:'🌿 Nabi Adam (QS 7:23)',en:'🌿 Prophet Adam (QS 7:23)'},ar:'رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ',la:'Rabbana zhalamna anfusana wa il lam taghfir lana wa tarhamna lanakunanna minal khasirin.',tr:'Ya Tuhan kami, kami telah menzalimi diri kami sendiri. Jika Engkau tidak mengampuni kami dan merahmati kami, niscaya kami termasuk orang yang rugi.',te:'Our Lord, we have wronged ourselves, and if You do not forgive us and have mercy upon us, we will surely be among the losers.',m:'Pembuka pintu taubat yang paling sempurna.',me:'The most perfect opener of the door of repentance.',s:'QS. Al-A\'raf: 23'},
+{t:{id:'🚢 Nabi Nuh (QS 11:47)',en:'🚢 Prophet Nuh (QS 11:47)'},ar:'رَبِّ إِنِّي أَعُوذُ بِكَ أَنْ أَسْأَلَكَ مَا لَيْسَ لِي بِهِ عِلْمٌ ۖ وَإِلَّا تَغْفِرْ لِي وَتَرْحَمْنِي أَكُن مِّنَ الْخَاسِرِينَ',la:'Rabbi inni a\'udzu bika an as-alaka ma laysa li bihi \'ilm, wa il la taghfir li wa tarhamni akun minal khasirin.',tr:'Ya Tuhanku, sesungguhnya aku berlindung kepada-Mu dari memohon kepada-Mu sesuatu yang aku tidak mengetahui (hakikat)nya. Dan sekiranya Engkau tidak mengampuniku dan (tidak) menaruh kasih sayang kepadaku, niscaya aku akan termasuk orang-orang yang rugi.',te:'My Lord, I seek refuge in You from asking that of which I have no knowledge. And unless You forgive me and have mercy upon me, I will be among the losers.',m:'Doa memohon ampun dan petunjuk.',me:'Prayer for forgiveness and guidance.',s:'QS. Hud: 47'},
+{t:{id:'🕊 Nabi Musa (QS 20:25-28)',en:'🕊 Prophet Musa (QS 20:25-28)'},ar:'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِّن لِّسَانِي يَفْقَهُوا قَوْلِي',la:'Rabbisyrah li shadri wa yassir li amri wahlul \'uqdatan min lisani yafqahu qauli.',tr:'Ya Tuhanku, lapangkanlah untukku dadaku, dan mudahkanlah untukku urusanku, dan lepaskanlah kekakuan dari lidahku, supaya mereka mengerti perkataanku.',te:'My Lord, expand for me my breast [with assurance], and ease for me my task, and untie the knot from my tongue that they may understand my speech.',m:'Kelapangan dada dan kemudahan urusan.',me:'Expansion of the chest and ease in affairs.',s:'QS. Thaha: 25-28'},
+{t:{id:'🕌 Nabi Ibrahim (QS 14:40)',en:'🕌 Prophet Ibrahim (QS 14:40)'},ar:'رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِن ذُرِّيَّتِي ۚ رَبَّنَا وَتَقَبَّلْ دُعَاءِ',la:'Rabbij\'alni muqimash shalati wa min dzurriyyati, rabbana wa taqabbal du\'a.',tr:'Ya Tuhanku, jadikanlah aku dan anak cucuku orang yang tetap mendirikan sholat; ya Tuhan kami, perkenankanlah doaku.',te:'My Lord, make me an establisher of prayer, and [many] from my descendants. Our Lord, and accept my supplication.',m:'Doa keluarga yang menjaga sholat turun-temurun.',me:'A family prayer that keeps salat across generations.',s:'QS. Ibrahim: 40'},
+{t:{id:'🕌 Nabi Ibrahim (QS 2:127)',en:'🕌 Prophet Ibrahim (QS 2:127)'},ar:'رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ',la:'Rabbana taqabbal minna, innaka antas sami\'ul \'alim.',tr:'Ya Tuhan kami, terimalah (amalan) dari kami. Sesungguhnya Engkaulah Yang Maha Mendengar lagi Maha Mengetahui.',te:'Our Lord, accept [this] from us. Indeed You are the Hearing, the Knowing.',m:'Diterimanya amal ibadah.',me:'Acceptance of good deeds.',s:'QS. Al-Baqarah: 127'},
+{t:{id:'🕌 Nabi Ibrahim (QS 26:83-84)',en:'🕌 Prophet Ibrahim (QS 26:83-84)'},ar:'رَبِّ هَبْ لِي حُكْمًا وَأَلْحِقْنِي بِالصَّالِحِينَ وَاجْعَل لِّي لِسَانَ صِدْقٍ فِي الْآخِرِينَ',la:'Rabbi hab li hukman wa alhiqni bis shalihin, waj\'al li lisana shidqin fil akhirin.',tr:'Ya Tuhanku, berikanlah kepadaku hikmah dan masukkanlah aku ke dalam golongan orang-orang yang saleh, dan jadikanlah aku buah tutur yang baik bagi orang-orang (yang datang) kemudian.',te:'My Lord, grant me authority and join me with the righteous. And grant me a reputation of honor among later generations.',m:'Hikmah dan nama baik di kemudian hari.',me:'Wisdom and good repute among later generations.',s:'QS. Asy-Syu\'ara: 83-84'},
+{t:{id:'👴 Nabi Zakariya (QS 21:89)',en:'👴 Prophet Zakariya (QS 21:89)'},ar:'رَبِّ لَا تَذَرْنِي فَرْدًا وَأَنتَ خَيْرُ الْوَارِثِينَ',la:'Rabbi la tadzarni fardan wa anta khairul waritsin.',tr:'Ya Tuhanku, janganlah Engkau membiarkan aku hidup seorang diri dan Engkaulah ahli waris yang paling baik.',te:'My Lord, do not leave me alone [with no heir], while You are the best of inheritors.',m:'Harapan akan keturunan & penerus yang saleh.',me:'Hope for righteous offspring & successors.',s:'QS. Al-Anbiya: 89'},
+{t:{id:'🐋 Nabi Yunus (QS 21:87)',en:'🐋 Prophet Yunus (QS 21:87)'},ar:'لَّا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ',la:'La ilaha illa anta subhanaka inni kuntu minaz zhalimin.',tr:'Tidak ada tuhan selain Engkau. Mahasuci Engkau, sesungguhnya aku adalah termasuk orang-orang yang zalim.',te:'There is no deity except You; exalted are You. Indeed, I have been among the wrongdoers.',m:'Jalan keluar dari kesempitan yang terasa buntu.',me:'A way out of distress that feels hopeless.',s:'QS. Al-Anbiya: 87'},
+{t:{id:'🤕 Nabi Ayyub (QS 21:83)',en:'🤕 Prophet Ayyub (QS 21:83)'},ar:'أَنِّي مَسَّنِيَ الضُّرُّ وَأَنتَ أَرْحَمُ الرَّاحِمِينَ',la:'Anni massaniyad durru wa anta arhamur rahimîn.',tr:'Sesungguhnya aku telah ditimpa penyakit dan Engkau adalah Tuhan Yang Maha Penyayang di antara semua penyayang.',te:'Indeed, adversity has touched me, and You are the Most Merciful of the merciful.',m:'Kesembuhan dari penyakit dan ujian.',me:'Healing from illness and trials.',s:'QS. Al-Anbiya: 83'},
+{t:{id:'👑 Nabi Sulaiman (QS 27:19)',en:'👑 Prophet Sulaiman (QS 27:19)'},ar:'رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ وَعَلَىٰ وَالِدَيَّ وَأَنْ أَعْمَلَ صَالِحًا تَرْضَاهُ وَأَدْخِلْنِي بِرَحْمَتِكَ فِي عِبَادِكَ الصَّالِحِينَ',la:'Rabbi awzi\'ni an asykura ni\'matakallati an\'amta \'alayya wa \'ala walidayya wa an a\'mala shalihan tardhahu wa adkhilni birahmatika fi \'ibadikas shalihin.',tr:'Ya Tuhanku, berilah aku ilham untuk tetap mensyukuri nikmat-Mu yang telah Engkau anugerahkan kepadaku dan kepada kedua orang tuaku dan untuk mengerjakan amal saleh yang Engkau ridai; dan masukkanlah aku dengan rahmat-Mu ke dalam golongan hamba-hamba-Mu yang saleh.',te:'My Lord, enable me to be grateful for Your favor which You have bestowed upon me and upon my parents and to work righteousness of which You will approve and admit me by Your mercy into [the ranks of] Your righteous servants.',m:'Ilham untuk selalu bersyukur dan amal saleh.',me:'Inspiration for gratitude and righteous deeds.',s:'QS. An-Naml: 19'}
+],
+modern:[
+{t:{id:'🌅 Pembuka Hari',en:'🌅 Day Opener'},ar:'اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ',la:'Allahumma bika ashbahna wa bika amsaina wa bika nahya wa bika namutu wa ilaikan nusyur.',tr:'Ya Allah, dengan-Mu kami memasuki pagi dan petang, dengan-Mu kami hidup dan mati, dan kepada-Mu kami kembali.',te:'O Allah, by You we enter morning and evening, by You we live and die, and to You is the resurrection.',m:'Mengawali hari dengan penyerahan diri total kepada Allah.',me:'Begins the day with total surrender to Allah.',s:'HR. Tirmidzi, Abu Dawud'},
+{t:{id:'🌙 Penutup Hari',en:'🌙 Day Closer'},ar:'اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ',la:'Allahumma bika amsaina wa bika ashbahna wa bika nahya wa bika namutu wa ilaikal mashir.',tr:'Ya Allah, dengan-Mu kami memasuki petang dan pagi, dengan-Mu kami hidup dan mati, dan kepada-Mu kami kembali.',te:'O Allah, by You we enter evening and morning, by You we live and die, and to You is the final return.',m:'Menutup hari dengan mengingat Allah.',me:'Ends the day remembering Allah.',s:'HR. Tirmidzi, Abu Dawud'},
+{t:{id:'🧠 Overthinking / Cemas',en:'🧠 Overthinking / Anxious'},ar:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',la:'Hasbunallahu wa ni\'mal wakil.',tr:'Cukuplah Allah bagi kami dan Dia sebaik-baik pelindung.',te:'Allah is sufficient for us, and He is the best disposer of affairs.',m:'Meredam cemas, mengembalikan tawakal.',me:'Calms anxiety and restores reliance on Allah.',s:'QS. Ali Imran: 173'},
+{t:{id:'📚 Sebelum Belajar / Bekerja',en:'📚 Before Study / Work'},ar:'رَبِّ زِدْنِي عِلْمًا',la:'Rabbi zidni \'ilma.',tr:'Ya Tuhanku, tambahkanlah ilmu kepadaku.',te:'My Lord, increase me in knowledge.',m:'Membuka fokus dan kemudahan memahami.',me:'Opens focus and ease of understanding.',s:'QS. Thaha: 114'},
+{t:{id:'💰 Memohon Rezeki',en:'💰 Seeking Provision'},ar:'اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا',la:'Allahumma inni as-aluka \'ilman nafi\'an wa rizqan thayyiban wa \'amalan mutaqabbalan.',tr:'Ya Allah, aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang baik, dan amal yang diterima.',te:'O Allah, I ask You for beneficial knowledge, good provision, and accepted deeds.',m:'Rezeki halal dan berkah.',me:'Halal and blessed provision.',s:'HR. Ibnu Majah'},
+{t:{id:'😢 Memohon Kesabaran',en:'😢 Seeking Patience'},ar:'رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَثَبِّتْ أَقْدَامَنَا وَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ',la:'Rabbana afrigh \'alaina sabran wa tsabbit aqdamana wansurna \'alal qaumil kafirin.',tr:'Ya Tuhan kami, limpahkanlah kesabaran kepada kami dan kokohkanlah pendirian kami dan tolonglah kami terhadap kaum yang kafir.',te:'Our Lord, pour upon us patience and plant firmly our feet and give us victory over the disbelieving people.',m:'Kesabaran dan keteguhan hati.',me:'Patience and firmness of heart.',s:'QS. Al-Baqarah: 250'},
+{t:{id:'🤍 Memohon Ampunan',en:'🤍 Seeking Forgiveness'},ar:'اللَّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ دِقَّهُ وَجِلَّهُ وَأَوَّلَهُ وَآخِرَهُ وَعَلَانِيَتَهُ وَسِرَّهُ',la:'Allahummaghfir li dzanbi kullahu, diqqahu wa jillahu, wa awwalahu wa akhirahu, wa \'alaniyatahu wa sirrahu.',tr:'Ya Allah, ampunilah seluruh dosaku, yang kecil dan yang besar, yang awal dan yang akhir, yang terang-terangan dan yang tersembunyi.',te:'O Allah, forgive all my sins, the small and the great, the first and the last, the open and the secret.',m:'Pengampunan menyeluruh dari Allah.',me:'Comprehensive forgiveness from Allah.',s:'HR. Muslim'},
+{t:{id:'💳 Memohon Bebas dari Hutang',en:'💳 Freedom from Debt'},ar:'اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ',la:'Allahumma ikfini bi halalika \'an haramika wa aghnini bi fadlika \'amman siwaka.',tr:'Ya Allah, cukupkanlah aku dengan yang halal dan jauhkanlah aku dari yang haram, dan cukupkanlah aku dengan karunia-Mu dari bergantung pada selain-Mu.',te:'O Allah, suffice me with what You have made lawful over what You have made unlawful, and enrich me by Your bounty over all others besides You.',m:'Kecukupan rezeki dan bebas hutang.',me:'Sufficiency of provision and freedom from debt.',s:'HR. Tirmidzi'},
+{t:{id:'😟 Memohon Bebas dari Kesedihan',en:'😟 Freedom from Sadness'},ar:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْجُبْنِ وَالْبُخْلِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ',la:'Allahumma inni a\'udzu bika minal hammi wal hazan, wal \'ajzi wal kasal, wal jubni wal bukhl, wa dhala\'id daini wa ghalabatir rijal.',tr:'Ya Allah, aku berlindung kepada-Mu dari kegelisahan dan kesedihan, dari kelemahan dan kemalasan, dari sifat pengecut dan kikir, dari lilitan hutang dan penindasan orang.',te:'O Allah, I seek refuge in You from anxiety and sorrow, from weakness and laziness, from cowardice and miserliness, from the burden of debt and from being overpowered by men.',m:'Terbebas dari 8 perkara yang melemahkan.',me:'Freedom from 8 weakening matters.',s:'HR. Bukhari'},
+{t:{id:'💪 Memohon Kesehatan',en:'💪 Seeking Health'},ar:'اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَٰهَ إِلَّا أَنْتَ',la:'Allahumma \'afini fi badani, Allahumma \'afini fi sam\'i, Allahumma \'afini fi bashari, la ilaha illa anta.',tr:'Ya Allah, sehatkanlah badanku. Ya Allah, sehatkanlah pendengaranku. Ya Allah, sehatkanlah penglihatanku. Tiada tuhan selain Engkau.',te:'O Allah, grant my body health. O Allah, grant my hearing health. O Allah, grant my sight health. There is no deity but You.',m:'Kesehatan tubuh, pendengaran, dan penglihatan.',me:'Health of body, hearing, and sight.',s:'HR. Abu Dawud'},
+{t:{id:'💍 Memohon Jodoh Shaleh',en:'💍 Seeking Righteous Spouse'},ar:'رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا',la:'Rabbana hab lana min azwajina wa dzurriyyatina qurrata a\'yun waj\'alna lil muttaqina imama.',tr:'Ya Tuhan kami, anugerahkanlah kepada kami pasangan kami dan keturunan kami sebagai penyenang hati (kami), dan jadikanlah kami imam bagi orang-orang yang bertakwa.',te:'Our Lord, grant us from among our spouses and offspring comfort to our eyes and make us an example for the righteous.',m:'Pasangan dan keturunan yang menyejukkan hati.',me:'Spouse and offspring that bring joy.',s:'QS. Al-Furqan: 74'},
+{t:{id:'❤️ Memohon Ketenangan Hati',en:'❤️ Seeking Peace of Heart'},ar:'يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَىٰ دِينِكَ',la:'Ya muqallibal qulub, tsabbit qalbi \'ala dinik.',tr:'Wahai Dzat yang membolak-balikkan hati, teguhkanlah hatiku di atas agama-Mu.',te:'O Turner of hearts, keep my heart firm on Your religion.',m:'Hati yang teguh di atas iman.',me:'A heart firm upon faith.',s:'HR. Tirmidzi'},
+{t:{id:'✨ Memohon Kebaikan Dunia Akhirat',en:'✨ Seeking Good in Both Worlds'},ar:'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',la:'Rabbana atina fid dunya hasanatan wa fil akhirati hasanatan wa qina \'adzaban nar.',tr:'Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat dan lindungilah kami dari azab neraka.',te:'Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the punishment of the Fire.',m:'Kebaikan dunia dan akhirat.',me:'Good in this world and the Hereafter.',s:'QS. Al-Baqarah: 201'},
+{t:{id:'🎯 Memohon Petunjuk (Istikharah)',en:'🎯 Seeking Guidance (Istikharah)'},ar:'اللَّهُمَّ إِنِّي أَسْتَخِيرُكَ بِعِلْمِكَ وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ',la:'Allahumma inni astakhiruka bi \'ilmika wa astaqdiruka bi qudratika wa as-aluka min fadlikal \'azhim.',tr:'Ya Allah, sesungguhnya aku memohon pilihan kepada-Mu dengan ilmu-Mu, dan aku memohon kekuasaan kepada-Mu dengan kekuasaan-Mu, dan aku memohon kepada-Mu dari karunia-Mu yang agung.',te:'O Allah, I seek Your guidance by virtue of Your knowledge, and I seek ability by virtue of Your power, and I ask You of Your great bounty.',m:'Petunjuk Allah dalam mengambil keputusan.',me:'Allah\'s guidance in decision-making.',s:'HR. Bukhari'},
+{t:{id:'🏥 Saat Mendapat Musibah',en:'🏥 Facing Calamity'},ar:'إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ، اللَّهُمَّ أَجِرْنِي فِي مُصِيبَتِي وَأَخْلِفْ لِي خَيْرًا مِنْهَا',la:'Inna lillahi wa inna ilaihi raji\'un, Allahumma ajurni fi mushibati wa akhlif li khairan minha.',tr:'Sesungguhnya kami adalah milik Allah dan kepada-Nya-lah kami kembali. Ya Allah, berilah aku pahala dalam musibahku dan gantikanlah untukku dengan yang lebih baik.',te:'Indeed we belong to Allah, and indeed to Him we will return. O Allah, reward me in my affliction and replace for me something better.',m:'Pahala atas musibah dan pengganti yang lebih baik.',me:'Reward for calamity and a better replacement.',s:'HR. Muslim'}
+]};
 
-/* --- LOGIC JAVASCRIPT --- */
-let currentFilter = 'all';
-let searchQuery = '';
-let favorites = JSON.parse(localStorage.getItem('nyala_fav_doas')) || [];
-let hafalanState = JSON.parse(localStorage.getItem('nyala_hafalan')) || {}; // { 1: 'hafal', 2: 'proses' }
+var TABS=[['daily','🌅','Sehari-hari','Daily'],['prophets','🕌','Para Nabi','Prophets'],['modern','💫','Rasulullah ﷺ','Prophet Muhammad ﷺ']];
+var HKEY='nyala_quran_hafalan_v1',QKEY='nyala_qari',VKEY='nyala_v1';
+var haf={};try{haf=JSON.parse(localStorage.getItem(HKEY)||'{}')||{};}catch(e){haf={};}
+function saveHaf(){try{localStorage.setItem(HKEY,JSON.stringify(haf));}catch(e){}}
+var qari=QARIS[0].id;try{var q0=localStorage.getItem(QKEY);if(q0)qari=q0;}catch(e){}
+var SURAH=null,IDMAP=null,ENMAP=null,enTried=false,bareng=false,playingIdx=-1,curTab='daily',curMood=-1,ready=false;
+var audio=new Audio();audio.preload='none';
 
-// Init
-document.addEventListener('DOMContentLoaded', () => {
-    renderDoas();
-    renderMoods();
-    renderHafalanGrid();
-    fetchSurahList();
-    
-    // Event Listeners
-    document.getElementById('doaSearch').addEventListener('input', (e) => {
-        searchQuery = e.target.value.toLowerCase();
-        renderDoas();
+function st(){try{return JSON.parse(localStorage.getItem(VKEY))||{};}catch(e){return {};}}
+function setXP(add){var s=st();s.xp=(s.xp||0)+add;try{localStorage.setItem(VKEY,JSON.stringify(s));}catch(e){}paintChips();}
+function paintChips(){var s=st();$('xpChip').textContent=(s.xp||0)+' XP';$('streakChip').textContent='🔥 '+((s.streak&&s.streak.count)||0);$('netChip').textContent=navigator.onLine?'🌐 Online':'📴 Offline';}
+window.addEventListener('online',paintChips);window.addEventListener('offline',paintChips);
+
+function setTitle(){
+  var t=$('tqTitle');if(t)t.textContent="🕌 TAMAN QUR'AN";
+  document.title="Taman Qur'an — NYALA";
+}
+
+function norm(obj){var out=[];function push(n,a){out.push({number:n,ayahs:a});}
+ if(obj&&obj.data&&Array.isArray(obj.data.surahs)){obj.data.surahs.forEach(function(s){push(s.number,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
+ else if(obj&&Array.isArray(obj.surahs)){obj.surahs.forEach(function(s){push(s.number,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
+ out.sort(function(a,b){return a.number-b.number;});return out;}
+
+function load(){
+  $('cacheTxt').textContent='Memuat data Qur\'an…';
+  fetch('quran-uthmani.json').then(function(r){if(!r.ok)throw new Error('HTTP');return r.json();}).then(function(ar){
+    SURAH=norm(ar);
+    return fetch('id.indonesian.json').then(function(r){if(!r.ok)throw new Error('HTTP');return r.json();});
+  }).then(function(o){
+    var m={};norm(o).forEach(function(s){m[s.number]={};s.ayahs.forEach(function(a){m[s.number][a.n]=a.text;});});IDMAP=m;
+  }).catch(function(){IDMAP={};}).then(function(){
+    ready=true;
+    $('cacheTxt').textContent='114 surah siap ✅';
+    buildSelects();
+    renderAyahs();
+  }).catch(function(){
+    $('cacheTxt').textContent='Gagal memuat — cek koneksi';
+  });
+}
+
+function buildSelects(){
+  var ms=$('modeSel');if(!ms)return;ms.innerHTML='';
+  [['surah','Per Surah'],['juz','Per Juz']].forEach(function(o){var e=document.createElement('option');e.value=o[0];e.textContent=o[1];ms.appendChild(e);});
+  var t=$('targetSel');if(!t)return;t.innerHTML='';
+  if(ms.value==='surah'){for(var i=0;i<114;i++){var o=document.createElement('option');o.value=i+1;o.textContent=(i+1)+'. '+NAMES[i];t.appendChild(o);}}
+  else{for(var j=1;j<=30;j++){var o2=document.createElement('option');o2.value=j;o2.textContent='Juz '+j;t.appendChild(o2);}}
+  var qs=$('qariSel');if(!qs)return;qs.innerHTML='';QARIS.forEach(function(q){var o3=document.createElement('option');o3.value=q.id;o3.textContent='🎙 '+q.n;qs.appendChild(o3);});qs.value=qari;
+}
+
+function curList(){
+  if($('modeSel').value==='surah'){
+    var sn=+$('targetSel').value||1;
+    if(!ready||!SURAH)return[];
+    var s=SURAH[sn-1];return s?s.ayahs.map(function(a){return{s:sn,n:a.n,ar:a.text};}):[];
+  }
+  var j=+$('targetSel').value||1,stt=JUZ[j-1],endS=j<30?JUZ[j][0]:114,endA=j<30?JUZ[j][1]:1;var out=[];
+  for(var s2=stt[0];s2<=endS&&s2<=114;s2++){
+    var a0=(s2===stt[0])?stt[1]:1;
+    var a1=(s2===endS)?Math.max(a0,endA-1):COUNTS[s2-1];
+    if(s2===114&&j===30)a1=COUNTS[113];
+    for(var a=a0;a<=a1;a++){var sr=SURAH?s2-1>=0&&SURAH[s2-1]?SURAH[s2-1].ayahs.filter(function(x){return x.n===a;})[0]:null:null;if(sr)out.push({s:s2,n:a,ar:sr.text});}
+  }
+  return out;
+}
+
+function ayahTr(s,n){return (IDMAP&&IDMAP[s]&&IDMAP[s][n])||'';}
+
+function renderAyahs(){
+  var box=$('ayahBox');if(!box)return;
+  var list=curList();box.innerHTML='';
+  var info=$('surahInfo');info.innerHTML='';
+  if($('modeSel').value==='surah'){
+    var sn=+$('targetSel').value||1;
+    var b=document.createElement('b');b.textContent=NAMES[sn-1];
+    var ar=document.createElement('span');ar.className='ar';ar.setAttribute('lang','ar');ar.textContent=(ready&&SURAH&&SURAH[sn-1])?SURAH[sn-1].name:'';
+    var sm=document.createElement('small');sm.textContent=COUNTS[sn-1]+' ayat · '+(MED.indexOf(sn)>-1?'Madaniyah':'Makkiyah');
+    info.appendChild(b);info.appendChild(ar);info.appendChild(sm);
+  }
+  if(!ready){
+    var p=document.createElement('div');p.className='card ayah';
+    var pt=document.createElement('div');pt.className='tr';pt.textContent='Menunggu data ayat…';
+    p.appendChild(pt);box.appendChild(p);return;
+  }
+  list.forEach(function(it,i){
+    var card=document.createElement('div');card.className='card ayah';card.id='ayah-'+it.s+'-'+it.n;
+    var top=document.createElement('div');top.className='top';
+    var ref=document.createElement('span');ref.className='ref';ref.textContent=it.s+':'+it.n;
+    var dn=document.createElement('button');dn.className='dengar';dn.textContent='▶ dengar';
+    dn.addEventListener('click',function(){playSingle(it.s,it.n);});
+    top.appendChild(ref);top.appendChild(dn);card.appendChild(top);
+    var a=document.createElement('div');a.className='ar';a.setAttribute('lang','ar');a.setAttribute('dir','rtl');a.textContent=it.ar;card.appendChild(a);
+    var tr=document.createElement('div');tr.className='tr';tr.textContent=ayahTr(it.s,it.n);card.appendChild(tr);
+    box.appendChild(card);
+  });
+}
+
+function playSingle(s,n){
+  stopAudio();
+  var num=OFFSET[s-1]+n;
+  audio.src='https://cdn.islamic.network/quran/audio/128/'+qari+'/'+num+'.mp3';
+  audio.play().catch(function(){toast('Audio gagal');});
+  document.querySelectorAll('.ayah.playing').forEach(function(e){e.classList.remove('playing');});
+  var el=$('ayah-'+s+'-'+n);if(el){el.classList.add('playing');el.scrollIntoView({behavior:'smooth',block:'center'});}
+  audio.onended=function(){document.querySelectorAll('.ayah.playing').forEach(function(e){e.classList.remove('playing');});};
+}
+
+function stopAudio(){audio.pause();audio.onended=null;}
+
+function moodCard(m){
+  var card=document.createElement('div');card.className='card ayah';
+  var top=document.createElement('div');top.className='top';
+  var ref=document.createElement('span');ref.className='ref';ref.textContent=m.ref;
+  var dn=document.createElement('button');dn.className='dengar';dn.textContent='▶ dengar';
+  dn.addEventListener('click',function(){
+    var p=m.ref.split(':');var s=+p[0],n=+p[1];
+    playSingle(s,n);
+  });
+  top.appendChild(ref);top.appendChild(dn);card.appendChild(top);
+  var a=document.createElement('div');a.className='ar';a.setAttribute('lang','ar');a.setAttribute('dir','rtl');a.textContent=m.ar;card.appendChild(a);
+  var tr=document.createElement('div');tr.className='tr';tr.textContent=m.tr;card.appendChild(tr);
+  return card;
+}
+
+function renderMoods(){
+  var mc=$('moodChips');mc.innerHTML='';
+  MOODS.forEach(function(m,i){
+    var b=document.createElement('button');b.className='mood-chip'+(i===curMood?' on':'');
+    b.textContent=m.e+' '+m.id;
+    b.addEventListener('click',function(){curMood=i;renderMoods();});
+    mc.appendChild(b);
+  });
+  renderMoodResult();
+}
+
+function renderMoodResult(){
+  var box=$('moodResult');box.innerHTML='';
+  if(curMood<0)return;
+  var m=MOODS[curMood];
+  (m.list||[]).forEach(function(a){box.appendChild(moodCard(a));});
+}
+
+function renderHaf(){
+  var grid=$('hafGrid');grid.innerHTML='';
+  var done=0;
+  for(var s=1;s<=114;s++){
+    var v=haf[s]||0;if(v===2)done++;
+    var c=document.createElement('button');c.className='haf-cell'+(v===1?' s1':v===2?' s2':'');c.textContent=s;
+    c.addEventListener('click',function(){
+      var n=+this.textContent;var cur=haf[n]||0;var nx=(cur+1)%3;
+      if(nx===2&&cur!==2){setXP(25);toast('🏆 Surah '+n+' ditandai hafal! +25 XP');}
+      if(nx===0)delete haf[n];else haf[n]=nx;saveHaf();renderHaf();
     });
+    grid.appendChild(c);
+  }
+  $('hafFill').style.width=Math.round(done/114*100)+'%';
+  $('hafCount').textContent=done+' / 114 surah dihafal';
+  $('lg0').textContent='Belum';$('lg1').textContent='Proses';$('lg2').textContent='Hafal';
+}
 
-    document.querySelectorAll('#doaChips .chip-filter').forEach(chip => {
-        chip.addEventListener('click', () => {
-            document.querySelectorAll('#doaChips .chip-filter').forEach(c => c.classList.remove('on'));
-            chip.classList.add('on');
-            currentFilter = chip.dataset.filter;
-            renderDoas();
-        });
-    });
-});
+function renderTabs(){
+  var tabs=$('doaTabs');tabs.innerHTML='';
+  TABS.forEach(function(t){
+    var b=document.createElement('button');b.className='doa-tab'+(t[0]===curTab?' on':'');
+    b.textContent=t[1]+' '+t[2];
+    b.addEventListener('click',function(){curTab=t[0];renderTabs();renderDoa();});
+    tabs.appendChild(b);
+  });
+}
 
-/* --- FUNGSI DOA --- */
-function renderDoas() {
-    const list = document.getElementById('doaList');
-    list.innerHTML = '';
+function renderDoa(){
+  var box=$('doaBox');box.innerHTML='';
+  (DOAS[curTab]||[]).forEach(function(d){
+    var card=document.createElement('div');card.className='card doa';
+    var h=document.createElement('h3');h.textContent=d.t.id;card.appendChild(h);
+    var a=document.createElement('div');a.className='ar';a.setAttribute('lang','ar');a.setAttribute('dir','rtl');a.textContent=d.ar;card.appendChild(a);
+    var la=document.createElement('div');la.className='la';la.textContent=d.la;card.appendChild(la);
+    var ar2=document.createElement('div');ar2.className='arti';ar2.textContent=d.tr;card.appendChild(ar2);
+    var m=document.createElement('div');m.className='man';m.textContent='✨ Manfaat: '+d.m;card.appendChild(m);
+    var s2=document.createElement('div');s2.className='src';s2.textContent='📚 Sumber: '+d.s;card.appendChild(s2);
+    box.appendChild(card);
+  });
+}
 
-    let filtered = DOA_DATA.filter(d => {
-        if (currentFilter === 'fav') return favorites.includes(d.title);
-        if (currentFilter !== 'all' && !d.category.includes(currentFilter)) return false;
-        if (searchQuery) {
-            return d.title.toLowerCase().includes(searchQuery) || 
-                   d.condition.some(c => c.includes(searchQuery)) ||
-                   d.meaning.toLowerCase().includes(searchQuery);
-        }
-        return true;
-    });
+function relang(){
+  setTitle();
+  $('lbSendiri').textContent='Baca Sendiri';
+  $('lbBareng').textContent='Baca Bareng';
+  $('lbMurottal').textContent='Murottal Surah';
+  buildSelects();renderAyahs();renderMoods();renderHaf();renderTabs();renderDoa();paintChips();
+}
 
-    if (filtered.length === 0) {
-        list.innerHTML = '<div class="empty-box-custom">Tidak ada doa yang cocok. Coba kata kunci lain.</div>';
-        return;
+function bind(){
+  buildSelects();
+  $('modeSel').addEventListener('change',function(){buildSelects();renderAyahs();});
+  $('targetSel').addEventListener('change',function(){stopAudio();renderAyahs();});
+  $('qariSel').addEventListener('change',function(){qari=$('qariSel').value;try{localStorage.setItem(QKEY,qari);}catch(e){}});
+  $('btnSendiri').addEventListener('click',function(){bareng=false;stopAudio();});
+  $('btnBareng').addEventListener('click',function(){
+    if(!ready){toast('Data belum siap');return;}
+    bareng=true;
+    var list=curList();
+    if(list.length){
+      var it=list[0];
+      playBareng(list,0);
     }
-
-    filtered.forEach(d => {
-        const isFav = favorites.includes(d.title);
-        const card = document.createElement('div');
-        card.className = 'doa-card-custom';
-        card.innerHTML = `
-            <div class="doa-title-custom">${d.title}</div>
-            <div class="doa-arabic-custom arabic-text">${d.arabic}</div>
-            <div class="doa-latin-custom">${d.latin}</div>
-            <div class="doa-meaning-custom">${d.meaning}</div>
-            <div class="doa-meta-custom">
-                <span class="tag-grade ${d.grade}">${d.grade.toUpperCase()}</span>
-                <span>${d.source}</span>
-                ${d.narrator ? `<span>📖 ${d.narrator}</span>` : ''}
-            </div>
-            <div class="doa-benefit-custom">✨ <strong>Manfaat:</strong> ${d.benefit}</div>
-            <div class="doa-actions-custom">
-                <button class="btn-action-custom" onclick="copyDoa('${d.title.replace(/'/g, "\\'")}')">📋 Salin</button>
-                <button class="btn-action-custom ${isFav ? 'active' : ''}" onclick="toggleFav('${d.title.replace(/'/g, "\\'")}', this)">
-                    ${isFav ? '★ Tersimpan' : '☆ Simpan'}
-                </button>
-                <button class="btn-action-custom" onclick="shareDoa('${d.title.replace(/'/g, "\\'")}')">📤 Share</button>
-            </div>
-        `;
-        list.appendChild(card);
-    });
+  });
+  $('btnMurottal').addEventListener('click',function(){
+    if($('modeSel').value!=='surah'){toast('Pilih mode Per Surah');return;}
+    stopAudio();bareng=false;
+    var sn=+$('targetSel').value||1;
+    audio.src='https://cdn.islamic.network/quran/audio-surah/128/'+qari+'/'+sn+'.mp3';
+    audio.play().catch(function(){toast('Murottal gagal');});
+  });
 }
 
-function toggleFav(title, btn) {
-    if (favorites.includes(title)) {
-        favorites = favorites.filter(t => t !== title);
-        btn.textContent = '☆ Simpan';
-        btn.classList.remove('active');
-    } else {
-        favorites.push(title);
-        btn.textContent = '★ Tersimpan';
-        btn.classList.add('active');
-    }
-    localStorage.setItem('nyala_fav_doas', JSON.stringify(favorites));
-    if (currentFilter === 'fav') renderDoas();
+function playBareng(list,idx){
+  if(!bareng||idx>=list.length){bareng=false;stopAudio();return;}
+  var it=list[idx];
+  audio.src='https://cdn.islamic.network/quran/audio/128/'+qari+'/'+(OFFSET[it.s-1]+it.n)+'.mp3';
+  audio.play().catch(function(){toast('Audio gagal');});
+  document.querySelectorAll('.ayah.playing').forEach(function(e){e.classList.remove('playing');});
+  var el=$('ayah-'+it.s+'-'+it.n);if(el){el.classList.add('playing');el.scrollIntoView({behavior:'smooth',block:'center'});}
+  audio.onended=function(){playBareng(list,idx+1);};
 }
 
-function copyDoa(title) {
-    const d = DOA_DATA.find(x => x.title === title);
-    if (!d) return;
-    const text = `${d.title}\n\n${d.arabic}\n\n${d.meaning}\n\n(${d.source})`;
-    navigator.clipboard.writeText(text).then(() => {
-        // Gunakan toast dari app.js jika ada, atau alert sederhana
-        if(window.toast) window.toast('Doa tersalin! ✓', 'gold');
-        else alert('Doa tersalin! ✓');
-    });
+function init(){
+  try{bind();}catch(e){}
+  try{renderMoods();}catch(e){}
+  try{renderHaf();}catch(e){}
+  try{renderTabs();renderDoa();}catch(e){}
+  try{paintChips();}catch(e){}
+  try{relang();}catch(e){}
+  try{load();}catch(e){}
 }
-
-function shareDoa(title) {
-    const d = DOA_DATA.find(x => x.title === title);
-    if (navigator.share) {
-        navigator.share({ title: d.title, text: `${d.arabic}\n\n${d.meaning}` }).catch(()=>{});
-    } else {
-        copyDoa(title);
-    }
-}
-
-/* --- FUNGSI MOOD --- */
-function renderMoods() {
-    const container = document.getElementById('moodList');
-    MOODS.forEach(m => {
-        const btn = document.createElement('div');
-        btn.className = 'chip-filter'; // Menggunakan style chip yang sama
-        btn.textContent = m.label;
-        btn.onclick = () => showVerse(m, btn);
-        container.appendChild(btn);
-    });
-}
-
-function showVerse(mood, btn) {
-    document.querySelectorAll('#moodList .chip-filter').forEach(b => b.classList.remove('on'));
-    btn.classList.add('on');
-    const display = document.getElementById('verseDisplay');
-    display.style.display = 'block';
-    display.innerHTML = `
-        <h3 style="color:var(--gold); margin-top:0;">${mood.ref}</h3>
-        <div class="arabic-text" style="font-size:2rem; color:var(--rose); margin:15px 0;">${mood.verse}</div>
-        <div style="color:var(--ink-soft); font-size:1.1rem; line-height:1.6;">${mood.trans}</div>
-    `;
-}
-
-/* --- FUNGSI HAFALAN --- */
-function renderHafalanGrid() {
-    const grid = document.getElementById('hafalanGrid');
-    // Contoh visualisasi 10 surah pertama saja untuk demo (bisa diperluas)
-    const surahNames = ["Al-Fatihah", "Al-Baqarah", "Ali 'Imran", "An-Nisa'", "Al-Ma'idah", "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus"];
-    
-    for(let i=1; i<=10; i++) {
-        const status = hafalanState[i] || 'belum'; // belum, proses, hafal
-        const div = document.createElement('div');
-        div.className = 'card'; // Menggunakan class card standar NYALA
-        div.style.padding = '12px';
-        div.style.textAlign = 'center';
-        div.style.cursor = 'pointer';
-        div.style.borderColor = status === 'hafal' ? 'var(--gold)' : (status === 'proses' ? 'var(--rose)' : 'var(--line)');
-        div.style.background = status === 'hafal' ? 'rgba(229,199,134,0.1)' : (status === 'proses' ? 'rgba(212,165,165,0.1)' : '');
-        div.innerHTML = `
-            <span style="font-size:0.8rem; color:var(--gold); font-weight:800; display:block; margin-bottom:4px;">${i}</span>
-            <span style="font-weight:700; font-size:0.9rem;">${surahNames[i-1]}</span>
-            <div style="font-size:0.7rem; margin-top:8px; color:${status==='hafal'?'var(--gold)':(status==='proses'?'var(--rose)':'#888')}">
-                ${status === 'hafal' ? 'Hafal' : (status === 'proses' ? 'Proses' : 'Belum')}
-            </div>
-        `;
-        div.onclick = () => toggleHafalan(i, div);
-        grid.appendChild(div);
-    }
-}
-
-function toggleHafalan(idx, el) {
-    const statuses = ['belum', 'proses', 'hafal'];
-    const current = hafalanState[idx] || 'belum';
-    const next = statuses[(statuses.indexOf(current) + 1) % 3];
-    
-    hafalanState[idx] = next;
-    localStorage.setItem('nyala_hafalan', JSON.stringify(hafalanState));
-    
-    // Update UI langsung
-    el.style.borderColor = next === 'hafal' ? 'var(--gold)' : (next === 'proses' ? 'var(--rose)' : 'var(--line)');
-    el.querySelector('div div').textContent = next === 'hafal' ? 'Hafal' : (next === 'proses' ? 'Proses' : 'Belum');
-    el.querySelector('div div').style.color = next === 'hafal' ? 'var(--gold)' : (next === 'proses' ? 'var(--rose)' : '#888');
-    el.style.background = next === 'hafal' ? 'rgba(229,199,134,0.1)' : (next === 'proses' ? 'rgba(212,165,165,0.1)' : '');
-    
-    if(next === 'hafal' && current !== 'hafal') {
-        if(window.toast) window.toast('+25 XP! Hafalan bertambah! ', 'gold');
-        else alert('+25 XP! Hafalan bertambah! ');
-    }
-}
-
-/* --- FUNGSI SURAH & AUDIO --- */
-async function fetchSurahList() {
-    const grid = document.getElementById('surahList');
-    try {
-        const res = await fetch('https://api.alquran.cloud/v1/surah');
-        const data = await res.json();
-        grid.innerHTML = '';
-        data.data.forEach(s => {
-            const div = document.createElement('div');
-            div.className = 'card';
-            div.style.padding = '12px';
-            div.style.textAlign = 'center';
-            div.style.cursor = 'pointer';
-            div.innerHTML = `
-                <span style="font-size:0.8rem; color:var(--gold); font-weight:800; display:block; margin-bottom:4px;">${s.number}</span>
-                <span style="font-weight:700; font-size:0.9rem;">${s.englishName}</span>
-                <div style="font-size:0.7rem; color:#8a6f74; margin-top:4px;">${s.name}</div>
-            `;
-            div.onclick = () => openSurah(s.number, s.englishName);
-            grid.appendChild(div);
-        });
-    } catch (e) {
-        grid.innerHTML = '<div class="empty-box">Gagal memuat data. Cek koneksi internet.</div>';
-    }
-}
-
-document.getElementById('searchSurah').addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    document.querySelectorAll('#surahList .card').forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.style.display = text.includes(term) ? 'block' : 'none';
-    });
-});
-
-let currentAudio = null;
-
-async function openSurah(no, name) {
-    document.getElementById('reader-view').style.display = 'block';
-    document.querySelector('section:first-of-type').style.display = 'none'; // Hide list
-    document.getElementById('readerTitle').textContent = name;
-    const container = document.getElementById('ayahContainer');
-    container.innerHTML = '<div class="empty-box">Memuat ayat...</div>';
-
-    try {
-        const [resArab, resId] = await Promise.all([
-            fetch(`https://api.alquran.cloud/v1/surah/${no}`),
-            fetch(`https://api.alquran.cloud/v1/surah/${no}/id.indonesian`)
-        ]);
-        const dArab = await resArab.json();
-        const dId = await resId.json();
-        
-        container.innerHTML = '';
-        dArab.data.ayahs.forEach((ayah, i) => {
-            const div = document.createElement('div');
-            div.className = 'card';
-            div.style.padding = '20px';
-            div.style.marginBottom = '20px';
-            div.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <span class="chip" style="background:var(--gold); color:#000; border:none;">${ayah.numberInSurah}</span>
-                    <button class="btn small ghost" onclick="playAyah(${no}, ${ayah.numberInSurah}, this)">▶ Dengar</button>
-                </div>
-                <div class="arabic-text" style="font-size:2rem; margin:15px 0; color:var(--rose);">${ayah.text}</div>
-                <div style="color:#c9aeb2; line-height:1.6;">${dId.data.ayahs[i].text}</div>
-            `;
-            container.appendChild(div);
-        });
-    } catch (e) {
-        container.innerHTML = '<div class="empty-box">Gagal memuat surah.</div>';
-    }
-}
-
-function closeReader() {
-    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-    document.getElementById('reader-view').style.display = 'none';
-    document.querySelector('section:first-of-type').style.display = 'block'; // Show list
-}
-
-function playAyah(surah, ayah, btn) {
-    // Reset tombol lain
-    document.querySelectorAll('.btn.small.ghost').forEach(b => { if(b.textContent.includes('Dengar')) b.textContent = '▶ Dengar'; });
-    
-    if (currentAudio && !currentAudio.paused) {
-        currentAudio.pause();
-        btn.textContent = '▶ Dengar';
-        currentAudio = null;
-        return;
-    }
-
-    btn.textContent = '⏸ Jeda';
-    
-    // URL Audio (Server8 MP3 Quran)
-    const url = `https://server8.mp3quran.net/afs/${String(surah).padStart(3,'0')}/${String(ayah).padStart(3,'0')}.mp3`;
-    
-    currentAudio = new Audio(url);
-    currentAudio.play().catch(e => { 
-        if(window.toast) window.toast('Gagal memutar audio', 'error');
-        btn.textContent = '▶ Dengar'; 
-    });
-    
-    currentAudio.onended = () => {
-        btn.textContent = '▶ Dengar';
-        currentAudio = null;
-    };
-}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
+})();
 </script>
 </body>
 </html>
