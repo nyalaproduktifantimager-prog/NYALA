@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>Dzikir Pagi & Petang — NYALA</title>
-<meta name="description" content="Dzikir pagi dan petang lengkap: teks Arab, transliterasi latin, arti Indonesia/Inggris, dan lingkaran hitungan sesuai jumlah anjuran.">
+<meta name="description" content="Dzikir pagi dan petang lengkap: teks Arab, transliterasi latin, arti Indonesia/Inggris, bar progres hitungan, dan lingkaran hitungan sesuai jumlah anjuran.">
 <link rel="icon" href="icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +33,9 @@
 .dz-ar{font-family:'Amiri',serif;font-size:clamp(1.35rem,4.6vw,1.85rem);line-height:2.05;text-align:right;direction:rtl;color:var(--ink);margin-bottom:12px}
 .dz-la{font-size:.82rem;font-style:italic;color:var(--rose-soft);font-weight:600;line-height:1.75;margin-bottom:10px}
 .dz-mean{font-size:.86rem;color:var(--ink-soft);font-weight:600;line-height:1.75;padding-bottom:12px;border-bottom:1px dashed var(--line-strong);margin-bottom:14px}
+.dz-track{height:12px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid var(--line);overflow:hidden;margin-bottom:14px}
+.dz-track i{display:block;height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--rose-deep),var(--rose) 55%,var(--gold));box-shadow:0 0 14px rgba(212,165,165,.55);transition:width .35s cubic-bezier(.2,.8,.2,1)}
+.dz-item.done .dz-track i{background:linear-gradient(90deg,var(--gold),var(--gold-deep));box-shadow:0 0 18px rgba(229,199,134,.65)}
 .dz-foot{display:flex;align-items:center;gap:12px;justify-content:flex-end}
 .dz-minus{border:1px dashed var(--line-strong);background:transparent;color:var(--ink-mute);border-radius:999px;width:36px;height:36px;min-width:36px;cursor:pointer;font-weight:800}
 .dz-minus:hover{color:var(--rose-soft);border-color:var(--rose)}
@@ -53,7 +56,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     <a class="btn ghost small" href="index.html">← NYALA</a>
     <a class="btn ghost small" href="quran.html">🕌 Qur'an</a>
   </div>
-  <div class="dz-title">📿 DZIKIR PAGI & PETANG</div>
+  <div class="dz-title" id="dzTitle" data-id="📿 DZIKIR PAGI & PETANG" data-en="📿 MORNING & EVENING DHIKR">📿 DZIKIR PAGI & PETANG</div>
   <div class="dz-chips">
     <span class="chip" id="streakChip">🔥 0</span>
     <span class="chip lvl" id="xpChip">0 XP</span>
@@ -64,7 +67,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   <div class="dz-info">
     <p><b data-id="Waktu utama:" data-en="Prime time:">Waktu utama:</b> <span data-id="Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍" data-en="morning dhikr after Fajr until sunrise; evening dhikr after Asr until sunset (allowed after Maghrib). Tap the counter circle according to the recommended count. 🤍">Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍</span></p>
     <div class="sep"></div>
-    <p><b data-id="📜 Lisensi:" data-en="📜 License:">📜 Lisensi:</b> <span data-id="Teks Arab (Al-Qur'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas." data-en="Arabic text (Qur'an & Hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction.">Teks Arab (Al-Qur'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.</span></p>
+    <p><b data-id="📜 Lisensi:" data-en="📜 License:">📜 Lisensi:</b> <span data-id="Teks Arab (Al-Qur'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas." data-en="Arabic text (Qur'an & hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction.">Teks Arab (Al-Qur'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.</span></p>
   </div>
 
   <div class="dz-tabs" role="group" aria-label="Waktu dzikir">
@@ -207,12 +210,19 @@ function paintChips(){var s={};try{s=JSON.parse(localStorage.getItem('nyala_v1')
  $('xpChip').textContent=(s.xp||0)+' XP';$('streakChip').textContent='🔥 '+((s.streak&&s.streak.count)||0);}
 function cnt(id){return st.c[st.period][id]||0;}
 function done(id){return !!st.d[st.period][id];}
+function setTitle(){
+  var t=$('dzTitle');if(t)t.textContent=L('📿 DZIKIR PAGI & PETANG','📿 MORNING & EVENING DHIKR');
+  document.title=L('Dzikir Pagi & Petang — NYALA','Morning & Evening Dhikr — NYALA');
+}
 function render(){
+  var y=window.scrollY||window.pageYOffset||0;
+  setTitle();
   var items=ITEMS[st.period];
   var n=0;items.forEach(function(it){if(done(it.id))n++;});
   $('dzProg').textContent=n+' / '+items.length+' '+L('selesai','done');
   var box=$('dzList');box.innerHTML='';
   items.forEach(function(it){
+    var c=cnt(it.id),pct=Math.min(100,Math.round(c/it.n*100));
     var card=document.createElement('div');card.className='card dz-item'+(done(it.id)?' done':'');
     var head=document.createElement('div');head.className='dz-head';
     var x=document.createElement('span');x.className='dz-x';x.textContent='×'+it.n;
@@ -221,11 +231,16 @@ function render(){
     var ar=document.createElement('div');ar.className='dz-ar arab';ar.setAttribute('lang','ar');ar.setAttribute('dir','rtl');ar.textContent=it.ar;card.appendChild(ar);
     var la=document.createElement('div');la.className='dz-la latin';la.textContent=it.la;card.appendChild(la);
     var me=document.createElement('div');me.className='dz-mean';me.textContent=L(it.m.id,it.m.en);card.appendChild(me);
+    var track=document.createElement('div');track.className='dz-track';
+    track.setAttribute('role','progressbar');track.setAttribute('aria-valuemin','0');track.setAttribute('aria-valuemax',String(it.n));track.setAttribute('aria-valuenow',String(c));
+    track.setAttribute('aria-label',L('Progres hitungan','Count progress'));
+    var fill=document.createElement('i');fill.style.width=pct+'%';
+    track.appendChild(fill);card.appendChild(track);
     var foot=document.createElement('div');foot.className='dz-foot';
     var minus=document.createElement('button');minus.className='dz-minus';minus.textContent='−';minus.setAttribute('aria-label',L('Kurangi hitungan','Decrease count'));
     minus.addEventListener('click',function(){if(cnt(it.id)>0){st.c[st.period][it.id]=cnt(it.id)-1;if(done(it.id)&&cnt(it.id)<it.n)st.d[st.period][it.id]=false;save();render();}});
     var circ=document.createElement('button');circ.className='dz-circle'+(done(it.id)?' full':'');circ.setAttribute('aria-label',L('Hitung dzikir','Count dhikr'));
-    var b=document.createElement('b');b.textContent=cnt(it.id);
+    var b=document.createElement('b');b.textContent=c;
     var sm=document.createElement('small');sm.textContent='/ '+it.n;
     circ.appendChild(b);circ.appendChild(sm);
     circ.addEventListener('click',function(){
@@ -239,10 +254,11 @@ function render(){
     box.appendChild(card);
   });
   paintChips();
+  window.scrollTo(0,y);
 }
 function bind(){
-  $('tabPagi').addEventListener('click',function(){st.period='pagi';save();$('tabPagi').classList.add('on');$('tabPetang').classList.remove('on');render();});
-  $('tabPetang').addEventListener('click',function(){st.period='petang';save();$('tabPetang').classList.add('on');$('tabPagi').classList.remove('on');render();});
+  $('tabPagi').addEventListener('click',function(){st.period='pagi';save();$('tabPagi').classList.add('on');$('tabPetang').classList.remove('on');render();window.scrollTo({top:0,behavior:'smooth'});});
+  $('tabPetang').addEventListener('click',function(){st.period='petang';save();$('tabPetang').classList.add('on');$('tabPagi').classList.remove('on');render();window.scrollTo({top:0,behavior:'smooth'});});
   if(st.period==='petang'){$('tabPetang').classList.add('on');$('tabPagi').classList.remove('on');}
   new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 }
@@ -251,4 +267,4 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 })();
 </script>
 </body>
-</html>
+  </html>
