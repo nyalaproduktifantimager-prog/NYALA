@@ -17,6 +17,8 @@
 section{scroll-margin-top:104px}
 nav.links a[aria-current="true"]{color:var(--rose-soft)}
 nav.links a[aria-current="true"]::after{transform:scaleX(1)}
+#welcomeOverlay,#dayOverlay{overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+#welcomeOverlay>div,#dayOverlay>div{margin:auto;max-height:90vh;overflow-y:auto}
 </style>
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
@@ -348,7 +350,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   <button id="resetBtn">Mulai ulang dari nol (hapus semua data)</button>
 </footer>
 
-<div id="welcomeOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow:auto;">
+<div id="welcomeOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;">
   <div style="max-width:420px;width:100%;margin:auto;position:relative;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:26px 22px;text-align:center;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
     <button id="welcomeClose" aria-label="Tutup" style="position:absolute;top:10px;right:12px;border:none;background:none;color:#8a6f74;font-size:1.1rem;font-weight:800;cursor:pointer;">✕</button>
     <div style="font-size:2.6rem;">🌹</div>
@@ -360,8 +362,8 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   </div>
 </div>
 
-<div id="dayOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow:auto;">
-  <div style="max-width:460px;width:100%;max-height:80vh;overflow:auto;margin:auto;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:22px 20px;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
+<div id="dayOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div style="max-width:460px;width:100%;max-height:80vh;overflow-y:auto;margin:auto;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:22px 20px;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
       <h3 id="dayOvTitle" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.05rem;color:#f2e4e6;">—</h3>
       <button id="dayOvClose" style="border:none;background:none;color:#8a6f74;font-size:1.1rem;font-weight:800;cursor:pointer;">✕</button>
