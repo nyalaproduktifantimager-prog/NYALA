@@ -14,7 +14,7 @@
 <meta name="theme-color" content="#0e0c0d">
 <style>
 .dz-wrap{max-width:860px;margin:0 auto;padding:0 clamp(14px,3vw,22px) 90px}
-.dz-nav{display:flex;gap:10px;justify-content:center;padding:20px 0 6px;flex-wrap:wrap}
+.dz-nav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .dz-title{text-align:center;font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(1.25rem,4.4vw,1.7rem);letter-spacing:1px;background:linear-gradient(120deg,var(--rose-soft),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0 12px}
 .dz-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
 .dz-info{border:1px solid rgba(229,199,134,.35);background:rgba(229,199,134,.06);border-radius:var(--r-card);padding:18px clamp(16px,3vw,22px);font-size:.86rem;color:var(--ink-soft);font-weight:600;line-height:1.75}
@@ -22,6 +22,7 @@
 .dz-info .sep{border-top:1px dashed rgba(229,199,134,.35);margin:12px 0}
 .dz-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 10px}
 .dz-tab{border:1px solid var(--line-strong);background:rgba(212,165,165,.06);border-radius:999px;padding:12px 22px;font-weight:800;font-size:.92rem;color:var(--ink-soft);cursor:pointer;transition:.2s}
+.dz-tab:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
 .dz-tab.on{background:linear-gradient(120deg,var(--rose-deep),#8f4f5b);color:#fff;border-color:var(--rose);box-shadow:var(--glow-rose)}
 .dz-prog{text-align:right;font-weight:800;font-size:.9rem;color:var(--rose-soft);margin:6px 0 14px}
 .dz-item{padding:18px clamp(14px,3vw,22px);margin-bottom:14px}
@@ -48,7 +49,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 <body>
 <div class="aurora" aria-hidden="true"></div>
 <header class="top">
-  <div class="dz-nav">
+  <div class="top-in dz-nav">
     <a class="btn ghost small" href="index.html">← NYALA</a>
     <a class="btn ghost small" href="quran.html">🕌 Qur'an</a>
   </div>
@@ -61,9 +62,9 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 
 <main class="dz-wrap">
   <div class="dz-info">
-    <span data-id="<b>Waktu utama:</b> Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍" data-en="<b>Prime time:</b> morning dhikr after Fajr until sunrise; evening dhikr after Asr until sunset (allowed after Maghrib). Tap the counter circle according to the recommended count. 🤍"><b>Waktu utama:</b> Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍</span>
+    <p><b data-id="Waktu utama:" data-en="Prime time:">Waktu utama:</b> <span data-id="Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍" data-en="morning dhikr after Fajr until sunrise; evening dhikr after Asr until sunset (allowed after Maghrib). Tap the counter circle according to the recommended count. 🤍">Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍</span></p>
     <div class="sep"></div>
-    <span data-id="<b>📜 Lisensi:</b> Teks Arab (Al-Qur'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas." data-en="<b>📜 License:</b> Arabic text (Qur'an & Hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction."><b>📜 Lisensi:</b> Teks Arab (Al-Qur'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.</span>
+    <p><b data-id="📜 Lisensi:" data-en="📜 License:">📜 Lisensi:</b> <span data-id="Teks Arab (Al-Qur'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas." data-en="Arabic text (Qur'an & Hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction.">Teks Arab (Al-Qur'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.</span></p>
   </div>
 
   <div class="dz-tabs" role="group" aria-label="Waktu dzikir">
@@ -111,8 +112,8 @@ var AFI_ID='Ya Allah, aku memohon ampunan dan keselamatan di dunia dan akhirat. 
 var AFI_EN='O Allah, I ask You for pardon and well-being in this world and the Hereafter. O Allah, I ask You for pardon and well-being in my religion, my worldly life, my family, and my wealth.';
 var RAD='رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا';
 var RAD_LA='Radhitu billahi rabba, wa bil-islami dina, wa bi-Muhammadin shallallahu ‘alaihi wa sallama nabiyya.';
-var RAD_ID='Aku ridha kepada Allah sebagai Tuhan, kepada Islam sebagai agama, dan kepada Muhammad ﷺ sebagai nabi.';
-var RAD_EN='I am content with Allah as Lord, with Islam as religion, and with Muhammad ﷺ as Prophet.';
+var RAD_ID='Aku ridha kepada Allah sebagai Tuhan, kepada Islam sebagai agama, dan kepada Nabi Muhammad (s.a.w.) sebagai nabi.';
+var RAD_EN='I am content with Allah as Lord, with Islam as religion, and with Prophet Muhammad (peace be upon him) as my Prophet.';
 var BIS='بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ';
 var BIS_LA='Bismillahil-ladzi la yadhurru ma’asmihi syai-un fil-ardhi wa la fis-sama’, wa huwas-sami’ul-‘alim.';
 var BIS_ID='Dengan nama Allah yang bersama nama-Nya tidak ada sesuatu pun di bumi dan di langit yang dapat membahayakan, dan Dia Maha Mendengar lagi Maha Mengetahui.';
@@ -215,11 +216,11 @@ function render(){
     var card=document.createElement('div');card.className='card dz-item'+(done(it.id)?' done':'');
     var head=document.createElement('div');head.className='dz-head';
     var x=document.createElement('span');x.className='dz-x';x.textContent='×'+it.n;
-    var t=document.createElement('span');t.className='dz-t';t.setAttribute('data-id',it.t.id);t.setAttribute('data-en',it.t.en);t.textContent=L(it.t.id,it.t.en);
+    var t=document.createElement('span');t.className='dz-t';t.textContent=L(it.t.id,it.t.en);
     head.appendChild(x);head.appendChild(t);card.appendChild(head);
     var ar=document.createElement('div');ar.className='dz-ar arab';ar.setAttribute('lang','ar');ar.setAttribute('dir','rtl');ar.textContent=it.ar;card.appendChild(ar);
     var la=document.createElement('div');la.className='dz-la latin';la.textContent=it.la;card.appendChild(la);
-    var me=document.createElement('div');me.className='dz-mean';me.setAttribute('data-id',it.m.id);me.setAttribute('data-en',it.m.en);me.textContent=L(it.m.id,it.m.en);card.appendChild(me);
+    var me=document.createElement('div');me.className='dz-mean';me.textContent=L(it.m.id,it.m.en);card.appendChild(me);
     var foot=document.createElement('div');foot.className='dz-foot';
     var minus=document.createElement('button');minus.className='dz-minus';minus.textContent='−';minus.setAttribute('aria-label',L('Kurangi hitungan','Decrease count'));
     minus.addEventListener('click',function(){if(cnt(it.id)>0){st.c[st.period][it.id]=cnt(it.id)-1;if(done(it.id)&&cnt(it.id)<it.n)st.d[st.period][it.id]=false;save();render();}});
@@ -242,6 +243,7 @@ function render(){
 function bind(){
   $('tabPagi').addEventListener('click',function(){st.period='pagi';save();$('tabPagi').classList.add('on');$('tabPetang').classList.remove('on');render();});
   $('tabPetang').addEventListener('click',function(){st.period='petang';save();$('tabPetang').classList.add('on');$('tabPagi').classList.remove('on');render();});
+  if(st.period==='petang'){$('tabPetang').classList.add('on');$('tabPagi').classList.remove('on');}
   new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 }
 function init(){bind();render();}
