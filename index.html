@@ -2,410 +2,372 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>NYALA ✦ Anti Mager — Produktif dengan Elegan</title>
-<meta name="description" content="Teman produktif harian anti mager: Spiritual Corner, jadwal sholat, fokus sampai adzan, tasbih, tugas mikro, timer fokus custom & deep focus, pelacak kebiasaan, kebun progres, dan laporan mingguan shareable.">
-<link rel="icon" href="icon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-<link rel="manifest" href="manifest.webmanifest">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>NYALA — Anti Mager</title>
+<meta name="description" content="Teman produktif harian anti mager: Spiritual Corner, jadwal sholat, fokus sampai adzan, tasbih, dzikir, Qur'an digital, tugas mikro, timer fokus, pelacak kebiasaan, syukur harian, kebun progres, dan laporan mingguan.">
 <meta name="theme-color" content="#0e0c0d">
-<link rel="apple-touch-icon" href="icon.svg">
-<style>
-section{scroll-margin-top:104px}
-nav.links a[aria-current="true"]{color:var(--rose-soft)}
-nav.links a[aria-current="true"]::after{transform:scaleX(1)}
-#welcomeOverlay,#dayOverlay{overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-#welcomeOverlay>div,#dayOverlay>div{margin:auto;max-height:90vh;overflow-y:auto}
-</style>
-<script>
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
-</script>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./icon.svg">
+<link rel="apple-touch-icon" href="./icon.svg">
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Caveat:wght@700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="aurora" aria-hidden="true"></div>
-<div class="spark" style="left:10%;animation-duration:26s" aria-hidden="true"></div>
-<div class="spark g" style="left:30%;animation-duration:34s;animation-delay:-8s" aria-hidden="true"></div>
-<div class="spark" style="left:58%;animation-duration:30s;animation-delay:-15s;width:4px;height:4px" aria-hidden="true"></div>
-<div class="spark g" style="left:80%;animation-duration:38s;animation-delay:-4s" aria-hidden="true"></div>
+<div class="aurora"></div>
+<canvas id="cfx"></canvas>
+<div id="toasts"></div>
+
+<!-- Welcome Overlay -->
+<div id="welcomeOverlay" style="display:none; position:fixed; inset:0; z-index:100; background:rgba(14,12,13,.95); backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:20px;">
+    <div class="card" style="max-width:400px; width:100%; text-align:center; padding:30px;">
+        <h2 style="font-size:1.8rem; margin-bottom:10px; color:var(--rose);">Selamat datang di NYALA</h2>
+        <p style="color:var(--ink-soft); margin-bottom:20px;">Sebelum mulai, siapa nama panggilanmu?</p>
+        <input type="text" id="welcomeName" placeholder="Ketik namamu di sini…" style="width:100%; padding:12px; border-radius:12px; border:1px solid var(--line); background:rgba(0,0,0,.3); color:var(--ink); font-size:1rem; margin-bottom:16px; box-sizing:border-box;">
+        <div style="display:flex; gap:10px; justify-content:center;">
+            <button id="welcomeSkip" class="btn ghost small">Lewati dulu</button>
+            <button id="welcomeSave" class="btn hot small">Mulai Nyala 🔥</button>
+        </div>
+    </div>
+</div>
+
+<!-- Day Detail Overlay -->
+<div id="dayOverlay" style="display:none; position:fixed; inset:0; z-index:90; background:rgba(14,12,13,.95); backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:20px;">
+    <div class="card" style="max-width:500px; width:100%; max-height:90vh; overflow-y:auto; padding:24px; position:relative;">
+        <button id="dayOvClose" style="position:absolute; top:16px; right:16px; background:none; border:none; color:var(--ink-mute); font-size:1.5rem; cursor:pointer;"></button>
+        <h3 id="dayOvTitle" style="font-size:1.4rem; margin-bottom:16px; color:var(--rose);"></h3>
+        <div id="dayOvList" style="display:flex; flex-direction:column; gap:8px; margin-bottom:20px;"></div>
+        <div id="dayOvSyukur" style="display:none; margin-top:16px; padding:12px; background:rgba(229,199,134,.08); border-left:3px solid var(--gold); border-radius:8px; color:var(--ink-soft); font-size:0.9rem;"></div>
+        <button id="dayOvCarry" style="display:none; width:100%; margin-top:16px; padding:12px; border-radius:12px; border:1px dashed var(--rose); background:transparent; color:var(--rose); font-weight:700; cursor:pointer;">📥 Bawa tugas belum selesai ke hari ini</button>
+    </div>
+</div>
 
 <header class="top">
-  <div class="top-in">
-    <div class="logo"><span class="flame">🌹</span><span class="word">NYALA</span><small>anti&nbsp;mager</small></div>
-    <nav class="links" aria-label="Navigasi utama">
-      <a href="#hari">Hari Ini</a><a href="#tugas">Tugas</a><a href="#fokus">Fokus</a>
-      <a href="#spiritual">Spiritual</a><a href="#kebiasaan">Kebiasaan</a><a href="#kebun">Kebun</a>
-      <a href="#roda">Roda</a><a href="#laporan">Laporan</a><a href="dzikir.html">📿 Dzikir</a><a href="quran.html">🕌 Qur'an</a>
-    </nav>
-    <div class="chips">
-      <span class="chip clock" id="clockChip">--:--:--</span>
-      <span class="chip streak" id="streakChip" title="Streak check-in harianmu">🔥 0 hari</span>
-      <span class="chip lvl" id="lvlChip">Lv.1</span>
+    <div class="top-in">
+        <a href="#" class="logo"><span class="flame">🌹</span><span class="word">NYALA</span><small>Anti Mager</small></a>
+        <nav class="links">
+            <a href="index.html" class="on">Home</a>
+            <a href="dzikir.html">Dzikir</a>
+            <a href="quran.html">Qur'an</a>
+        </nav>
     </div>
-  </div>
 </header>
 
 <main>
-
-<section id="hari">
-  <div class="hero-grid">
-    <div class="card hello-card reveal">
-      <p class="kicker" id="kicker">SELAMAT PAGI ☀️</p>
-      <h1>Hei, <span class="name" id="nameChip" title="Klik untuk ganti nama" role="button" tabindex="0">Kawan</span>!</h1>
-      <p class="day-msg" id="dayMsg">Satu langkah kecil hari ini.</p>
-      <div class="mood-row">
-        <p>Cek dulu: gimana energimu sekarang?</p>
-        <div class="moods" id="moodRow" role="group" aria-label="Pilih mood">
-          <button class="mood" data-i="0" title="Mager banget">🫠</button>
-          <button class="mood" data-i="1" title="Capek">😪</button>
-          <button class="mood" data-i="2" title="Biasa aja">😌</button>
-          <button class="mood" data-i="3" title="Senang">😊</button>
-          <button class="mood" data-i="4" title="Semangat membara">🤩</button>
+    <!-- 01 · MISI HARIAN -->
+    <section class="reveal">
+        <div class="sec-head">
+            <span class="sec-tag">01 · MISI HARIAN</span>
+            <h2>Papan Tugas Anti-Mager</h2>
         </div>
-      </div>
-      <div class="battery">
-        <div class="lbl"><span>🔋 Baterai semangat</span><span id="batTxt">—</span></div>
-        <div class="bat-track"><div class="bat-fill" id="batFill"></div></div>
-      </div>
-      <div class="hype" id="hypeBubble"></div>
-      <div class="quick">
-        <button class="btn hot small" id="qaGas">⚡ Gas 2 Menit</button>
-        <button class="btn sunny small" id="qaRoda">🎲 Bingung mulai?</button>
-        <button class="btn leafy small" id="qaKebun">🌱 Intip Kebunku</button>
-      </div>
-    </div>
-
-    <div class="card score-card reveal" style="transition-delay:.1s">
-      <h3>📋 Skor Hari Ini <span class="chip" id="dateChip" style="margin-left:auto;font-size:.7rem"></span></h3>
-      <div class="today-rings">
-        <div class="mini-ring" aria-hidden="true">
-          <svg viewBox="0 0 104 104">
-            <defs>
-              <linearGradient id="roseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#e8c4c8"/><stop offset="55%" stop-color="#d4a5a5"/><stop offset="100%" stop-color="#e5c786"/>
-              </linearGradient>
-            </defs>
-            <circle cx="52" cy="52" r="44" fill="none" stroke="rgba(212,165,165,.14)" stroke-width="10"/>
-            <circle id="dayRing" cx="52" cy="52" r="44" fill="none" stroke="url(#roseGrad)" stroke-width="10" stroke-linecap="round" stroke-dasharray="276.46" stroke-dashoffset="276.46" style="transition:stroke-dashoffset .8s ease"/>
-          </svg>
-          <span class="val" id="dayPct">0%</span>
+        <p class="sec-sub">Rahasianya: mulai dari yang <b>paling kecil</b>. Centang satu, dapat XP + konfeti. Serius. ⭐ = prioritas selalu di atas · ▲▼ atau tahan ⠿ lalu seret = atur urutan.</p>
+        
+        <div class="card task-card">
+            <div class="task-input-row">
+                <input type="text" id="taskInput" placeholder="Tulis satu hal kecil… (misal: balas 1 email)">
+                <button id="addTaskBtn" class="btn leafy">+ Tambah</button>
+                <button id="priBtn" class="btn ghost" title="Tandai sebagai prioritas">⭐ Prioritas</button>
+            </div>
+            <div class="suggests" id="suggests"></div>
+            <ul id="taskList"></ul>
+            <div id="emptyTasks" class="empty-box">
+                <span class="e"></span>
+                <p>Papan masih kosong nih…<br>Klik salah satu saran di atas, atau tulis tugasmu sendiri. Yang kecil aja dulu!</p>
+            </div>
         </div>
-        <div class="ring-meta">
-          <div class="big" id="taskSummary">0 / 0 tugas</div>
-          <div class="sub">beres hari ini</div>
-          <div class="sub" id="focusSummary">🍅 0 sesi fokus · ⏱ 0 menit</div>
+    </section>
+
+    <!-- 02 · MODE FOKUS -->
+    <section class="reveal">
+        <div class="sec-head">
+            <span class="sec-tag">02 · MODE FOKUS</span>
+            <h2>Timer Nyalakan Fokus</h2>
         </div>
-      </div>
-      <div class="xp-block">
-        <div class="xp-top"><span id="lvlName">Lv.1 · Kaum Rebahan 🛋️</span><span id="xpNum">0 XP</span></div>
-        <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
-        <div class="xp-top" style="margin-top:4px"><span></span><span id="xpNext" style="color:var(--gold)"></span></div>
-      </div>
-      <div class="stat-chips">
-        <span class="chip">✅ <b id="totalDoneChip">0</b>&nbsp;tugas total</span>
-        <span class="chip">🌿 <b id="habitActiveChip">0</b>&nbsp;habit aktif</span>
-        <span class="chip">🔁 <b id="consistChip">0</b>&nbsp;hari konsisten</span>
-      </div>
-      <div class="rekapan" id="yesterdayNote"></div>
-    </div>
-  </div>
-  <div class="history reveal" style="transition-delay:.15s">
-    <h3>🗓️ Jejak 14 hari terakhir <span style="font-size:.7rem;font-weight:600;color:var(--ink-mute)">(tap tanggal untuk rincian)</span></h3>
-    <div class="h-strip" id="historyStrip"></div>
-  </div>
-  <div class="card reveal" style="margin-top:clamp(20px,4vw,34px);padding:var(--pad-card)">
-    <h3 style="font-size:.95rem;font-weight:800;margin-bottom:10px;color:var(--ink-soft)">🌸 3 Hal yang Disyukuri Hari Ini</h3>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <input class="syukur-in" data-i="0" maxlength="80" placeholder="1. Contoh: hujan reda tepat sebelum berangkat…" style="border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;font-weight:600;font-size:.9rem;background:rgba(0,0,0,.3);color:var(--ink)">
-      <input class="syukur-in" data-i="1" maxlength="80" placeholder="2. Contoh: ada teman yang menyapa dulu…" style="border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;font-weight:600;font-size:.9rem;background:rgba(0,0,0,.3);color:var(--ink)">
-      <input class="syukur-in" data-i="2" maxlength="80" placeholder="3. Contoh: tubuhku kuat puasa hari ini…" style="border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;font-weight:600;font-size:.9rem;background:rgba(0,0,0,.3);color:var(--ink)">
-    </div>
-    <p style="margin-top:10px;font-size:.74rem;color:var(--ink-mute);font-weight:600" id="syukurNote">Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu. 🤍</p>
-  </div>
-</section>
-
-<section id="tugas">
-  <div class="sec-head reveal">
-    <span class="sec-tag">01 · MISI HARIAN</span>
-    <div><h2>Papan Tugas Anti-Mager</h2>
-      <svg class="squiggle" width="130" height="8" viewBox="0 0 130 8"><path d="M2 5 Q 12 0, 22 5 T 42 5 T 62 5 T 82 5 T 102 5 T 122 5" fill="none" stroke="#d4a5a5" stroke-width="3" stroke-linecap="round"/></svg></div>
-    <p class="sec-sub">Rahasianya: mulai dari yang <b>paling kecil</b>. Centang satu, dapat XP + konfeti. Serius. ⭐ = prioritas selalu di atas · ▲▼ atau tahan ⠿ lalu seret = atur urutan.</p>
-  </div>
-  <div class="card task-card reveal">
-    <div class="task-input-row">
-      <input type="text" id="taskInput" maxlength="90" placeholder="Tulis satu hal kecil… (misal: balas 1 email)" aria-label="Tugas baru">
-      <button class="btn hot" id="addTaskBtn">+ Tambah</button>
-      <button class="btn sunny" id="priBtn" title="Tandai sebagai prioritas">⭐ Prioritas</button>
-    </div>
-    <div class="suggests" id="suggests"></div>
-    <ul id="taskList"></ul>
-    <div class="empty-box" id="emptyTasks">
-      <span class="e">🦥</span>
-      <p style="font-weight:800;margin-top:8px">Papan masih kosong nih…</p>
-      <p style="font-size:.85rem">Klik salah satu saran di atas, atau tulis tugasmu sendiri. Yang kecil aja dulu!</p>
-    </div>
-  </div>
-</section>
-
-<section id="fokus">
-  <div class="sec-head reveal">
-    <span class="sec-tag">02 · MODE FOKUS</span>
-    <div><h2>Timer Nyalakan Fokus</h2>
-      <svg class="squiggle" width="130" height="8" viewBox="0 0 130 8"><path d="M2 5 Q 12 0, 22 5 T 42 5 T 62 5 T 82 5 T 102 5 T 122 5" fill="none" stroke="#e5c786" stroke-width="3" stroke-linecap="round"/></svg></div>
-    <p class="sec-sub">Nggak mood? <b>Kilat 2 menit</b>. Lagi ambis? <b>Deep Focus 50/90 menit</b> — atau atur sendiri menitnya. XP sampai +100! 🚀 Timer tetap jalan walau aplikasi diminimkan.</p>
-  </div>
-  <div class="card focus-wrap reveal">
-    <div class="ring-wrap">
-      <svg viewBox="0 0 250 250">
-        <circle class="tr-bg" cx="125" cy="125" r="108"/>
-        <circle class="tr-fg" id="ringFg" cx="125" cy="125" r="108" stroke-dasharray="678.58" stroke-dashoffset="0"/>
-      </svg>
-      <div class="ring-center">
-        <span class="t-time" id="timeText">25:00</span>
-        <span class="t-label" id="modeLabel">Fokus</span>
-      </div>
-    </div>
-    <div class="focus-side">
-      <h3>Pilih ritmemu 🎧</h3>
-      <p class="fs-sub">Selesai satu sesi = <b>+30 XP</b> (Deep Focus sampai <b>+100 XP</b>) dan tomat 🍅 masuk koleksi.</p>
-      <div class="mode-chips" id="modeChips">
-        <button class="mode-chip on" data-mode="fokus">🍅 Fokus 25</button>
-        <button class="mode-chip" data-mode="kilat">⚡ Kilat 2</button>
-        <button class="mode-chip" data-mode="rehat">🌿 Rehat 5</button>
-        <button class="mode-chip" data-mode="deep50">🔥 Deep 50</button>
-        <button class="mode-chip" data-mode="deep90">🚀 Deep 90</button>
-      </div>
-      <div class="custom-row" id="customRow">
-        <span class="cr-label">⏱️ Atur sendiri:</span>
-        <button class="btn ghost small" id="minMinus" aria-label="Kurangi 5 menit">−5</button>
-        <button class="custom-val" id="customVal" title="Tap untuk ketik angka persis">25</button>
-        <button class="btn ghost small" id="minPlus" aria-label="Tambah 5 menit">+5</button>
-        <button class="btn leafy small" id="useCustom">Pakai</button>
-      </div>
-      <div class="timer-btns">
-        <button class="btn hot" id="startBtn">▶ Mulai</button>
-        <button class="btn ghost" id="resetTimerBtn">↺ Ulang</button>
-      </div>
-      <div class="tomato-row">Koleksi hari ini: <span class="tm" id="tomatoRow">belum ada — ayo mulai!</span></div>
-    </div>
-  </div>
-</section>
-
-<section id="spiritual">
-  <div class="sec-head reveal">
-    <span class="sec-tag">03 · SPIRITUAL CORNER</span>
-    <div><h2>Produktif Dunia, Tenang Ibadah</h2>
-      <svg class="squiggle" width="130" height="8" viewBox="0 0 130 8"><path d="M2 5 Q 12 0, 22 5 T 42 5 T 62 5 T 82 5 T 102 5 T 122 5" fill="none" stroke="#e5c786" stroke-width="3" stroke-linecap="round"/></svg></div>
-    <p class="sec-sub">Kerjaan jalan, sholat tetap nomor satu. 🕌</p>
-  </div>
-  <div class="spirit-grid reveal">
-    <div class="card prayer-card">
-      <div class="pr-top">
-        <div>
-          <div class="pr-hijri" id="hijriDate">—</div>
-          <div class="pr-city-row">
-            <select id="citySelect" class="city-select" aria-label="Pilih kota atau GPS"></select>
-            <button class="btn ghost small" id="retryBtn" title="Hitung ulang jadwal">🔄</button>
-            <button class="btn ghost small" id="offsetBtn" title="Koreksi menit jadwal adzan">⚙️</button>
-          </div>
+        <p class="sec-sub">Nggak mood? <b>Kilat 2 menit</b>. Lagi ambis? <b>Deep Focus 50/90 menit</b> — atau atur sendiri menitnya. XP sampai +100! 🚀 Timer tetap jalan walau aplikasi diminimkan.</p>
+        
+        <div class="card focus-wrap">
+            <div class="ring-wrap">
+                <svg viewBox="0 0 200 200">
+                    <defs><linearGradient id="roseGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="var(--rose-deep)"/><stop offset="100%" stop-color="var(--gold)"/></linearGradient></defs>
+                    <circle class="tr-bg" cx="100" cy="100" r="90"></circle>
+                    <circle class="tr-fg" id="ringFg" cx="100" cy="100" r="90" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="ring-center">
+                    <div class="t-time" id="timeText">25:00</div>
+                    <div class="t-label" id="modeLabel">Fokus</div>
+                </div>
+            </div>
+            <div class="focus-side">
+                <h3>Pilih ritmemu </h3>
+                <p class="fs-sub">Selesai satu sesi = <b>+XP</b> (Deep Focus sampai <b>+100 XP</b>) dan tomat 🍅 masuk koleksi.</p>
+                <div class="mode-chips">
+                    <button class="mode-chip on" data-mode="fokus">🍅 Fokus 25</button>
+                    <button class="mode-chip" data-mode="kilat">⚡ Kilat 2</button>
+                    <button class="mode-chip" data-mode="rehat">🌿 Rehat 5</button>
+                    <button class="mode-chip" data-mode="deep50">⏱️ Deep 50</button>
+                    <button class="mode-chip" data-mode="deep90">⏱️ Deep 90</button>
+                </div>
+                <div class="custom-row" id="customRow">
+                    <span class="cr-label">⏱️ Atur sendiri:</span>
+                    <div class="custom-val" id="customVal">25</div>
+                    <button class="btn ghost small" id="minMinus">−</button>
+                    <button class="btn ghost small" id="minPlus">+</button>
+                    <button class="btn small sunny" id="useCustom">Pakai</button>
+                </div>
+                <div class="timer-btns">
+                    <button id="startBtn" class="btn hot" style="flex:2">▶ Mulai</button>
+                    <button id="resetTimerBtn" class="btn ghost">↺ Ulang</button>
+                </div>
+                <div class="tomato-row" id="tomatoRow">Koleksi hari ini: belum ada — ayo mulai!</div>
+            </div>
         </div>
-        <div class="next-box">
-          <div class="nb-label" id="nextLabel">Menghitung…</div>
-          <div class="nb-time" id="nextTime">--:--</div>
-          <div class="nb-count" id="nextCount"></div>
+    </section>
+
+    <!-- 03 · SPIRITUAL CORNER -->
+    <section class="reveal">
+        <div class="sec-head">
+            <span class="sec-tag">03 · SPIRITUAL CORNER</span>
+            <h2>Produktif Dunia, Tenang Ibadah</h2>
         </div>
-      </div>
-      <div class="pr-list" id="prayerList"></div>
-      <button class="btn hot" id="adhanBtn" style="width:100%;margin-top:14px">🕌 Fokus Sampai Adzan</button>
-      <p class="pr-note" id="prayerNote">Dihitung otomatis di perangkat (metode Kemenag: Subuh 20°, Isya 18°).</p>
-    </div>
+        <p class="sec-sub">Kerjaan jalan, sholat tetap nomor satu. 🕌</p>
+        
+        <div class="spirit-grid">
+            <div class="card prayer-card">
+                <div class="pr-top">
+                    <div>
+                        <div class="pr-hijri" id="hijriDate">🌙 -</div>
+                        <div class="pr-city-row">
+                            <select id="citySelect" class="city-select"></select>
+                            <button id="retryBtn" class="btn ghost small" title="Hitung ulang jadwal">↺</button>
+                            <button id="offsetBtn" class="btn ghost small" title="Koreksi menit jadwal adzan">️</button>
+                        </div>
+                    </div>
+                    <div class="next-box">
+                        <div class="nb-label">Adzan Selanjutnya</div>
+                        <div class="nb-time" id="nextTime">--:--</div>
+                        <div class="nb-count" id="nextCount">Menghitung…</div>
+                    </div>
+                </div>
+                <div class="pr-list" id="prayerList"></div>
+                <div class="pr-note" id="prayerNote"></div>
+                <div style="margin-top:12px; display:flex; gap:8px;">
+                    <button id="adhanBtn" class="btn small sunny" style="flex:1">🕌 Fokus Sampai Adzan</button>
+                </div>
+                <p style="font-size:0.7rem; color:var(--ink-mute); margin-top:8px; text-align:center;">Dihitung otomatis di perangkat (metode Kemenag: Subuh 20°, Isya 18°).</p>
+            </div>
+            
+            <div class="card tasbih-card">
+                <h3 style="font-size:1.1rem; margin-bottom:4px;">📿 Tasbih Digital</h3>
+                <p class="tas-sub">Target dzikir harianmu — tap lingkaran untuk berdzikir.</p>
+                <div class="dhikr-chips" id="dhikrChips"></div>
+                <button id="tasbihBtn" class="tasbih-btn">
+                    <div class="tas-count" id="tasCount">0</div>
+                    <div class="tas-target" id="tasTarget">/ 33</div>
+                </button>
+                <div class="tas-track"><div class="tas-fill" id="tasFill"></div></div>
+                <div class="tas-total" id="tasTotal">Total dzikir hari ini: 0</div>
+            </div>
+        </div>
+    </section>
 
-    <div class="card tasbih-card">
-      <h3>📿 Tasbih Digital</h3>
-      <p class="tas-sub">Target dzikir harianmu — tap lingkaran untuk berdzikir.</p>
-      <div class="dhikr-chips" id="dhikrChips"></div>
-      <button class="tasbih-btn" id="tasbihBtn" aria-label="Hitung dzikir">
-        <span class="tas-count" id="tasCount">0</span>
-        <span class="tas-target" id="tasTarget">/ 33</span>
-      </button>
-      <div class="tas-track"><div class="tas-fill" id="tasFill"></div></div>
-      <div class="tas-total" id="tasTotal">Total dzikir hari ini: 0</div>
-    </div>
-  </div>
-</section>
+    <!-- 04 · RITUAL HARIAN -->
+    <section class="reveal">
+        <div class="sec-head">
+            <span class="sec-tag">04 · RITUAL HARIAN</span>
+            <h2>Pelacak Kebiasaan</h2>
+        </div>
+        <p class="sec-sub">Kebiasaan kecil yang diulang = perubahan besar. Ceklis hari ini, +10 XP per habit!</p>
+        
+        <div class="habit-grid" id="habitGrid"></div>
+    </section>
 
-<section id="kebiasaan">
-  <div class="sec-head reveal">
-    <span class="sec-tag">04 · RITUAL HARIAN</span>
-    <div><h2>Pelacak Kebiasaan</h2>
-      <svg class="squiggle" width="130" height="8" viewBox="0 0 130 8"><path d="M2 5 Q 12 0, 22 5 T 42 5 T 62 5 T 82 5 T 102 5 T 122 5" fill="none" stroke="#e8c4c8" stroke-width="3" stroke-linecap="round"/></svg></div>
-    <p class="sec-sub">Kebiasaan kecil yang diulang = perubahan besar. Ceklis hari ini, +10 XP per habit!</p>
-  </div>
-  <div class="habit-grid reveal" id="habitGrid"></div>
-</section>
+    <!-- 05 · BUKTI PROGRES -->
+    <section class="reveal">
+        <div class="sec-head">
+            <span class="sec-tag">05 · BUKTI PROGRES</span>
+            <h2>Kebun Nyalamu</h2>
+        </div>
+        <p class="sec-sub">Setiap tugas yang beres menumbuhkan tanaman baru. Makin rajin, makin rimbun 🌸</p>
+        
+        <div class="garden-wrap">
+            <div class="garden">
+                <div class="g-sun"></div>
+                <div class="g-cloud gc1"></div>
+                <div class="g-cloud gc2"></div>
+                <div class="g-ground"></div>
+                <div class="g-plants" id="plantsRow"></div>
+            </div>
+            <div class="garden-side">
+                <div class="card g-level">
+                    <div class="lv-title" id="gardenTitle">Lv.1 · Kaum Rebahan 🛋️</div>
+                    <div class="lv-sub" id="gardenSub">Masih benih nih — siram dengan satu tugas kecil 🌰</div>
+                </div>
+                <div class="g-stats">
+                    <div class="g-stat card" style="padding:12px; background:rgba(0,0,0,.2); border:none;">
+                        <div class="ic">✅</div>
+                        <div><div class="v" id="gDone">0</div><div class="k">Tugas Selesai</div></div>
+                    </div>
+                    <div class="g-stat card" style="padding:12px; background:rgba(0,0,0,.2); border:none;">
+                        <div class="ic">⏱️</div>
+                        <div><div class="v" id="gFocus">0</div><div class="k">Menit Fokus</div></div>
+                    </div>
+                    <div class="g-stat card" style="padding:12px; background:rgba(0,0,0,.2); border:none;">
+                        <div class="ic">🔥</div>
+                        <div><div class="v" id="gStreak">0</div><div class="k">Hari Streak</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section id="kebun">
-  <div class="sec-head reveal">
-    <span class="sec-tag">05 · BUKTI PROGRES</span>
-    <div><h2>Kebun Nyalamu</h2>
-      <svg class="squiggle" width="130" height="8" viewBox="0 0 130 8"><path d="M2 5 Q 12 0, 22 5 T 42 5 T 62 5 T 82 5 T 102 5 T 122 5" fill="none" stroke="#b76e79" stroke-width="3" stroke-linecap="round"/></svg></div>
-    <p class="sec-sub">Setiap tugas yang beres menumbuhkan tanaman baru. Makin rajin, makin rimbun 🌸</p>
-  </div>
-  <div class="garden-wrap reveal">
-    <div class="garden" aria-label="Kebun progres">
-      <div class="g-sun"></div>
-      <div class="g-cloud gc1"></div>
-      <div class="g-cloud gc2"></div>
-      <div class="g-ground"></div>
-      <div class="g-plants" id="plantsRow"></div>
-    </div>
-    <div class="garden-side">
-      <div class="card g-level">
-        <div class="lv-title" id="gardenTitle">Lv.1 · Kaum Rebahan 🛋️</div>
-        <div class="lv-sub" id="gardenSub">Masih benih nih — siram dengan satu tugas kecil 🌰</div>
-      </div>
-      <div class="g-stats">
-        <div class="card g-stat"><span class="ic">✅</span><div><div class="v" id="gDone">0</div><div class="k">TUGAS SELESAI SEPANJANG MASA</div></div></div>
-        <div class="card g-stat"><span class="ic">⏱️</span><div><div class="v" id="gFocus">0</div><div class="k">MENIT FOKUS TERKUMPUL</div></div></div>
-        <div class="card g-stat"><span class="ic">🔥</span><div><div class="v" id="gStreak">0</div><div class="k">HARI BERUNTUN CHECK-IN</div></div></div>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- 06 · ANTI BINGUNG -->
+    <section class="reveal">
+        <div class="sec-head">
+            <span class="sec-tag">06 · ANTI BINGUNG</span>
+            <h2>Roda Semangat</h2>
+        </div>
+        <p class="sec-sub">Otak nge-blank? Biar rodanya yang milih. Putar, lalu gas tanpa mikir!</p>
+        
+        <div class="card wheel-wrap">
+            <div class="wheel-zone">
+                <div class="wheel-pointer"></div>
+                <div class="wheel" id="wheel"></div>
+                <button id="spinBtn" class="wheel-hub">PUTAR</button>
+            </div>
+            <div class="wheel-side">
+                <h3>Putar rodanya </h3>
+                <p>Apa pun hasilnya, kerjakan <b>sekarang</b> — maksimal 2 menit. Nggak pakai mikir, nggak pakai nanti.</p>
+                <button id="spinBtn2" class="btn hot" style="width:100%">🎡 PUTAR SEKARANG</button>
+                <div id="wheelResult" class="wheel-result"></div>
+            </div>
+        </div>
+    </section>
 
-<section id="roda">
-  <div class="sec-head reveal">
-    <span class="sec-tag">06 · ANTI BINGUNG</span>
-    <div><h2>Roda Semangat</h2>
-      <svg class="squiggle" width="130" height="8" viewBox="0 0 130 8"><path d="M2 5 Q 12 0, 22 5 T 42 5 T 62 5 T 82 5 T 102 5 T 122 5" fill="none" stroke="#d4a5a5" stroke-width="3" stroke-linecap="round"/></svg></div>
-    <p class="sec-sub">Otak nge-blank? Biar rodanya yang milih. Putar, lalu gas tanpa mikir!</p>
-  </div>
-  <div class="card wheel-wrap reveal">
-    <div class="wheel-zone">
-      <div class="wheel-pointer" aria-hidden="true"></div>
-      <div class="wheel" id="wheel" aria-hidden="true"></div>
-      <button class="wheel-hub" id="spinBtn">GAS!</button>
-    </div>
-    <div class="wheel-side">
-      <h3>Putar rodanya 🎰</h3>
-      <p>Apa pun hasilnya, kerjakan <b>sekarang</b> — maksimal 2 menit. Nggak pakai mikir, nggak pakai nanti.</p>
-      <button class="btn sunny" id="spinBtn2">🎡 PUTAR SEKARANG</button>
-      <div class="wheel-result" id="wheelResult"></div>
-    </div>
-  </div>
-</section>
+    <!-- 07 · LAPORAN MINGGUAN -->
+    <section class="reveal">
+        <div class="sec-head">
+            <span class="sec-tag">07 · LAPORAN MINGGUAN</span>
+            <h2>Sepekan Barakahku</h2>
+        </div>
+        <p class="sec-sub">Rekap otomatis 7 hari terakhir — unduh sebagai gambar 9:16, tempel ke IG Story / Status WA, biar semangatmu menular! 🌹</p>
+        
+        <div class="card report-card">
+            <div class="rep-head">
+                <div class="rep-title">🌹 Sepekan Barakahku</div>
+                <div class="rep-range" id="repRange">...</div>
+            </div>
+            <div class="rep-grid">
+                <div class="rep-box"><div class="v" id="repTasks">0</div><div class="k">✅ TUGAS BERES</div></div>
+                <div class="rep-box"><div class="v" id="repFocus">0</div><div class="k">️ MENIT FOKUS</div></div>
+                <div class="rep-box"><div class="v" id="repHabits">0</div><div class="k">🌿 HABIT TERCEKLIS</div></div>
+                <div class="rep-box"><div class="v" id="repDhikr">0</div><div class="k">📿 DZIKIR</div></div>
+            </div>
+            <div class="rep-chart" id="repChart"></div>
+            <div class="rep-quote" id="repQuote">"Mulai aja dulu. Sempurnanya sambil jalan."</div>
+            <div class="rep-actions">
+                <button id="downloadBtn" class="btn sunny">📸 Unduh Gambar</button>
+                <button id="shareBtn" class="btn leafy">📤 Share ke Story</button>
+            </div>
+            <div class="rep-note">Gambar 9:16 dengan branding NYALA — siap tempel ke IG Story / Status WA.</div>
+        </div>
+    </section>
 
-<section id="laporan">
-  <div class="sec-head reveal">
-    <span class="sec-tag">07 · LAPORAN MINGGUAN</span>
-    <div><h2>Sepekan Barakahku</h2>
-      <svg class="squiggle" width="130" height="8" viewBox="0 0 130 8"><path d="M2 5 Q 12 0, 22 5 T 42 5 T 62 5 T 82 5 T 102 5 T 122 5" fill="none" stroke="#e5c786" stroke-width="3" stroke-linecap="round"/></svg></div>
-    <p class="sec-sub">Rekap otomatis 7 hari terakhir — unduh sebagai gambar 9:16, tempel ke IG Story / Status WA, biar semangatmu menular! 🌹</p>
-  </div>
-  <div class="card report-card reveal">
-    <div class="rep-head">
-      <div class="rep-title">🌹 Sepekan Barakahku</div>
-      <div class="rep-range" id="repRange"></div>
-    </div>
-    <div class="rep-grid">
-      <div class="rep-box"><div class="v" id="repTasks">0</div><div class="k">✅ TUGAS BERES</div></div>
-      <div class="rep-box"><div class="v" id="repFocus">0</div><div class="k">⏱️ MENIT FOKUS</div></div>
-      <div class="rep-box"><div class="v" id="repHabits">0</div><div class="k">🌿 HABIT TERCEKLIS</div></div>
-      <div class="rep-box"><div class="v" id="repDhikr">0</div><div class="k">📿 DZIKIR</div></div>
-    </div>
-    <div class="rep-chart" id="repChart"></div>
-    <div class="rep-quote" id="repQuote"></div>
-    <div class="rep-actions">
-      <button class="btn hot" id="downloadBtn">📸 Unduh Gambar</button>
-      <button class="btn sunny" id="shareBtn">📤 Share ke Story</button>
-    </div>
-    <p class="rep-note">Gambar 9:16 dengan branding NYALA — siap tempel ke IG Story / Status WA.</p>
-  </div>
-</section>
-
-<section id="kutipan">
-  <div class="card quote-card reveal">
-    <p id="quoteText">"Mulai aja dulu. Sempurnanya sambil jalan."</p>
-    <p id="quoteBy">— MANTRA NYALA</p>
-    <button class="btn ghost small" id="shuffleQuote" style="margin-top:18px">🔀 Kocok semangat lagi</button>
-  </div>
-</section>
-
+    <!-- SCORE & MOOD SECTION -->
+    <section class="reveal">
+        <div class="hero-grid">
+            <div class="card hello-card">
+                <div class="kicker" id="kicker">SELAMAT PAGI ☀️</div>
+                <h1>Hei, <span class="name" id="nameChip">Kawan</span></h1>
+                <div class="day-msg" id="dayMsg">Matahari udah start duluan. Yuk mulai pelan-pelan 🌅</div>
+                
+                <div class="mood-row" id="moodRow">
+                    <p>Cek dulu: gimana energimu sekarang?</p>
+                    <div class="moods">
+                        <button class="mood" data-i="0" title="Mager banget"></button>
+                        <button class="mood" data-i="1" title="Capek">😪</button>
+                        <button class="mood" data-i="2" title="Biasa aja"></button>
+                        <button class="mood" data-i="3" title="Senang">😊</button>
+                        <button class="mood" data-i="4" title="Semangat membara"></button>
+                    </div>
+                    <div class="battery">
+                        <div class="lbl"><span>🔋 Baterai semangat</span><span id="batTxt">0% · Mode mager terdeteksi</span></div>
+                        <div class="bat-track"><div class="bat-fill" id="batFill"></div></div>
+                    </div>
+                    <div class="hype" id="hypeBubble"></div>
+                </div>
+                
+                <div class="quick">
+                    <button id="qaGas" class="btn hot small">⚡ Gas 2 Menit</button>
+                    <button id="qaRoda" class="btn ghost small">🎲 Bingung mulai?</button>
+                    <button id="qaKebun" class="btn ghost small">🌱 Intip Kebunku</button>
+                </div>
+            </div>
+            
+            <div class="card score-card">
+                <h3>📋 Skor Hari Ini <span class="chip clock" id="clockChip">00:00:00</span></h3>
+                <div class="today-rings">
+                    <div class="mini-ring">
+                        <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="rgba(212,165,165,.2)" stroke-width="12"></circle><circle id="dayRing" cx="60" cy="60" r="54" fill="none" stroke="url(#roseGrad)" stroke-width="12" stroke-dasharray="339.29" stroke-dashoffset="339.29" stroke-linecap="round"></circle></svg>
+                        <div class="val" id="dayPct">0%</div>
+                    </div>
+                    <div class="ring-meta">
+                        <div class="big" id="taskSummary">0 / 0 tugas</div>
+                        <div class="sub" id="focusSummary">0 sesi fokus · 0 menit</div>
+                    </div>
+                </div>
+                
+                <div class="xp-block">
+                    <div class="xp-top">
+                        <span id="lvlName">Lv.1 · Kaum Rebahan ️</span>
+                        <span class="chip lvl" id="lvlChip">Lv.1 · 0 XP</span>
+                    </div>
+                    <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+                    <div style="font-size:.7rem; color:var(--ink-mute); margin-top:4px; text-align:right;" id="xpNext">0 XP lagi ke Lv.2</div>
+                </div>
+                
+                <div class="stat-chips">
+                    <div class="rekapan" id="streakChip">🔥 0 hari</div>
+                    <div class="rekapan" id="totalDoneChip">0</div>
+                    <div class="rekapan" id="habitActiveChip">0</div>
+                    <div class="rekapan" id="consistChip">0</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="history reveal">
+            <h3>🗓️ Jejak 14 hari terakhir <small style="font-weight:400; opacity:.7">(tap tanggal untuk rincian)</small></h3>
+            <div class="h-strip" id="historyStrip"></div>
+        </div>
+        
+        <div class="card quote-card reveal" style="margin-top:20px;">
+            <div id="quoteText">"Mulai aja dulu. Sempurnanya sambil jalan."</div>
+            <div id="quoteBy">— MANTRA NYALA</div>
+            <button id="shuffleQuote" style="margin-top:12px; background:none; border:none; color:var(--gold); cursor:pointer; font-weight:700; font-size:.8rem;">🔀 Kocok semangat lagi</button>
+        </div>
+        
+        <div class="card" style="margin-top:20px; padding:20px;">
+            <h3 style="margin-bottom:12px; font-size:1.1rem;">🌸 3 Hal yang Disyukuri Hari Ini</h3>
+            <input type="text" class="syukur-in" data-i="0" placeholder="1. Contoh: hujan reda tepat sebelum berangkat…" style="width:100%; padding:10px; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); background:rgba(0,0,0,.2); color:var(--ink);">
+            <input type="text" class="syukur-in" data-i="1" placeholder="2. Contoh: ada teman yang menyapa dulu…" style="width:100%; padding:10px; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); background:rgba(0,0,0,.2); color:var(--ink);">
+            <input type="text" class="syukur-in" data-i="2" placeholder="3. Contoh: tubuhku kuat puasa hari ini…" style="width:100%; padding:10px; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); background:rgba(0,0,0,.2); color:var(--ink);">
+            <div id="syukurNote" style="font-size:.85rem; color:var(--ink-soft); font-weight:600;"></div>
+        </div>
+        
+        <div id="yesterdayNote" class="reveal" style="display:none; text-align:center; padding:20px; color:var(--ink-soft); font-weight:600;"></div>
+    </section>
 </main>
 
 <footer>
-  Dibuat dengan <span class="heart">🌹</span> biar kamu nggak mager lagi.<br>
-  Semua datamu tersimpan aman di perangkat ini — tanpa akun, tanpa ribet.<br>
-  <span style="display:inline-flex;align-items:center;gap:8px;margin-top:8px;">
-    <img src="logo-wfh.png" onerror="this.onerror=null;this.src='logo-wfh.svg';" alt="Logo Muslimah WFH" style="width:34px;height:34px;border-radius:9px;object-fit:contain;">
-    Kolaborasi: <b>Muslimah WFH</b> × <b>Juariah</b>
-  </span><br>
-  <button id="backupBtn" style="background:none;border:none;color:var(--gold);text-decoration:underline;font-size:.78rem;font-weight:700;margin-top:10px;cursor:pointer">💾 Cadangkan data</button>
-  <button id="restoreBtn" style="background:none;border:none;color:var(--ink-mute);text-decoration:underline;font-size:.78rem;font-weight:700;margin-top:10px;cursor:pointer">📂 Pulihkan data</button>
-  <input type="file" id="restoreFile" accept=".json,application/json" style="display:none">
-  <br>
-  <button id="resetBtn">Mulai ulang dari nol (hapus semua data)</button>
+    <div>Dibuat dengan <span class="heart">🌹</span> NYALA biar kamu nggak mager lagi.</div>
+    <div style="font-size:.75rem; font-weight:400; margin-top:6px; opacity:.8;">Semua datamu tersimpan aman di perangkat ini — tanpa akun, tanpa ribet.</div>
+    <div style="margin-top:16px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <button id="backupBtn" class="btn ghost small">💾 Cadangkan data</button>
+        <button id="restoreBtn" class="btn ghost small">📂 Pulihkan data</button>
+        <input type="file" id="restoreFile" accept=".json" style="display:none">
+    </div>
+    <button id="resetBtn">Mulai ulang dari nol (hapus semua data)</button>
 </footer>
 
-<div id="welcomeOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-  <div style="max-width:420px;width:100%;margin:auto;position:relative;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:26px 22px;text-align:center;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
-    <button id="welcomeClose" aria-label="Tutup" style="position:absolute;top:10px;right:12px;border:none;background:none;color:#8a6f74;font-size:1.1rem;font-weight:800;cursor:pointer;">✕</button>
-    <div style="font-size:2.6rem;">🌹</div>
-    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem;margin:8px 0 4px;color:#f2e4e6;">Selamat datang di NYALA</h2>
-    <p style="color:#c9aeb2;font-size:.88rem;font-weight:600;margin-bottom:14px;">Sebelum mulai, siapa nama panggilanmu?</p>
-    <input id="welcomeName" maxlength="20" placeholder="Ketik namamu di sini…" style="width:100%;border:1px solid rgba(212,165,165,.34);border-radius:14px;padding:12px 14px;font-weight:600;background:rgba(0,0,0,.3);color:#f2e4e6;text-align:center;">
-    <button id="welcomeSave" style="margin-top:12px;width:100%;border:none;border-radius:14px;padding:13px;font-weight:800;background:linear-gradient(120deg,#b76e79,#9c5a66);color:#fff;box-shadow:0 5px 0 #6f3f49;cursor:pointer;">Mulai Nyala 🔥</button>
-    <button id="welcomeSkip" style="margin-top:8px;background:none;border:none;color:#8a6f74;font-size:.78rem;font-weight:700;text-decoration:underline;cursor:pointer;">Lewati dulu</button>
-  </div>
-</div>
-
-<div id="dayOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-  <div style="max-width:460px;width:100%;max-height:80vh;overflow-y:auto;margin:auto;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:22px 20px;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
-      <h3 id="dayOvTitle" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.05rem;color:#f2e4e6;">—</h3>
-      <button id="dayOvClose" style="border:none;background:none;color:#8a6f74;font-size:1.1rem;font-weight:800;cursor:pointer;">✕</button>
-    </div>
-    <div id="dayOvList" style="margin:12px 0;display:flex;flex-direction:column;gap:8px;"></div>
-    <div id="dayOvSyukur" style="display:none;margin:10px 0;padding:12px 14px;border:1px dashed rgba(212,165,165,.34);border-radius:14px;font-size:.82rem;color:#c9aeb2;font-weight:600;"></div>
-    <button id="dayOvCarry" style="width:100%;border:none;border-radius:14px;padding:12px;font-weight:800;background:linear-gradient(120deg,#b76e79,#9c5a66);color:#fff;box-shadow:0 5px 0 #6f3f49;cursor:pointer;">📥 Bawa tugas belum selesai ke hari ini</button>
-  </div>
-</div>
-
-<canvas id="cfx"></canvas>
-<div id="toasts" aria-live="polite"></div>
-
-<script src="app.js" defer></script>
-<script src="i18n.js" defer></script>
-<script>
-(function(){
-  function spy(){
-    var links=document.querySelectorAll('nav.links a[href^="#"]');
-    if(!links.length||!('IntersectionObserver' in window))return;
-    var map={};
-    links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
-    var obs=new IntersectionObserver(function(es){
-      es.forEach(function(en){
-        if(en.isIntersecting){
-          links.forEach(function(a){a.removeAttribute('aria-current');});
-          var a=map[en.target.id];
-          if(a)a.setAttribute('aria-current','true');
-        }
-      });
-    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
-    Object.keys(map).forEach(function(id){var s=document.getElementById(id);if(s)obs.observe(s);});
-  }
-  function overlayFix(){
-    var ov=document.getElementById('welcomeOverlay');if(!ov)return;
-    ov.addEventListener('click',function(e){if(e.target===ov){var k=document.getElementById('welcomeSkip');if(k)k.click();}});
-    var c=document.getElementById('welcomeClose');
-    if(c)c.addEventListener('click',function(){var k=document.getElementById('welcomeSkip');if(k)k.click();});
-  }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){spy();overlayFix();});}
-  else{spy();overlayFix();}
-})();
-</script>
+<script src="app.js"></script>
 </body>
 </html>
