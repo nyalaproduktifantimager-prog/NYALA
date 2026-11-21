@@ -1,11 +1,21 @@
-/* NYALA i18n v3 — sakelar ID/EN + mute global.
-   Pencocokan tahan spasi/enter/nbsp. Teks Arab & transliterasi TIDAK PERNAH diterjemahkan.
-   Tulisan buatan pengguna (tugas, syukur, nama, habit) TIDAK PERNAH diterjemahkan. */
+/* NYALA i18n v4 — sakelar ID/EN + mute global + sinkronisasi reload service worker.
+   Teks Arab & transliterasi TIDAK PERNAH diterjemahkan. Tulisan pengguna TIDAK PERNAH diterjemahkan. */
 (function(){
 'use strict';
 var LS='nyala_lang', LM='nyala_muted', lang='id', muted=false;
 try{ if(localStorage.getItem(LS)==='en') lang='en'; }catch(e){}
 try{ muted=localStorage.getItem(LM)==='1'; }catch(e){}
+document.documentElement.lang = lang==='en' ? 'en' : 'id';
+try{
+  if(navigator.serviceWorker){
+    navigator.serviceWorker.addEventListener('message',function(e){
+      if(e.data==='NYALA_RELOAD'){
+        var k='nyala_sw_reload_v5';
+        try{ if(!sessionStorage.getItem(k)){ sessionStorage.setItem(k,'1'); setTimeout(function(){location.reload();},350); } }catch(e2){}
+      }
+    });
+  }
+}catch(e){}
 var WD_ID=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 var WD_EN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var MO_ID=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
@@ -108,8 +118,9 @@ var MAP={
 'Yakin mau menghapus SEMUA data NYALA di perangkat ini?':'Are you sure you want to erase ALL NYALA data on this device?','Beneran yakin? Streak dan XP-mu akan hilang 😢':'Really sure? Your streak and XP will be lost 😢',
 'Berapa menit? (1–180)':'How many minutes? (1–180)','Koreksi jadwal adzan (menit). Contoh: -2 atau 3':'Adhan schedule offset (minutes). e.g. -2 or 3','Siapa nama panggilanmu? 😊':'What should we call you? 😊',
 '← NYALA':'← NYALA','DZIKIR PAGI & PETANG':'MORNING & EVENING DHIKR','Pagi':'Morning','Petang':'Evening','Ayat Kursi':'Ayat al-Kursi (The Throne Verse)','Cari dzikir…':'Search dhikr…','Cari surah…':'Search surah…',
-'Waktu utama: Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍':'Prime time: morning dhikr after Fajr until sunrise; evening dhikr after Asr until sunset (allowed after Maghrib). Tap the counter circle according to the recommended count. 🤍',
-'📜 Lisensi: Teks Arab (Al-Qur\'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.':'📜 License: Arabic text (Qur\'an & hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction.',
+'Waktu utama:':'Prime time:','📜 Lisensi:':'📜 License:',
+'Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍':'morning dhikr after Fajr until sunrise; evening dhikr after Asr until sunset (allowed after Maghrib). Tap the counter circle according to the recommended count. 🤍',
+'Teks Arab (Al-Qur\'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.':'Arabic text (Qur\'an & hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction.',
 'NYALA ✦ Anti Mager — Produktif dengan Elegan':'NYALA ✦ Anti Mager — Productive with Grace'
 };
 function idx(a,v){for(var i=0;i<a.length;i++){if(a[i]===v)return i;}return -1;}
@@ -189,15 +200,17 @@ function trAttr(el,name,refresh){
   var out=lang==='en'?tr(store[name]):store[name];
   if(out!==cur){applying=true;el.setAttribute(name,out);applying=false;}
 }
+function bilingualEl(el){
+  if(!el||!el.hasAttribute||!el.hasAttribute('data-en'))return;
+  if(!origB.has(el))origB.set(el,el.textContent);
+  var want=lang==='en'?el.getAttribute('data-en'):(el.getAttribute('data-id')||origB.get(el));
+  if(want!=null&&el.textContent!==want){applying=true;el.textContent=want;applying=false;}
+}
 function bilingual(root){
   if(!root||!root.querySelectorAll)return;
+  bilingualEl(root);
   var list=root.querySelectorAll('[data-en]');
-  for(var i=0;i<list.length;i++){
-    var el=list[i];
-    if(!origB.has(el))origB.set(el,el.textContent);
-    var want=lang==='en'?el.getAttribute('data-en'):(el.getAttribute('data-id')||origB.get(el));
-    if(want!=null&&el.textContent!==want){applying=true;el.textContent=want;applying=false;}
-  }
+  for(var i=0;i<list.length;i++)bilingualEl(list[i]);
 }
 function walk(root){
   if(!root)return;
