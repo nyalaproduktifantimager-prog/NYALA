@@ -1,5 +1,5 @@
-/* NYALA i18n v6 — sakelar ID/EN + mute global.
-   Menerjemahkan SELURUH tulisan Indonesia (termasuk judul halaman) via kamus + pola.
+/* NYALA i18n v7 — sakelar ID/EN + mute global.
+   Menerjemahkan tulisan Indonesia via kamus + pola; judul halaman ditangani tiap halaman.
    Teks Arab & transliterasi latin TIDAK PERNAH diterjemahkan.
    Tulisan buatan pengguna (tugas, syukur, nama, habit) TIDAK PERNAH diterjemahkan. */
 (function(){
@@ -26,10 +26,8 @@ var HIJRI={'Muharam':'Muharram','Safar':'Safar','Rabiulawal':'Rabi al-Awwal','Ra
 var PRAY={'Subuh':'Fajr','Dzuhur':'Dhuhr','Ashr':'Asr','Maghrib':'Maghrib','Isya':'Isha'};
 var MAP={
 'Hari Ini':'Today','Tugas':'Tasks','Fokus':'Focus','Spiritual':'Spiritual','Kebiasaan':'Habits','Kebun':'Garden','Roda':'Wheel','Laporan':'Report','📿 Dzikir':'📿 Dhikr','Dzikir':'Dhikr',
-'🕌 TAMAN QUR’AN':'🕌 GARDEN QUR’AN','TAMAN QUR’AN':'GARDEN QUR’AN',
-'🕌 TAMAN QUR'AN':'🕌 GARDEN QUR'AN','TAMAN QUR'AN':'GARDEN QUR'AN',
 '📿 DZIKIR PAGI & PETANG':'📿 MORNING & EVENING DHIKR','DZIKIR PAGI & PETANG':'MORNING & EVENING DHIKR',
-'Memuat data Qur’an…':'Loading Qur’an data…','Memuat data Qur'an…':'Loading Qur’an data…',
+'Memuat data Qur’an…':'Loading Qur’an data…',
 '0 / 114 surah dihafal':'0 / 114 surahs memorized',
 'Belum':'Not yet','Proses':'In progress','Hafal':'Memorized',
 'SELAMAT PAGI ☀️':'GOOD MORNING ☀️','SELAMAT SIANG 🌤️':'GOOD AFTERNOON 🌤️','SELAMAT SORE 🌇':'GOOD EVENING 🌇','SELAMAT MALAM 🌙':'GOOD NIGHT 🌙',
@@ -125,11 +123,9 @@ var MAP={
 'Gagal membuat gambar 😔':'Failed to create image 😔','Gambar tersimpan! Tinggal upload ke IG Story 📸':'Image saved! Just upload to IG Story 📸',
 'Yakin mau menghapus SEMUA data NYALA di perangkat ini?':'Are you sure you want to erase ALL NYALA data on this device?','Beneran yakin? Streak dan XP-mu akan hilang 😢':'Really sure? Your streak and XP will be lost 😢',
 'Berapa menit? (1–180)':'How many minutes? (1–180)','Koreksi jadwal adzan (menit). Contoh: -2 atau 3':'Adhan schedule offset (minutes). e.g. -2 or 3','Siapa nama panggilanmu? 😊':'What should we call you? 😊',
-'← NYALA':'← NYALA','DZIKIR PAGI & PETANG':'MORNING & EVENING DHIKR','Pagi':'Morning','Petang':'Evening','Ayat Kursi':'Ayat al-Kursi (The Throne Verse)','Cari dzikir…':'Search dhikr…','Cari surah…':'Search surah…',
+'← NYALA':'← NYALA','Pagi':'Morning','Petang':'Evening','Ayat Kursi':'Ayat al-Kursi (The Throne Verse)','Cari dzikir…':'Search dhikr…','Cari surah…':'Search surah…',
 'Waktu utama:':'Prime time:','📜 Lisensi:':'📜 License:',
 'Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍':'morning dhikr after Fajr until sunrise; evening dhikr after Asr until sunset (allowed after Maghrib). Tap the counter circle according to the recommended count. 🤍',
-'Teks Arab (Al-Qur’an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.':'Arabic text (Qur’an & hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction.',
-'Teks Arab (Al-Qur\'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.':'Arabic text (Qur\'an & hadith) = public domain. Transliteration & Indonesian translation = original writing of this app, released CC0 / public domain for the ummah without restriction.',
 'NYALA ✦ Anti Mager — Produktif dengan Elegan':'NYALA ✦ Anti Mager — Productive with Grace'
 };
 function idx(a,v){for(var i=0;i<a.length;i++){if(a[i]===v)return i;}return -1;}
@@ -173,7 +169,6 @@ var PAT=[
 {re:/^Pulihkan data dari cadangan (.+)\? Data saat ini akan ditimpa\.$/,f:function(m){return 'Restore data from backup '+m[1]+'? Current data will be overwritten.';}},
 {re:/^(\d+) \/ (\d+) selesai$/,f:function(m){return m[1]+' / '+m[2]+' done';}},
 {re:/^Memuat data Qur’an… (\d+)s$/,f:function(m){return 'Loading Qur’an data… '+m[1]+'s';}},
-{re:/^Memuat data Qur'an… (\d+)s$/,f:function(m){return 'Loading Qur’an data… '+m[1]+'s';}},
 {re:/^\((\d+:\d+)\) (.+) — NYALA$/,f:function(m){return '('+m[1]+') '+tr(m[2])+' — NYALA';}}
 ];
 var ARABIC=/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
