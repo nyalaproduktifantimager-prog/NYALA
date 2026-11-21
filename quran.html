@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>Taman Qur'an — NYALA</title>
-<meta name="description" content="Taman Qur'an NYALA: mushaf digital 114 surah / 30 juz, baca sendiri atau baca bareng murottal, ayat untuk hatimu, tracker hafalan, dan doa-doa sehari-hari.">
 <link rel="icon" href="icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +18,7 @@
 .tq-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .tq-card{padding:clamp(16px,3.4vw,24px);margin-top:16px}
 .tq-status{display:inline-flex;align-items:center;gap:8px;border:1px dashed rgba(229,199,134,.45);background:rgba(229,199,134,.07);border-radius:999px;padding:9px 16px;font-size:.8rem;font-weight:800;color:var(--gold);margin-bottom:14px}
-.tq-status button{border:none;background:rgba(229,199,134,.18);color:var(--gold);border-radius:999px;padding:5px 12px;font:800 .72rem 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.tq-status button{border:none;background:rgba(229,199,134,.18);color:var(--gold);border-radius:999px;padding:5px 12px;font:800 .72rem 'Plus Jakarta Sans',sans-serif;cursor:pointer;margin-left:8px}
 .tq-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .tq-row.one{grid-template-columns:1fr}
 .tq-select{width:100%;background:rgba(0,0,0,.35);color:var(--ink);border:1px solid var(--line-strong);border-radius:14px;padding:13px 14px;font-weight:800;font-size:.9rem}
@@ -65,9 +64,6 @@
 .doa .src{font-size:.74rem;color:var(--ink-mute);font-weight:600}
 @media(max-width:560px){.tq-row{grid-template-columns:1fr}}
 </style>
-<script>
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
-</script>
 </head>
 <body>
 <div class="aurora" aria-hidden="true"></div>
@@ -87,7 +83,6 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 </header>
 
 <main class="tq-wrap">
-
   <section>
     <div class="sec-head" style="margin-top:18px">
       <span class="sec-tag" data-id="A · BACA & DENGAR" data-en="A · READ & LISTEN">A · BACA & DENGAR</span>
@@ -95,7 +90,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
       <p class="sec-sub" data-id="Baca sendiri atau baca bareng murottal. 📖" data-en="Read on your own or read along with the murottal. 📖">Baca sendiri atau baca bareng murottal. 📖</p>
     </div>
     <div class="card tq-card">
-      <span class="tq-status" id="cacheStatus">📦 <span id="cacheTxt">Memuat data Qur'an…</span></span>
+      <span class="tq-status" id="cacheStatus">📦 <span id="cacheTxt" data-id="Memuat data Qur'an…" data-en="Loading Qur'an data…">Memuat data Qur'an…</span></span>
       <div class="tq-row">
         <select class="tq-select" id="modeSel" aria-label="Mode baca"></select>
         <select class="tq-select" id="targetSel" aria-label="Pilih surah atau juz"></select>
@@ -104,9 +99,9 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
         <select class="tq-select" id="qariSel" aria-label="Qori"></select>
       </div>
       <div class="tq-btns">
-        <button class="btn leafy" id="btnSendiri">📖 <span id="lbSendiri">Baca Sendiri</span></button>
-        <button class="btn ghost" id="btnBareng">🎧 <span id="lbBareng">Baca Bareng</span></button>
-        <button class="btn sunny" id="btnMurottal">▶ <span id="lbMurottal">Murottal Surah</span></button>
+        <button class="btn leafy" id="btnSendiri">📖 <span id="lbSendiri" data-id="Baca Sendiri" data-en="Read Myself">Baca Sendiri</span></button>
+        <button class="btn ghost" id="btnBareng">🎧 <span id="lbBareng" data-id="Baca Bareng" data-en="Read Along">Baca Bareng</span></button>
+        <button class="btn sunny" id="btnMurottal">▶ <span id="lbMurottal" data-id="Murottal Surah" data-en="Full Surah Murottal">Murottal Surah</span></button>
       </div>
       <div class="tq-surah" id="surahInfo"></div>
       <div id="ayahBox"></div>
@@ -131,11 +126,11 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     </div>
     <div class="card tq-card">
       <div class="haf-bar"><i id="hafFill"></i></div>
-      <div style="font-weight:800;font-size:.9rem;margin-bottom:8px" id="hafCount">0 / 114 surah dihafal</div>
+      <div style="font-weight:800;font-size:.9rem;margin-bottom:8px" id="hafCount" data-id="0 / 114 surah dihafal" data-en="0 / 114 surahs memorized">0 / 114 surah dihafal</div>
       <div class="haf-legend">
-        <span class="l0" id="lg0">Belum</span>
-        <span class="l1" id="lg1">Proses</span>
-        <span class="l2" id="lg2">Hafal</span>
+        <span class="l0" id="lg0" data-id="Belum" data-en="Not yet">Belum</span>
+        <span class="l1" id="lg1" data-id="Proses" data-en="In progress">Proses</span>
+        <span class="l2" id="lg2" data-id="Hafal" data-en="Memorized">Hafal</span>
       </div>
       <div class="haf-grid" id="hafGrid"></div>
     </div>
@@ -150,7 +145,6 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     <div class="doa-tabs" id="doaTabs"></div>
     <div id="doaBox"></div>
   </section>
-
 </main>
 <div id="toasts" aria-live="polite"></div>
 
@@ -160,70 +154,40 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 'use strict';
 function $(id){return document.getElementById(id);}
 function L(a,b){return window.__nyalaLang==='en'?b:a;}
-function toast(msg){var box=$('toasts');if(!box)return;var t=document.createElement('div');t.className='toast';t.textContent=msg;box.appendChild(t);while(box.children.length>3)box.removeChild(box.firstChild);setTimeout(function(){t.classList.add('go');setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},320);},3400);}
-window.addEventListener('error',function(e){
-  var el=$('cacheTxt');
-  if(el)el.textContent="⚠️ "+(e&&e.message?e.message:"error");
-});
+function toast(msg){var box=$('toasts');if(!box)return;var t=document.createElement('div');t.className='toast';t.textContent=msg;box.appendChild(t);setTimeout(function(){t.classList.add('go');setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},320);},3000);}
+
 var NAMES=["Al-Faatihah","Al-Baqara","Aal-i-Imraan","An-Nisaa","Al-Maaida","Al-An'aam","Al-A'raaf","Al-Anfaal","At-Tauba","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Israa","Al-Kahf","Maryam","Thaa-Haa","Al-Anbiyaa","Al-Hajj","Al-Mu'minuun","An-Nuur","Al-Furqaan","Ash-Shu'araa","An-Naml","Al-Qasas","Al-Ankabuut","Ar-Ruum","Luqman","As-Sajda","Al-Ahzaab","Saba","Faatir","Yaa-Seen","As-Saaffaat","Shaad","Az-Zumar","Ghafir","Fusshilat","Ash-Shuura","Az-Zukhruf","Ad-Dukhaan","Al-Jaathiya","Al-Ahqaaf","Muhammad","Al-Fath","Al-Hujuraat","Qaaf","Adh-Dhaariyat","At-Tuur","An-Najm","Al-Qamar","Ar-Rahmaan","Al-Waaqia","Al-Hadid","Al-Mujaadila","Al-Hashr","Al-Mumtahana","As-Saff","Al-Jumu'ah","Al-Munaafiquun","At-Taghaabun","At-Talaaq","At-Tahriim","Al-Mulk","Al-Qalam","Al-Haaqqa","Al-Ma'aarij","Nooh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyaama","Al-Insaan","Al-Mursalaat","An-Naba","An-Naazi'aat","Abasa","At-Takwir","Al-Infitaar","Al-Mutaffifin","Al-Insyiqaaq","Al-Buruuj","At-Taariq","Al-A'laa","Al-Ghaashiya","Al-Fajr","Al-Balad","Ash-Shams","Al-Lail","Adh-Dhuhaa","Al-Insyirah","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyina","Az-Zalzala","Al-Aadiyaat","Al-Qaari'ah","At-Takaatsur","Al-Asr","Al-Humaza","Al-Fiil","Quraisy","Al-Maa'uun","Al-Kautsar","Al-Kaafiruun","An-Nasr","Al-Masad","Al-Ikhlaas","Al-Falaq","An-Naas"];
 var COUNTS=[7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
 var MED=[2,3,4,5,8,9,13,22,24,33,47,48,49,55,57,58,59,60,61,62,63,64,65,66,76,98,99,110];
 var OFFSET=[];(function(){var s=0;for(var i=0;i<COUNTS.length;i++){OFFSET.push(s);s+=COUNTS[i];}})();
 var JUZ=[[1,1],[2,142],[2,253],[3,93],[4,148],[5,82],[6,111],[7,88],[8,41],[9,93],[11,6],[12,53],[15,1],[17,1],[18,75],[20,1],[21,112],[23,1],[25,21],[27,56],[29,46],[33,31],[36,28],[39,32],[41,47],[51,31],[57,1],[58,23],[67,1],[78,1]];
 var QARIS=[{id:'ar.alafasy',n:'Misyari Al-Afasi'},{id:'ar.husary',n:'Mahmoud Khalil Al-Husary'},{id:'ar.abdurrahmaansudais',n:'Abdurrahman As-Sudais'},{id:'ar.abdulbasitmujawwad',n:'Abdul Basit (Mujawwad)'},{id:'ar.minshawi',n:'Mohamed Siddiq El-Minshawi'}];
+
 var MOODS=[
-{e:'😢',id:'Sedih',en:'Sad',list:[
- {ref:'94:5',ar:'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا',tr:'Karena sesungguhnya bersama kesulitan ada kemudahan.',en2:'For indeed, with hardship comes ease.'},
- {ref:'94:6',ar:'إِنَّ مَعَ الْعُسْرِ يُسْرًا',tr:'Sesungguhnya bersama kesulitan ada kemudahan.',en2:'Indeed, with hardship comes ease.'},
- {ref:'12:87',ar:'يَا بَنِيَّ اذْهَبُوا فَتَحَسَّسُوا مِن يُوسُفَ وَأَخِيهِ وَلَا تَيْأَسُوا مِن رَّوْحِ اللَّهِ ۖ إِنَّهُ لَا يَيْأَسُ مِن رَّوْحِ اللَّهِ إِلَّا الْقَوْمُ الْكَافِرُونَ',tr:'Hai anak-anakku, pergilah kamu, maka carilah berita tentang Yusuf dan saudaranya dan jangan kamu berputus asa dari rahmat Allah. Sesungguhnya tiada berputus asa dari rahmat Allah, melainkan kaum yang kafir.',en2:'O my sons, go and search for Joseph and his brother and despair not of relief from Allah. Indeed, no one despairs of relief from Allah except the disbelieving people.'}]},
-{e:'😰',id:'Cemas',en:'Anxious',list:[
- {ref:'13:28',ar:'الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ اللَّهِ ۗ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',tr:'(Yaitu) orang-orang yang beriman dan hati mereka menjadi tenteram dengan mengingat Allah. Ingatlah, hanya dengan mengingati Allah-lah hati menjadi tenteram.',en2:'Those who have believed and whose hearts are assured by the remembrance of Allah. Unquestionably, by the remembrance of Allah hearts are assured.'},
- {ref:'3:139',ar:'وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنتُمُ الْأَعْلَوْنَ إِن كُنتُم مُّؤْمِنِينَ',tr:'Janganlah kamu bersikap lemah, dan janganlah (pula) kamu bersedih hati, padahal kamulah orang-orang yang paling tinggi (derajatnya), jika kamu orang-orang yang beriman.',en2:'So do not weaken and do not grieve, for you will be superior if you are [true] believers.'},
- {ref:'10:62',ar:'أَلَا إِنَّ أَوْلِيَاءَ اللَّهِ لَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ',tr:'Ingatlah, sesungguhnya wali-wali Allah itu, tidak ada kekhawatiran terhadap mereka dan tidak (pula) mereka bersedih hati.',en2:'Unquestionably, [for] the allies of Allah there will be no fear concerning them, nor will they grieve.'}]},
-{e:'🥰',id:'Bersyukur',en:'Grateful',list:[
- {ref:'14:7',ar:'وَإِذْ تَأَذَّنَ رَبُّكُمْ لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ ۖ وَلَئِن كَفَرْتُمْ إِنَّ عَذَابِي لَشَدِيدٌ',tr:'Dan (ingatlah juga), tatkala Tuhanmu memaklumkan; "Sesungguhnya jika kamu bersyukur, pasti Kami akan menambah (nikmat) kepadamu, dan jika kamu mengingkari (nikmat-Ku), maka sesungguhnya azab-Ku sangat pedih".',en2:'And [remember] when your Lord proclaimed, "If you are grateful, I will surely increase you [in favor]; but if you deny, indeed, My punishment is severe."'},
- {ref:'2:152',ar:'فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ',tr:'Karena itu, ingatlah kamu kepada-Ku niscaya Aku ingat (pula) kepadamu, dan bersyukurlah kepada-Ku, dan janganlah kamu mengingkari (nikmat)-Ku.',en2:'So remember Me; I will remember you. And be grateful to Me and do not deny Me.'},
- {ref:'16:53',ar:'وَمَا بِكُم مِّن نِّعْمَةٍ فَمِنَ اللَّهِ ۖ ثُمَّ إِذَا مَسَّكُمُ الضُّرُّ فَإِلَيْهِ تَجْأَرُونَ',tr:'Dan apa saja nikmat yang ada pada kamu, maka dari Allah-lah (datangnya), dan bila kamu ditimpa oleh kemudaratan, maka hanya kepada-Nya-lah kamu meminta pertolongan.',en2:'And whatever you have of favor — it is from Allah. Then when adversity touches you, to Him you cry for help.'}]},
-{e:'🌾',id:'Butuh Sabar',en:'Need Patience',list:[
- {ref:'2:153',ar:'يَا أَيُّهَا الَّذِينَ آمَنُوا اسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ ۚ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ',tr:'Hai orang-orang yang beriman, jadikanlah sabar dan shalat sebagai penolongmu, sesungguhnya Allah beserta orang-orang yang sabar.',en2:'O you who have believed, seek help through patience and prayer. Indeed, Allah is with the patient.'},
- {ref:'39:10',ar:'قُلْ يَا عِبَادِ الَّذِينَ آمَنُوا اتَّقُوا رَبَّكُمْ ۚ لِلَّذِينَ أَحْسَنُوا فِي هَٰذِهِ الدُّنْيَا حَسَنَةٌ ۗ وَأَرْضُ اللَّهِ وَاسِعَةٌ ۗ إِنَّمَا يُوَفَّى الصَّابِرُونَ أَجْرَهُم بِغَيْرِ حِسَابٍ',tr:'Katakanlah: "Hai hamba-hamba-Ku yang beriman. Bertakwalah kepada Tuhanmu". Orang-orang yang berbuat baik di dunia ini memperoleh kebaikan. Dan bumi Allah itu adalah luas. Sesungguhnya hanya orang-orang yang bersabarlah yang dicukupkan pahala mereka tanpa batas.',en2:'Say, "O My servants who have believed, fear your Lord. For those who do good in this world is good, and the earth of Allah is spacious. Indeed, the patient will be given their reward without account [i.e., limit]."'},
- {ref:'3:200',ar:'يَا أَيُّهَا الَّذِينَ آمَنُوا اصْبِرُوا وَصَابِرُوا وَرَابِطُوا وَاتَّقُوا اللَّهَ لَعَلَّكُمْ تُفْلِحُونَ',tr:'Hai orang-orang yang beriman, bersabarlah kamu dan kuatkanlah kesabaranmu dan tetaplah bersiap siaga (di perbatasan negerimu) dan bertakwalah kepada Allah, supaya kamu beruntung.',en2:'O you who have believed, persevere and endure and remain stationed and fear Allah that you may be successful.'}]},
-{e:'💼',id:'Memohon Rezeki',en:'Seeking Provision',list:[
- {ref:'65:3',ar:'وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ ۚ وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ ۚ إِنَّ اللَّهَ بَالِغُ أَمْرِهِ ۚ قَدْ جَعَلَ اللَّهُ لِكُلِّ شَيْءٍ قَدْرًا',tr:'Dan memberinya rezeki dari arah yang tiada disangka-sangkanya. Dan barangsiapa yang bertawakkal kepada Allah niscaya Allah akan mencukupkan (keperluan)nya. Sesungguhnya Allah melaksanakan urusan yang (dikehendaki)-Nya. Sesungguhnya Allah telah mengadakan ketentuan bagi tiap-tiap sesuatu.',en2:'And will provide for him from where he does not expect. And whoever relies upon Allah — then He is sufficient for him. Indeed, Allah will accomplish His purpose. Allah has already set for everything a [decreed] extent.'},
- {ref:'65:2',ar:'فَإِذَا بَلَغْنَ أَجَلَهُنَّ فَأَمْسِكُوهُنَّ بِمَعْرُوفٍ أَوْ فَارِقُوهُنَّ بِمَعْرُوفٍ وَأَشْهِدُوا ذَوَيْ عَدْلٍ مِّنكُمْ وَأَقِيمُوا الشَّهَادَةَ لِلَّهِ ۚ ذَٰلِكُمْ يُوعَظُ بِهِ مَن كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ ۚ وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا',tr:'Apabila mereka telah mendekati akhir iddahnya, maka rujukilah mereka dengan baik atau lepaskanlah mereka dengan baik dan persaksikanlah dengan dua orang saksi yang adil di antara kamu dan hendaklah kamu tegakkan kesaksian itu karena Allah. Demikianlah diberi pengajaran dengan itu orang yang beriman kepada Allah dan Hari akhirat. Barangsiapa bertakwa kepada Allah niscaya Dia akan mengadakan baginya jalan keluar.',en2:'And when they have [nearly] fulfilled their term, either retain them according to acceptable terms or part with them according to acceptable terms. And bring to witness two just men from among you and establish the testimony for [the acceptance of] Allah. That is instructed to whoever should believe in Allah and the Last day. And whoever fears Allah — He will make for him a way out.'},
- {ref:'51:58',ar:'إِنَّ اللَّهَ هُوَ الرَّزَّاقُ ذُو الْقُوَّةِ الْمَتِينُ',tr:'Sesungguhnya Allah Dialah Maha Pemberi rezeki Yang mempunyai kekuatan lagi sangat kokoh.',en2:'Indeed, it is Allah who is the [continual] Provider, the firm possessor of strength.'}]},
-{e:'🌙',id:'Merasa Sendiri',en:'Feeling Alone',list:[
- {ref:'2:186',ar:'وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ ۖ أُجِيبُ دَعْوَةَ الدَّاعِ إِذَا دَعَانِ ۖ فَلْيَسْتَجِيبُوا لِي وَلْيُؤْمِنُوا بِي لَعَلَّهُمْ يَرْشُدُونَ',tr:'Dan apabila hamba-hamba-Ku bertanya kepadamu tentang Aku, maka (jawablah), bahwasanya Aku adalah dekat. Aku mengabulkan permohonan orang yang berdoa apabila ia memohon kepada-Ku, maka hendaklah mereka itu memenuhi (segala perintah-Ku) dan hendaklah mereka beriman kepada-Ku, agar mereka selalu berada dalam kebenaran.',en2:'And when My servants ask you, [O Muhammad], concerning Me — indeed I am near. I respond to the invocation of the supplicant when he calls upon Me. So let them respond to Me [by obedience] and believe in Me that they may be [rightly] guided.'},
- {ref:'50:16',ar:'وَلَقَدْ خَلَقْنَا الْإِنسَانَ وَنَعْلَمُ مَا تُوَسْوِسُ بِهِ نَفْسُهُ ۖ وَنَحْنُ أَقْرَبُ إِلَيْهِ مِنْ حَبْلِ الْوَرِيدِ',tr:'Dan sesungguhnya Kami telah menciptakan manusia dan mengetahui apa yang dibisikkan oleh hatinya, dan Kami lebih dekat kepadanya daripada urat lehernya.',en2:'And We have already created man and know what his soul whispers to him, and We are closer to him than [his] jugular vein.'},
- {ref:'58:7',ar:'أَلَمْ تَرَ أَنَّ اللَّهَ يَعْلَمُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۖ مَا يَكُونُ مِن نَّجْوَىٰ ثَلَاثَةٍ إِلَّا هُوَ رَابِعُهُمْ وَلَا خَمْسَةٍ إِلَّا هُوَ سَادِسُهُمْ وَلَا أَدْنَىٰ مِن ذَٰلِكَ وَلَا أَكْثَرَ إِلَّا هُوَ مَعَهُمْ أَيْنَ مَا كَانُوا ۖ ثُمَّ يُنَبِّئُهُم بِمَا عَمِلُوا يَوْمَ الْقِيَامَةِ ۚ إِنَّ اللَّهَ بِكُلِّ شَيْءٍ عَلِيمٌ',tr:'Tidakkah kamu perhatikan, bahwa sesungguhnya Allah mengetahui apa yang ada di langit dan apa yang ada di bumi? Tiada pembicaraan rahasia antara tiga orang, melainkan Dialah yang keempatnya. Dan tiada (pula pembicaraan) antara lima orang, melainkan Dialah yang keenamnya. Dan tiada pula yang kurang dari itu atau lebih banyak, melainkan mereka berada di suatu tempat, di mana pun mereka berada. Kemudian Dia akan memberitahukan kepada mereka (isi hati mereka) pada hari kiamat. Sesungguhnya Allah Maha Mengetahui segala sesuatu.',en2:'Do you not consider that Allah knows whatever is in the heavens and whatever is on the earth? There is in no private conversation three but that He is the fourth of them, nor are there five but that He is the sixth of them — and no less than that and no more except that He is with them [in knowledge] wherever they are. Then He will inform them of what they did, on the Day of Resurrection. Indeed Allah is, of all things, Knowing.'}]},
-{e:'🤍',id:'Meminta Ampun',en:'Seeking Forgiveness',list:[
- {ref:'39:53',ar:'قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ ۚ إِنَّ اللَّهَ يَغْفِرُ الذُّنُوبَ جَمِيعًا ۚ إِنَّهُ هُوَ الْغَفُورُ الرَّحِيمُ',tr:'Katakanlah: "Hai hamba-hamba-Ku yang malampaui batas terhadap diri mereka sendiri, janganlah kamu berputus asa dari rahmat Allah. Sesungguhnya Allah mengampuni dosa-dosa semuanya. Sesungguhnya Dialah Yang Maha Pengampun lagi Maha Penyayang".',en2:'Say, "O My servants who have transgressed against themselves [by sinning], do not despair of the mercy of Allah. Indeed, Allah forgives all sins. Indeed, it is He who is the Forgiving, the Merciful."'},
- {ref:'4:110',ar:'وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا',tr:'Dan barangsiapa yang mengerjakan kejahatan dan menganiaya dirinya, kemudian ia mohon ampun kepada Allah, niscaya ia mendapati Allah Maha Pengampun lagi Maha Penyayang.',en2:'And whoever does a wrong or wrongs himself but then seeks forgiveness of Allah will find Allah Forgiving and Merciful.'},
- {ref:'110:3',ar:'فَسَبِّحْ بِحَمْدِ رَبِّكَ وَاسْتَغْفِرْهُ ۚ إِنَّهُ كَانَ تَوَّابًا',tr:'Maka bertasbihlah dengan memuji Tuhanmu dan mohonlah ampun kepada-Nya. Sesungguhnya Dia adalah Maha Penerima tobat.',en2:'Then exalt [Him] with praise of your Lord and ask forgiveness of Him. Indeed, He is ever Accepting of repentance.'}]},
-{e:'🛡',id:'Ingin Terlindungi',en:'Wanting Protection',list:[
- {ref:'2:255',ar:'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ',tr:'Allah, tidak ada Tuhan (yang berhak disembah) melainkan Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya); tidak mengantuk dan tidak tidur. Kepunyaan-Nya apa yang di langit dan di bumi. Tiada yang dapat memberi syafaat di sisi Allah tanpa izin-Nya? Allah mengetahui apa-apa yang di hadapan mereka dan di belakang mereka, dan mereka tidak mengetahui apa-apa dari ilmu Allah melainkan apa yang dikehendaki-Nya. Kursi Allah meliputi langit dan bumi. Dan Allah tidak merasa berat memelihara keduanya, dan Allah Maha Tinggi lagi Maha Besar.',en2:'Allah — there is no deity except Him, the Ever-Living, the Sustainer of [all] existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is [presently] before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursi extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great.'},
- {ref:'3:173',ar:'الَّذِينَ قَالَ لَهُمُ النَّاسُ إِنَّ النَّاسَ قَدْ جَمَعُوا لَكُمْ فَاخْشَوْهُمْ فَزَادَهُمْ إِيمَانًا وَقَالُوا حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',tr:'(Yaitu) orang-orang (yang mentaati Allah dan Rasul) yang kepada mereka ada orang-orang yang mengatakan: "Sesungguhnya manusia telah mengumpulkan pasukan untuk menyerang kamu, karena itu takutlah kepada mereka", maka perkataan itu menambah keimanan mereka dan mereka menjawab: "Cukuplah Allah bagi Kami, Allah adalah sebaik-baik Pelindung".',en2:'[And] those to whom hypocrites said, "Indeed, the people have gathered against you, so fear them." But it [merely] increased them in faith, and they said, "Sufficient for us is Allah, and [He is] the best Disposer of affairs."'},
- {ref:'113:1',ar:'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ',tr:'Katakanlah: "Aku berlindung kepada Tuhan Yang Menguasai subuh".',en2:'Say, "I seek refuge in the Lord of daybreak."'}]},
-{e:'😠',id:'Marah',en:'Angry',list:[
- {ref:'3:134',ar:'الَّذِينَ يُنفِقُونَ فِي السَّرَّاءِ وَالضَّرَّاءِ وَالْكَاظِمِينَ الْغَيْظَ وَالْعَافِينَ عَنِ النَّاسِ ۗ وَاللَّهُ يُحِبُّ الْمُحْسِنِينَ',tr:'(yaitu) orang-orang yang menafkahkan (hartanya), baik di waktu lapang maupun sempit, dan orang-orang yang menahan amarahnya dan memaafkan (kesalahan) orang. Allah menyukai orang-orang yang berbuat kebajikan.',en2:'Who spend [in the cause of Allah] during ease and hardship and who restrain anger and who pardon the people — and Allah loves the doers of good.'},
- {ref:'41:34',ar:'وَلَا تَسْتَوِي الْحَسَنَةُ وَلَا السَّيِّئَةُ ۚ ادْفَعْ بِالَّتِي هِيَ أَحْسَنُ فَإِذَا الَّذِي بَيْنَكَ وَبَيْنَهُ عَدَاوَةٌ كَأَنَّهُ وَلِيٌّ حَمِيمٌ',tr:'Dan tidaklah sama kebaikan dan kejahatan. Tolaklah (kejahatan itu) dengan cara yang lebih baik, maka tiba-tiba orang yang antaramu dan antara dia ada permusuhan seolah-olah telah menjadi teman yang sangat setia.',en2:'And not equal are the good deed and the bad. Repel [evil] by that [deed] which is better; and thereupon the one whom between you and him is enmity [will become] as though he was a devoted friend.'},
- {ref:'3:159',ar:'فَبِمَا رَحْمَةٍ مِّنَ اللَّهِ لِنتَ لَهُمْ ۖ وَلَوْ كُنتَ فَظًّا غَلِيظَ الْقَلْبِ لَانفَضُّوا مِنْ حَوْلِكَ ۖ فَاعْفُ عَنْهُمْ وَاسْتَغْفِرْ لَهُمْ وَشَاوِرْهُمْ فِي الْأَمْرِ ۖ فَإِذَا عَزَمْتَ فَتَوَكَّلْ عَلَى اللَّهِ ۚ إِنَّ اللَّهَ يُحِبُّ الْمُتَوَكِّلِينَ',tr:'Maka disebabkan rahmat dari Allah-lah kamu berlaku lemah lembut terhadap mereka. Sekiranya kamu bersikap keras lagi berhati kasar, tentulah mereka menjauhkan diri dari sekelilingmu. Karena itu maafkanlah mereka, mohonkanlah ampun bagi mereka, dan bermusyawarahlah dengan mereka dalam urusan itu. Kemudian apabila kamu telah membulatkan tekad, maka bertawakkallah kepada Allah. Sesungguhnya Allah menyukai orang-orang yang bertawakkal kepada-Nya.',en2:'So by mercy from Allah, [O Muhammad], you were lenient with them. And if you had been rude [in speech] and harsh in heart, they would have disbanded from about you. So pardon them and ask forgiveness for them and consult them in the matter. And when you have decided, then rely upon Allah. Indeed, Allah loves those who rely [upon Him].'}]},
-{e:'🧭',id:'Bingung / Bimbang',en:'Confused / Undecided',list:[
- {ref:'1:6',ar:'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',tr:'Tunjukilah kami jalan yang lurus.',en2:'Guide us to the straight path.'},
- {ref:'27:62',ar:'أَمَّن يُجِيبُ الْمُضْطَرَّ إِذَا دَعَاهُ وَيَكْشِفُ السُّوءَ وَيَجْعَلُكُمْ خُلَفَاءَ الْأَرْضِ ۗ أَإِلَٰهٌ مَّعَ اللَّهِ ۚ قَلِيلًا مَّا تَذَكَّرُونَ',tr:'Atau siapakah yang memperkenankan (doa) orang yang dalam kesulitan apabila ia berdoa kepada-Nya, dan yang menghilangkan kesusahan dan yang menjadikan kamu (manusia) sebagai khalifah di bumi? Apakah di samping Allah ada tuhan (yang lain)? Amat sedikitlah kamu mengingati (Nya).',en2:'Or who responds to the desperate one when he calls upon Him and removes evil and makes you inheritors of the earth? Is there a deity with Allah? Little do you remember.'},
- {ref:'42:10',ar:'وَمَا اخْتَلَفْتُمْ فِيهِ مِن شَيْءٍ فَحُكْمُهُ إِلَى اللَّهِ ۚ ذَٰلِكُمُ اللَّهُ رَبِّي عَلَيْهِ تَوَكَّلْتُ وَإِلَيْهِ أُنِيبُ',tr:'Dan tentang apa pun kamu berbeda pendapat, maka keputusannya kembali kepada Allah. (Yang mempunyai sifat-sifat demikian) itulah Allah Tuhanku. Kepada-Nya-lah aku bertawakkal dan kepada-Nya-lah aku kembali.',en2:'And whatever you differ over — its ruling is [to be referred] to Allah. [Say], "That is Allah, my Lord; upon Him I have relied, and to Him I turn back."'}]}
+{e:'😢',id:'Sedih',en:'Sad',list:[{ref:'94:5',ar:'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا',tr:'Karena sesungguhnya bersama kesulitan ada kemudahan.',en2:'For indeed, with hardship comes ease.'},{ref:'94:6',ar:'إِنَّ مَعَ الْعُسْرِ يُسْرًا',tr:'Sesungguhnya bersama kesulitan ada kemudahan.',en2:'Indeed, with hardship comes ease.'},{ref:'12:87',ar:'يَا بَنِيَّ اذْهَبُوا فَتَحَسَّسُوا مِن يُوسُفَ وَأَخِيهِ وَلَا تَيْأَسُوا مِن رَّوْحِ اللَّهِ ۖ إِنَّهُ لَا يَيْأَسُ مِن رَّوْحِ اللَّهِ إِلَّا الْقَوْمُ الْكَافِرُونَ',tr:'Hai anak-anakku, pergilah kamu, maka carilah berita tentang Yusuf dan saudaranya dan jangan kamu berputus asa dari rahmat Allah.',en2:'O my sons, go and search for Joseph and his brother and despair not of relief from Allah.'}]},
+{e:'😰',id:'Cemas',en:'Anxious',list:[{ref:'13:28',ar:'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',tr:'Ingatlah, hanya dengan mengingati Allah-lah hati menjadi tenteram.',en2:'Unquestionably, by the remembrance of Allah hearts are assured.'},{ref:'3:139',ar:'وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنتُمُ الْأَعْلَوْنَ إِن كُنتُم مُّؤْمِنِينَ',tr:'Janganlah kamu bersikap lemah, dan janganlah (pula) kamu bersedih hati.',en2:'So do not weaken and do not grieve, for you will be superior if you are believers.'},{ref:'10:62',ar:'أَلَا إِنَّ أَوْلِيَاءَ اللَّهِ لَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ',tr:'Ingatlah, sesungguhnya wali-wali Allah itu, tidak ada kekhawatiran terhadap mereka.',en2:'Unquestionably, the allies of Allah will have no fear, nor will they grieve.'}]},
+{e:'🥰',id:'Bersyukur',en:'Grateful',list:[{ref:'14:7',ar:'لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ',tr:'Sesungguhnya jika kamu bersyukur, pasti Kami akan menambah (nikmat) kepadamu.',en2:'If you are grateful, I will surely increase you.'},{ref:'2:152',ar:'فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ',tr:'Karena itu, ingatlah kamu kepada-Ku niscaya Aku ingat (pula) kepadamu, dan bersyukurlah kepada-Ku.',en2:'So remember Me; I will remember you. And be grateful to Me.'},{ref:'16:53',ar:'وَمَا بِكُم مِّن نِّعْمَةٍ فَمِنَ اللَّهِ',tr:'Dan apa saja nikmat yang ada pada kamu, maka dari Allah-lah (datangnya).',en2:'And whatever you have of favor - it is from Allah.'}]},
+{e:'🌾',id:'Butuh Sabar',en:'Need Patience',list:[{ref:'2:153',ar:'يَا أَيُّهَا الَّذِينَ آمَنُوا اسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ ۚ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ',tr:'Hai orang-orang yang beriman, jadikanlah sabar dan shalat sebagai penolongmu.',en2:'O you who have believed, seek help through patience and prayer.'},{ref:'39:10',ar:'إِنَّمَا يُوَفَّى الصَّابِرُونَ أَجْرَهُم بِغَيْرِ حِسَابٍ',tr:'Sesungguhnya hanya orang-orang yang bersabarlah yang dicukupkan pahala mereka tanpa batas.',en2:'Indeed, the patient will be given their reward without account.'},{ref:'3:200',ar:'يَا أَيُّهَا الَّذِينَ آمَنُوا اصْبِرُوا وَصَابِرُوا وَرَابِطُوا وَاتَّقُوا اللَّهَ لَعَلَّكُمْ تُفْلِحُونَ',tr:'Hai orang-orang yang beriman, bersabarlah kamu dan kuatkanlah kesabaranmu.',en2:'O you who have believed, persevere and endure and remain stationed and fear Allah.'}]},
+{e:'💼',id:'Memohon Rezeki',en:'Seeking Provision',list:[{ref:'65:3',ar:'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ',tr:'Barangsiapa bertawakkal kepada Allah niscaya Allah akan mencukupkan (keperluan)nya.',en2:'And whoever relies upon Allah - then He is sufficient for him.'},{ref:'65:2',ar:'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ',tr:'Barangsiapa bertakwa kepada Allah niscaya Dia akan mengadakan baginya jalan keluar.',en2:'And whoever fears Allah - He will make for him a way out.'},{ref:'51:58',ar:'إِنَّ اللَّهَ هُوَ الرَّزَّاقُ ذُو الْقُوَّةِ الْمَتِينُ',tr:'Sesungguhnya Allah Dialah Maha Pemberi rezeki Yang mempunyai kekuatan lagi sangat kokoh.',en2:'Indeed, it is Allah who is the Provider, the firm possessor of strength.'}]},
+{e:'🌙',id:'Merasa Sendiri',en:'Feeling Alone',list:[{ref:'2:186',ar:'وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ',tr:'Dan apabila hamba-hamba-Ku bertanya kepadamu tentang Aku, maka (jawablah), bahwasanya Aku adalah dekat.',en2:'And when My servants ask you concerning Me - indeed I am near.'},{ref:'50:16',ar:'وَنَحْنُ أَقْرَبُ إِلَيْهِ مِنْ حَبْلِ الْوَرِيدِ',tr:'Dan Kami lebih dekat kepadanya daripada urat lehernya.',en2:'And We are closer to him than [his] jugular vein.'},{ref:'58:7',ar:'مَا يَكُونُ مِن نَّجْوَىٰ ثَلَاثَةٍ إِلَّا هُوَ رَابِعُهُمْ',tr:'Tiada pembicaraan rahasia antara tiga orang, melainkan Dialah yang keempatnya.',en2:'There is in no private conversation three but that He is the fourth of them.'}]},
+{e:'🤍',id:'Meminta Ampun',en:'Seeking Forgiveness',list:[{ref:'39:53',ar:'قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ',tr:'Katakanlah: "Hai hamba-hamba-Ku yang malampaui batas terhadap diri mereka sendiri, janganlah kamu berputus asa dari rahmat Allah."',en2:'Say, "O My servants who have transgressed against themselves, do not despair of the mercy of Allah.'},{ref:'4:110',ar:'وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا',tr:'Dan barangsiapa yang mengerjakan kejahatan dan menganiaya dirinya, kemudian ia mohon ampun kepada Allah.',en2:'And whoever does a wrong or wrongs himself but then seeks forgiveness of Allah.'},{ref:'110:3',ar:'فَسَبِّحْ بِحَمْدِ رَبِّكَ وَاسْتَغْفِرْهُ',tr:'Maka bertasbihlah dengan memuji Tuhanmu dan mohonlah ampunan kepada-Nya.',en2:'Then exalt [Him] with praise of your Lord and ask forgiveness of Him.'}]},
+{e:'🛡',id:'Ingin Terlindungi',en:'Wanting Protection',list:[{ref:'2:255',ar:'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ',tr:'Allah, tidak ada Tuhan (yang berhak disembah) melainkan Dia Yang Hidup kekal.',en2:'Allah - there is no deity except Him, the Ever-Living, the Sustainer.'},{ref:'3:173',ar:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',tr:'Cukuplah Allah bagi Kami dan Dia sebaik-baik Pelindung.',en2:'Sufficient for us is Allah, and [He is] the best Disposer of affairs.'},{ref:'113:1',ar:'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ',tr:'Katakanlah: "Aku berlindung kepada Tuhan Yang Menguasai subuh".',en2:'Say, "I seek refuge in the Lord of daybreak."'}]},
+{e:'😠',id:'Marah',en:'Angry',list:[{ref:'3:134',ar:'الَّذِينَ يُنفِقُونَ فِي السَّرَّاءِ وَالضَّرَّاءِ وَالْكَاظِمِينَ الْغَيْظَ وَالْعَافِينَ عَنِ النَّاسِ',tr:'(yaitu) orang-orang yang menafkahkan (hartanya), baik di waktu lapang maupun sempit, dan orang-orang yang menahan amarahnya.',en2:'Who spend during ease and hardship and who restrain anger and who pardon the people.'},{ref:'41:34',ar:'وَلَا تَسْتَوِي الْحَسَنَةُ وَلَا السَّيِّئَةُ ۚ ادْفَعْ بِالَّتِي هِيَ أَحْسَنُ',tr:'Dan tidaklah sama kebaikan dan kejahatan. Tolaklah (kejahatan itu) dengan cara yang lebih baik.',en2:'And not equal are the good deed and the bad. Repel [evil] by that [deed] which is better.'},{ref:'3:159',ar:'فَبِمَا رَحْمَةٍ مِّنَ اللَّهِ لِنتَ لَهُمْ',tr:'Maka disebabkan rahmat dari Allah-lah kamu berlaku lemah lembut terhadap mereka.',en2:'So by mercy from Allah, you were lenient with them.'}]},
+{e:'🧭',id:'Bingung / Bimbang',en:'Confused / Undecided',list:[{ref:'1:6',ar:'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',tr:'Tunjukilah kami jalan yang lurus.',en2:'Guide us to the straight path.'},{ref:'27:62',ar:'أَمَّن يُجِيبُ الْمُضْطَرَّ إِذَا دَعَاهُ وَيَكْشِفُ السُّوءَ',tr:'Atau siapakah yang memperkenankan (doa) orang yang dalam kesulitan apabila ia berdoa kepada-Nya.',en2:'Or who responds to the desperate one when he calls upon Him and removes evil.'},{ref:'42:10',ar:'وَمَا اخْتَلَفْتُمْ فِيهِ مِن شَيْءٍ فَحُكْمُهُ إِلَى اللَّهِ',tr:'Dan tentang apa pun kamu berbeda pendapat, maka keputusannya kembali kepada Allah.',en2:'And whatever you differ over - its ruling is to Allah.'}]}
 ];
+
+// BAGIAN INI SUDAH DIKEMBALIKAN LENGKAP (15 DOA)
 var DOAS={
 daily:[
 {t:{id:'🍽 Sebelum Makan',en:'🍽 Before Eating'},ar:'بِسْمِ اللَّهِ. اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ',la:'Bismillah. Allahumma barik lana fima razaqtana wa qina adzaban-nar.',tr:'Dengan nama Allah. Ya Allah, berkahilah rezeki kami dan jagalah kami dari api neraka.',te:'In the name of Allah. O Allah, bless our provision and protect us from the Fire.',m:'Membawa berkah pada makanan dan menjauhkan setan dari rezeki kita.',me:'Brings blessing to the food and keeps Shaytan away from our provision.',s:'HR. Abu Dawud & Ibnu Majah'},
 {t:{id:'🍽 Sesudah Makan',en:'🍽 After Eating'},ar:'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ',la:'Alhamdu lillahil ladzi ath amana wa saqana wa ja alana muslimin.',tr:'Segala puji bagi Allah yang memberi kami makan dan minum serta menjadikan kami muslim.',te:'Praise be to Allah who fed us, gave us drink, and made us Muslims.',m:'Menutup rezeki dengan syukur.',me:'Closes provision with gratitude.',s:'HR. Abu Dawud & Tirmidzi'},
-{t:{id:'🌙 Sebelum Tidur',en:'🌙 Before Sleeping'},ar:'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',la:'Bismika Allahumma amutu wa ahya.',tr:'Dengan nama-Mu ya Allah aku mati dan aku hidup.',te:'In Your name, O Allah, I die and I live.',m:'Menyerahkan nyawa dalam lindungan Allah.',me:'Entrusts the soul to Allah s protection.',s:'HR. Bukhari'},
+{t:{id:'🌙 Sebelum Tidur',en:'🌙 Before Sleeping'},ar:'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',la:'Bismika Allahumma amutu wa ahya.',tr:'Dengan nama-Mu ya Allah aku mati dan aku hidup.',te:'In Your name, O Allah, I die and I live.',m:'Menyerahkan nyawa dalam lindungan Allah.',me:'Entrusts the soul to Allah\'s protection.',s:'HR. Bukhari'},
 {t:{id:'🌅 Bangun Tidur',en:'🌅 Waking Up'},ar:'الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ',la:'Alhamdu lillahil ladzi ahyaana ba da ma amaatana wa ilaihin nusyur.',tr:'Segala puji bagi Allah yang menghidupkan kami setelah mematikan kami, dan kepada-Nya kami dibangkitkan.',te:'Praise be to Allah who gave us life after death, and to Him is the resurrection.',m:'Membuka hari dengan syukur.',me:'Opens the day with gratitude.',s:'HR. Bukhari'},
 {t:{id:'🚪 Keluar Rumah',en:'🚪 Leaving Home'},ar:'بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',la:'Bismillah, tawakkaltu alallah, wa la hawla wa la quwwata illa billah.',tr:'Dengan nama Allah, aku bertawakal kepada Allah; tiada daya dan kekuatan kecuali dengan Allah.',te:'In the name of Allah, I rely on Allah; there is no might nor power except with Allah.',m:'Penjagaan dari gangguan hingga kembali.',me:'Protection from harm until return.',s:'HR. Abu Dawud & Tirmidzi'},
-{t:{id:'🏠 Masuk Rumah',en:'🏠 Entering Home'},ar:'بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا',la:'Bismillahi walajna wa bismillahi kharajna wa alallahi rabbina tawakkalna.',tr:'Dengan nama Allah kami masuk dan keluar, dan kepada Tuhan kami bertawakal.',te:'In Allah s name we enter and exit, and upon our Lord we rely.',m:'Rumah terasa tenang dan diberkahi.',me:'Brings calm and blessing home.',s:'HR. Abu Dawud'}
+{t:{id:'🏠 Masuk Rumah',en:'🏠 Entering Home'},ar:'بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا',la:'Bismillahi walajna wa bismillahi kharajna wa alallahi rabbina tawakkalna.',tr:'Dengan nama Allah kami masuk dan keluar, dan kepada Tuhan kami bertawakal.',te:'In Allah\'s name we enter and exit, and upon our Lord we rely.',m:'Rumah terasa tenang dan diberkahi.',me:'Brings calm and blessing home.',s:'HR. Abu Dawud'}
 ],
 prophets:[
-{t:{id:'🌿 Nabi Adam (QS 7:23)',en:'🌿 Prophet Adam (QS 7:23)'},ar:'رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ',la:'Rabbana zhalamna anfusana wa il lam taghfir lana wa tarhamna lanakunanna minal khasirin.',tr:'Ya Tuhan kami, kami telah menzalimi diri kami sendiri. Jika Engkau tidak mengampuni kami dan merahmati kami, niscaya kami termasuk orang yang rugi.',te:'Our Lord, we have wronged ourselves. If You do not forgive us and have mercy upon us, we will surely be among the losers.',m:'Pembuka pintu taubat yang paling sempurna.',me:'The most perfect opener of the door of repentance.',s:'QS. Al-A raf: 23'},
+{t:{id:'🌿 Nabi Adam (QS 7:23)',en:'🌿 Prophet Adam (QS 7:23)'},ar:'رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ',la:'Rabbana zhalamna anfusana wa il lam taghfir lana wa tarhamna lanakunanna minal khasirin.',tr:'Ya Tuhan kami, kami telah menzalimi diri kami sendiri. Jika Engkau tidak mengampuni kami dan merahmati kami, niscaya kami termasuk orang yang rugi.',te:'Our Lord, we have wronged ourselves. If You do not forgive us and have mercy upon us, we will surely be among the losers.',m:'Pembuka pintu taubat yang paling sempurna.',me:'The most perfect opener of the door of repentance.',s:'QS. Al-A\'raf: 23'},
 {t:{id:'🐋 Nabi Yunus (QS 21:87)',en:'🐋 Prophet Yunus (QS 21:87)'},ar:'لَّا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ',la:'La ilaha illa anta subhanaka inni kuntu minaz zhalimin.',tr:'Tiada tuhan selain Engkau, Mahasuci Engkau; sungguh aku termasuk orang-orang yang zalim.',te:'There is no deity except You; exalted are You. Indeed, I have been among the wrongdoers.',m:'Jalan keluar dari kesempitan yang terasa buntu.',me:'A way out of distress that feels hopeless.',s:'QS. Al-Anbiya: 87'},
 {t:{id:'🕊 Nabi Musa (QS 20:25-26)',en:'🕊 Prophet Musa (QS 20:25-26)'},ar:'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي',la:'Rabbisyrah li shadri wa yassir li amri.',tr:'Ya Tuhanku, lapangkanlah dadaku dan mudahkanlah urusanku.',te:'My Lord, expand my breast and ease my task.',m:'Kelapangan saat menghadapi tugas yang berat.',me:'Ease when facing heavy tasks.',s:'QS. Thaha: 25-26'},
 {t:{id:'🕌 Nabi Ibrahim (QS 14:40)',en:'🕌 Prophet Ibrahim (QS 14:40)'},ar:'رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِن ذُرِّيَّتِي ۚ رَبَّنَا وَتَقَبَّلْ دُعَاءِ',la:'Rabbij alni muqimash shalati wa min dzurriyyati, rabbana wa taqabbal du a.',tr:'Ya Tuhanku, jadikanlah aku dan anak cucuku orang yang tetap mendirikan sholat; ya Tuhan kami, perkenankanlah doaku.',te:'My Lord, make me and my descendants establishers of prayer; our Lord, accept my supplication.',m:'Doa keluarga yang menjaga sholat turun-temurun.',me:'A family prayer that keeps salat across generations.',s:'QS. Ibrahim: 40'},
@@ -235,84 +199,65 @@ modern:[
 {t:{id:'📚 Sebelum Belajar / Bekerja',en:'📚 Before Study / Work'},ar:'رَبِّ زِدْنِي عِلْمًا',la:'Rabbi zidni ilma.',tr:'Ya Tuhanku, tambahkanlah ilmu kepadaku.',te:'My Lord, increase me in knowledge.',m:'Membuka fokus dan kemudahan memahami.',me:'Opens focus and ease of understanding.',s:'QS. Thaha: 114'},
 {t:{id:'🌙 Penutup Hari',en:'🌙 Day Closer'},ar:'اللَّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ دِقَّهُ وَجِلَّهُ وَأَوَّلَهُ وَآخِرَهُ',la:'Allahummaghfir li dzanbi kullahu, diqqahu wa jillahu, wa awwalahu wa akhirahu.',tr:'Ya Allah, ampunilah seluruh dosaku, yang kecil dan yang besar, yang awal dan yang akhir.',te:'O Allah, forgive all my sins, the small and the great, the first and the last.',m:'Tidur dengan hati yang ringan.',me:'Sleep with a light heart.',s:'HR. Muslim'}
 ]};
+
 var TABS=[['daily','🌅','Sehari-hari','Daily'],['prophets','🕌','Doa Para Nabi','Prophets Duas'],['modern','🕰','Masa Kini','Modern']];
-var HKEY='nyala_quran_hafalan_v1',QKEY='nyala_qari',VKEY='nyala_v1',CCACHE='nyala-quran-v1';
+var HKEY='nyala_quran_hafalan_v1',QKEY='nyala_qari',VKEY='nyala_v1';
 var haf={};try{haf=JSON.parse(localStorage.getItem(HKEY)||'{}')||{};}catch(e){haf={};}
 function saveHaf(){try{localStorage.setItem(HKEY,JSON.stringify(haf));}catch(e){}}
 var qari=QARIS[0].id;try{var q0=localStorage.getItem(QKEY);if(q0)qari=q0;}catch(e){}
-var SURAH=null,IDMAP=null,ENMAP=null,enTried=false,bareng=false,playingIdx=-1,curTab='daily',curMood=-1,ready=false,elapsed=0,elapsedTimer=null;
+var SURAH=null,IDMAP=null,ENMAP=null,enTried=false,bareng=false,playingIdx=-1,curTab='daily',curMood=-1,ready=false;
 var audio=new Audio();audio.preload='none';
+
 function st(){try{return JSON.parse(localStorage.getItem(VKEY))||{};}catch(e){return {};}}
 function setXP(add){var s=st();s.xp=(s.xp||0)+add;try{localStorage.setItem(VKEY,JSON.stringify(s));}catch(e){}paintChips();}
-function paintChips(){var s=st();$('xpChip').textContent=(s.xp||0)+' XP';$('streakChip').textContent='🔥 '+((s.streak&&s.streak.count)||0);$('netChip').textContent=navigator.onLine?'🌐 '+L('Online','Online'):'📴 '+L('Offline','Offline');}
+function paintChips(){var s=st();$('xpChip').textContent=(s.xp||0)+' XP';$('streakChip').textContent='🔥 '+((s.streak&&s.streak.count)||0);$('netChip').textContent=navigator.onLine?'🌐 '+L('Online','Online'):'📴 Offline';}
 window.addEventListener('online',paintChips);window.addEventListener('offline',paintChips);
+
 function setTitle(){
   var t=$('tqTitle');if(t)t.textContent=L("🕌 TAMAN QUR'AN","🕌 GARDEN QUR'AN");
   document.title=L("Taman Qur'an — NYALA","Garden Qur'an — NYALA");
 }
+
 function norm(obj){var out=[];function push(n,a){out.push({number:n,ayahs:a});}
  if(obj&&obj.data&&Array.isArray(obj.data.surahs)){obj.data.surahs.forEach(function(s){push(s.number,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
  else if(obj&&Array.isArray(obj.surahs)){obj.surahs.forEach(function(s){push(s.number,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
- else if(obj&&Array.isArray(obj.quran)){return norm(obj.quran);}
- else if(Array.isArray(obj)){if(obj.length&&obj[0]&&Array.isArray(obj[0].ayahs)){obj.forEach(function(s){push(s.number,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}else{var m={};obj.forEach(function(r){var sn=r.surah||r.sura,an=r.aya||r.ayah;if(sn&&an){if(!m[sn])m[sn]={};m[sn][an]=r.text;}});Object.keys(m).forEach(function(s){push(+s,Object.keys(m[s]).map(function(a){return{n:+a,text:m[s][a]};}));});}}
  out.sort(function(a,b){return a.number-b.number;});return out;}
-function cachedJSON(url){
-  return caches.open(CCACHE).then(function(c){return c.match(url);}).then(function(hit){
-    if(hit)return hit.json();
-    return fetch(url).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);var cp=r.clone();caches.open(CCACHE).then(function(c2){c2.put(url,cp);}).catch(function(){});return r.json();});
+
+function load(){
+  $('cacheTxt').textContent=L('Memuat data Qur\'an…','Loading Qur\'an data…');
+  fetch('quran-uthmani.json').then(function(r){return r.json();}).then(function(ar){
+    SURAH=norm(ar);
+    return fetch('id.indonesian.json').then(function(r){return r.json();});
+  }).then(function(o){
+    var m={};norm(o).forEach(function(s){m[s.number]={};s.ayahs.forEach(function(a){m[s.number][a.n]=a.text;});});IDMAP=m;
+  }).catch(function(){IDMAP={};}).then(function(){
+    ready=true;
+    $('cacheTxt').textContent=L('114 surah siap ✅','114 surahs ready ✅');
+    renderAyahs();
+    if(window.__nyalaLang==='en')loadEN();
+  }).catch(function(){
+    $('cacheTxt').textContent=L('Gagal memuat data Qur\'an — cek koneksi','Failed to load Qur\'an data — check connection');
   });
 }
-function fetchJSON(url,ms){
-  var ctl=('AbortController' in window)?new AbortController():null;
-  var t=ctl?setTimeout(function(){ctl.abort();},ms||60000):null;
-  return fetch(url,{cache:'no-store',signal:ctl?ctl.signal:undefined}).then(function(r){if(t)clearTimeout(t);if(!r.ok)throw new Error("HTTP "+r.status);var cp=r.clone();caches.open(CCACHE).then(function(c2){c2.put(url,cp);}).catch(function(){});return r.json();});
-}
-function gNum(s,a){return OFFSET[s-1]+a;}
-function startElapsed(){
-  elapsed=0;
-  if(elapsedTimer)clearInterval(elapsedTimer);
-  elapsedTimer=setInterval(function(){elapsed++;if(!ready)$('cacheTxt').textContent=L('Memuat data Qur'an… ','Loading Qur an data… ')+elapsed+'s';},1000);
-}
-function stopElapsed(){if(elapsedTimer){clearInterval(elapsedTimer);elapsedTimer=null;}}
-function clearRetry(){var old=$('cacheStatus').querySelector('button');if(old)old.parentNode.removeChild(old);}
-function setStatusFailed(){
-  stopElapsed();
-  $('cacheTxt').textContent=L('Gagal memuat data Qur an — cek koneksi','Failed to load Qur an data — check connection');
-  clearRetry();
-  var b=document.createElement('button');b.textContent=L('Coba lagi','Retry');
-  b.addEventListener('click',function(){load();});
-  $('cacheStatus').appendChild(b);
-}
-function load(){
-  ready=false;startElapsed();clearRetry();
-  $('cacheTxt').textContent=L('Memuat data Qur an…','Loading Qur an data…');
-  cachedJSON('quran-uthmani.json').catch(function(){return fetchJSON('https://api.alquran.cloud/v1/quran/quran-uthmani',60000);}).then(function(ar){
-    SURAH=norm(ar);
-    return cachedJSON('id.indonesian.json').catch(function(){return fetchJSON('https://api.alquran.cloud/v1/quran/id.indonesian',60000);}).then(function(o){
-      var m={};norm(o).forEach(function(s){m[s.number]={};s.ayahs.forEach(function(a){m[s.number][a.n]=a.text;});});IDMAP=m;
-    }).catch(function(){IDMAP={};}).then(function(){
-      ready=true;stopElapsed();
-      $('cacheTxt').textContent=L('114 surah siap ✅ (tersimpan di cache HP)','114 surahs ready ✅ (saved in phone cache)');
-      renderAyahs();
-      if(window.__nyalaLang==='en')loadEN().then(function(m){if(m)renderAyahs();});
-    });
-  }).catch(function(){setStatusFailed();});
-}
+
 function loadEN(){
-  if(ENMAP||enTried)return Promise.resolve(ENMAP);
+  if(ENMAP||enTried)return;
   enTried=true;
-  return cachedJSON('en.sahih.json').catch(function(){return fetchJSON('https://api.alquran.cloud/v1/quran/en.sahih',60000);}).then(function(o){
-    var m={};norm(o).forEach(function(s){m[s.number]={};s.ayahs.forEach(function(a){m[s.number][a.n]=a.text;});});ENMAP=m;return m;
-  }).catch(function(){ENMAP=null;return null;});
+  fetch('en.sahih.json').then(function(o){
+    var m={};norm(o).forEach(function(s){m[s.number]={};s.ayahs.forEach(function(a){m[s.number][a.n]=a.text;});});ENMAP=m;
+    renderAyahs();
+  }).catch(function(){ENMAP=null;});
 }
+
 function buildSelects(){
-  var ms=$('modeSel');ms.innerHTML='';
+  var ms=$('modeSel');if(!ms)return;ms.innerHTML='';
   [['surah',L('Per Surah','By Surah')],['juz',L('Per Juz','By Juz')]].forEach(function(o){var e=document.createElement('option');e.value=o[0];e.textContent=o[1];ms.appendChild(e);});
-  var t=$('targetSel');t.innerHTML='';
+  var t=$('targetSel');if(!t)return;t.innerHTML='';
   if(ms.value==='surah'){for(var i=0;i<114;i++){var o=document.createElement('option');o.value=i+1;o.textContent=(i+1)+'. '+NAMES[i];t.appendChild(o);}}
   else{for(var j=1;j<=30;j++){var o2=document.createElement('option');o2.value=j;o2.textContent=L('Juz ','Juz ')+j;t.appendChild(o2);}}
-  var qs=$('qariSel');qs.innerHTML='';QARIS.forEach(function(q){var o3=document.createElement('option');o3.value=q.id;o3.textContent='🎙 '+q.n;qs.appendChild(o3);});qs.value=qari;
+  var qs=$('qariSel');if(!qs)return;qs.innerHTML='';QARIS.forEach(function(q){var o3=document.createElement('option');o3.value=q.id;o3.textContent='🎙 '+q.n;qs.appendChild(o3);});qs.value=qari;
 }
+
 function curList(){
   if($('modeSel').value==='surah'){
     var sn=+$('targetSel').value||1;
@@ -324,12 +269,14 @@ function curList(){
     var a0=(s2===stt[0])?stt[1]:1;
     var a1=(s2===endS)?Math.max(a0,endA-1):COUNTS[s2-1];
     if(s2===114&&j===30)a1=COUNTS[113];
-    for(var a=a0;a<=a1;a++){var tx=ayahText(s2,a);if(tx)out.push({s:s2,n:a,ar:tx});}
+    for(var a=a0;a<=a1;a++){var sr=SURAH?s2-1>=0&&SURAH[s2-1]?SURAH[s2-1].ayahs.filter(function(x){return x.n===a;})[0]:null:null;if(sr)out.push({s:s2,n:a,ar:sr.text});}
   }
   return out;
 }
+
 function ayahText(s,n){if(!SURAH)return'';var sr=SURAH[s-1];if(!sr)return'';for(var i=0;i<sr.ayahs.length;i++){if(sr.ayahs[i].n===n)return sr.ayahs[i].text;}return'';}
 function ayahTr(s,n){var en=(window.__nyalaLang==='en'&&ENMAP&&ENMAP[s]&&ENMAP[s][n]);if(en)return en;return (IDMAP&&IDMAP[s]&&IDMAP[s][n])||'';}
+
 function renderAyahs(){
   var box=$('ayahBox');if(!box)return;
   var list=curList();box.innerHTML='';
@@ -343,7 +290,7 @@ function renderAyahs(){
   }
   if(!ready){
     var p=document.createElement('div');p.className='card ayah';
-    var pt=document.createElement('div');pt.className='tr';pt.textContent=L('Menunggu data ayat selesai dimuat — pilih surah tetap bisa; isi ayat muncul otomatis begitu data siap.','Waiting for ayah data to finish loading — you can still pick surahs; ayah text appears automatically once ready.');
+    var pt=document.createElement('div');pt.className='tr';pt.textContent=L('Menunggu data ayat…','Waiting for ayah data…');
     p.appendChild(pt);box.appendChild(p);return;
   }
   list.forEach(function(it,i){
@@ -358,45 +305,34 @@ function renderAyahs(){
     box.appendChild(card);
   });
 }
+
 function playFrom(i){
   var list=curList();if(!ready||!list[i]||!list[i].ar)return;
-  stopAudio();playingIdx=i;
-  var it=list[i],q=[];
-  if(it.n===1&&it.s!==1&&it.s!==9)q.push(gNum(1,1));
-  q.push(gNum(it.s,it.n));
-  playQueue(q,i);
-}
-function playQueue(q,i){
-  var list=curList();
-  if(!q.length){
-    if(bareng&&i+1<list.length){playFrom(i+1);}
-    else{playingIdx=-1;clearPlaying();}
-    return;
-  }
-  var g=q.shift();
-  audio.src='https://cdn.islamic.network/quran/audio/128/'+qari+'/'+g+'.mp3';
-  audio.play().catch(function(){toast(L('Audio gagal dimuat — cek koneksi','Audio failed — check connection'));playingIdx=-1;clearPlaying();});
-  highlight(list[i]);
-  audio.onended=function(){playQueue(q,i);};
-}
-function highlight(it){
-  clearPlaying();
-  if(!it)return;
+  playingIdx=i;
+  var it=list[i];
+  audio.src='https://cdn.islamic.network/quran/audio/128/'+qari+'/'+(OFFSET[it.s-1]+it.n)+'.mp3';
+  audio.play().catch(function(){toast(L('Audio gagal','Audio failed'));});
+  document.querySelectorAll('.ayah.playing').forEach(function(e){e.classList.remove('playing');});
   var el=$('ayah-'+it.s+'-'+it.n);if(el){el.classList.add('playing');el.scrollIntoView({behavior:'smooth',block:'center'});}
 }
-function clearPlaying(){document.querySelectorAll('.ayah.playing').forEach(function(e){e.classList.remove('playing');});}
-function stopAudio(){audio.pause();audio.onended=null;playingIdx=-1;clearPlaying();}
+
 function moodCard(m){
   var card=document.createElement('div');card.className='card ayah';
   var top=document.createElement('div');top.className='top';
   var ref=document.createElement('span');ref.className='ref';ref.textContent=m.ref;
   var dn=document.createElement('button');dn.className='dengar';dn.textContent='▶ '+L('dengar','listen');
-  dn.addEventListener('click',function(){var p=m.ref.split(':');var s=+p[0],n=+p[1];stopAudio();var q=(n===1&&s!==1&&s!==9)?[gNum(1,1),gNum(s,n)]:[gNum(s,n)];bareng=false;playingIdx=-1;playQueue(q,-1);highlight({s:s,n:n});});
+  dn.addEventListener('click',function(){
+    var p=m.ref.split(':');var s=+p[0],n=+p[1];
+    audio.src='https://cdn.islamic.network/quran/audio/128/'+qari+'/'+(OFFSET[s-1]+n)+'.mp3';
+    audio.play().catch(function(){});
+    document.querySelectorAll('.ayah.playing').forEach(function(e){e.classList.remove('playing');});
+  });
   top.appendChild(ref);top.appendChild(dn);card.appendChild(top);
   var a=document.createElement('div');a.className='ar arab';a.setAttribute('lang','ar');a.setAttribute('dir','rtl');a.textContent=m.ar;card.appendChild(a);
   var tr=document.createElement('div');tr.className='tr';tr.textContent=L(m.tr,m.en2);card.appendChild(tr);
   return card;
 }
+
 function renderMoods(){
   var mc=$('moodChips');mc.innerHTML='';
   MOODS.forEach(function(m,i){
@@ -407,19 +343,20 @@ function renderMoods(){
   });
   renderMoodResult();
 }
+
 function renderMoodResult(){
   var box=$('moodResult');box.innerHTML='';
   if(curMood<0)return;
   var m=MOODS[curMood];
   (m.list||[]).forEach(function(a){box.appendChild(moodCard(a));});
 }
+
 function renderHaf(){
   var grid=$('hafGrid');grid.innerHTML='';
   var done=0;
   for(var s=1;s<=114;s++){
     var v=haf[s]||0;if(v===2)done++;
     var c=document.createElement('button');c.className='haf-cell'+(v===1?' s1':v===2?' s2':'');c.textContent=s;
-    c.setAttribute('aria-label','Surah '+s);
     c.addEventListener('click',function(){
       var n=+this.textContent;var cur=haf[n]||0;var nx=(cur+1)%3;
       if(nx===2&&cur!==2){setXP(25);toast(L('🏆 Surah '+n+' ditandai hafal! +25 XP','🏆 Surah '+n+' marked memorized! +25 XP'));}
@@ -431,6 +368,7 @@ function renderHaf(){
   $('hafCount').textContent=done+' / 114 '+L('surah dihafal','surahs memorized');
   $('lg0').textContent=L('Belum','Not yet');$('lg1').textContent=L('Proses','In progress');$('lg2').textContent=L('Hafal','Memorized');
 }
+
 function renderTabs(){
   var tabs=$('doaTabs');tabs.innerHTML='';
   TABS.forEach(function(t){
@@ -440,6 +378,7 @@ function renderTabs(){
     tabs.appendChild(b);
   });
 }
+
 function renderDoa(){
   var box=$('doaBox');box.innerHTML='';
   (DOAS[curTab]||[]).forEach(function(d){
@@ -453,6 +392,7 @@ function renderDoa(){
     box.appendChild(card);
   });
 }
+
 function relang(){
   setTitle();
   $('lbSendiri').textContent=L('Baca Sendiri','Read Myself');
@@ -460,31 +400,30 @@ function relang(){
   $('lbMurottal').textContent=L('Murottal Surah','Full Surah Murottal');
   buildSelects();renderAyahs();renderMoods();renderHaf();renderTabs();renderDoa();paintChips();
 }
+
 function bind(){
   buildSelects();
   $('modeSel').addEventListener('change',function(){buildSelects();renderAyahs();});
-  $('targetSel').addEventListener('change',function(){stopAudio();renderAyahs();});
-  $('qariSel').addEventListener('change',function(){qari=$('qariSel').value;try{localStorage.setItem(QKEY,qari);}catch(e){}if(playingIdx>-1)playFrom(playingIdx);});
-  $('btnSendiri').addEventListener('click',function(){bareng=false;stopAudio();});
+  $('targetSel').addEventListener('change',function(){renderAyahs();});
+  $('btnSendiri').addEventListener('click',function(){bareng=false;audio.pause();});
   $('btnBareng').addEventListener('click',function(){if(!ready){toast(L('Data belum siap','Data not ready yet'));return;}bareng=true;var list=curList();if(list.length)playFrom(0);});
   $('btnMurottal').addEventListener('click',function(){
-    if($('modeSel').value!=='surah'){toast(L('Murottal surah: pilih mode Per Surah','Full surah: choose By Surah mode'));return;}
-    stopAudio();bareng=false;
+    if($('modeSel').value!=='surah'){toast(L('Pilih mode Per Surah','Choose By Surah mode'));return;}
     var sn=+$('targetSel').value||1;
     audio.src='https://cdn.islamic.network/quran/audio-surah/128/'+qari+'/'+sn+'.mp3';
-    audio.onended=function(){clearPlaying();};
-    audio.play().catch(function(){toast(L('Murottal gagal dimuat — cek koneksi','Murottal failed — check connection'));});
+    audio.play().catch(function(){});
   });
   new MutationObserver(function(){relang();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 }
+
 function init(){
-  var steps=[bind,renderMoods,renderHaf,renderTabs,renderDoa,paintChips,relang,load];
-  for(var i=0;i<steps.length;i++){
-    try{steps[i]();}catch(e){
-      var el=$('cacheTxt');
-      if(el)el.textContent="⚠️ "+(e&&e.message?e.message:"error");
-    }
-  }
+  try{bind();}catch(e){}
+  try{renderMoods();}catch(e){}
+  try{renderHaf();}catch(e){}
+  try{renderTabs();renderDoa();}catch(e){}
+  try{paintChips();}catch(e){}
+  try{relang();}catch(e){}
+  try{load();}catch(e){}
 }
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
 })();
