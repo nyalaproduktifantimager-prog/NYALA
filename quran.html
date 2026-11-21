@@ -5,55 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Taman Qur'an — NYALA</title>
 <link rel="stylesheet" href="styles.css">
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Bricolage+Grotesque:wght@600;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!-- Font tambahan untuk Arab jika belum ada di styles.css global -->
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* --- CSS KHUSUS QURAN.HTML --- */
-:root {
-    --bg-deep:#0e0c0d; --card:#1e181a; --line:rgba(212,165,165,.16); --rose:#d4a5a5; --gold:#e5c786; --ink:#f2e4e6;
-}
-body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-deep); color: var(--ink); margin: 0; padding-bottom: 60px; }
-h1, h2, h3 { font-family: 'Bricolage Grotesque', sans-serif; }
-.arabic { font-family: 'Amiri', serif; direction: rtl; text-align: right; line-height: 2.2; }
-.chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-.chips::-webkit-scrollbar { display: none; }
-.chip { white-space: nowrap; padding: 6px 14px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; border: 1px solid var(--line); background: rgba(212,165,165,0.06); color: var(--rose); cursor: pointer; transition: 0.2s; }
-.chip.on { background: linear-gradient(120deg, #b76e79, #8f4f5b); color: #fff; border-color: transparent; box-shadow: 0 0 14px rgba(212,165,165,0.3); }
-.doa-card { background: linear-gradient(160deg, var(--card), #241c1f); border: 1px solid var(--line); border-radius: 18px; padding: 20px; margin-bottom: 16px; position: relative; overflow: hidden; }
-.doa-card::before { content:''; position:absolute; inset:0; pointer-events:none; opacity:.05; background: radial-gradient(400px 150px at 100% 0%, var(--rose), transparent 70%); }
-.doa-title { font-size: 1.2rem; font-weight: 800; color: var(--rose); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-.doa-arabic { font-size: 1.9rem; color: var(--rose-soft, #e8c4c8); margin-bottom: 12px; }
-.doa-latin { font-style: italic; color: var(--gold); font-size: 0.95rem; margin-bottom: 10px; line-height: 1.5; }
-.doa-meaning { color: #c9aeb2; font-size: 0.95rem; line-height: 1.6; margin-bottom: 14px; }
-.doa-meta { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.75rem; color: #8a6f74; font-weight: 700; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
-.tag { padding: 3px 8px; border-radius: 6px; background: rgba(229,199,134,0.1); color: var(--gold); }
-.tag.sahih { background: rgba(212,165,165,0.15); color: var(--rose); }
-.tag.muttafaq { background: rgba(229,199,134,0.2); color: var(--gold); border: 1px solid rgba(229,199,134,0.4); }
-.doa-benefit { margin-top: 12px; padding: 10px; background: rgba(229,199,134,0.06); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #e0d0b0; }
-.doa-actions { display: flex; gap: 8px; margin-top: 14px; }
-.btn-action { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--line); background: rgba(0,0,0,0.2); color: var(--ink); font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s; text-align: center; }
-.btn-action:hover { background: var(--rose); color: #fff; border-color: var(--rose); }
-.btn-action.active { background: var(--gold); color: #241a0c; border-color: var(--gold); }
-.empty-box { text-align: center; padding: 40px; color: var(--ink-mute); border: 1px dashed var(--line); border-radius: 18px; }
-input[type="text"] { width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0,0,0,0.3); color: var(--ink); font-size: 0.95rem; margin-bottom: 20px; box-sizing: border-box; }
-input[type="text"]:focus { outline: none; border-color: var(--rose); box-shadow: 0 0 0 3px rgba(212,165,165,0.15); }
-.sec-head { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-.sec-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; padding: 5px 10px; background: linear-gradient(120deg, #b76e79, #8f4f5b); color: #fff; border-radius: 99px; transform: rotate(-2deg); }
-.sec-sub { color: #c9aeb2; font-size: 0.9rem; margin-bottom: 24px; }
-.surah-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-.surah-item { background: rgba(212,165,165,0.06); border: 1px solid var(--line); padding: 12px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.2s; }
-.surah-item:hover { border-color: var(--rose); background: rgba(212,165,165,0.12); transform: translateY(-2px); }
-.surah-num { font-size: 0.8rem; color: var(--gold); font-weight: 800; display: block; margin-bottom: 4px; }
-.surah-name { font-weight: 700; font-size: 0.95rem; }
-.surah-meaning { font-size: 0.75rem; color: #8a6f74; margin-top: 4px; }
-#reader-view { display: none; }
-.ayah-block { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
-.ayah-num { display: inline-block; width: 28px; height: 28px; border: 1px solid var(--gold); color: var(--gold); border-radius: 50%; text-align: center; line-height: 26px; font-size: 0.75rem; margin: 0 8px; vertical-align: middle; }
-.audio-btn { background: none; border: none; color: var(--rose); cursor: pointer; font-size: 1.2rem; margin-left: 8px; vertical-align: middle; }
-.audio-btn.playing { color: var(--gold); animation: pulse 1.5s infinite; }
-@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-.mood-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-bottom: 20px; }
-.mood-btn { padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0,0,0,0.2); color: var(--ink); font-weight: 700; cursor: pointer; text-align: center; transition: 0.2s; }
-.mood-btn:hover, .mood-btn.active { background: var(--rose); color: #fff; border-color: var(--rose); }
+/* Tambahan CSS minimal khusus Quran agar elemen baru rapi tanpa mengubah tema utama */
+.arabic-text { font-family: 'Amiri', serif; direction: rtl; text-align: right; line-height: 2.2; }
+.chips-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.chips-scroll::-webkit-scrollbar { display: none; }
+.chip-filter { white-space: nowrap; padding: 6px 14px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; border: 1px solid var(--line-strong); background: rgba(212,165,165,0.06); color: var(--ink-soft); cursor: pointer; transition: 0.2s; }
+.chip-filter.on { background: linear-gradient(120deg, #b76e79, #8f4f5b); color: #fff; border-color: transparent; box-shadow: 0 0 14px rgba(212,165,165,0.3); }
+.doa-card-custom { background: linear-gradient(160deg, var(--card), var(--card-2)); border: 1px solid var(--line-strong); border-radius: var(--r-card); padding: clamp(18px, 3vw, 24px); margin-bottom: 16px; position: relative; overflow: hidden; }
+.doa-card-custom::before { content:''; position:absolute; inset:0; pointer-events:none; opacity:.05; background: radial-gradient(400px 150px at 100% 0%, var(--rose-soft), transparent 70%); }
+.doa-title-custom { font-size: 1.2rem; font-weight: 800; color: var(--rose); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.doa-arabic-custom { font-size: 1.9rem; color: var(--rose-soft, #e8c4c8); margin-bottom: 12px; }
+.doa-latin-custom { font-style: italic; color: var(--gold); font-size: 0.95rem; margin-bottom: 10px; line-height: 1.5; }
+.doa-meaning-custom { color: #c9aeb2; font-size: 0.95rem; line-height: 1.6; margin-bottom: 14px; }
+.doa-meta-custom { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.75rem; color: #8a6f74; font-weight: 700; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.tag-grade { padding: 3px 8px; border-radius: 6px; background: rgba(229,199,134,0.1); color: var(--gold); }
+.tag-grade.sahih { background: rgba(212,165,165,0.15); color: var(--rose); }
+.tag-grade.muttafaq { background: rgba(229,199,134,0.2); color: var(--gold); border: 1px solid rgba(229,199,134,0.4); }
+.doa-benefit-custom { margin-top: 12px; padding: 10px; background: rgba(229,199,134,0.06); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #e0d0b0; }
+.doa-actions-custom { display: flex; gap: 8px; margin-top: 14px; }
+.btn-action-custom { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--line); background: rgba(0,0,0,0.2); color: var(--ink); font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s; text-align: center; }
+.btn-action-custom:hover { background: var(--rose); color: #fff; border-color: var(--rose); }
+.btn-action-custom.active { background: var(--gold); color: #241a0c; border-color: var(--gold); }
+.empty-box-custom { text-align: center; padding: 40px; color: var(--ink-mute); border: 1px dashed var(--line-strong); border-radius: 18px; }
+input.quran-search { width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0,0,0,0.3); color: var(--ink); font-size: 0.95rem; margin-bottom: 20px; box-sizing: border-box; }
+input.quran-search:focus { outline: none; border-color: var(--rose); box-shadow: 0 0 0 3px rgba(212,165,165,0.15); }
 </style>
 </head>
 <body>
@@ -66,90 +44,91 @@ input[type="text"]:focus { outline: none; border-color: var(--rose); box-shadow:
             <a href="dzikir.html">Dzikir</a>
             <a href="quran.html" class="on">Qur'an</a>
         </nav>
+        <!-- Placeholder for i18n tools if needed -->
     </div>
 </header>
 
-<main style="max-width: 900px; margin: 0 auto; padding: 20px;">
+<main style="max-width: 1160px; margin: 0 auto; padding: 0 clamp(14px, 3vw, 22px) 40px;">
 
     <!-- A · BACA & DENGAR -->
-    <section id="surah-section">
+    <section>
         <div class="sec-head">
             <span class="sec-tag">A · BACA & DENGAR</span>
             <h2>Mushaf Digital 114 Surah</h2>
         </div>
-        <p class="sec-sub">Baca sendiri atau baca bareng murottal. 📖</p>
+        <p class="sec-sub">Baca sendiri atau baca bareng murottal. </p>
         
-        <input type="text" id="searchSurah" placeholder="Cari nama surah atau nomor...">
-        <div id="surahList" class="surah-grid">
-            <div class="empty-box">Memuat data Qur'an...</div>
+        <input type="text" id="searchSurah" class="quran-search" placeholder="Cari nama surah atau nomor...">
+        <div id="surahList" class="spirit-grid" style="grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;">
+            <div class="empty-box">📦 Memuat data Qur'an…</div>
         </div>
     </section>
 
     <!-- READER VIEW (Hidden by default) -->
-    <section id="reader-view">
+    <section id="reader-view" style="display:none;">
         <div class="sec-head">
-            <button onclick="closeReader()" class="chip" style="border:none; background:transparent; color:var(--rose); padding-left:0;">← Kembali</button>
+            <button onclick="closeReader()" class="btn ghost small">← Kembali</button>
             <h2 id="readerTitle" style="margin:0;">Surah</h2>
         </div>
-        <div id="ayahContainer"></div>
+        <div id="ayahContainer" style="margin-top: 20px;"></div>
         <audio id="quranAudio" controls style="width:100%; margin-top:20px; border-radius:12px;"></audio>
     </section>
 
     <!-- B · AYAT UNTUK HATIMU -->
-    <section style="margin-top: 50px;">
+    <section>
         <div class="sec-head">
             <span class="sec-tag">B · AYAT UNTUK HATIMU</span>
             <h2>Sedang Merasa Apa?</h2>
         </div>
         <p class="sec-sub">Pilih keadaanmu — Allah sudah menyiapkan ayat-ayatnya untukmu. 🤍</p>
         
-        <div class="mood-grid" id="moodList">
+        <div class="chips-scroll" id="moodList" style="margin-bottom: 20px;">
             <!-- Injected by JS -->
         </div>
-        <div id="verseDisplay" class="doa-card" style="text-align:center; display:none;">
+        <div id="verseDisplay" class="card" style="text-align:center; display:none; padding: 30px;">
             <!-- Injected by JS -->
         </div>
     </section>
 
-    <!-- C · TRACKER HAFALAN (Placeholder Visual) -->
-    <section style="margin-top: 50px;">
+    <!-- C · TRACKER HAFALAN -->
+    <section>
         <div class="sec-head">
             <span class="sec-tag">C · TRACKER HAFALAN</span>
             <h2>Perjalanan Huffaz-mu 🏆</h2>
         </div>
-        <p class="sec-sub">Tap surah: abu-abu = belum, rose = proses, emas = hafal. Menandai hafal = +25 XP! (Fitur ini tersimpan di lokal browser).</p>
+        <p class="sec-sub">Tap surah: abu-abu = belum, rose = proses, emas = hafal. Menandai hafal = +25 XP!</p>
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">
             <span class="chip" style="background:#333; color:#888; border-color:#444;">Belum</span>
             <span class="chip" style="background:rgba(212,165,165,0.2); color:var(--rose); border-color:var(--rose);">Proses</span>
             <span class="chip" style="background:rgba(229,199,134,0.2); color:var(--gold); border-color:var(--gold);">Hafal</span>
         </div>
-        <div id="hafalanGrid" class="surah-grid">
+        <div id="hafalanGrid" class="spirit-grid" style="grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;">
             <!-- Injected by JS -->
         </div>
     </section>
 
-    <!-- D · DOA-DOA -->
-    <section style="margin-top: 50px; margin-bottom: 80px;">
+    <!-- D · DOA-DOA (LENGKAP 45+) -->
+    <section>
         <div class="sec-head">
             <span class="sec-tag">D · DOA-DOA</span>
             <h2>Kumpulan Doa Sahih</h2>
         </div>
-        <p class="sec-sub">45+ doa pilihan sesuai kondisi kehidupan manusia. Lengkap dengan teks Arab, latin, arti, manfaat, dan sumbernya. 🤲</p>
+        <p class="sec-sub">Doa-doa pilihan sesuai kondisi kehidupan manusia. Lengkap dengan teks Arab, latin, arti, manfaat, dan sumbernya. 🤲</p>
 
         <!-- Filter Chips -->
-        <div class="chips" id="doaChips">
-            <div class="chip on" data-filter="all">Semua Do'a</div>
-            <div class="chip" data-filter="nabi">Doa Nabi & Rasul</div>
-            <div class="chip" data-filter="malam">Penjaga Malam</div>
-            <div class="chip" data-filter="harian">Harian</div>
-            <div class="chip" data-filter="kesehatan">Kesehatan</div>
-            <div class="chip" data-filter="rezeki">Rezeki & Usaha</div>
-            <div class="chip" data-filter="keluarga">Keluarga</div>
-            <div class="chip" data-filter="fav">Favorit ★</div>
+        <div class="chips-scroll" id="doaChips" style="margin-bottom: 20px;">
+            <div class="chip-filter on" data-filter="all">Semua Do'a</div>
+            <div class="chip-filter" data-filter="nabi">Doa Nabi & Rasul</div>
+            <div class="chip-filter" data-filter="malam">Penjaga Malam</div>
+            <div class="chip-filter" data-filter="harian">Harian</div>
+            <div class="chip-filter" data-filter="kesehatan">Kesehatan</div>
+            <div class="chip-filter" data-filter="rezeki">Rezeki & Usaha</div>
+            <div class="chip-filter" data-filter="keluarga">Keluarga</div>
+            <div class="chip-filter" data-filter="fav">Favorit ★</div>
         </div>
 
         <!-- Search -->
-        <input type="text" id="doaSearch" placeholder="Cari doa (misal: sakit, utang, tidur, rezeki)...">
+        <input type="text" id="doaSearch" class="quran-search" placeholder="Cari doa (misal: sakit, utang, tidur)...">
 
         <!-- List -->
         <div id="doaList">
@@ -160,7 +139,7 @@ input[type="text"]:focus { outline: none; border-color: var(--rose); box-shadow:
 </main>
 
 <script>
-/* --- DATA DOA LENGKAP (45+ Doa Valid & Sahih) --- */
+/* --- DATABASE DOA LENGKAP (45+ Item - Valid & Sahih) --- */
 const DOA_DATA = [
     // === NABI & RASUL (15 Doa) ===
     {
@@ -419,7 +398,7 @@ const DOA_DATA = [
     },
     {
         category: ['malam', 'rasul'], title: 'Tasbih Sebelum Tidur', condition: ['tidur', 'tasbih', 'tahmid', 'takbir'],
-        arabic: 'سُبْحَانَ اللَّهِ ×٣٣، الْحَمْدُ لِلَّهِ ×٣٣، اللَّهُ أَكْبَرُ ×٣٤',
+        arabic: 'سُبْحَانَ اللَّهِ ×٣، الْحَمْدُ لِلَّهِ ×٣٣، اللَّهُ أَكْبَرُ ×٣٤',
         latin: 'Subhanallah ×33, al-hamdulillah ×33, Allahu akbar ×34',
         meaning: 'Maha Suci Allah (33×), segala puji bagi Allah (33×), Allah Maha Besar (34×).',
         source: 'HR. Bukhari & Muslim', grade: 'muttafaq', narrator: 'Ali bin Abi Thalib',
@@ -557,7 +536,7 @@ const DOA_DATA = [
         latin: 'Allahummakfini bihalalika \'an haramik, wa aghnini bifadhlika \'amman siwak',
         meaning: 'Ya Allah, cukupkanlah aku dengan yang halal dari-Mu sehingga aku tak butuh yang haram, dan kayakanlah aku dengan karunia-Mu sehingga aku tak bergantung kepada selain-Mu.',
         source: 'HR. At-Tirmidzi 3563', grade: 'hasan', narrator: 'Ali bin Abi Thalib',
-        benefit: 'Nabi : seandainya utangmu sebesar gunung, Allah akan melunasinya untukmu.'
+        benefit: 'Nabi ﷺ: seandainya utangmu sebesar gunung, Allah akan melunasinya untukmu.'
     },
     {
         category: ['rezeki'], title: 'Doa Naik Kendaraan', condition: ['kendaraan', 'transportasi', 'perjalanan', 'mobil'],
@@ -613,7 +592,7 @@ const DOA_DATA = [
         latin: 'Inna lillahi ma akhadza, wa lahu ma a\'tha, wa kullu syai\'in \'indahu bi-ajalin musamma, faltashbir waltahtasib',
         meaning: 'Sungguh milik Allah apa yang Dia ambil dan milik-Nya apa yang Dia berikan; segala sesuatu di sisi-Nya punya waktu yang ditetapkan. Maka bersabarlah dan harapkanlah pahala.',
         source: 'HR. Al-Bukhari 1284 & Muslim 923', grade: 'muttafaq', narrator: 'Usamah bin Zaid',
-        benefit: 'Pesan Nabi ﷺ saat putri beliau kehilangan anaknya.'
+        benefit: 'Pesan Nabi  saat putri beliau kehilangan anaknya.'
     },
     {
         category: ['keluarga'], title: 'Doa Talbiyah Haji & Umrah', condition: ['haji', 'umrah', 'talbiyah', 'ibadah'],
@@ -638,7 +617,7 @@ const MOODS = [
     { id: 'tenang', label: 'Tenang', verse: 'الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُمْ بِذِكْرِ اللَّهِ', trans: '(Yaitu) orang-orang yang beriman dan hati mereka menjadi tenang dengan mengingat Allah.', ref: 'QS. Ar-Ra\'d: 28' },
     { id: 'sedih', label: 'Sedih', verse: 'وَلَا تَحْزَنُوا إِنَّ اللَّهَ مَعَنَا', trans: 'Dan janganlah kamu bersedih, sesungguhnya Allah bersama kita.', ref: 'QS. Al-Anfal: 46' },
     { id: 'lelah', label: 'Lelah', verse: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا', trans: 'Maka sesungguhnya bersama kesulitan ada kemudahan.', ref: 'QS. Ash-Sharh: 5' },
-    { id: 'takut', label: 'Takut', verse: 'قَالَ لَا تَخَافَا ۖ إِنَّنِي مَعَكُمَا', trans: 'Dia berfirman, "Janganlah kamu berdua takut, sebab Aku bersama kamu."', ref: 'QS. Taha: 46' },
+    { id: 'takut', label: 'Takut', verse: 'قَالَ لَا تَخَافَا  إِنَّنِي مَعَكُمَا', trans: 'Dia berfirman, "Janganlah kamu berdua takut, sebab Aku bersama kamu."', ref: 'QS. Taha: 46' },
     { id: 'butuh', label: 'Butuh Rezeki', verse: 'وَمَنْ يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ', trans: 'Barangsiapa bertawakal kepada Allah, niscaya Allah akan mencukupkannya.', ref: 'QS. At-Talaq: 3' }
 ];
 
@@ -661,9 +640,9 @@ document.addEventListener('DOMContentLoaded', () => {
         renderDoas();
     });
 
-    document.querySelectorAll('#doaChips .chip').forEach(chip => {
+    document.querySelectorAll('#doaChips .chip-filter').forEach(chip => {
         chip.addEventListener('click', () => {
-            document.querySelectorAll('#doaChips .chip').forEach(c => c.classList.remove('on'));
+            document.querySelectorAll('#doaChips .chip-filter').forEach(c => c.classList.remove('on'));
             chip.classList.add('on');
             currentFilter = chip.dataset.filter;
             renderDoas();
@@ -688,31 +667,31 @@ function renderDoas() {
     });
 
     if (filtered.length === 0) {
-        list.innerHTML = '<div class="empty-box">Tidak ada doa yang cocok. Coba kata kunci lain.</div>';
+        list.innerHTML = '<div class="empty-box-custom">Tidak ada doa yang cocok. Coba kata kunci lain.</div>';
         return;
     }
 
     filtered.forEach(d => {
         const isFav = favorites.includes(d.title);
         const card = document.createElement('div');
-        card.className = 'doa-card';
+        card.className = 'doa-card-custom';
         card.innerHTML = `
-            <div class="doa-title">${d.title}</div>
-            <div class="doa-arabic">${d.arabic}</div>
-            <div class="doa-latin">${d.latin}</div>
-            <div class="doa-meaning">${d.meaning}</div>
-            <div class="doa-meta">
-                <span class="tag ${d.grade}">${d.grade.toUpperCase()}</span>
+            <div class="doa-title-custom">${d.title}</div>
+            <div class="doa-arabic-custom arabic-text">${d.arabic}</div>
+            <div class="doa-latin-custom">${d.latin}</div>
+            <div class="doa-meaning-custom">${d.meaning}</div>
+            <div class="doa-meta-custom">
+                <span class="tag-grade ${d.grade}">${d.grade.toUpperCase()}</span>
                 <span>${d.source}</span>
                 ${d.narrator ? `<span>📖 ${d.narrator}</span>` : ''}
             </div>
-            <div class="doa-benefit">✨ <strong>Manfaat:</strong> ${d.benefit}</div>
-            <div class="doa-actions">
-                <button class="btn-action" onclick="copyDoa('${d.title.replace(/'/g, "\\'")}')">📋 Salin</button>
-                <button class="btn-action ${isFav ? 'active' : ''}" onclick="toggleFav('${d.title.replace(/'/g, "\\'")}', this)">
+            <div class="doa-benefit-custom">✨ <strong>Manfaat:</strong> ${d.benefit}</div>
+            <div class="doa-actions-custom">
+                <button class="btn-action-custom" onclick="copyDoa('${d.title.replace(/'/g, "\\'")}')">📋 Salin</button>
+                <button class="btn-action-custom ${isFav ? 'active' : ''}" onclick="toggleFav('${d.title.replace(/'/g, "\\'")}', this)">
                     ${isFav ? '★ Tersimpan' : '☆ Simpan'}
                 </button>
-                <button class="btn-action" onclick="shareDoa('${d.title.replace(/'/g, "\\'")}')"> Share</button>
+                <button class="btn-action-custom" onclick="shareDoa('${d.title.replace(/'/g, "\\'")}')">📤 Share</button>
             </div>
         `;
         list.appendChild(card);
@@ -737,7 +716,11 @@ function copyDoa(title) {
     const d = DOA_DATA.find(x => x.title === title);
     if (!d) return;
     const text = `${d.title}\n\n${d.arabic}\n\n${d.meaning}\n\n(${d.source})`;
-    navigator.clipboard.writeText(text).then(() => showToast('Doa tersalin! ✓', 'gold'));
+    navigator.clipboard.writeText(text).then(() => {
+        // Gunakan toast dari app.js jika ada, atau alert sederhana
+        if(window.toast) window.toast('Doa tersalin! ✓', 'gold');
+        else alert('Doa tersalin! ✓');
+    });
 }
 
 function shareDoa(title) {
@@ -749,24 +732,12 @@ function shareDoa(title) {
     }
 }
 
-function showToast(msg, type) {
-    // Simple toast implementation
-    const toast = document.createElement('div');
-    toast.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);background:${type==='gold'?'linear-gradient(120deg,var(--gold),var(--gold-deep))':'linear-gradient(120deg,var(--rose-deep),#8f4f5b)'};color:${type==='gold'?'#241a0c':'#fff'};padding:12px 24px;border-radius:12px;font-weight:700;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:slideIn 0.3s ease;`;
-    toast.textContent = msg;
-    document.body.appendChild(toast);
-    setTimeout(() => {
-        toast.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-    }, 2000);
-}
-
 /* --- FUNGSI MOOD --- */
 function renderMoods() {
     const container = document.getElementById('moodList');
     MOODS.forEach(m => {
         const btn = document.createElement('div');
-        btn.className = 'mood-btn';
+        btn.className = 'chip-filter'; // Menggunakan style chip yang sama
         btn.textContent = m.label;
         btn.onclick = () => showVerse(m, btn);
         container.appendChild(btn);
@@ -774,14 +745,14 @@ function renderMoods() {
 }
 
 function showVerse(mood, btn) {
-    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    document.querySelectorAll('#moodList .chip-filter').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
     const display = document.getElementById('verseDisplay');
     display.style.display = 'block';
     display.innerHTML = `
-        <h3 style="color:var(--gold)">${mood.ref}</h3>
-        <div class="doa-arabic">${mood.verse}</div>
-        <div class="doa-meaning" style="font-size:1.1rem">${mood.trans}</div>
+        <h3 style="color:var(--gold); margin-top:0;">${mood.ref}</h3>
+        <div class="arabic-text" style="font-size:2rem; color:var(--rose); margin:15px 0;">${mood.verse}</div>
+        <div style="color:var(--ink-soft); font-size:1.1rem; line-height:1.6;">${mood.trans}</div>
     `;
 }
 
@@ -789,16 +760,21 @@ function showVerse(mood, btn) {
 function renderHafalanGrid() {
     const grid = document.getElementById('hafalanGrid');
     // Contoh visualisasi 10 surah pertama saja untuk demo (bisa diperluas)
+    const surahNames = ["Al-Fatihah", "Al-Baqarah", "Ali 'Imran", "An-Nisa'", "Al-Ma'idah", "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus"];
+    
     for(let i=1; i<=10; i++) {
         const status = hafalanState[i] || 'belum'; // belum, proses, hafal
         const div = document.createElement('div');
-        div.className = 'surah-item';
+        div.className = 'card'; // Menggunakan class card standar NYALA
+        div.style.padding = '12px';
+        div.style.textAlign = 'center';
+        div.style.cursor = 'pointer';
         div.style.borderColor = status === 'hafal' ? 'var(--gold)' : (status === 'proses' ? 'var(--rose)' : 'var(--line)');
         div.style.background = status === 'hafal' ? 'rgba(229,199,134,0.1)' : (status === 'proses' ? 'rgba(212,165,165,0.1)' : '');
         div.innerHTML = `
-            <span class="surah-num">${i}</span>
-            <span class="surah-name">Al-Fatihah</span> <!-- Simplified for demo -->
-            <div style="font-size:0.7rem; margin-top:4px; color:${status==='hafal'?'var(--gold)':(status==='proses'?'var(--rose)':'#888')}">
+            <span style="font-size:0.8rem; color:var(--gold); font-weight:800; display:block; margin-bottom:4px;">${i}</span>
+            <span style="font-weight:700; font-size:0.9rem;">${surahNames[i-1]}</span>
+            <div style="font-size:0.7rem; margin-top:8px; color:${status==='hafal'?'var(--gold)':(status==='proses'?'var(--rose)':'#888')}">
                 ${status === 'hafal' ? 'Hafal' : (status === 'proses' ? 'Proses' : 'Belum')}
             </div>
         `;
@@ -821,7 +797,10 @@ function toggleHafalan(idx, el) {
     el.querySelector('div div').style.color = next === 'hafal' ? 'var(--gold)' : (next === 'proses' ? 'var(--rose)' : '#888');
     el.style.background = next === 'hafal' ? 'rgba(229,199,134,0.1)' : (next === 'proses' ? 'rgba(212,165,165,0.1)' : '');
     
-    if(next === 'hafal' && current !== 'hafal') showToast('+25 XP! Hafalan bertambah! ', 'gold');
+    if(next === 'hafal' && current !== 'hafal') {
+        if(window.toast) window.toast('+25 XP! Hafalan bertambah! ', 'gold');
+        else alert('+25 XP! Hafalan bertambah! ');
+    }
 }
 
 /* --- FUNGSI SURAH & AUDIO --- */
@@ -833,11 +812,14 @@ async function fetchSurahList() {
         grid.innerHTML = '';
         data.data.forEach(s => {
             const div = document.createElement('div');
-            div.className = 'surah-item';
+            div.className = 'card';
+            div.style.padding = '12px';
+            div.style.textAlign = 'center';
+            div.style.cursor = 'pointer';
             div.innerHTML = `
-                <span class="surah-num">${s.number}</span>
-                <span class="surah-name">${s.englishName}</span>
-                <div class="surah-meaning">${s.name}</div>
+                <span style="font-size:0.8rem; color:var(--gold); font-weight:800; display:block; margin-bottom:4px;">${s.number}</span>
+                <span style="font-weight:700; font-size:0.9rem;">${s.englishName}</span>
+                <div style="font-size:0.7rem; color:#8a6f74; margin-top:4px;">${s.name}</div>
             `;
             div.onclick = () => openSurah(s.number, s.englishName);
             grid.appendChild(div);
@@ -849,7 +831,7 @@ async function fetchSurahList() {
 
 document.getElementById('searchSurah').addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase();
-    document.querySelectorAll('#surahList .surah-item').forEach(item => {
+    document.querySelectorAll('#surahList .card').forEach(item => {
         const text = item.textContent.toLowerCase();
         item.style.display = text.includes(term) ? 'block' : 'none';
     });
@@ -858,8 +840,8 @@ document.getElementById('searchSurah').addEventListener('input', (e) => {
 let currentAudio = null;
 
 async function openSurah(no, name) {
-    document.getElementById('surah-section').style.display = 'none';
     document.getElementById('reader-view').style.display = 'block';
+    document.querySelector('section:first-of-type').style.display = 'none'; // Hide list
     document.getElementById('readerTitle').textContent = name;
     const container = document.getElementById('ayahContainer');
     container.innerHTML = '<div class="empty-box">Memuat ayat...</div>';
@@ -875,13 +857,15 @@ async function openSurah(no, name) {
         container.innerHTML = '';
         dArab.data.ayahs.forEach((ayah, i) => {
             const div = document.createElement('div');
-            div.className = 'ayah-block';
+            div.className = 'card';
+            div.style.padding = '20px';
+            div.style.marginBottom = '20px';
             div.innerHTML = `
-                <div style="display:flex; align-items:center;">
-                    <span class="ayah-num">${ayah.numberInSurah}</span>
-                    <button class="audio-btn" onclick="playAyah(${no}, ${ayah.numberInSurah}, this)">▶</button>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <span class="chip" style="background:var(--gold); color:#000; border:none;">${ayah.numberInSurah}</span>
+                    <button class="btn small ghost" onclick="playAyah(${no}, ${ayah.numberInSurah}, this)">▶ Dengar</button>
                 </div>
-                <div class="arabic" style="font-size:2rem; margin:15px 0;">${ayah.text}</div>
+                <div class="arabic-text" style="font-size:2rem; margin:15px 0; color:var(--rose);">${ayah.text}</div>
                 <div style="color:#c9aeb2; line-height:1.6;">${dId.data.ayahs[i].text}</div>
             `;
             container.appendChild(div);
@@ -893,34 +877,34 @@ async function openSurah(no, name) {
 
 function closeReader() {
     if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-    document.querySelectorAll('.audio-btn').forEach(b => { b.textContent = '▶'; b.classList.remove('playing'); });
     document.getElementById('reader-view').style.display = 'none';
-    document.getElementById('surah-section').style.display = 'block';
+    document.querySelector('section:first-of-type').style.display = 'block'; // Show list
 }
 
 function playAyah(surah, ayah, btn) {
     // Reset tombol lain
-    document.querySelectorAll('.audio-btn').forEach(b => { b.textContent = '▶'; b.classList.remove('playing'); });
+    document.querySelectorAll('.btn.small.ghost').forEach(b => { if(b.textContent.includes('Dengar')) b.textContent = '▶ Dengar'; });
     
     if (currentAudio && !currentAudio.paused) {
         currentAudio.pause();
-        btn.textContent = '▶';
+        btn.textContent = '▶ Dengar';
         currentAudio = null;
         return;
     }
 
-    btn.textContent = '';
-    btn.classList.add('playing');
+    btn.textContent = '⏸ Jeda';
     
     // URL Audio (Server8 MP3 Quran)
     const url = `https://server8.mp3quran.net/afs/${String(surah).padStart(3,'0')}/${String(ayah).padStart(3,'0')}.mp3`;
     
     currentAudio = new Audio(url);
-    currentAudio.play().catch(e => { showToast('Gagal memutar audio', 'error'); btn.textContent = '▶'; btn.classList.remove('playing'); });
+    currentAudio.play().catch(e => { 
+        if(window.toast) window.toast('Gagal memutar audio', 'error');
+        btn.textContent = '▶ Dengar'; 
+    });
     
     currentAudio.onended = () => {
-        btn.textContent = '▶';
-        btn.classList.remove('playing');
+        btn.textContent = '▶ Dengar';
         currentAudio = null;
     };
 }
