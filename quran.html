@@ -27,6 +27,7 @@ h1, h2, h3 { font-family: 'Bricolage Grotesque', sans-serif; }
 .doa-meta { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.75rem; color: #8a6f74; font-weight: 700; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
 .tag { padding: 3px 8px; border-radius: 6px; background: rgba(229,199,134,0.1); color: var(--gold); }
 .tag.sahih { background: rgba(212,165,165,0.15); color: var(--rose); }
+.tag.muttafaq { background: rgba(229,199,134,0.2); color: var(--gold); border: 1px solid rgba(229,199,134,0.4); }
 .doa-benefit { margin-top: 12px; padding: 10px; background: rgba(229,199,134,0.06); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #e0d0b0; }
 .doa-actions { display: flex; gap: 8px; margin-top: 14px; }
 .btn-action { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--line); background: rgba(0,0,0,0.2); color: var(--ink); font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s; text-align: center; }
@@ -133,7 +134,7 @@ input[type="text"]:focus { outline: none; border-color: var(--rose); box-shadow:
             <span class="sec-tag">D · DOA-DOA</span>
             <h2>Kumpulan Doa Sahih</h2>
         </div>
-        <p class="sec-sub">Doa-doa pilihan sesuai kondisi kehidupan manusia. Lengkap dengan teks Arab, latin, arti, manfaat, dan sumbernya. 🤲</p>
+        <p class="sec-sub">45+ doa pilihan sesuai kondisi kehidupan manusia. Lengkap dengan teks Arab, latin, arti, manfaat, dan sumbernya. 🤲</p>
 
         <!-- Filter Chips -->
         <div class="chips" id="doaChips">
@@ -141,11 +142,14 @@ input[type="text"]:focus { outline: none; border-color: var(--rose); box-shadow:
             <div class="chip" data-filter="nabi">Doa Nabi & Rasul</div>
             <div class="chip" data-filter="malam">Penjaga Malam</div>
             <div class="chip" data-filter="harian">Harian</div>
+            <div class="chip" data-filter="kesehatan">Kesehatan</div>
+            <div class="chip" data-filter="rezeki">Rezeki & Usaha</div>
+            <div class="chip" data-filter="keluarga">Keluarga</div>
             <div class="chip" data-filter="fav">Favorit ★</div>
         </div>
 
         <!-- Search -->
-        <input type="text" id="doaSearch" placeholder="Cari doa (misal: sakit, utang, tidur)...">
+        <input type="text" id="doaSearch" placeholder="Cari doa (misal: sakit, utang, tidur, rezeki)...">
 
         <!-- List -->
         <div id="doaList">
@@ -156,39 +160,111 @@ input[type="text"]:focus { outline: none; border-color: var(--rose); box-shadow:
 </main>
 
 <script>
-/* --- DATA DOA LENGKAP (Valid & Sahih) --- */
+/* --- DATA DOA LENGKAP (45+ Doa Valid & Sahih) --- */
 const DOA_DATA = [
-    // === NABI & RASUL ===
+    // === NABI & RASUL (15 Doa) ===
     {
-        category: ['nabi'], title: 'Doa Taubat Nabi Adam', condition: ['menyesal', 'salah', 'dosa'],
+        category: ['nabi'], title: 'Doa Taubat Nabi Adam', condition: ['menyesal', 'salah', 'dosa', 'taubat'],
         arabic: 'رَبَّنَا ظَلَمْنَا أَنْفُسَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ',
         latin: 'Rabbana zhalamna anfusana wa in lam taghfir lana wa tarhamna lanakunanna minal-khasirin',
         meaning: 'Ya Tuhan kami, kami telah menzalimi diri kami sendiri. Jika Engkau tidak mengampuni kami dan menyayangi kami, niscaya kami termasuk orang yang rugi.',
         source: 'QS. Al-A\'raf: 23', grade: 'sahih', benefit: 'Doa pertama manusia saat menyesal; diajarkan langsung oleh Allah kepada Nabi Adam.'
     },
     {
-        category: ['nabi'], title: 'Doa Nabi Ayyub Saat Sakit', condition: ['sakit', 'penyakit', 'ujian'],
+        category: ['nabi'], title: 'Doa Nabi Ayyub Saat Sakit', condition: ['sakit', 'penyakit', 'ujian', 'kesabaran'],
         arabic: 'أَنِّي مَسَّنِيَ الضُّرُّ وَأَنْتَ أَرْحَمُ الرَّاحِمِينَ',
         latin: 'Anni massaniyadh-dhurru wa anta arhamur-rahimin',
         meaning: 'Sungguh, aku telah ditimpa penyakit, dan Engkau Tuhan Yang Maha Penyayang di antara semua penyayang.',
         source: 'QS. Al-Anbiya: 83', grade: 'sahih', benefit: 'Allah memuji kesabarannya dan segera mengangkat penyakitnya.'
     },
     {
-        category: ['nabi'], title: 'Doa Nabi Yunus Dalam Kegelapan', condition: ['sedih', 'gelisah', 'susah', 'depresi'],
+        category: ['nabi'], title: 'Doa Nabi Yunus Dalam Kegelapan', condition: ['sedih', 'gelisah', 'susah', 'depresi', 'kesulitan'],
         arabic: 'لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ',
         latin: 'La ilaha illa anta subhanaka inni kuntu minazh-zhalimin',
         meaning: 'Tidak ada tuhan selain Engkau. Maha Suci Engkau. Sungguh aku termasuk orang-orang yang zalim.',
         source: 'QS. Al-Anbiya: 87', grade: 'sahih', benefit: 'Doa mustajab untuk menghilangkan kesedihan dan kesulitan.'
     },
     {
-        category: ['nabi'], title: 'Doa Nabi Musa: Kelapangan Dada', condition: ['gugup', 'bicara', 'ujian', 'presentasi'],
+        category: ['nabi'], title: 'Doa Nabi Musa: Kelapangan Dada', condition: ['gugup', 'bicara', 'ujian', 'presentasi', 'wawancara'],
         arabic: 'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي',
         latin: 'Rabbishrah li sadri wa yassir li amri',
         meaning: 'Ya Tuhanku, lapangkanlah dadaku, dan mudahkanlah urusanku.',
         source: 'QS. Taha: 25-28', grade: 'sahih', benefit: 'Dibaca sebelum menghadapi tugas berat, ujian, atau berbicara di depan umum.'
     },
     {
-        category: ['rasul'], title: 'Sayyidul Istighfar', condition: ['taubat', 'pagi', 'petang', 'dosa'],
+        category: ['nabi'], title: 'Doa Nabi Yusuf: Akhir Yang Baik', condition: ['kematian', 'husnul khatimah', 'sukses', 'akhir hayat'],
+        arabic: 'فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ أَنْتَ وَلِيِّي فِي الدُّنْيَا وَالْآخِرَةِ تَوَفَّنِي مُسْلِمًا وَأَلْحِقْنِي بِالصَّالِحِينَ',
+        latin: 'Fatiras-samawati wal-ardh, anta waliyyi fid-dunya wal-akhirah, tawaffani musliman wa alhiqni bish-shalihin',
+        meaning: 'Wahai Pencipta langit dan bumi, Engkaulah pelindungku di dunia dan akhirat. Matikanlah aku dalam keadaan muslim dan gabungkanlah aku dengan orang-orang saleh.',
+        source: 'QS. Yusuf: 101', grade: 'sahih', benefit: 'Doa husnul khatimah di puncak keberhasilan, bukan hanya saat susah.'
+    },
+    {
+        category: ['nabi'], title: 'Doa Nabi Ibrahim: Anak Saleh', condition: ['anak', 'keturunan', 'keluarga', 'doa orang tua'],
+        arabic: 'رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاءِ',
+        latin: 'Rabbij'alni muqimash-shalati wa min dzurriyyati rabbana wa taqabbal du'a',
+        meaning: 'Ya Tuhanku, jadikanlah aku dan anak cucuku orang yang tetap melaksanakan salat. Ya Tuhan kami, kabulkanlah doaku.',
+        source: 'QS. Ibrahim: 40', grade: 'sahih', benefit: 'Doa agar keturunan menjadi generasi yang shaleh dan menjaga shalat.'
+    },
+    {
+        category: ['nabi'], title: 'Doa Nabi Zakaria: Keturunan Baik', condition: ['anak', 'keturunan', 'pasangan', 'doa suami istri'],
+        arabic: 'رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ',
+        latin: 'Rabbi hab li min ladunka dzurriyyatan thayyibah innaka sami'ud-du'a',
+        meaning: 'Ya Tuhanku, berikanlah kepadaku dari sisi-Mu keturunan yang baik. Sungguh Engkau Maha Mendengar doa.',
+        source: 'QS. Ali Imran: 38', grade: 'sahih', benefit: 'Doa untuk memohon keturunan yang baik dan shaleh.'
+    },
+    {
+        category: ['nabi'], title: 'Doa Nabi Sulaiman: Syukur Nikmat', condition: ['syukur', 'nikmat', 'berkah', 'rasa terima kasih'],
+        arabic: 'رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ وَعَلَىٰ وَالِدَيَّ',
+        latin: 'Rabbi awzi'ni an ashkura ni'matakallati an'amta 'alayya wa 'ala walidayya',
+        meaning: 'Ya Tuhanku, berilah aku ilham untuk tetap mensyukuri nikmat-Mu yang telah Engkau anugerahkan kepadaku dan kepada kedua orang tuaku.',
+        source: 'QS. An-Naml: 19', grade: 'sahih', benefit: 'Doa untuk selalu bersyukur atas nikmat Allah dan tidak lupa berterima kasih.'
+    },
+    {
+        category: ['nabi'], title: 'Doa Nabi Nuh: Ampunan', condition: ['ampunan', 'dosa', 'taubat', 'pengampunan'],
+        arabic: 'رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِمَنْ دَخَلَ بَيْتِيَ مُؤْمِنًا وَلِلْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ',
+        latin: 'Rabbighfir li wa liwalidayya wa liman dakhala baytiya mu'minan wa lil-mu'minina wal-mu'minat',
+        meaning: 'Ya Tuhanku, ampunilah aku, ibu bapakku, siapa saja yang masuk ke rumahku dengan beriman dan semua orang yang beriman laki-laki dan perempuan.',
+        source: 'QS. Nuh: 28', grade: 'sahih', benefit: 'Doa luas untuk memohon ampunan bagi diri sendiri, keluarga, dan seluruh umat beriman.'
+    },
+    {
+        category: ['nabi'], title: 'Doa Nabi Ibrahim: Kota Aman', condition: ['keamanan', 'kota', 'negara', 'kedamaian'],
+        arabic: 'رَبِّ اجْعَلْ هَٰذَا بَلَدًا آمِنًا وَارْزُقْ أَهْلَهُ مِنَ الثَّمَرَاتِ مَنْ آمَنَ مِنْهُمْ بِاللَّهِ وَالْيَوْمِ الْآخِرِ',
+        latin: 'Rabbij'al hadza baladan aminan warzuq ahlahu minats-thamarati man amana minhum billahi wal-yawmil-akhir',
+        meaning: 'Ya Tuhanku, jadikanlah negeri ini negeri yang aman, dan berikanlah rezeki berupa buah-buahan kepada penduduknya yang beriman kepada Allah dan hari akhir.',
+        source: 'QS. Al-Baqarah: 126', grade: 'sahih', benefit: 'Doa untuk keamanan dan ketentraman suatu negeri serta rezeki bagi penduduknya.'
+    },
+    {
+        category: ['nabi'], title: 'Doa Nabi Musa: Rezeki', condition: ['rezeki', 'makanan', 'kebutuhan', 'pertolongan'],
+        arabic: 'رَبِّ إِنِّي لِمَا أَنْزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ',
+        latin: 'Rabbi inni lima anzalta ilayya min khairin faqir',
+        meaning: 'Ya Tuhanku, sesungguhnya aku sangat memerlukan segala kebaikan yang Engkau turunkan kepadaku.',
+        source: 'QS. Al-Qasas: 24', grade: 'sahih', benefit: 'Doa saat membutuhkan pertolongan dan rezeki dari Allah.'
+    },
+    {
+        category: ['nabi'], title: 'Doa Nabi Ibrahim: Ilmu Hikmah', condition: ['ilmu', 'hikmah', 'kepintaran', 'kebijaksanaan'],
+        arabic: 'رَبِّ هَبْ لِي حُكْمًا وَأَلْحِقْنِي بِالصَّالِحِينَ',
+        latin: 'Rabbi hab li hukman wa alhiqni bish-shalihin',
+        meaning: 'Ya Tuhanku, berikanlah kepadaku ilmu hikmah dan masukkanlah aku ke dalam golongan orang-orang yang saleh.',
+        source: 'QS. Asy-Syu'ara: 83', grade: 'sahih', benefit: 'Doa untuk memohon ilmu yang bermanfaat dan kebijaksanaan.'
+    },
+    {
+        category: ['nabi'], title: 'Doa Nabi Luth: Keselamatan Keluarga', condition: ['keluarga', 'keselamatan', 'perlindungan', 'anak istri'],
+        arabic: 'رَبِّ نَجِّنِي وَأَهْلِي مِمَّا يَعْمَلُونَ',
+        latin: 'Rabbi najjini wa ahli mimma ya'malun',
+        meaning: 'Ya Tuhanku, selamatkanlah aku dan keluargaku dari akibat perbuatan mereka.',
+        source: 'QS. Asy-Syu'ara: 169', grade: 'sahih', benefit: 'Doa untuk menyelamatkan keluarga dari pengaruh buruk dan kemaksiatan.'
+    },
+    {
+        category: ['nabi'], title: 'Doa Nabi Isa: Meja Dari Langit', condition: ['rezeki', 'mukjizat', 'pertolongan', 'keajaiban'],
+        arabic: 'اللَّهُمَّ رَبَّنَا أَنْزِلْ عَلَيْنَا مَائِدَةً مِنَ السَّمَاءِ تَكُونُ لَنَا عِيدًا لِأَوَّلِنَا وَآخِرِنَا',
+        latin: 'Allahumma rabbana anzil 'alayna ma'idatan minas-sama'i takunu lana 'idan li-awwalina wa akhirina',
+        meaning: 'Ya Allah, Tuhan kami, turunkanlah kepada kami hidangan dari langit yang menjadi hari raya bagi kami, bagi orang-orang sebelum dan sesudah kami.',
+        source: 'QS. Al-Ma'idah: 114', grade: 'sahih', benefit: 'Doa untuk memohon rezeki yang berlimpah dan menjadi berkah bagi banyak orang.'
+    },
+    
+    // === RASULULLAH  (15 Doa) ===
+    {
+        category: ['rasul'], title: 'Sayyidul Istighfar', condition: ['taubat', 'pagi', 'petang', 'dosa', 'istighfar'],
         arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ',
         latin: 'Allahumma anta rabbi la ilaha illa anta, khalaqtani wa ana abduka... faghfir li fa innahu la yaghfirudz-dzunuba illa anta',
         meaning: 'Ya Allah, Engkau Tuhanku, tiada tuhan selain Engkau... Aku mengakui nikmat-Mu dan dosaku, maka ampunilah aku...',
@@ -196,7 +272,7 @@ const DOA_DATA = [
         benefit: 'Siapa membacanya dengan yakin di siang hari lalu meninggal, ia masuk surga. Begitu juga di malam hari.'
     },
     {
-        category: ['rasul'], title: 'Doa Kebaikan Dunia Akhirat', condition: ['semua', 'harapan', 'masa depan'],
+        category: ['rasul'], title: 'Doa Kebaikan Dunia Akhirat', condition: ['semua', 'harapan', 'masa depan', 'kebaikan'],
         arabic: 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',
         latin: 'Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan wa qina adzaban-nar',
         meaning: 'Ya Tuhan kami, berikanlah kami kebaikan di dunia dan kebaikan di akhirat, dan peliharalah kami dari azab neraka.',
@@ -204,61 +280,356 @@ const DOA_DATA = [
         benefit: 'Doa yang paling sering dibaca oleh Rasulullah ﷺ.'
     },
     {
-        category: ['rasul'], title: 'Doa Jauh Dari Utang & Kegelisahan', condition: ['utang', 'stres', 'lemah', 'takut'],
+        category: ['rasul'], title: 'Doa Jauh Dari Utang & Kegelisahan', condition: ['utang', 'stres', 'lemah', 'takut', 'kecemasan'],
         arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ',
         latin: 'Allahumma inni a\'udzu bika minal-hammi wal-hazan, wal-ajzi wal-kasal... wa dhala\'id-dayni wa ghalabatir-rijal',
         meaning: 'Ya Allah, aku berlindung kepada-Mu dari kegelisahan, kesedihan, kelemahan, kemalasan, kekikiran, ketakutan, beban utang, dan tekanan orang.',
         source: 'HR. Bukhari 6369', grade: 'sahih', narrator: 'Anas bin Malik',
         benefit: 'Obat untuk kesehatan mental, semangat, dan kemandirian ekonomi.'
     },
+    {
+        category: ['rasul'], title: 'Doa Keteguhan Hati', condition: ['ragu', 'iman', 'keteguhan', 'konsisten'],
+        arabic: 'يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ',
+        latin: 'Ya muqallibal-qulub, tsabbit qalbi ala dinik',
+        meaning: 'Wahai Yang membolak-balikkan hati, teguhkanlah hatiku di atas agama-Mu.',
+        source: 'HR. At-Tirmidzi 3522', grade: 'hasan', narrator: 'Anas bin Malik',
+        benefit: 'Nabi ﷺ sendiri sering membacanya karena hati mudah berubah.'
+    },
+    {
+        category: ['rasul'], title: 'Doa Petunjuk & Takwa', condition: ['petunjuk', 'takwa', 'hidayah', 'kebenaran'],
+        arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى',
+        latin: 'Allahumma inni as-alukal-huda wat-tuqa wal-'afafa wal-ghina',
+        meaning: 'Ya Allah, aku memohon kepada-Mu petunjuk, ketakwaan, kehormatan diri, dan kekayaan hati.',
+        source: 'HR. Muslim 2721', grade: 'sahih', narrator: 'Abdullah bin Mas\'ud',
+        benefit: 'Empat kebutuhan pokok seorang mukmin dalam satu doa.'
+    },
+    {
+        category: ['rasul'], title: 'Doa Dalam Sujud', condition: ['sujud', 'shalat', 'dekat allah', 'permintaan'],
+        arabic: 'اللَّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ، دِقَّهُ وَجِلَّهُ، وَأَوَّلَهُ وَآخِرَهُ، وَعَلَانِيَتَهُ وَسِرَّهُ',
+        latin: 'Allahummaghfir li dzanbi kullahu, diqqahu wa jillahu, wa awwalahu wa akhirahu, wa 'alaniyatahu wa sirrah',
+        meaning: 'Ya Allah, ampunilah seluruh dosaku: yang kecil dan yang besar, yang awal dan yang akhir, yang terang-terangan dan yang tersembunyi.',
+        source: 'HR. Muslim 483', grade: 'sahih', narrator: 'Abu Hurairah',
+        benefit: 'Sujud adalah posisi terdekat hamba dengan Tuhannya.'
+    },
+    {
+        category: ['rasul'], title: 'Doa Sebelum Salam', condition: ['shalat', 'perlindungan', 'akhir shalat', 'tasyahud'],
+        arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ جَهَنَّمَ، وَمِنْ عَذَابِ الْقَبْرِ، وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ، وَمِنْ شَرِّ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ',
+        latin: 'Allahumma inni a\'udzu bika min \'adzabi jahannam, wa min \'adzabil-qabr, wa min fitnatil-mahya wal-mamat, wa min syarri fitnatil-masihid-dajjal',
+        meaning: 'Ya Allah, aku berlindung kepada-Mu dari azab Jahanam, azab kubur, fitnah kehidupan dan kematian, serta kejahatan fitnah Al-Masih Ad-Dajjal.',
+        source: 'HR. Bukhari 1377 & Muslim 588', grade: 'muttafaq', narrator: 'Abu Hurairah',
+        benefit: 'Diperintahkan dibaca pada tasyahud akhir setiap shalat.'
+    },
+    {
+        category: ['rasul'], title: 'Doa Takwa & Kesucian Jiwa', condition: ['tazkiyah', 'kesucian', 'jiwa', 'hati'],
+        arabic: 'اللَّهُمَّ آتِ نَفْسِي تَقْوَاهَا، وَزَكِّهَا أَنْتَ خَيْرُ مَنْ زَكَّاهَا، أَنْتَ وَلِيُّهَا وَمَوْلَاهَا',
+        latin: 'Allahumma ati nafsi taqwaha, wa zakkiha anta khayru man zakkaha, anta waliyyuha wa mawlaha',
+        meaning: 'Ya Allah, berikanlah ketakwaan pada jiwaku dan sucikanlah ia; Engkau sebaik-baik yang menyucikannya, Engkau pelindung dan penguasanya.',
+        source: 'HR. Muslim 2722', grade: 'sahih', narrator: 'Abu Hurairah',
+        benefit: 'Doa penyucian hati dari penyakit batin.'
+    },
+    {
+        category: ['rasul'], title: 'Doa Penjaga Nikmat', condition: ['nikmat', 'berkah', 'perlindungan', 'syukur'],
+        arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ، وَتَحَوُّلِ عَافِيَتِكَ، وَفُجَاءَةِ نِقْمَتِكَ، وَجَمِيعِ سَخَطِكَ',
+        latin: 'Allahumma inni a\'udzu bika min zawali ni\'matik, wa tahawwuli \'afiyatik, wa fuja\'ati niqmatik, wa jamii\'i sakhathik',
+        meaning: 'Ya Allah, aku berlindung kepada-Mu dari hilangnya nikmat-Mu, berubahnya kesehatan dari-Mu, datangnya siksa-Mu secara tiba-tiba, dan segala kemurkaan-Mu.',
+        source: 'HR. Muslim 2739', grade: 'sahih', narrator: 'Ibn Umar',
+        benefit: 'Doa saat hidup sedang lapang agar tidak tercabut.'
+    },
+    {
+        category: ['rasul'], title: 'Doa Istikharah', condition: ['pilihan', 'keputusan', 'istikharah', 'baik buruk'],
+        arabic: 'اللَّهُمَّ إِنِّي أَسْتَخِيرُكَ بِعِلْمِكَ، وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ، وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ',
+        latin: 'Allahumma inni astakhiruka bi\'ilmik, wa astaqdiruka biqudratik, wa as-aluka min fadhlikal-\'azhim...',
+        meaning: 'Ya Allah, aku memohon pilihan terbaik dengan ilmu-Mu, memohon kekuatan dengan kuasa-Mu, dan memohon karunia-Mu yang besar...',
+        source: 'HR. Al-Bukhari 1166', grade: 'sahih', narrator: 'Jabir bin Abdullah',
+        benefit: 'Dibaca setelah dua rakaat shalat sunnah saat ragu memutuskan; menyebut keperluannya pada bagian "urusan ini".'
+    },
+    {
+        category: ['rasul'], title: 'Doa Memulai Segala Sesuatu', condition: ['awal', 'memulai', 'bismillah', 'aktivitas'],
+        arabic: 'بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ',
+        latin: 'Bismillahilladzi la yadhurru ma\'asmihii syai\'un fil-ardhi wa la fis-sama\'i wa huwas-sami\'ul-\'alim',
+        meaning: 'Dengan nama Allah yang bersama nama-Nya tidak ada sesuatu pun di bumi maupun di langit yang dapat membahayakan; Dia Maha Mendengar, Maha Mengetahui.',
+        source: 'HR. Abu Dawud 5088 & At-Tirmidzi 3388', grade: 'sahih', narrator: 'Utsman bin Affan',
+        benefit: 'Dibaca 3× pagi dan petang: tidak ada yang membahayakannya.'
+    },
+    {
+        category: ['rasul'], title: 'Doa Ridha Kepada Allah', condition: ['ridha', 'islam', 'nabi', 'kepuasan'],
+        arabic: 'رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا',
+        latin: 'Radhitu billahi rabban, wa bil-islami dinan, wa bi-muhammadin shallallahu \'alaihi wa sallama nabiyyan',
+        meaning: 'Aku ridha Allah sebagai Tuhan, Islam sebagai agama, dan Muhammad ﷺ sebagai nabi.',
+        source: 'HR. Abu Dawud 5072 & At-Tirmidzi 3389', grade: 'hasan', narrator: 'Sa\'ad bin Abi Waqqash',
+        benefit: 'Allah berjanji meridhainya pada hari kiamat.'
+    },
+    {
+        category: ['rasul'], title: 'Doa Setelah Wudu', condition: ['wudu', 'bersuci', 'syahadat', 'kesucian'],
+        arabic: 'أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ',
+        latin: 'Asyhadu an la ilaha illallahu wahdahu la syarika lah, wa asyhadu anna muhammadan \'abduhu wa rasuluh',
+        meaning: 'Aku bersaksi tiada tuhan selain Allah semata, tiada sekutu bagi-Nya, dan aku bersaksi Muhammad adalah hamba dan rasul-Nya.',
+        source: 'HR. Muslim 234 & At-Tirmidzi 55', grade: 'sahih', narrator: 'Uqbah bin Amir',
+        benefit: '"Delapan pintu surga dibuka baginya, ia masuk dari pintu mana saja yang ia kehendaki."'
+    },
+    {
+        category: ['rasul'], title: 'Doa Masuk Masjid', condition: ['masjid', 'masuk', 'rahmat', 'tempat ibadah'],
+        arabic: 'اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ',
+        latin: 'Allahummaftah li abwaba rahmatik',
+        meaning: 'Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu.',
+        source: 'HR. Muslim 713', grade: 'sahih', narrator: 'Abu Humaid / Abu Usaid',
+        benefit: 'Rahmat di dalam masjid, karunia saat kembali bekerja.'
+    },
+    {
+        category: ['rasul'], title: 'Doa Keluar Masjid', condition: ['masjid', 'keluar', 'karunia', 'berkah'],
+        arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ',
+        latin: 'Allahumma inni as-aluka min fadhlik',
+        meaning: 'Ya Allah, aku memohon karunia-Mu.',
+        source: 'HR. Muslim 713', grade: 'sahih', narrator: 'Abu Humaid / Abu Usaid',
+        benefit: 'Karunia saat kembali bekerja setelah beribadah.'
+    },
     
-    // === PENJAGA MALAM ===
+    // === PENJAGA MALAM (5 Doa) ===
     {
-        category: ['malam', 'rasul'], title: 'Ayat Kursi Sebelum Tidur', condition: ['tidur', 'malam', 'perlindungan', 'takut'],
-        arabic: 'اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ... (QS. Al-Baqarah: 255)',
-        latin: 'Allahu la ilaha illa huwal-hayyul-qayyum...',
-        meaning: 'Allah, tiada tuhan selain Dia, Yang Maha Hidup lagi terus-menerus mengurus makhluk-Nya... (Baca ayat penuh)',
-        source: 'HR. Bukhari', grade: 'sahih', narrator: 'Abu Hurairah',
-        benefit: 'Akan selalu ada penjaga dari Allah, dan setan tidak akan mendekatimu sampai pagi.'
+        category: ['malam', 'rasul'], title: 'Ayat Kursi Sebelum Tidur', condition: ['tidur', 'malam', 'perlindungan', 'takut', 'setan'],
+        arabic: 'اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ',
+        latin: 'Allahu la ilaha illa huwal-hayyul-qayyum, la ta\'khuzuhu sinatuw wa la nawm, lahu ma fis-samawati wa ma fil-ardh...',
+        meaning: 'Allah, tiada tuhan selain Dia, Yang Maha Hidup lagi terus-menerus mengurus makhluk-Nya. Dia tidak dilanda kantuk dan tidak tidur. Milik-Nya apa yang di langit dan di bumi...',
+        source: 'QS. Al-Baqarah: 255', grade: 'sahih', narrator: 'Abu Hurairah',
+        benefit: 'Dalam hadis Abu Hurairah (HR. al-Bukhari, Kitab al-Wakalah): "Akan selalu ada penjaga dari Allah, dan setan tidak mendekatimu sampai pagi."'
     },
     {
-        category: ['malam', 'rasul'], title: '2 Ayat Terakhir Al-Baqarah', condition: ['tidur', 'malam', 'cukup'],
-        arabic: 'آمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ... (QS. Al-Baqarah: 285-286)',
-        latin: 'Amanar-rasulu bima unzila ilaihi...',
-        meaning: 'Rasul telah beriman kepada Al-Qur\'an yang diturunkan kepadanya dari Tuhannya... (Baca ayat penuh)',
-        source: 'HR. Bukhari & Muslim', grade: 'muttafaq', narrator: 'Abu Mas\'ud',
-        benefit: '"Barangsiapa membaca dua ayat terakhir Al-Baqarah pada malam hari, keduanya mencukupinya."'
+        category: ['malam', 'rasul'], title: 'Dua Ayat Terakhir Al-Baqarah', condition: ['tidur', 'malam', 'perlindungan', 'cukup', 'keamanan'],
+        arabic: 'آمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِنْ رَبِّهِ وَالْمُؤْمِنُونَ كُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِنْ رُسُلِهِ وَقَالُوا سَمِعْنَا وَأَطَعْنَا غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ ۝ لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَسِينَا أَوْ أَخْطَأْنَا رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِنْ قَبْلِنَا رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا أَنْتَ مَوْلَانَا فَانْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ',
+        latin: 'Amanar-rasulu bima unzila ilaihi mir rabbihil-wal-mu\'minun, kullun amana billahi wa mala\'ikatihi wa kutubihi wa rusulihi...',
+        meaning: 'Rasul dan orang-orang beriman membenarkan apa yang diturunkan kepadanya dari Tuhannya. Masing-masing beriman kepada Allah, malaikat-Nya, kitab-kitab-Nya, dan rasul-rasul-Nya...',
+        source: 'QS. Al-Baqarah: 285-286', grade: 'muttafaq', narrator: 'Abu Mas\'ud al-Anshari',
+        benefit: '"Barangsiapa membaca dua ayat terakhir Al-Baqarah pada malam hari, keduanya mencukupinya." (HR. al-Bukhari & Muslim)'
     },
     {
-        category: ['malam', 'rasul'], title: 'Doa Tidur', condition: ['tidur', 'serah diri'],
+        category: ['malam', 'rasul'], title: 'Doa Tidur', condition: ['tidur', 'serah diri', 'mati hidup', 'pasrah'],
         arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',
         latin: 'Bismika-llahumma amutu wa ahya',
         meaning: 'Dengan nama-Mu ya Allah, aku mati dan aku hidup.',
         source: 'HR. Bukhari', grade: 'sahih', narrator: 'Hudzaifah',
         benefit: 'Mengingat bahwa tidur adalah kematian kecil dan bangun adalah kebangkitan.'
     },
-
-    // === HARIAN ===
     {
-        category: ['harian'], title: 'Doa Masuk Rumah', condition: ['masuk rumah', 'pulang'],
+        category: ['malam', 'rasul'], title: 'Doa Berbaring', condition: ['tidur', 'berbaring', 'sisi kanan', 'istirahat'],
+        arabic: 'بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي وَبِكَ أَرْفَعُهُ، إِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ',
+        latin: 'Bismika rabbi wadha\'tu janbi wa bika arfa\'uh, in amsakta nafsi farhamha, wa in arsaltaha fahfazhha bima tahfazhu bihi \'ibadakas-shalihin',
+        meaning: 'Dengan nama-Mu, ya Tuhanku, aku letakkan lambungku dan dengan-Mu aku mengangkatnya. Jika Engkau menahan jiwaku, sayangilah ia; jika Engkau melepaskannya, peliharalah ia sebagaimana Engkau memelihara hamba-hamba-Mu yang saleh.',
+        source: 'HR. Bukhari & Muslim', grade: 'muttafaq', narrator: 'Abu Hurairah',
+        benefit: 'Doa menyerahkan tidur dan bangun kepada Allah.'
+    },
+    {
+        category: ['malam', 'rasul'], title: 'Tasbih Sebelum Tidur', condition: ['tidur', 'tasbih', 'tahmid', 'takbir'],
+        arabic: 'سُبْحَانَ اللَّهِ ×٣٣، الْحَمْدُ لِلَّهِ ×٣٣، اللَّهُ أَكْبَرُ ×٣٤',
+        latin: 'Subhanallah ×33, al-hamdulillah ×33, Allahu akbar ×34',
+        meaning: 'Maha Suci Allah (33×), segala puji bagi Allah (33×), Allah Maha Besar (34×).',
+        source: 'HR. Bukhari & Muslim', grade: 'muttafaq', narrator: 'Ali bin Abi Thalib',
+        benefit: 'Nabi ﷺ kepada Fatimah & Ali: "Ini lebih baik bagi kalian daripada seorang pembantu."'
+    },
+    
+    // === HARIAN (10 Doa) ===
+    {
+        category: ['harian'], title: 'Doa Keluar Rumah', condition: ['keluar rumah', 'pergi', 'aktivitas', 'perlindungan'],
+        arabic: 'بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',
+        latin: 'Bismillah, tawakkaltu \'alallah, wa la hawla wa la quwwata illa billah',
+        meaning: 'Dengan nama Allah, aku bertawakal kepada Allah; tiada daya dan kekuatan kecuali dengan Allah.',
+        source: 'HR. Abu Dawud 5095 & At-Tirmidzi 3426', grade: 'sahih', narrator: 'Anas bin Malik',
+        benefit: 'Dikatakan kepadanya: "Engkau telah diberi petunjuk, dicukupi, dan dilindungi", lalu setan menjauh.'
+    },
+    {
+        category: ['harian'], title: 'Doa Masuk Rumah', condition: ['masuk rumah', 'pulang', 'berkah', 'kedamaian'],
         arabic: 'بِسْمِ اللَّهِ وَلَجْنَا، وَبِسْمِ اللَّهِ خَرَجْنَا، وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا',
         latin: 'Bismillahi walajna, wa bismillahi kharajna, wa \'alallah rabbina tawakkalna',
         meaning: 'Dengan nama Allah kami masuk, dengan nama Allah kami keluar, dan kepada Allah Tuhan kami bertawakkal.',
-        source: 'HR. Abu Dawud', grade: 'sahih', benefit: 'Membawa keberkahan dan perlindungan saat memasuki rumah.'
+        source: 'HR. Abu Dawud', grade: 'sahih', narrator: 'Anas bin Malik',
+        benefit: 'Membawa keberkahan dan perlindungan saat memasuki rumah.'
     },
     {
-        category: ['harian'], title: 'Doa Setelah Makan', condition: ['makan', 'syukur'],
-        arabic: 'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مِنَ الْمُسْلِمِينَ',
-        latin: 'Alhamdulillahilladzi ath\'amana wa saqana wa ja\'alana minal-muslimin',
-        meaning: 'Segala puji bagi Allah yang memberi makan dan minum kepada kami, dan menjadikan kami termasuk orang Muslim.',
-        source: 'HR. Abu Dawud', grade: 'hasan', benefit: 'Bentuk syukur atas rezeki yang diberikan.'
+        category: ['harian'], title: 'Doa Masuk Kamar Kecil', condition: ['toilet', 'kamar kecil', 'perlindungan', 'setan'],
+        arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ',
+        latin: 'Allahumma inni a\'udzu bika minal-khubutsi wal-khabaits',
+        meaning: 'Ya Allah, aku berlindung kepada-Mu dari setan laki-laki dan setan perempuan.',
+        source: 'HR. Al-Bukhari 142 & Muslim 375', grade: 'muttafaq', narrator: 'Anas bin Malik',
+        benefit: 'Perlindungan di tempat yang tidak dibacakan dzikir.'
     },
     {
-        category: ['harian'], title: 'Doa Kesembuhan', condition: ['sakit', 'obat', 'sembuh'],
+        category: ['harian'], title: 'Doa Keluar Kamar Kecil', condition: ['toilet', 'kamar kecil', 'keluar', 'ampunan'],
+        arabic: 'غُفْرَانَكَ',
+        latin: 'Ghufranak',
+        meaning: 'Aku memohon ampunan-Mu.',
+        source: 'HR. Abu Dawud 30 & At-Tirmidzi 7', grade: 'sahih', narrator: 'Aisyah',
+        benefit: 'Adab keluar dari tempat najis.'
+    },
+    {
+        category: ['harian'], title: 'Doa Sebelum Makan', condition: ['makan', 'berkah', 'bismillah', 'rezeki'],
+        arabic: 'بِسْمِ اللَّهِ',
+        latin: 'Bismillah',
+        meaning: 'Dengan nama Allah.',
+        source: 'HR. Al-Bukhari 5376 & Abu Dawud 3767', grade: 'sahih', narrator: 'Ibn Abbas / Aisyah',
+        benefit: 'Menutup celah setan ikut makan.'
+    },
+    {
+        category: ['harian'], title: 'Doa Setelah Makan', condition: ['makan', 'syukur', 'rezeki', 'terima kasih'],
+        arabic: 'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ',
+        latin: 'Alhamdulillahilladzi ath\'amani hadza wa razaqanihi min ghairi haulin minni wa la quwwah',
+        meaning: 'Segala puji bagi Allah yang memberi makan ini kepadaku dan merezekikannya tanpa daya dan kekuatan dariku.',
+        source: 'HR. Abu Dawud 4023 & At-Tirmidzi 3458', grade: 'hasan', narrator: 'Mu\'adz bin Anas',
+        benefit: '"Diampuni dosanya yang telah lalu."'
+    },
+    {
+        category: ['harian'], title: 'Doa Bersin', condition: ['bersin', 'etika', 'sosial', 'doa sesama'],
+        arabic: 'الْحَمْدُ لِلَّهِ — يَرْحَمُكَ اللَّهُ — يَهْدِيكُمُ اللَّهُ وَيُصْلِحُ بَالَكُمْ',
+        latin: 'Al-hamdulillah — Yarhamukallah — Yahdikumullahu wa yushlihu balakum',
+        meaning: 'Yang bersin: "Segala puji bagi Allah." Yang mendengar: "Semoga Allah menyayangimu." Yang bersin menjawab: "Semoga Allah memberi kalian petunjuk dan memperbaiki keadaan kalian."',
+        source: 'HR. Al-Bukhari 6224', grade: 'sahih', narrator: 'Abu Hurairah',
+        benefit: 'Hak sesama muslim yang disebut Nabi ﷺ.'
+    },
+    {
+        category: ['harian'], title: 'Doa Saat Marah', condition: ['marah', 'emosi', 'kontrol diri', 'tenang'],
+        arabic: 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ',
+        latin: 'A\'udzu billahi minasy-syaitanir-rajim',
+        meaning: 'Aku berlindung kepada Allah dari setan yang terkutuk.',
+        source: 'HR. Al-Bukhari 3282 & Muslim 2610', grade: 'muttafaq', narrator: 'Sulaiman bin Shurad',
+        benefit: '"Jika ia mengucapkannya, hilanglah apa yang ia rasakan (amarahnya)."'
+    },
+    {
+        category: ['harian'], title: 'Doa Saat Musibah', condition: ['musibah', 'ujian', 'sabar', 'kehilangan'],
+        arabic: 'إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ، اللَّهُمَّ أْجُرْنِي فِي مُصِيبَتِي وَأَخْلِفْ لِي خَيْرًا مِنْهَا',
+        latin: 'Inna lillahi wa inna ilaihi raji\'un, Allahumma\'jurni fi mushibati wa akhlif li khairan minha',
+        meaning: 'Sungguh kami milik Allah dan kepada-Nya kami kembali. Ya Allah, berilah aku pahala dalam musibahku dan gantikanlah dengan yang lebih baik.',
+        source: 'HR. Muslim 918', grade: 'sahih', narrator: 'Ummu Salamah',
+        benefit: 'Ummu Salamah: setelah suaminya wafat, Allah mengganti dengan Rasulullah ﷺ sebagai suami.'
+    },
+    {
+        category: ['harian'], title: 'Doa Penutup Majelis', condition: ['majelis', 'pertemuan', 'rapat', 'penutup'],
+        arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ',
+        latin: 'Subhanaka-llahumma wa bihamdik, asyhadu an la ilaha illa anta, astaghfiruka wa atubu ilayk',
+        meaning: 'Maha Suci Engkau, ya Allah, dan segala puji bagi-Mu. Aku bersaksi tiada tuhan selain Engkau; aku memohon ampun dan bertaubat kepada-Mu.',
+        source: 'HR. At-Tirmidzi 3433', grade: 'sahih', narrator: 'Abu Hurairah',
+        benefit: '"Ia menjadi penghapus (kesalahan) yang terjadi dalam majelis itu."'
+    },
+    
+    // === KESEHATAN (5 Doa) ===
+    {
+        category: ['kesehatan'], title: 'Doa Kesembuhan', condition: ['sakit', 'obat', 'sembuh', 'penyakit'],
         arabic: 'اللَّهُمَّ رَبَّ النَّاسِ، أَذْهِبِ الْبَأْسَ، اشْفِ أَنْتَ الشَّافِي، لَا شَافِيَ إِلَّا أَنْتَ، شِفَاءً لَا يُغَادِرُ سَقَمًا',
         latin: 'Allahumma rabban-nas, adzhibil-ba\'sa, isyfi antasy-syafi, la syafiya illa anta, syifa\'an la yughadiru saqaman',
         meaning: 'Ya Allah, Tuhan manusia, hilangkanlah penyakit ini. Sembuhkanlah, Engkau Yang Maha Menyembuhkan, tiada penyembuh selain Engkau, kesembuhan yang tidak meninggalkan penyakit.',
-        source: 'HR. Bukhari & Muslim', grade: 'muttafaq', narrator: 'Aisyah', benefit: 'Doa ruqyah yang diajarkan langsung oleh Nabi .'
+        source: 'HR. Al-Bukhari 5743 & Muslim 2191', grade: 'muttafaq', narrator: 'Aisyah',
+        benefit: 'Nabi ﷺ membacakannya sambil mengusap orang yang sakit.'
+    },
+    {
+        category: ['kesehatan'], title: 'Doa Untuk Orang Sakit', condition: ['sakit', 'doakan', 'jenguk', 'kesembuhan'],
+        arabic: 'أَسْأَلُ اللَّهَ الْعَظِيمَ رَبَّ الْعَرْشِ الْعَظِيمِ أَنْ يَشْفِيَكَ',
+        latin: 'As\'alullahal-\'azhim, rabbal-\'arsyil-\'azhim, an yasyfiyaka',
+        meaning: 'Aku memohon kepada Allah Yang Maha Agung, Tuhan \'Arsy yang agung, agar menyembuhkanmu.',
+        source: 'HR. Abu Dawud 3106 & At-Tirmidzi 2083', grade: 'sahih', narrator: 'Ibn Abbas',
+        benefit: '"Tidak ada muslim yang ajal belum tiba, lalu didoakan tujuh kali, kecuali ia disembuhkan."'
+    },
+    {
+        category: ['kesehatan'], title: 'Doa Saat Mimpi Buruk', condition: ['mimpi buruk', 'takut', 'malam', 'perlindungan'],
+        arabic: 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ',
+        latin: 'A\'udzu billahi minasy-syaitanir-rajim',
+        meaning: 'Aku berlindung kepada Allah dari setan yang terkutuk.',
+        source: 'HR. Muslim 2261-2262', grade: 'sahih', narrator: 'Abu Qatadah / Jabir',
+        benefit: 'Nabi ﷺ: mimpi buruk tidak akan membahayakannya.'
+    },
+    {
+        category: ['kesehatan'], title: 'Doa Gelisah & Nyeri', condition: ['gelisah', 'nyeri', 'sakit', 'kecemasan'],
+        arabic: 'بِسْمِ اللَّهِ ×٣ — أَعُوذُ بِاللَّهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا أَجِدُ وَأُحَاذِرُ ×٧',
+        latin: 'Bismillah ×3 — A\'udzu billahi wa qudratihi min syarri ma ajidu wa uhaziru ×7',
+        meaning: 'Dengan nama Allah (3×). Aku berlindung kepada Allah dan kuasa-Nya dari keburukan yang aku rasakan dan yang aku khawatirkan (7×, sambil menempelkan tangan pada bagian yang sakit).',
+        source: 'HR. Muslim 2202', grade: 'sahih', narrator: 'Utsman bin Abil \'Ash',
+        benefit: 'Utsman bin Abil \'Ash disembuhkan dari nyeri yang lama mengganggunya.'
+    },
+    {
+        category: ['kesehatan'], title: 'Doa Saat Hujan', condition: ['hujan', 'rezeki', 'berkah', 'turun hujan'],
+        arabic: 'اللَّهُمَّ صَيِّبًا نَافِعًا',
+        latin: 'Allahumma shayyiban nafi\'a',
+        meaning: 'Ya Allah, jadikanlah ia hujan yang bermanfaat.',
+        source: 'HR. Al-Bukhari 1032', grade: 'sahih', narrator: 'Aisyah',
+        benefit: 'Waktu hujan termasuk saat doa dikabulkan.'
+    },
+    
+    // === REZEKI & USAHA (5 Doa) ===
+    {
+        category: ['rezeki'], title: 'Doa Pelunasan Utang', condition: ['utang', 'hutang', 'lunas', 'bebas'],
+        arabic: 'اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ',
+        latin: 'Allahummakfini bihalalika \'an haramik, wa aghnini bifadhlika \'amman siwak',
+        meaning: 'Ya Allah, cukupkanlah aku dengan yang halal dari-Mu sehingga aku tak butuh yang haram, dan kayakanlah aku dengan karunia-Mu sehingga aku tak bergantung kepada selain-Mu.',
+        source: 'HR. At-Tirmidzi 3563', grade: 'hasan', narrator: 'Ali bin Abi Thalib',
+        benefit: 'Nabi : seandainya utangmu sebesar gunung, Allah akan melunasinya untukmu.'
+    },
+    {
+        category: ['rezeki'], title: 'Doa Naik Kendaraan', condition: ['kendaraan', 'transportasi', 'perjalanan', 'mobil'],
+        arabic: 'سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ',
+        latin: 'Subhanalladzi sakhkhara lana hadza wa ma kunna lahu muqrinin, wa inna ila rabbina lamunqalibun',
+        meaning: 'Maha Suci Dia yang menundukkan ini bagi kami, sedang kami tidak mampu menguasainya; dan sungguh kepada Tuhan kami kami akan kembali.',
+        source: 'HR. Abu Dawud 2602 & At-Tirmidzi 3446', grade: 'sahih', narrator: 'Ibn Umar',
+        benefit: 'Nabi ﷺ membacanya saat menaik kendaraan (lihat juga QS Az-Zukhruf 13-14).'
+    },
+    {
+        category: ['rezeki'], title: 'Doa Perjalanan', condition: ['safar', 'perjalanan', 'jauh', 'liburan'],
+        arabic: 'اللَّهُمَّ إِنَّا نَسْأَلُكَ فِي سَفَرِنَا هَذَا الْبِرَّ وَالتَّقْوَى وَمِنَ الْعَمَلِ مَا تَرْضَى، اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا وَاطْوِ عَنَّا بُعْدَهُ',
+        latin: 'Allahumma inna nas-aluka fi safarina hadzal-birra wat-taqwa wa minal-\'amali ma tarda, Allahumma hawwin \'alayna safarana hadza wathwi \'anna bu\'dah',
+        meaning: 'Ya Allah, kami memohon dalam perjalanan ini kebaikan, ketakwaan, dan amal yang Engkau ridhai. Ya Allah, mudahkanlah perjalanan kami dan dekatkanlah yang jauh.',
+        source: 'HR. Muslim 1342', grade: 'sahih', narrator: 'Ibn Umar',
+        benefit: 'Doa safar yang menjaga niat sekaligus keluarga yang ditinggalkan.'
+    },
+    {
+        category: ['rezeki'], title: 'Doa Pulang Perjalanan', condition: ['pulang', 'kembali', 'sampai', 'tiba'],
+        arabic: 'آيِبُونَ تَائِبُونَ عَابِدُونَ لِرَبِّنَا حَامِدُونَ',
+        latin: 'Ayibuna ta\'ibuna \'abiduna lirabbina hamidun',
+        meaning: 'Kami kembali, bertaubat, beribadah, dan memuji Tuhan kami.',
+        source: 'HR. Muslim 1344', grade: 'sahih', narrator: 'Abu Hurairah',
+        benefit: 'Nabi ﷺ mengucapkannya saat pulang dari perjalanan.'
+    },
+    {
+        category: ['rezeki'], title: 'Doa Berbuka Puasa', condition: ['puasa', 'buka', 'iftar', 'ramadhan'],
+        arabic: 'ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الْأَجْرُ إِنْ شَاءَ اللَّهُ',
+        latin: 'Dzahabazh-zhama\'u wabtallatil-\'uruqu wa tsabatal-ajru insya\'allah',
+        meaning: 'Telah hilang rasa haus, urat-urat telah basah, dan pahala telah tetap, insya Allah.',
+        source: 'HR. Abu Dawud 2357', grade: 'hasan', narrator: 'Ibn Umar',
+        benefit: 'Riwayat yang lebih kuat daripada redaksi "Allahumma laka shumtu…" yang lemah.'
+    },
+    
+    // === KELUARGA (5 Doa) ===
+    {
+        category: ['keluarga'], title: 'Doa Untuk Kedua Orang Tua', condition: ['orang tua', 'ibu', 'bapak', 'berbakti'],
+        arabic: 'رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا',
+        latin: 'Rabbirhamhuma kama rabbayani shaghira',
+        meaning: 'Ya Tuhanku, sayangilah keduanya sebagaimana mereka telah mendidik aku waktu kecil.',
+        source: 'QS. Al-Isra: 24', grade: 'sahih', benefit: 'Perintah langsung setelah larangan berkata "ah" kepada orang tua.'
+    },
+    {
+        category: ['keluarga'], title: 'Doa Pasangan & Keturunan', condition: ['pasangan', 'istri', 'suami', 'anak', 'keluarga'],
+        arabic: 'رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا',
+        latin: 'Rabbana hab lana min azwajina wa dzurriyyatina qurrata a\'yunin waj\'alna lil-muttaqina imama',
+        meaning: 'Ya Tuhan kami, jadikanlah pasangan dan keturunan kami penyejuk mata, dan jadikanlah kami pemimpin bagi orang-orang yang bertakwa.',
+        source: 'QS. Al-Furqan: 74', grade: 'sahih', benefit: 'Ciri hamba Rahman: peduli keselamatan keluarga, bukan hanya diri.'
+    },
+    {
+        category: ['keluarga'], title: 'Doa Takziah', condition: ['kematian', 'duka', 'belasungkawa', 'hiburan'],
+        arabic: 'إِنَّ لِلَّهِ مَا أَخَذَ، وَلَهُ مَا أَعْطَى، وَكُلُّ شَيْءٍ عِنْدَهُ بِأَجَلٍ مُسَمًّى، فَلْتَصْبِرْ وَلْتَحْتَسِبْ',
+        latin: 'Inna lillahi ma akhadza, wa lahu ma a\'tha, wa kullu syai\'in \'indahu bi-ajalin musamma, faltashbir waltahtasib',
+        meaning: 'Sungguh milik Allah apa yang Dia ambil dan milik-Nya apa yang Dia berikan; segala sesuatu di sisi-Nya punya waktu yang ditetapkan. Maka bersabarlah dan harapkanlah pahala.',
+        source: 'HR. Al-Bukhari 1284 & Muslim 923', grade: 'muttafaq', narrator: 'Usamah bin Zaid',
+        benefit: 'Pesan Nabi ﷺ saat putri beliau kehilangan anaknya.'
+    },
+    {
+        category: ['keluarga'], title: 'Doa Talbiyah Haji & Umrah', condition: ['haji', 'umrah', 'talbiyah', 'ibadah'],
+        arabic: 'لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ',
+        latin: 'Labbayka-llahumma labbayk, labbayka la syarika laka labbayk, innal-hamda wan-ni\'mata laka wal-mulk, la syarika lak',
+        meaning: 'Aku memenuhi panggilan-Mu, ya Allah, aku memenuhi panggilan-Mu. Tiada sekutu bagi-Mu, aku memenuhi panggilan-Mu. Sungguh pujian, nikmat, dan kerajaan adalah milik-Mu; tiada sekutu bagi-Mu.',
+        source: 'HR. Al-Bukhari 1549 & Muslim 1184', grade: 'muttafaq', narrator: 'Ibn Umar',
+        benefit: 'Kalimat yang Nabi ﷺ terus ucapkan sepanjang ihram.'
+    },
+    {
+        category: ['keluarga'], title: 'Doa Setelah Adzan', condition: ['adzan', 'shalat', 'wasilah', 'syafaat'],
+        arabic: 'اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ، وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ',
+        latin: 'Allahumma rabba hadzihid-da\'watit-tammah wash-shalatil-qaimah, ati muhammadanil-wasilata wal-fadhilah, wab\'atshu maqaman mahmudanil-ladzi wa\'adtah',
+        meaning: 'Ya Allah, Tuhan panggilan yang sempurna dan shalat yang didirikan, berikanlah kepada Muhammad kedudukan wasilah dan keutamaan, dan angkatlah dia ke tempat terpuji yang Engkau janjikan.',
+        source: 'HR. Al-Bukhari 614', grade: 'sahih', narrator: 'Jabir bin Abdullah',
+        benefit: '"Siapa membacanya setelah adzan, ia berhak mendapat syafaatku pada hari kiamat."'
     }
 ];
 
@@ -341,7 +712,7 @@ function renderDoas() {
                 <button class="btn-action ${isFav ? 'active' : ''}" onclick="toggleFav('${d.title.replace(/'/g, "\\'")}', this)">
                     ${isFav ? '★ Tersimpan' : '☆ Simpan'}
                 </button>
-                <button class="btn-action" onclick="shareDoa('${d.title.replace(/'/g, "\\'")}')">📤 Share</button>
+                <button class="btn-action" onclick="shareDoa('${d.title.replace(/'/g, "\\'")}')"> Share</button>
             </div>
         `;
         list.appendChild(card);
@@ -366,7 +737,7 @@ function copyDoa(title) {
     const d = DOA_DATA.find(x => x.title === title);
     if (!d) return;
     const text = `${d.title}\n\n${d.arabic}\n\n${d.meaning}\n\n(${d.source})`;
-    navigator.clipboard.writeText(text).then(() => alert('Doa tersalin! ✓'));
+    navigator.clipboard.writeText(text).then(() => showToast('Doa tersalin! ✓', 'gold'));
 }
 
 function shareDoa(title) {
@@ -376,6 +747,18 @@ function shareDoa(title) {
     } else {
         copyDoa(title);
     }
+}
+
+function showToast(msg, type) {
+    // Simple toast implementation
+    const toast = document.createElement('div');
+    toast.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);background:${type==='gold'?'linear-gradient(120deg,var(--gold),var(--gold-deep))':'linear-gradient(120deg,var(--rose-deep),#8f4f5b)'};color:${type==='gold'?'#241a0c':'#fff'};padding:12px 24px;border-radius:12px;font-weight:700;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:slideIn 0.3s ease;`;
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
 }
 
 /* --- FUNGSI MOOD --- */
@@ -438,7 +821,7 @@ function toggleHafalan(idx, el) {
     el.querySelector('div div').style.color = next === 'hafal' ? 'var(--gold)' : (next === 'proses' ? 'var(--rose)' : '#888');
     el.style.background = next === 'hafal' ? 'rgba(229,199,134,0.1)' : (next === 'proses' ? 'rgba(212,165,165,0.1)' : '');
     
-    if(next === 'hafal' && current !== 'hafal') alert('+25 XP! Hafalan bertambah! ');
+    if(next === 'hafal' && current !== 'hafal') showToast('+25 XP! Hafalan bertambah! ', 'gold');
 }
 
 /* --- FUNGSI SURAH & AUDIO --- */
@@ -526,14 +909,14 @@ function playAyah(surah, ayah, btn) {
         return;
     }
 
-    btn.textContent = '⏸';
+    btn.textContent = '';
     btn.classList.add('playing');
     
     // URL Audio (Server8 MP3 Quran)
     const url = `https://server8.mp3quran.net/afs/${String(surah).padStart(3,'0')}/${String(ayah).padStart(3,'0')}.mp3`;
     
     currentAudio = new Audio(url);
-    currentAudio.play().catch(e => { alert('Gagal memutar audio'); btn.textContent = '▶'; btn.classList.remove('playing'); });
+    currentAudio.play().catch(e => { showToast('Gagal memutar audio', 'error'); btn.textContent = '▶'; btn.classList.remove('playing'); });
     
     currentAudio.onended = () => {
         btn.textContent = '▶';
