@@ -1,4 +1,4 @@
-/* NYALA app.js — VERSI STABIL (FIXED) */
+/* NYALA app.js — VERSI STABIL FINAL (FIXED SYNTAX) */
 (function(){
 'use strict';
 var deferredPrompt=null;
@@ -63,7 +63,7 @@ var notes=[523.25,659.25,783.99],t0=audioCtx.currentTime;
 notes.forEach(function(f,i){
 var o=audioCtx.createOscillator(),g=audioCtx.createGain();
 o.type='sine';o.frequency.value=f;
-// FIXED: Operator perkalian (*) ditambahkan
+// FIXED: Operator perkalian (*) ditambahkan kembali
 g.gain.setValueAtTime(0.0001,t0+i*0.11);
 g.gain.exponentialRampToValueAtTime(0.16,t0+i*0.11+0.02);
 g.gain.exponentialRampToValueAtTime(0.0001,t0+i*0.11+0.45);
@@ -94,7 +94,7 @@ if(!ctxC)ctxC=cfx.getContext('2d');
 for(var i=0;i<n;i++){
 parts.push({
 x:x!=null?x:Math.random()*cfx.width,
-// FIXED: Operator perkalian (*) ditambahkan
+// FIXED: Operator perkalian (*) ditambahkan kembali
 y:y!=null?y:Math.random()*cfx.height*0.3,
 vx:(Math.random()-0.5)*7,
 vy:Math.random()-4-1,
@@ -167,7 +167,7 @@ return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;
 }
 function sunPos(jd){
 var D=jd-2451545.0;
-// FIXED: Operator perkalian (*) ditambahkan
+// FIXED: Operator perkalian (*) ditambahkan kembali
 var g=rad(fixA(357.529+0.98560028*D));
 var q=fixA(280.459+0.98564736*D);
 var L=rad(fixA(q+1.915*Math.sin(g)+0.020*Math.sin(2*g)));
@@ -356,7 +356,7 @@ var bt=$('batTxt');if(bt)bt.textContent=m.pct+'% · '+m.label;
 var hb=$('hypeBubble');if(hb){hb.textContent='💬 '+line;hb.classList.add('show');}
 if(first){touchStreak();addXP(5,'Check-in mood dulu ☺️');}
 }
-var SUGGESTIONS=['💧 Minum segelas air','🧹 Rapikan meja 2 menit','📖 Baca 1 halaman buku','💬 Balas 1 chat tertunda','🙆 Stretching ringan'];
+var SUGGESTIONS=['💧 Minum segelas air','🧹 Rapikan meja 2 menit','📖 Baca 1 halaman buku','💬 Balas 1 chat tertunda',' Stretching ringan'];
 function getTasks(){var k=todayKey();if(!state.tasks[k])state.tasks[k]={items:[]};return state.tasks[k].items;}
 function addTask(text,pri){
 text=(text||'').trim();if(!text){toast('Tulis dulu tugasnya ya ✍️');return false;}
@@ -443,7 +443,7 @@ function attachGrip(li,t){
 var grip=li.querySelector('.t-grip');
 if(!grip)return;
 var pid=null,timer=null,startX=0,startY=0,dragging=false;
-// FIXED: Typo 'func tion' diperbaiki menjadi 'function', '&&' diperbaiki
+// FIXED: Typo 'func tion' diperbaiki menjadi 'function'
 grip.addEventListener('pointerdown',function(e){
 if(e.pointerType==='mouse' && e.button!==0)return;
 pid=e.pointerId;startX=e.clientX;startY=e.clientY;dragging=false;
@@ -490,7 +490,7 @@ if(t.done){
 chime();var r=btn.getBoundingClientRect();
 burst(36,r.left+r.width/2,r.top);
 touchStreak();state.totals.done++;save();
-addXP(t.pri?25:15,t.pri?'Prioritas beres! 🌟':'Satu tugas tumbang!');
+addXP(t.pri?25:15,t.pri?'Prioritas beres! ':'Satu tugas tumbang!');
 }
 renderTasks();renderScore();renderGarden();renderHistory();renderReport();
 }
@@ -537,7 +537,7 @@ if(pct>=0.7&&!state.consistency.rewarded[pk]){
 state.consistency.rewarded[pk]=true;
 state.consistency.days=(state.consistency.days||0)+1;
 save();
-setTimeout(function(){addXP(25,'Hari konsisten: ≥70% tugas beres! 🔥');},1200);
+setTimeout(function(){addXP(25,'Hari konsisten: ≥70% tugas beres! ');},1200);
 }
 }
 function renderHistory(){
@@ -746,7 +746,6 @@ x.fillStyle='#f0dcdd';x.font='600 52px "Caveat", cursive';
 var qi=(lastQuote>=0?lastQuote:0);
 var qsrc=QUOTES[qi].q;
 // FIXED: Menghapus referensi ke window.__nyalaT agar tidak error jika i18n.js belum dimuat/dihapus
-// if(window.__nyalaT && window.__nyalaLang==='en'){qsrc=window.__nyalaT(qsrc,'en');}
 var lines=wrapText(x,qsrc,W/2,1560,860,70);
 x.fillStyle='#e5c786';x.font='700 30px "Plus Jakarta Sans", sans-serif';
 x.fillText('— '+QUOTES[qi].b,W/2,1560+lines*70+30);
@@ -842,7 +841,7 @@ document.querySelectorAll('.mode-chip').forEach(function(b){b.classList.toggle('
 var sb2=$('startBtn');if(sb2)sb2.textContent='⏸ Jeda';
 tTimer=setInterval(tickTimer,1000);
 renderTimer();
-toast('️ Timer-mu masih jalan dari tadi — semangat!');
+toast(' Timer-mu masih jalan dari tadi — semangat!');
 }else{
 localStorage.removeItem('nyala_timer_v1');
 tRemain=o.total;timerStartReal=o.start;
@@ -872,7 +871,7 @@ function finishTimer(){
 stopTimer();var finishedMode=tMode;var doneSecs=tTotal;tRemain=tTotal;
 var sb=$('startBtn');if(sb)sb.textContent='▶ Mulai';renderTimer();
 burst(90);chime();
-if(finishedMode==='rehat'){toast('🌿 Rehat selesai. Segar? Lanjut gas!');return;}
+if(finishedMode==='rehat'){toast(' Rehat selesai. Segar? Lanjut gas!');return;}
 var k=todayKey();ensureToday();var dayT=state.tasks[k];
 dayT.sessions=(dayT.sessions||0)+1;
 var mins=Math.round(doneSecs/60);dayT.focusMin=(dayT.focusMin||0)+mins;
@@ -880,10 +879,10 @@ state.totals.focusMin+=mins;save();touchStreak();
 var msg,xp;
 if(finishedMode==='kilat'){msg='Mode kilat 2 menit beres! ';xp=30;}
 else if(finishedMode==='adhan'){msg='Fokus sampai adzan tuntas! Waktunya sholat 🕌';xp=30;}
-else if(finishedMode==='deep50'){msg='Deep Focus 50 menit tuntas! Ambis! 🚀';xp=60;}
-else if(finishedMode==='deep90'){msg='Deep Focus 90 menit tuntas! LEGENDARIS! 🚀';xp=100;}
+else if(finishedMode==='deep50'){msg='Deep Focus 50 menit tuntas! Ambis! ';xp=60;}
+else if(finishedMode==='deep90'){msg='Deep Focus 90 menit tuntas! LEGENDARIS! ';xp=100;}
 else if(finishedMode==='custom'){msg='Fokus custom '+mins+' menit beres! ';xp=Math.min(120,Math.max(20,mins));}
-else{msg='Satu sesi fokus tuntas! 🍅';xp=30;}
+else{msg='Satu sesi fokus tuntas! ';xp=30;}
 addXP(xp,msg);
 renderTomatoes();
 }
@@ -894,7 +893,7 @@ if(s===0){el.textContent='belum ada — ayo mulai!';return;}
 var str='';for(var i=0;i<Math.min(s,12);i++)str+='';
 el.textContent=str+(s>12?' ×'+s:'')+' ('+s+' sesi)';
 }
-var HABIT_EMOJIS=['💧','📖','🧘','','🍎','💤'],HABIT_PICK='💧';
+var HABIT_EMOJIS=['','📖','🧘','🧹','🍎','💤'],HABIT_PICK='💧';
 function renderHabits(){
 var grid=$('habitGrid');if(!grid)return;grid.innerHTML='';
 var days=[];for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);days.push(d);}
@@ -902,9 +901,9 @@ var tk=todayKey();
 state.habits.forEach(function(h){
 var card=document.createElement('div');card.className='card habit-card';
 var top=document.createElement('div');top.className='h-top';
-var em=document.createElement('span');em.className='h-emoji';em.textContent=h.emoji||'🌱';
+var em=document.createElement('span');em.className='h-emoji';em.textContent=h.emoji||'';
 var nm=document.createElement('span');nm.className='h-name';nm.textContent=h.name;
-var del=document.createElement('button');del.className='h-del';del.textContent='🗑️';del.setAttribute('aria-label','Hapus kebiasaan');
+var del=document.createElement('button');del.className='h-del';del.textContent='️';del.setAttribute('aria-label','Hapus kebiasaan');
 del.addEventListener('click',function(){
 if(confirm('Hapus kebiasaan "'+h.name+'" ?')){state.habits=state.habits.filter(function(x){return x.id!==h.id;});save();renderHabits();renderScore();}
 });
@@ -978,7 +977,7 @@ var WHEEL_OPTS=[
 {e:'',t:'Stretching leher & bahu 1 menit',c:'#d4a5a5'},
 {e:'',t:'Baca 1 halaman buku',c:'#c9a35c'},
 {e:'💌',t:'Kirim pesan semangat ke 1 teman',c:'#a05c68'},
-{e:'🌬️',t:'Napas 4-7-8 tiga putaran',c:'#e8c4c8'}
+{e:'️',t:'Napas 4-7-8 tiga putaran',c:'#e8c4c8'}
 ];
 var wheelAngle=0,spinning=false;
 function buildWheel(){
@@ -1050,11 +1049,11 @@ els.forEach(function(e){obs.observe(e);});
 }
 function renderGreeting(){
 var d=new Date(),h=d.getHours(),k='';
-if(h>=4 && h<10)k='SELAMAT PAGI ☀️';else if(h>=10 && h<15)k='SELAMAT SIANG 🌤️';
+if(h>=4 && h<10)k='SELAMAT PAGI ☀️';else if(h>=10 && h<15)k='SELAMAT SIANG ️';
 else if(h>=15 && h<18)k='SELAMAT SORE ';else k='SELAMAT MALAM 🌙';
 var kick=$('kicker');if(kick)kick.textContent=k;
 var msgs=['Matahari udah start duluan. Yuk mulai pelan-pelan 🌅','Energi masih ada — gas tipis-tipis aja ☀️',
-'Sore gini enak buat beresin satu hal kecil 🍵','Malam bukan alasan mager. Satu langkah kecil cukup 🌙'];
+'Sore gini enak buat beresin satu hal kecil 🍵','Malam bukan alasan mager. Satu langkah kecil cukup '];
 var idx=h>=4 && h<10?0:(h>=10 && h<15?1:(h>=15 && h<18?2:3));
 var dm=$('dayMsg');if(dm)dm.textContent=msgs[idx];
 var dc=$('dateChip');if(dc)dc.textContent=DAY_NAMES[d.getDay()]+', '+d.getDate()+' '+MON_SHORT[d.getMonth()];
@@ -1072,8 +1071,8 @@ a.download='nyala-backup-'+todayKey()+'.json';
 document.body.appendChild(a);a.click();document.body.removeChild(a);
 setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
 localStorage.setItem('nyala_last_backup',String(Date.now()));
-toast('Cadangan terunduh! Simpan file-nya di tempat aman 💾');
-}catch(e){toast('Gagal membuat cadangan ');}
+toast('Cadangan terunduh! Simpan file-nya di tempat aman ');
+}catch(e){toast('Gagal membuat cadangan 😔');}
 }
 function doRestore(file){
 var r=new FileReader();
