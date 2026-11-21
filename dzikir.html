@@ -211,8 +211,8 @@ function paintChips(){var s={};try{s=JSON.parse(localStorage.getItem('nyala_v1')
 function cnt(id){return st.c[st.period][id]||0;}
 function done(id){return !!st.d[st.period][id];}
 function setTitle(){
-  var t=$('dzTitle');if(t)t.textContent=L('📿 DZIKIR PAGI & PETANG','📿 MORNING & EVENING DHIKR');
-  document.title=L('Dzikir Pagi & Petang — NYALA','Morning & Evening Dhikr — NYALA');
+  var t=$('dzTitle');if(t)t.textContent=L("📿 DZIKIR PAGI & PETANG","📿 MORNING & EVENING DHIKR");
+  document.title=L("Dzikir Pagi & Petang — NYALA","Morning & Evening Dhikr — NYALA");
 }
 function render(){
   var y=window.scrollY||window.pageYOffset||0;
@@ -267,4 +267,4 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 })();
 </script>
 </body>
-  </html>
+</html>
