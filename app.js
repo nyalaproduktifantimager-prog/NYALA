@@ -1,4 +1,4 @@
-/* NYALA app.js — versi bersih v12 (FIXED) */
+/* NYALA app.js — VERSI STABIL (FIXED) */
 (function(){
 'use strict';
 var deferredPrompt=null;
@@ -24,7 +24,7 @@ if(Array.isArray(saved.habits))state.habits=saved.habits;
 if(saved.totals && typeof saved.totals==='object')state.totals={done:saved.totals.done||0,focusMin:saved.totals.focusMin||0};
 if(saved.today && typeof saved.today==='object')state.today={key:saved.today.key||'',mood:saved.today.mood!=null?saved.today.mood:-1,hype:saved.today.hype||''};
 if(saved.settings && typeof saved.settings==='object')state.settings={city:saved.settings.city||'Jakarta',offset:parseInt(saved.settings.offset,10)||0,mode:saved.settings.mode==='gps'?'gps':'city',lat:saved.settings.lat||0,lon:saved.settings.lon||0};
-if(saved.tasbih && typeof saved.tasbih==='object')state.tasbih={key:saved.tasbih.key||'',counts:saved.tasbih.counts||{},done:saved.tasbih.done||{},log:saved.tasbih&&saved.tasbih.log?saved.tasbih.log:{}};
+if(saved.tasbih && typeof saved.tasbih==='object')state.tasbih={key:saved.tasbih.key||'',counts:saved.tasbih.counts||{},done:saved.tasbih.done||{},log:saved.tasbih.log||{}};
 if(saved.gratitude && typeof saved.gratitude==='object')state.gratitude=saved.gratitude;
 if(saved.consistency && typeof saved.consistency==='object')state.consistency={days:saved.consistency.days||0,rewarded:saved.consistency.rewarded||{}};
 }
@@ -63,7 +63,7 @@ var notes=[523.25,659.25,783.99],t0=audioCtx.currentTime;
 notes.forEach(function(f,i){
 var o=audioCtx.createOscillator(),g=audioCtx.createGain();
 o.type='sine';o.frequency.value=f;
-// FIXED: Added missing '*' operators
+// FIXED: Operator perkalian (*) ditambahkan
 g.gain.setValueAtTime(0.0001,t0+i*0.11);
 g.gain.exponentialRampToValueAtTime(0.16,t0+i*0.11+0.02);
 g.gain.exponentialRampToValueAtTime(0.0001,t0+i*0.11+0.45);
@@ -94,7 +94,7 @@ if(!ctxC)ctxC=cfx.getContext('2d');
 for(var i=0;i<n;i++){
 parts.push({
 x:x!=null?x:Math.random()*cfx.width,
-// FIXED: Added missing '*' operators
+// FIXED: Operator perkalian (*) ditambahkan
 y:y!=null?y:Math.random()*cfx.height*0.3,
 vx:(Math.random()-0.5)*7,
 vy:Math.random()-4-1,
@@ -167,7 +167,7 @@ return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;
 }
 function sunPos(jd){
 var D=jd-2451545.0;
-// FIXED: Added missing '*' operators
+// FIXED: Operator perkalian (*) ditambahkan
 var g=rad(fixA(357.529+0.98560028*D));
 var q=fixA(280.459+0.98564736*D);
 var L=rad(fixA(q+1.915*Math.sin(g)+0.020*Math.sin(2*g)));
@@ -337,9 +337,9 @@ var MOOD_META=[
 {e:'🤩',pct:95,label:'Mode turbo!'}
 ];
 var MOOD_LINES=[
-['Nggak apa-apa, kita curi start 2 menit aja — sisanya bonus 🐢','Rebahan boleh, tapi sambil nunggu timer kilat ya 😉','Gerak dikiiit aja dulu. Mood biasanya nyusul belakangan '],
-['Mode hemat energi: pilih satu hal yang paling ringan 🪫','Kamu tetap keren walau pelan. Istirahat juga bagian dari progres 🤍','Rehat 5 menit dulu, lanjut kalau sudah siap '],
-['Mulai dari yang 2 menit aja. Pelan tapi jalan 👌','Satu langkah kecil > seribu niat. Yuk mulai?','Pemanasan dulu: pilih tugas termudah ☕'],
+['Nggak apa-apa, kita curi start 2 menit aja — sisanya bonus 🐢','Rebahan boleh, tapi sambil nunggu timer kilat ya 😉','Gerak dikiiit aja dulu. Mood biasanya nyusul belakangan 🐌'],
+['Mode hemat energi: pilih satu hal yang paling ringan ','Kamu tetap keren walau pelan. Istirahat juga bagian dari progres ','Rehat 5 menit dulu, lanjut kalau sudah siap 🌿'],
+['Mulai dari yang 2 menit aja. Pelan tapi jalan 👌','Satu langkah kecil > seribu niat. Yuk mulai?','Pemanasan dulu: pilih satu tugas termudah ☕'],
 ['Mood bagus = waktu emas. Gas satu prioritas! ✨','Senyum dulu, lalu hajar satu tugas kecil 😄','Energi positifmu pas banget buat fokus sebentar 🌈'],
 ['Wah, energi penuh! Sikat tugas paling susah dulu 🔥','Gas sekarang mumpung lagi on fire! ⚡','Kamu lagi mode turbo — jangan lupa minum air ya 😄']
 ];
@@ -356,7 +356,7 @@ var bt=$('batTxt');if(bt)bt.textContent=m.pct+'% · '+m.label;
 var hb=$('hypeBubble');if(hb){hb.textContent='💬 '+line;hb.classList.add('show');}
 if(first){touchStreak();addXP(5,'Check-in mood dulu ☺️');}
 }
-var SUGGESTIONS=['💧 Minum segelas air','🧹 Rapikan meja 2 menit','📖 Baca 1 halaman buku','💬 Balas 1 chat tertunda',' Stretching ringan'];
+var SUGGESTIONS=['💧 Minum segelas air','🧹 Rapikan meja 2 menit','📖 Baca 1 halaman buku','💬 Balas 1 chat tertunda','🙆 Stretching ringan'];
 function getTasks(){var k=todayKey();if(!state.tasks[k])state.tasks[k]={items:[]};return state.tasks[k].items;}
 function addTask(text,pri){
 text=(text||'').trim();if(!text){toast('Tulis dulu tugasnya ya ✍️');return false;}
@@ -400,7 +400,7 @@ var dn=document.createElement('button');dn.className='t-mv';dn.textContent='▼'
 dn.addEventListener('click',function(){moveTask(t,1);});
 li.appendChild(up);li.appendChild(dn);
 var del=document.createElement('button');
-del.className='t-del';del.textContent='';
+del.className='t-del';del.textContent='✕';
 del.setAttribute('aria-label','Hapus tugas');
 del.addEventListener('click',function(){
 var arr=getTasks();
@@ -437,26 +437,26 @@ ids.forEach(function(id){if(byId[id]){newArr.push(byId[id]);delete byId[id];}});
 Object.keys(byId).forEach(function(k){newArr.push(byId[k]);});
 state.tasks[todayKey()].items=newArr;
 save();renderTasks();renderScore();
-toast('🔀 Urutan tugas diperbarui');
+toast(' Urutan tugas diperbarui');
 }
 function attachGrip(li,t){
 var grip=li.querySelector('.t-grip');
 if(!grip)return;
 var pid=null,timer=null,startX=0,startY=0,dragging=false;
-// FIXED: Removed space in 'function' and '&&'
+// FIXED: Typo 'func tion' diperbaiki menjadi 'function', '&&' diperbaiki
 grip.addEventListener('pointerdown',function(e){
 if(e.pointerType==='mouse' && e.button!==0)return;
 pid=e.pointerId;startX=e.clientX;startY=e.clientY;dragging=false;
 try{grip.setPointerCapture(pid);}catch(err){}
 timer=setTimeout(function(){
 dragging=true;
-// FIXED: Removed space in 'li.classList'
+// FIXED: Typo 'li. classList' diperbaiki
 li.classList.add('dragging');
 try{if(navigator.vibrate)navigator.vibrate(10);}catch(err){}
 },280);
 });
 grip.addEventListener('pointermove',function(e){
-// FIXED: Removed space in 'pid'
+// FIXED: Typo 'pi d' diperbaiki menjadi 'pid'
 if(pid===null||e.pointerId!==pid)return;
 if(!dragging){
 if(Math.abs(e.clientX-startX) >8||Math.abs(e.clientY-startY) >8){if(timer){clearTimeout(timer);timer=null;}}
@@ -474,12 +474,12 @@ target.parentNode.insertBefore(li,before?target:target.nextSibling);
 });
 function end(e){
 if(timer){clearTimeout(timer);timer=null;}
-// FIXED: Removed space in '&&'
+// FIXED: Typo '&&' diperbaiki
 if(pid!==null && e && e.pointerId===pid){try{grip.releasePointerCapture(pid);}catch(err){}}
 pid=null;
 if(dragging){dragging=false;li.classList.remove('dragging');commitDomOrder();}
 }
-// FIXED: Removed space in 'addEventListener'
+// FIXED: Typo 'addEventListe ner' diperbaiki
 grip.addEventListener('pointerup',end);
 grip.addEventListener('pointercancel',end);
 grip.addEventListener('contextmenu',function(e){e.preventDefault();});
@@ -490,7 +490,7 @@ if(t.done){
 chime();var r=btn.getBoundingClientRect();
 burst(36,r.left+r.width/2,r.top);
 touchStreak();state.totals.done++;save();
-addXP(t.pri?25:15,t.pri?'Prioritas beres! ':'Satu tugas tumbang!');
+addXP(t.pri?25:15,t.pri?'Prioritas beres! 🌟':'Satu tugas tumbang!');
 }
 renderTasks();renderScore();renderGarden();renderHistory();renderReport();
 }
@@ -501,7 +501,7 @@ var ring=$('dayRing');if(ring)ring.style.strokeDashoffset=String(276.46*(1-pct/1
 var pp=$('dayPct');if(pp)pp.textContent=pct+'%';
 var ts=$('taskSummary');if(ts)ts.textContent=c.done+' / '+c.total+' tugas · '+pct+'%';
 var k=todayKey(),dayT=state.tasks[k]||{},sess=dayT.sessions||0;
-var fs=$('focusSummary');if(fs)fs.textContent='🍅 '+sess+' sesi fokus · ⏱ '+(dayT.focusMin||0)+' menit';
+var fs=$('focusSummary');if(fs)fs.textContent=' '+sess+' sesi fokus · ⏱ '+(dayT.focusMin||0)+' menit';
 var lvl=levelOf(state.xp),cur=LEVELS[lvl],next=LEVELS[lvl+1];
 var ln=$('lvlName');if(ln)ln.textContent='Lv.'+(lvl+1)+' · '+cur.name;
 var xn=$('xpNum');if(xn)xn.textContent=state.xp+' XP';
@@ -515,7 +515,7 @@ var lc=$('lvlChip');if(lc)lc.textContent='Lv.'+(lvl+1)+' · '+state.xp+' XP';
 var sc=$('streakChip');if(sc)sc.textContent='🔥 '+state.streak.count+' hari';
 var td=$('totalDoneChip');if(td)td.textContent=state.totals.done;
 var ha=$('habitActiveChip');if(ha)ha.textContent=state.habits.length;
-var cc=$('consistChip');if(cc)textContent=(state.consistency&&state.consistency.days)||0;
+var cc=$('consistChip');if(cc)cc.textContent=(state.consistency&&state.consistency.days)||0;
 var yn=$('yesterdayNote');
 if(yn){
 var yt=state.tasks[daysAgoKey(1)];
@@ -600,7 +600,7 @@ getTasks().push({id:Date.now()+''+Math.floor(Math.random()*999)+Math.random().to
 });
 save();renderTasks();renderScore();renderReport();
 var ov=$('dayOverlay');if(ov)ov.style.display='none';
-toast('📥 '+undone.length+' tugas dibawa ke hari ini. Semangat!');
+toast(' '+undone.length+' tugas dibawa ke hari ini. Semangat!');
 };
 }
 function renderSyukur(){
@@ -617,7 +617,7 @@ var k=todayKey();
 var arr=(state.gratitude&&state.gratitude[k])||['','',''];
 var filled=arr.filter(function(s){return s&&s.trim();}).length;
 var n=$('syukurNote');
-if(n)n.textContent=filled>=3?'🌸 MasyaAllah, syukur hari ini lengkap. Semoga jadi kebiasaan indah!':('Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu. 🤍 ('+filled+'/3)');
+if(n)n.textContent=filled>=3?'🌸 MasyaAllah, syukur hari ini lengkap. Semoga jadi kebiasaan indah!':('Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu.  ('+filled+'/3)');
 }
 function saveSyukur(inp){
 var k=todayKey();
@@ -705,14 +705,14 @@ x.strokeStyle='rgba(212,165,165,.45)';x.lineWidth=3;
 rr(x,44,44,W-88,H-88,40);x.stroke();
 x.textAlign='left';
 x.fillStyle='#e5c786';x.font='800 40px "Bricolage Grotesque", sans-serif';
-x.fillText('NYALA  ANTI MAGER',84,150);
+x.fillText('NYALA ✦ ANTI MAGER',84,150);
 x.fillStyle='#f2e4e6';x.font='800 96px "Bricolage Grotesque", sans-serif';
 x.fillText('Sepekan',84,268);
 x.fillText('Barakahku 🌹',84,372);
 x.fillStyle='#c9aeb2';x.font='600 38px "Plus Jakarta Sans", sans-serif';
 x.fillText(repRangeText(),84,442);
 var s=weekStats();
-var boxes=[['✅',s.tasks,'TUGAS BERES'],['⏱️',s.focus,'MENIT FOKUS'],['🌿',s.habits,'HABIT TERCEKLIS'],['',s.dhikr,'DZIKIR']];
+var boxes=[['✅',s.tasks,'TUGAS BERES'],['⏱️',s.focus,'MENIT FOKUS'],['🌿',s.habits,'HABIT TERCEKLIS'],['📿',s.dhikr,'DZIKIR']];
 boxes.forEach(function(bx,i){
 var cx=84+(i%2)*468,cy=500+Math.floor(i/2)*250;
 x.fillStyle='rgba(212,165,165,.08)';x.strokeStyle='rgba(212,165,165,.35)';x.lineWidth=2;
@@ -745,13 +745,14 @@ x.textAlign='center';
 x.fillStyle='#f0dcdd';x.font='600 52px "Caveat", cursive';
 var qi=(lastQuote>=0?lastQuote:0);
 var qsrc=QUOTES[qi].q;
-if(window.__nyalaT && window.__nyalaLang==='en'){qsrc=window.__nyalaT(qsrc,'en');}
+// FIXED: Menghapus referensi ke window.__nyalaT agar tidak error jika i18n.js belum dimuat/dihapus
+// if(window.__nyalaT && window.__nyalaLang==='en'){qsrc=window.__nyalaT(qsrc,'en');}
 var lines=wrapText(x,qsrc,W/2,1560,860,70);
 x.fillStyle='#e5c786';x.font='700 30px "Plus Jakarta Sans", sans-serif';
 x.fillText('— '+QUOTES[qi].b,W/2,1560+lines*70+30);
 x.fillStyle='#8a6f74';x.font='700 32px "Plus Jakarta Sans", sans-serif';
 x.fillText(location.hostname||'NYALA',W/2,1806);
-x.fillText('Dibuat dengan  NYALA — produktif pelan-pelan',W/2,1852);
+x.fillText('Dibuat dengan 🌹 NYALA — produktif pelan-pelan',W/2,1852);
 x.textAlign='left';
 cb(c);
 }
@@ -841,7 +842,7 @@ document.querySelectorAll('.mode-chip').forEach(function(b){b.classList.toggle('
 var sb2=$('startBtn');if(sb2)sb2.textContent='⏸ Jeda';
 tTimer=setInterval(tickTimer,1000);
 renderTimer();
-toast('⏱️ Timer-mu masih jalan dari tadi — semangat!');
+toast('️ Timer-mu masih jalan dari tadi — semangat!');
 }else{
 localStorage.removeItem('nyala_timer_v1');
 tRemain=o.total;timerStartReal=o.start;
@@ -877,12 +878,12 @@ dayT.sessions=(dayT.sessions||0)+1;
 var mins=Math.round(doneSecs/60);dayT.focusMin=(dayT.focusMin||0)+mins;
 state.totals.focusMin+=mins;save();touchStreak();
 var msg,xp;
-if(finishedMode==='kilat'){msg='Mode kilat 2 menit beres! ⚡';xp=30;}
+if(finishedMode==='kilat'){msg='Mode kilat 2 menit beres! ';xp=30;}
 else if(finishedMode==='adhan'){msg='Fokus sampai adzan tuntas! Waktunya sholat 🕌';xp=30;}
-else if(finishedMode==='deep50'){msg='Deep Focus 50 menit tuntas! Ambis! ';xp=60;}
+else if(finishedMode==='deep50'){msg='Deep Focus 50 menit tuntas! Ambis! 🚀';xp=60;}
 else if(finishedMode==='deep90'){msg='Deep Focus 90 menit tuntas! LEGENDARIS! 🚀';xp=100;}
-else if(finishedMode==='custom'){msg='Fokus custom '+mins+' menit beres! 💪';xp=Math.min(120,Math.max(20,mins));}
-else{msg='Satu sesi fokus tuntas! ';xp=30;}
+else if(finishedMode==='custom'){msg='Fokus custom '+mins+' menit beres! ';xp=Math.min(120,Math.max(20,mins));}
+else{msg='Satu sesi fokus tuntas! 🍅';xp=30;}
 addXP(xp,msg);
 renderTomatoes();
 }
@@ -890,10 +891,10 @@ function renderTomatoes(){
 var el=$('tomatoRow');if(!el)return;
 var k=todayKey(),dayT=state.tasks[k]||{},s=dayT.sessions||0;
 if(s===0){el.textContent='belum ada — ayo mulai!';return;}
-var str='';for(var i=0;i<Math.min(s,12);i++)str+='🍅';
+var str='';for(var i=0;i<Math.min(s,12);i++)str+='';
 el.textContent=str+(s>12?' ×'+s:'')+' ('+s+' sesi)';
 }
-var HABIT_EMOJIS=['💧','📖','','🧹','','💤'],HABIT_PICK='💧';
+var HABIT_EMOJIS=['💧','📖','🧘','','🍎','💤'],HABIT_PICK='💧';
 function renderHabits(){
 var grid=$('habitGrid');if(!grid)return;grid.innerHTML='';
 var days=[];for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);days.push(d);}
@@ -927,7 +928,7 @@ tb.addEventListener('click',function(){toggleHabitDay(h,tk,true);});
 card.appendChild(tb);grid.appendChild(card);
 });
 var adder=document.createElement('div');adder.className='card add-habit';
-var lab=document.createElement('p');lab.style.fontWeight='800';lab.style.fontSize='.9rem';lab.textContent='➕ Kebiasaan baru:';
+var lab=document.createElement('p');lab.style.fontWeight='800';lab.style.fontSize='.9rem';lab.textContent=' Kebiasaan baru:';
 var inp=document.createElement('input');inp.type='text';inp.maxLength=30;inp.placeholder='misal: Tilawah 1 halaman';
 var er=document.createElement('div');er.className='emoji-row';
 HABIT_EMOJIS.forEach(function(e){
@@ -953,7 +954,7 @@ h.hist[dk]=true;save();
 if(isToday){chime();burst(28);touchStreak();addXP(10,'Habit "'+h.name+'" beres! 💪');renderHistory();renderReport();}
 else{renderHabits();}
 }
-var PLANTS=['🌱','🌿','','🌺','🌻','🌷','🌹','🌳'];
+var PLANTS=['','🌿','🌸','🌺','🌻','','🌹','🌳'];
 function renderGarden(){
 var row=$('plantsRow');if(!row)return;row.innerHTML='';
 var count=Math.min(2+state.totals.done,10);
@@ -971,11 +972,11 @@ var gst=$('gStreak');if(gst)gst.textContent=state.streak.count;
 }
 var WHEEL_OPTS=[
 {e:'💧',t:'Minum segelas air',c:'#5a3a45'},
-{e:'💪',t:'Push-up / squat 5 kali',c:'#b76e79'},
+{e:'',t:'Push-up / squat 5 kali',c:'#b76e79'},
 {e:'🧹',t:'Rapikan meja 2 menit',c:'#e5c786'},
 {e:'✍️',t:'Tulis 3 hal yang kamu syukuri',c:'#8f4f5b'},
-{e:'🧘',t:'Stretching leher & bahu 1 menit',c:'#d4a5a5'},
-{e:'📖',t:'Baca 1 halaman buku',c:'#c9a35c'},
+{e:'',t:'Stretching leher & bahu 1 menit',c:'#d4a5a5'},
+{e:'',t:'Baca 1 halaman buku',c:'#c9a35c'},
 {e:'💌',t:'Kirim pesan semangat ke 1 teman',c:'#a05c68'},
 {e:'🌬️',t:'Napas 4-7-8 tiga putaran',c:'#e8c4c8'}
 ];
@@ -1050,10 +1051,10 @@ els.forEach(function(e){obs.observe(e);});
 function renderGreeting(){
 var d=new Date(),h=d.getHours(),k='';
 if(h>=4 && h<10)k='SELAMAT PAGI ☀️';else if(h>=10 && h<15)k='SELAMAT SIANG 🌤️';
-else if(h>=15 && h<18)k='SELAMAT SORE 🌇';else k='SELAMAT MALAM 🌙';
+else if(h>=15 && h<18)k='SELAMAT SORE ';else k='SELAMAT MALAM 🌙';
 var kick=$('kicker');if(kick)kick.textContent=k;
 var msgs=['Matahari udah start duluan. Yuk mulai pelan-pelan 🌅','Energi masih ada — gas tipis-tipis aja ☀️',
-'Sore gini enak buat beresin satu hal kecil 🍵','Malam bukan alasan mager. Satu langkah kecil cukup '];
+'Sore gini enak buat beresin satu hal kecil 🍵','Malam bukan alasan mager. Satu langkah kecil cukup 🌙'];
 var idx=h>=4 && h<10?0:(h>=10 && h<15?1:(h>=15 && h<18?2:3));
 var dm=$('dayMsg');if(dm)dm.textContent=msgs[idx];
 var dc=$('dateChip');if(dc)dc.textContent=DAY_NAMES[d.getDay()]+', '+d.getDate()+' '+MON_SHORT[d.getMonth()];
@@ -1071,8 +1072,8 @@ a.download='nyala-backup-'+todayKey()+'.json';
 document.body.appendChild(a);a.click();document.body.removeChild(a);
 setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
 localStorage.setItem('nyala_last_backup',String(Date.now()));
-toast('Cadangan terunduh! Simpan file-nya di tempat aman ');
-}catch(e){toast('Gagal membuat cadangan 😔');}
+toast('Cadangan terunduh! Simpan file-nya di tempat aman 💾');
+}catch(e){toast('Gagal membuat cadangan ');}
 }
 function doRestore(file){
 var r=new FileReader();
@@ -1082,7 +1083,7 @@ var o=JSON.parse(r.result);
 if(!o||o.app!=='NYALA'||!o.data){toast('File cadangan tidak valid 😔');return;}
 if(!confirm('Pulihkan data dari cadangan '+(o.date?new Date(o.date).toLocaleDateString('id-ID'):'')+'? Data saat ini akan ditimpa.'))return;
 Object.keys(o.data).forEach(function(k){localStorage.setItem(k,o.data[k]);});
-toast('Data dipulihkan! Memuat ulang… 📂');
+toast('Data dipulihkan! Memuat ulang… ');
 setTimeout(function(){location.reload();},900);
 }catch(e){toast('Gagal membaca file cadangan 😔');}
 };
@@ -1146,7 +1147,7 @@ if(uc)uc.addEventListener('click',function(){setCustomMode(customMin);toast('⏱
 renderCustomVal();
 var sel=$('citySelect');
 if(sel){
-var g=document.createElement('option');g.value='__gps';g.textContent='📍 Otomatis (GPS saya)';sel.appendChild(g);
+var g=document.createElement('option');g.value='__gps';g.textContent=' Otomatis (GPS saya)';sel.appendChild(g);
 CITIES.forEach(function(c){var o=document.createElement('option');o.value=c.n;o.textContent=c.n;sel.appendChild(o);});
 sel.value=(state.settings.mode==='gps')?'__gps':(state.settings.city||'Jakarta');
 sel.addEventListener('change',function(){
@@ -1247,7 +1248,7 @@ btns.forEach(function(b,bi){b.classList.toggle('picked',bi===state.today.mood);}
 var m=MOOD_META[state.today.mood];
 var bf=$('batFill');if(bf)bf.style.width=m.pct+'%';
 var bt=$('batTxt');if(bt)bt.textContent=m.pct+'% · '+m.label;
-if(state.today.hype){var hb=$('hypeBubble');if(hb){hb.textContent='💬 '+state.today.hype;hb.classList.add('show');}}
+if(state.today.hype){var hb=$('hypeBubble');if(hb){hb.textContent=' '+state.today.hype;hb.classList.add('show');}}
 }
 bind();initReveal();maybeReminder();
 }
