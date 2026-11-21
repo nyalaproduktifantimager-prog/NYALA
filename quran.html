@@ -77,7 +77,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     <a class="btn ghost small" href="dzikir.html">📿 Dzikir</a>
   </div>
   <div class="tq-head">
-    <div class="tq-title">🕌 TAMAN QUR'AN</div>
+    <div class="tq-title" id="tqTitle" data-id="🕌 TAMAN QUR'AN" data-en="🕌 GARDEN QUR'AN">🕌 TAMAN QUR'AN</div>
     <div class="tq-chips">
       <span class="chip" id="netChip">🌐 Online</span>
       <span class="chip" id="streakChip">🔥 0</span>
@@ -117,7 +117,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     <div class="sec-head">
       <span class="sec-tag" data-id="B · AYAT UNTUK HATIMU" data-en="B · AN AYAH FOR YOUR HEART">B · AYAT UNTUK HATIMU</span>
       <div><h2 data-id="Sedang Merasa Apa?" data-en="What Are You Feeling?">Sedang Merasa Apa?</h2></div>
-      <p class="sec-sub" data-id="Pilih keadaanmu — Allah sudah menyiapkan ayatnya untukmu. 🤍" data-en="Pick your state — Allah has already prepared its ayah for you. 🤍">Pilih keadaanmu — Allah sudah menyiapkan ayatnya untukmu. 🤍</p>
+      <p class="sec-sub" data-id="Pilih keadaanmu — Allah sudah menyiapkan ayat-ayatnya untukmu. 🤍" data-en="Pick your state — Allah has already prepared its ayahs for you. 🤍">Pilih keadaanmu — Allah sudah menyiapkan ayat-ayatnya untukmu. 🤍</p>
     </div>
     <div class="mood-chips" id="moodChips"></div>
     <div id="moodResult"></div>
@@ -172,14 +172,46 @@ var OFFSET=[];(function(){var s=0;for(var i=0;i<COUNTS.length;i++){OFFSET.push(s
 var JUZ=[[1,1],[2,142],[2,253],[3,93],[4,148],[5,82],[6,111],[7,88],[8,41],[9,93],[11,6],[12,53],[15,1],[17,1],[18,75],[20,1],[21,112],[23,1],[25,21],[27,56],[29,46],[33,31],[36,28],[39,32],[41,47],[51,31],[57,1],[58,23],[67,1],[78,1]];
 var QARIS=[{id:'ar.alafasy',n:'Misyari Al-Afasi'},{id:'ar.husary',n:'Mahmoud Khalil Al-Husary'},{id:'ar.abdurrahmaansudais',n:'Abdurrahman As-Sudais'},{id:'ar.abdulbasitmujawwad',n:'Abdul Basit (Mujawwad)'},{id:'ar.minshawi',n:'Mohamed Siddiq El-Minshawi'}];
 var MOODS=[
-{e:'😢',id:'Sedih',en:'Sad',ref:'94:5',ar:'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا',tr:'Karena sesungguhnya bersama kesulitan ada kemudahan.',en2:'For indeed, with hardship comes ease.'},
-{e:'😰',id:'Cemas',en:'Anxious',ref:'13:28',ar:'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',tr:'Ingatlah, hanya dengan mengingati Allah hati menjadi tenteram.',en2:'Verily, in the remembrance of Allah do hearts find rest.'},
-{e:'🥰',id:'Bersyukur',en:'Grateful',ref:'14:7',ar:'لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ',tr:'Jika kamu bersyukur, pasti Aku akan menambah (nikmat) kepadamu.',en2:'If you are grateful, I will surely increase you.'},
-{e:'🌾',id:'Butuh Sabar',en:'Need Patience',ref:'2:153',ar:'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ',tr:'Sungguh, Allah beserta orang-orang yang sabar.',en2:'Indeed, Allah is with the patient.'},
-{e:'💼',id:'Memohon Rezeki',en:'Seeking Provision',ref:'65:3',ar:'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ',tr:'Barangsiapa bertawakal kepada Allah, niscaya Allah akan mencukupkan keperluannya.',en2:'Whoever relies upon Allah — He is sufficient for him.'},
-{e:'🌙',id:'Merasa Sendiri',en:'Feeling Alone',ref:'2:186',ar:'وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ',tr:'Dan apabila hamba-hamba-Ku bertanya tentang Aku, maka sesungguhnya Aku dekat.',en2:'And when My servants ask you about Me — indeed I am near.'},
-{e:'🤍',id:'Meminta Ampun',en:'Seeking Forgiveness',ref:'39:53',ar:'لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ ۚ إِنَّ اللَّهَ يَغْفِرُ الذُّنُوبَ جَمِيعًا',tr:'Janganlah berputus asa dari rahmat Allah; sesungguhnya Allah mengampuni dosa semuanya.',en2:'Do not despair of Allah’s mercy; indeed Allah forgives all sins.'},
-{e:'🛡',id:'Ingin Terlindungi',en:'Wanting Protection',ref:'2:255',ar:'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ',tr:'Allah, tidak ada tuhan selain Dia, Yang Mahahidup lagi terus-menerus mengurus makhluk-Nya; tidak mengantuk dan tidak tidur.',en2:'Allah — there is no deity except Him, the Ever-Living, the Sustainer; neither drowsiness nor sleep overtakes Him.'}
+{e:'😢',id:'Sedih',en:'Sad',list:[
+ {ref:'94:5',ar:'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا',tr:'Karena sesungguhnya bersama kesulitan ada kemudahan.',en2:'For indeed, with hardship comes ease.'},
+ {ref:'94:6',ar:'إِنَّ مَعَ الْعُسْرِ يُسْرًا',tr:'Sesungguhnya bersama kesulitan ada kemudahan.',en2:'Indeed, with hardship comes ease.'},
+ {ref:'12:87',ar:'وَلَا تَيْأَسُوا مِن رَّوْحِ اللَّهِ ۖ إِنَّهُ لَا يَيْأَسُ مِن رَّوْحِ اللَّهِ إِلَّا الْقَوْمُ الْكَافِرُونَ',tr:'Janganlah kamu berputus asa dari rahmat Allah; sesungguhnya tidak berputus asa dari rahmat Allah kecuali orang-orang yang kafir.',en2:'Do not despair of Allah’s mercy; indeed, no one despairs of Allah’s mercy except the disbelieving people.'}]},
+{e:'😰',id:'Cemas',en:'Anxious',list:[
+ {ref:'13:28',ar:'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',tr:'Ingatlah, hanya dengan mengingati Allah hati menjadi tenteram.',en2:'Verily, in the remembrance of Allah do hearts find rest.'},
+ {ref:'3:139',ar:'وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنتُمُ الْأَعْلَوْنَ إِن كُنتُم مُّؤْمِنِينَ',tr:'Janganlah kamu lemah hati dan jangan bersedih, padahal kamu paling tinggi derajatnya jika kamu orang beriman.',en2:'Do not weaken and do not grieve, for you will be superior if you are true believers.'},
+ {ref:'10:62',ar:'أَلَا إِنَّ أَوْلِيَاءَ اللَّهِ لَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ',tr:'Ingatlah, sesungguhnya wali-wali Allah itu tidak ada rasa takut pada mereka dan tidak pula mereka bersedih.',en2:'Indeed, the allies of Allah shall have no fear, nor shall they grieve.'}]},
+{e:'🥰',id:'Bersyukur',en:'Grateful',list:[
+ {ref:'14:7',ar:'لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ',tr:'Jika kamu bersyukur, pasti Aku akan menambah (nikmat) kepadamu.',en2:'If you are grateful, I will surely increase you.'},
+ {ref:'2:152',ar:'فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ',tr:'Maka ingatlah kepada-Ku, Aku pun akan ingat kepadamu; bersyukurlah kepada-Ku dan janganlah kamu ingkar.',en2:'So remember Me; I will remember you. And be grateful to Me and do not deny Me.'},
+ {ref:'16:53',ar:'وَمَا بِكُم مِّن نِّعْمَةٍ فَمِنَ اللَّهِ',tr:'Dan segala nikmat yang ada padamu (datangnya) dari Allah.',en2:'And whatever blessing you have — it is from Allah.'}]},
+{e:'🌾',id:'Butuh Sabar',en:'Need Patience',list:[
+ {ref:'2:153',ar:'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ',tr:'Sungguh, Allah beserta orang-orang yang sabar.',en2:'Indeed, Allah is with the patient.'},
+ {ref:'39:10',ar:'إِنَّمَا يُوَفَّى الصَّابِرُونَ أَجْرَهُم بِغَيْرِ حِسَابٍ',tr:'Sungguh, hanya orang-orang yang bersabarlah yang disempurnakan pahalanya tanpa perhitungan.',en2:'Indeed, the patient will be given their reward without account.'},
+ {ref:'3:200',ar:'اصْبِرُوا وَصَابِرُوا وَرَابِطُوا ۚ وَاتَّقُوا اللَّهَ لَعَلَّكُمْ تُفْلِحُونَ',tr:'Bersabarlah kamu, kuatkan kesabaranmu, tetaplah bersiap siaga, dan bertakwalah kepada Allah agar kamu beruntung.',en2:'Be patient, persevere, stand firm, and fear Allah so that you may succeed.'}]},
+{e:'💼',id:'Memohon Rezeki',en:'Seeking Provision',list:[
+ {ref:'65:3',ar:'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ',tr:'Barangsiapa bertawakal kepada Allah, niscaya Allah akan mencukupkan keperluannya.',en2:'Whoever relies upon Allah — He is sufficient for him.'},
+ {ref:'65:2',ar:'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ',tr:'Barangsiapa bertakwa kepada Allah, niscaya Dia akan membukakan jalan keluar baginya dan memberinya rezeki dari arah yang tidak dia duga.',en2:'Whoever fears Allah — He will make for him a way out and provide for him from where he does not expect.'},
+ {ref:'51:58',ar:'إِنَّ اللَّهَ هُوَ الرَّزَّاقُ ذُو الْقُوَّةِ الْمَتِينُ',tr:'Sungguh, Allah Dialah Pemberi rezeki, Yang Maha Kuat lagi Maha Kokoh.',en2:'Indeed, Allah is the Provider, the Possessor of strength, the Firm.'}]},
+{e:'🌙',id:'Merasa Sendiri',en:'Feeling Alone',list:[
+ {ref:'2:186',ar:'وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ',tr:'Dan apabila hamba-hamba-Ku bertanya tentang Aku, maka sesungguhnya Aku dekat.',en2:'And when My servants ask you about Me — indeed I am near.'},
+ {ref:'50:16',ar:'وَنَحْنُ أَقْرَبُ إِلَيْهِ مِنْ حَبْلِ الْوَرِيدِ',tr:'Dan Kami lebih dekat kepadanya daripada urat lehernya.',en2:'And We are closer to him than his own jugular vein.'},
+ {ref:'58:7',ar:'مَا يَكُونُ مِن نَّجْوَىٰ ثَلَاثَةٍ إِلَّا هُوَ رَابِعُهُمْ',tr:'Tidak ada pembicaraan rahasia antara tiga orang melainkan Dialah yang keempatnya.',en2:'There is no secret conversation among three except that He is the fourth of them.'}]},
+{e:'🤍',id:'Meminta Ampun',en:'Seeking Forgiveness',list:[
+ {ref:'39:53',ar:'لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ ۚ إِنَّ اللَّهَ يَغْفِرُ الذُّنُوبَ جَمِيعًا',tr:'Janganlah berputus asa dari rahmat Allah; sesungguhnya Allah mengampuni dosa semuanya.',en2:'Do not despair of Allah’s mercy; indeed Allah forgives all sins.'},
+ {ref:'4:110',ar:'وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا',tr:'Dan barangsiapa berbuat kejahatan atau menganiaya dirinya, kemudian dia memohon ampun kepada Allah, niscaya dia akan mendapati Allah Maha Pengampun lagi Maha Penyayang.',en2:'Whoever commits evil or wrongs himself, then seeks Allah’s forgiveness, will find Allah Forgiving and Merciful.'},
+ {ref:'110:3',ar:'فَسَبِّحْ بِحَمْدِ رَبِّكَ وَاسْتَغْفِرْهُ ۚ إِنَّهُ كَانَ تَوَّابًا',tr:'Maka bertasbihlah dengan memuji Tuhanmu dan mohonlah ampunan kepada-Nya; sungguh, Dia Maha Penerima tobat.',en2:'Then exalt with praise of your Lord and seek His forgiveness; indeed, He is ever Accepting of repentance.'}]},
+{e:'🛡',id:'Ingin Terlindungi',en:'Wanting Protection',list:[
+ {ref:'2:255',ar:'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ',tr:'Allah, tidak ada tuhan selain Dia, Yang Mahahidup lagi terus-menerus mengurus makhluk-Nya; tidak mengantuk dan tidak tidur.',en2:'Allah — there is no deity except Him, the Ever-Living, the Sustainer; neither drowsiness nor sleep overtakes Him.'},
+ {ref:'3:173',ar:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',tr:'Cukuplah Allah bagi kami dan Dia sebaik-baik pelindung.',en2:'Allah is sufficient for us, and He is the best disposer of affairs.'},
+ {ref:'113:1',ar:'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ',tr:'Katakanlah: Aku berlindung kepada Tuhan yang menguasai subuh.',en2:'Say: I seek refuge in the Lord of the daybreak.'}]},
+{e:'😠',id:'Marah',en:'Angry',list:[
+ {ref:'3:134',ar:'الَّذِينَ يُنفِقُونَ فِي السَّرَّاءِ وَالضَّرَّاءِ وَالْكَاظِمِينَ الْغَيْظَ وَالْعَافِينَ عَنِ النَّاسِ ۗ وَاللَّهُ يُحِبُّ الْمُحْسِنِينَ',tr:'(Yaitu) orang-orang yang menahan amarahnya dan memaafkan (kesalahan) orang lain; dan Allah mencintai orang-orang yang berbuat kebaikan.',en2:'Those who restrain anger and pardon the people — and Allah loves the doers of good.'},
+ {ref:'41:34',ar:'وَلَا تَسْتَوِي الْحَسَنَةُ وَلَا السَّيِّئَةُ ۚ ادْفَعْ بِالَّتِي هِيَ أَحْسَنُ فَإِذَا الَّذِي بَيْنَكَ وَبَيْنَهُ عَدَاوَةٌ كَأَنَّهُ وَلِيٌّ حَمِيمٌ',tr:'Dan tidaklah sama kebaikan dengan kejahatan. Tolaklah (kejahatan itu) dengan cara yang lebih baik, maka tiba-tiba orang yang antaramu dan dia ada permusuhan seolah-olah menjadi teman yang setia.',en2:'Good and evil are not equal. Repel evil with that which is better, and the one between whom and you is enmity will become as a devoted friend.'},
+ {ref:'3:159',ar:'فَبِمَا رَحْمَةٍ مِّنَ اللَّهِ لِنتَ لَهُمْ ۖ وَلَوْ كُنتَ فَظًّا غَلِيظَ الْقَلْبِ لَانفَضُّوا مِنْ حَوْلِكَ',tr:'Maka berkat rahmat Allah engkau berlaku lemah lembut terhadap mereka. Sekiranya engkau bersikap keras lagi berhati kasar, tentulah mereka menjauhkan diri dari sekitarmu.',en2:'By mercy from Allah you were gentle with them; had you been harsh and hard-hearted, they would have dispersed from around you.'}]},
+{e:'🧭',id:'Bingung / Bimbang',en:'Confused / Undecided',list:[
+ {ref:'1:6',ar:'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',tr:'Tunjukilah kami jalan yang lurus.',en2:'Guide us to the straight path.'},
+ {ref:'27:62',ar:'أَمَّن يُجِيبُ الْمُضْطَرَّ إِذَا دَعَاهُ وَيَكْشِفُ السُّوءَ',tr:'Atau siapakah yang memperkenankan (doa) orang yang dalam kesulitan apabila dia berdoa kepada-Nya, dan yang menghilangkan kesusahan?',en2:'Or who answers the desperate one when he calls upon Him and removes the harm?'},
+ {ref:'42:10',ar:'وَمَا اخْتَلَفْتُمْ فِيهِ مِن شَيْءٍ فَحُكْمُهُ إِلَى اللَّهِ',tr:'Dan apa pun yang kamu perselisihkan, keputusannya kembali kepada Allah.',en2:'And whatever you differ over — its judgment is with Allah.'}]}
 ];
 var DOAS={
 daily:[
@@ -214,6 +246,10 @@ function st(){try{return JSON.parse(localStorage.getItem(VKEY))||{};}catch(e){re
 function setXP(add){var s=st();s.xp=(s.xp||0)+add;try{localStorage.setItem(VKEY,JSON.stringify(s));}catch(e){}paintChips();}
 function paintChips(){var s=st();$('xpChip').textContent=(s.xp||0)+' XP';$('streakChip').textContent='🔥 '+((s.streak&&s.streak.count)||0);$('netChip').textContent=navigator.onLine?'🌐 '+L('Online','Online'):'📴 '+L('Offline','Offline');}
 window.addEventListener('online',paintChips);window.addEventListener('offline',paintChips);
+function setTitle(){
+  var t=$('tqTitle');if(t)t.textContent=L('🕌 TAMAN QUR’AN','🕌 GARDEN QUR’AN');
+  document.title=L('Taman Qur’an — NYALA','Garden Qur’an — NYALA');
+}
 function norm(obj){var out=[];function push(n,a){out.push({number:n,ayahs:a});}
  if(obj&&obj.data&&Array.isArray(obj.data.surahs)){obj.data.surahs.forEach(function(s){push(s.number,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
  else if(obj&&Array.isArray(obj.surahs)){obj.surahs.forEach(function(s){push(s.number,(s.ayahs||[]).map(function(a){return{n:a.numberInSurah,text:a.text};}));});}
@@ -228,7 +264,7 @@ function cachedJSON(url){
 }
 function fetchJSON(url,ms){
   var ctl=('AbortController' in window)?new AbortController():null;
-  var t=ctl?setTimeout(function(){ctl.abort();},ms||45000):null;
+  var t=ctl?setTimeout(function(){ctl.abort();},ms||60000):null;
   return fetch(url,{cache:'no-store',signal:ctl?ctl.signal:undefined}).then(function(r){if(t)clearTimeout(t);if(!r.ok)throw new Error('HTTP '+r.status);var cp=r.clone();caches.open(CCACHE).then(function(c2){c2.put(url,cp);}).catch(function(){});return r.json();});
 }
 function gNum(s,a){return OFFSET[s-1]+a;}
@@ -350,6 +386,17 @@ function highlight(it){
 }
 function clearPlaying(){document.querySelectorAll('.ayah.playing').forEach(function(e){e.classList.remove('playing');});}
 function stopAudio(){audio.pause();audio.onended=null;playingIdx=-1;clearPlaying();}
+function moodCard(m){
+  var card=document.createElement('div');card.className='card ayah';
+  var top=document.createElement('div');top.className='top';
+  var ref=document.createElement('span');ref.className='ref';ref.textContent=m.ref;
+  var dn=document.createElement('button');dn.className='dengar';dn.textContent='▶ '+L('dengar','listen');
+  dn.addEventListener('click',function(){var p=m.ref.split(':');var s=+p[0],n=+p[1];stopAudio();var q=(n===1&&s!==1&&s!==9)?[gNum(1,1),gNum(s,n)]:[gNum(s,n)];bareng=false;playingIdx=-1;playQueue(q,-1);highlight({s:s,n:n});});
+  top.appendChild(ref);top.appendChild(dn);card.appendChild(top);
+  var a=document.createElement('div');a.className='ar arab';a.setAttribute('lang','ar');a.setAttribute('dir','rtl');a.textContent=m.ar;card.appendChild(a);
+  var tr=document.createElement('div');tr.className='tr';tr.textContent=L(m.tr,m.en2);card.appendChild(tr);
+  return card;
+}
 function renderMoods(){
   var mc=$('moodChips');mc.innerHTML='';
   MOODS.forEach(function(m,i){
@@ -364,15 +411,7 @@ function renderMoodResult(){
   var box=$('moodResult');box.innerHTML='';
   if(curMood<0)return;
   var m=MOODS[curMood];
-  var card=document.createElement('div');card.className='card ayah';
-  var top=document.createElement('div');top.className='top';
-  var ref=document.createElement('span');ref.className='ref';ref.textContent=m.ref;
-  var dn=document.createElement('button');dn.className='dengar';dn.textContent='▶ '+L('dengar','listen');
-  dn.addEventListener('click',function(){var p=m.ref.split(':');var s=+p[0],n=+p[1];stopAudio();var q=(n===1&&s!==1&&s!==9)?[gNum(1,1),gNum(s,n)]:[gNum(s,n)];bareng=false;playingIdx=-1;playQueue(q,-1);highlight({s:s,n:n});});
-  top.appendChild(ref);top.appendChild(dn);card.appendChild(top);
-  var a=document.createElement('div');a.className='ar arab';a.setAttribute('lang','ar');a.setAttribute('dir','rtl');a.textContent=m.ar;card.appendChild(a);
-  var tr=document.createElement('div');tr.className='tr';tr.textContent=L(m.tr,m.en2);card.appendChild(tr);
-  box.appendChild(card);
+  (m.list||[]).forEach(function(a){box.appendChild(moodCard(a));});
 }
 function renderHaf(){
   var grid=$('hafGrid');grid.innerHTML='';
@@ -415,6 +454,7 @@ function renderDoa(){
   });
 }
 function relang(){
+  setTitle();
   $('lbSendiri').textContent=L('Baca Sendiri','Read Myself');
   $('lbBareng').textContent=L('Baca Bareng','Read Along');
   $('lbMurottal').textContent=L('Murottal Surah','Full Surah Murottal');
