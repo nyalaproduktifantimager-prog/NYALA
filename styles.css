@@ -307,3 +307,18 @@ footer b{color:var(--ink)}
 .toast.go{animation:tOut .3s forwards}
 @keyframes tIn{from{opacity:0;transform:translateY(24px) scale(.8)}to{opacity:1;transform:none}}
 @keyframes tOut{to{opacity:0;transform:translateY(14px)}}
+/* === KUNCI FINAL: logo menyala tanpa kotak + menu kompak === */
+header.top .logo img{
+width:44px !important;
+height:44px !important;
+object-fit:contain !important;
+border-radius:0 !important;
+box-shadow:none !important;
+background:transparent !important;
+mix-blend-mode:screen !important;
+filter:drop-shadow(0 0 9px rgba(229,199,134,.55)) !important;
+animation:flick 2.6s ease-in-out infinite !important;
+}
+header.top nav.links{gap:2px 14px !important;max-width:none !important;justify-content:center !important;width:100% !important}
+header.top nav.links a{font-size:.84rem !important;padding:6px 1px !important;letter-spacing:0 !important;white-space:nowrap !important}
+@media(min-width:760px){header.top nav.links a{font-size:.95rem !important}}
