@@ -1,4 +1,5 @@
-/* NYALA — app.js (versi lengkap & bersih) */
+// NYALA - app.js (versi bersih)
+// Jangan edit lewat email/WA: copy langsung dari kotak kode ini.
 (function(){
 'use strict';
 var deferredPrompt=null;
@@ -574,6 +575,7 @@ function renderScore(){
   }
 }
 
+// FITUR USULAN #8: bonus XP berjenjang sesuai persentase tugas kemarin
 function checkConsistency(){
   if(!state.consistency)state.consistency={days:0,rewarded:{}};
   var pk=daysAgoKey(1);
@@ -756,10 +758,10 @@ function drawReport(cb){
   var g=x.createLinearGradient(0,0,0,H);
   g.addColorStop(0,'#0e0c0d');g.addColorStop(.55,'#1e181a');g.addColorStop(1,'#120f10');
   x.fillStyle=g;x.fillRect(0,0,W,H);
-  var r1=x.createRadialGradient(W*.85,H*.06,0,W*.85,H*.06,720);
+  var r1=x.createRadialGradient(W*0.85,H*0.06,0,W*0.85,H*0.06,720);
   r1.addColorStop(0,'rgba(183,110,121,.4)');r1.addColorStop(1,'rgba(183,110,121,0)');
   x.fillStyle=r1;x.fillRect(0,0,W,H);
-  var r2=x.createRadialGradient(W*.12,H*.92,0,W*.12,H*.92,640);
+  var r2=x.createRadialGradient(W*0.12,H*0.92,0,W*0.12,H*0.92,640);
   r2.addColorStop(0,'rgba(229,199,134,.22)');r2.addColorStop(1,'rgba(229,199,134,0)');
   x.fillStyle=r2;x.fillRect(0,0,W,H);
   x.strokeStyle='rgba(212,165,165,.45)';x.lineWidth=3;
