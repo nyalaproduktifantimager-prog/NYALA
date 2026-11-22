@@ -1,4 +1,4 @@
-/* NYALA — styles.css (tema mawar-api, gelap & hangat) */
+/* NYALA — styles.css (final: menu kompak 2 baris + logo tanpa kotak) */
 :root{
 --bg-deep:#0e0c0d;--bg-soft:#171314;--card:#1e181a;
 --ink:#f2e4e6;--ink-soft:#c9aeb2;--ink-mute:#8a6f74;
@@ -38,12 +38,16 @@ header.top{position:sticky;top:0;z-index:50;background:rgba(14,12,13,.86);backdr
 .logo small{font-size:.62rem;font-weight:700;letter-spacing:.35em;color:var(--ink-mute);text-transform:uppercase}
 @keyframes flick{0%,100%{transform:scale(1) rotate(0deg);filter:brightness(1)}50%{transform:scale(1.06) rotate(-2deg);filter:brightness(1.25)}}
 .logo .flame{display:inline-block;animation:flick 2.6s ease-in-out infinite}
-nav.links{display:flex;gap:4px 18px;flex-wrap:wrap;justify-content:center;margin:0 auto}
-nav.links a{color:var(--ink-soft);text-decoration:none;font-weight:700;font-size:.92rem;padding:6px 2px;position:relative;transition:color .2s}
+/* LOGO BARU: mawar menyala tanpa tepian kotak */
+.logo .mark{width:44px;height:44px;object-fit:contain;border-radius:0;box-shadow:none;background:transparent;mix-blend-mode:screen;filter:drop-shadow(0 0 9px rgba(229,199,134,.55));display:inline-block;animation:flick 2.6s ease-in-out infinite}
+/* MENU: kecil & rapi 2 baris di HP, normal di layar lebar */
+nav.links{display:flex;gap:2px 14px;flex-wrap:wrap;justify-content:center;margin:0 auto}
+nav.links a{color:var(--ink-soft);text-decoration:none;font-weight:700;font-size:.84rem;padding:6px 1px;position:relative;transition:color .2s;white-space:nowrap}
 nav.links a:hover{color:var(--rose-soft)}
 nav.links a::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;border-radius:99px;background:linear-gradient(90deg,var(--rose),var(--gold));transform:scaleX(0);transition:transform .25s}
 nav.links a[aria-current="true"]{color:var(--ink)}
 nav.links a[aria-current="true"]::after{transform:scaleX(1)}
+@media(min-width:760px){nav.links{gap:4px 22px}nav.links a{font-size:.95rem;padding:6px 2px}}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font-weight:700;font-size:.78rem;border:1px solid var(--line-strong);color:var(--ink-soft);background:rgba(212,165,165,.06)}
 .chip.clock{background:linear-gradient(120deg,var(--rose-deep),#9c5a66);color:#fff;border-color:transparent;font-variant-numeric:tabular-nums}
@@ -303,10 +307,3 @@ footer b{color:var(--ink)}
 .toast.go{animation:tOut .3s forwards}
 @keyframes tIn{from{opacity:0;transform:translateY(24px) scale(.8)}to{opacity:1;transform:none}}
 @keyframes tOut{to{opacity:0;transform:translateY(14px)}}
-/* Menu kembali kecil & rapi 2 baris seperti semula */
-header.top nav.links{gap:2px 14px;max-width:none;justify-content:center}
-header.top nav.links a{font-size:.84rem;padding:6px 2px;white-space:nowrap;letter-spacing:0}
-@media(min-width:760px){header.top nav.links a{font-size:.95rem}}
-
-/* Logo: hilangkan kotak hitam, sisakan mawar menyala saja */
-header.top .logo img.mark{width:46px;height:46px;object-fit:contain;border-radius:0;box-shadow:none;background:transparent;mix-blend-mode:screen;filter:drop-shadow(0 0 9px rgba(229,199,134,.55));animation:flick 2.6s ease-in-out infinite}
