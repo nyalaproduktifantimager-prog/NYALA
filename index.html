@@ -9,15 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=5">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0e0c0d">
 <link rel="apple-touch-icon" href="icon.png">
 <style>
-section{scroll-margin-top:104px}
-nav.links a[aria-current="true"]{color:var(--rose-soft)}
-nav.links a[aria-current="true"]::after{transform:scaleX(1)}
-.logo .mark{width:38px;height:38px;border-radius:10px;object-fit:cover;box-shadow:0 0 16px rgba(212,165,165,.5);display:inline-block;animation:flick 2.6s ease-in-out infinite}
+#welcomeOverlay,#dayOverlay{overflow-y:auto;-webkit-overflow-scrolling:touch}
+#welcomeOverlay>div,#dayOverlay>div{margin:auto}
 </style>
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
@@ -43,6 +41,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
       <span class="chip clock" id="clockChip">--:--:--</span>
       <span class="chip streak" id="streakChip" title="Streak check-in harianmu">🔥 0 hari</span>
       <span class="chip lvl" id="lvlChip">Lv.1</span>
+      <button class="chip mute" id="muteBtn" type="button" aria-pressed="false" title="Suara nyala — tap untuk matikan">🔔</button>
     </div>
   </div>
 </header>
@@ -77,8 +76,8 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
       </div>
     </div>
 
-    <div class="card score-card reveal" style="transition-delay:.1s">
-      <h3>📋 Skor Hari Ini <span class="chip" id="dateChip" style="margin-left:auto;font-size:.7rem"></span></h3>
+    <div class="card score-card reveal" style="transition-delay:.08s">
+      <h3>📋 Skor Hari Ini <span class="chip" id="dateChip" style="margin-left:auto;font-size:.68rem"></span></h3>
       <div class="today-rings">
         <div class="mini-ring" aria-hidden="true">
           <svg viewBox="0 0 104 104">
@@ -111,18 +110,18 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
       <div class="rekapan" id="yesterdayNote"></div>
     </div>
   </div>
-  <div class="history reveal" style="transition-delay:.15s">
-    <h3>🗓️ Jejak 14 hari terakhir <span style="font-size:.7rem;font-weight:600;color:var(--ink-mute)">(tap tanggal untuk rincian)</span></h3>
+  <div class="history reveal" style="transition-delay:.12s">
+    <h3>🗓️ Jejak 14 hari terakhir <span style="font-size:.66rem;font-weight:600;color:var(--ink-mute)">(tap tanggal untuk rincian)</span></h3>
     <div class="h-strip" id="historyStrip"></div>
   </div>
-  <div class="card reveal" style="margin-top:clamp(20px,4vw,34px);padding:var(--pad-card)">
-    <h3 style="font-size:.95rem;font-weight:800;margin-bottom:10px;color:var(--ink-soft)">🌸 3 Hal yang Disyukuri Hari Ini</h3>
-    <div style="display:flex;flex-direction:column;gap:8px">
+  <div class="card reveal" style="margin-top:clamp(16px,3.4vw,26px);padding:var(--pad-card)">
+    <h3 style="font-size:.92rem;font-weight:800;margin-bottom:9px;color:var(--ink-soft)">🌸 3 Hal yang Disyukuri Hari Ini</h3>
+    <div style="display:flex;flex-direction:column;gap:7px">
       <input class="syukur-in" data-i="0" maxlength="80" placeholder="1. Contoh: hujan reda tepat sebelum berangkat…" style="border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;font-weight:600;font-size:.9rem;background:rgba(0,0,0,.3);color:var(--ink)">
       <input class="syukur-in" data-i="1" maxlength="80" placeholder="2. Contoh: ada teman yang menyapa dulu…" style="border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;font-weight:600;font-size:.9rem;background:rgba(0,0,0,.3);color:var(--ink)">
       <input class="syukur-in" data-i="2" maxlength="80" placeholder="3. Contoh: tubuhku kuat puasa hari ini…" style="border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;font-weight:600;font-size:.9rem;background:rgba(0,0,0,.3);color:var(--ink)">
     </div>
-    <p style="margin-top:10px;font-size:.74rem;color:var(--ink-mute);font-weight:600" id="syukurNote">Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu. 🤍</p>
+    <p style="margin-top:9px;font-size:.72rem;color:var(--ink-mute);font-weight:600" id="syukurNote">Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu. 🤍</p>
   </div>
 </section>
 
@@ -143,7 +142,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     <ul id="taskList"></ul>
     <div class="empty-box" id="emptyTasks">
       <span class="e">🦥</span>
-      <p style="font-weight:800;margin-top:8px">Papan masih kosong nih…</p>
+      <p style="font-weight:800;margin-top:6px">Papan masih kosong nih…</p>
       <p style="font-size:.85rem">Klik salah satu saran di atas, atau tulis tugasmu sendiri. Yang kecil aja dulu!</p>
     </div>
   </div>
@@ -178,7 +177,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
         <button class="mode-chip" data-mode="deep90">🚀 Deep 90</button>
       </div>
       <div class="custom-row" id="customRow">
-        <span class="cr-label">⏱️ Atur sendiri:</span>
+        <span class="cr-label">⏱️ Atur:</span>
         <button class="btn ghost small" id="minMinus" aria-label="Kurangi 5 menit">−5</button>
         <button class="custom-val" id="customVal" title="Tap untuk ketik angka persis">25</button>
         <button class="btn ghost small" id="minPlus" aria-label="Tambah 5 menit">+5</button>
@@ -218,7 +217,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
         </div>
       </div>
       <div class="pr-list" id="prayerList"></div>
-      <button class="btn hot" id="adhanBtn" style="width:100%;margin-top:14px">🕌 Fokus Sampai Adzan</button>
+      <button class="btn hot" id="adhanBtn" style="width:100%;margin-top:12px">🕌 Fokus Sampai Adzan</button>
       <p class="pr-note" id="prayerNote">Dihitung otomatis di perangkat (metode Kemenag: Subuh 20°, Isya 18°).</p>
     </div>
 
@@ -329,7 +328,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   <div class="card quote-card reveal">
     <p id="quoteText">"Mulai aja dulu. Sempurnanya sambil jalan."</p>
     <p id="quoteBy">— MANTRA NYALA</p>
-    <button class="btn ghost small" id="shuffleQuote" style="margin-top:18px">🔀 Kocok semangat lagi</button>
+    <button class="btn ghost small" id="shuffleQuote" style="margin-top:14px">🔀 Kocok semangat lagi</button>
   </div>
 </section>
 
@@ -339,37 +338,37 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   Dibuat dengan <span class="heart">🌹</span> biar kamu nggak mager lagi.<br>
   Semua datamu tersimpan aman di perangkat ini — tanpa akun, tanpa ribet.<br>
   <span style="display:inline-flex;align-items:center;gap:8px;margin-top:8px;">
-    <img src="logo-wfh.png" onerror="this.onerror=null;this.src='logo-wfh.svg';" alt="Logo Muslimah WFH" style="width:34px;height:34px;border-radius:9px;object-fit:contain;">
+    <img src="logo-wfh.png" onerror="this.onerror=null;this.src='logo-wfh.svg';" alt="Logo Muslimah WFH" style="width:32px;height:32px;border-radius:9px;object-fit:contain;">
     Kolaborasi: <b>Muslimah WFH</b> × <b>Juariah</b>
   </span><br>
-  <button id="backupBtn" style="background:none;border:none;color:var(--gold);text-decoration:underline;font-size:.78rem;font-weight:700;margin-top:10px;cursor:pointer">💾 Cadangkan data</button>
-  <button id="restoreBtn" style="background:none;border:none;color:var(--ink-mute);text-decoration:underline;font-size:.78rem;font-weight:700;margin-top:10px;cursor:pointer">📂 Pulihkan data</button>
+  <button id="backupBtn" style="background:none;border:none;color:var(--gold);text-decoration:underline;font-size:.76rem;font-weight:700;margin-top:9px;cursor:pointer">💾 Cadangkan data</button>
+  <button id="restoreBtn" style="background:none;border:none;color:var(--ink-mute);text-decoration:underline;font-size:.76rem;font-weight:700;margin-top:9px;cursor:pointer">📂 Pulihkan data</button>
   <input type="file" id="restoreFile" accept=".json,application/json" style="display:none">
   <br>
   <button id="resetBtn">Mulai ulang dari nol (hapus semua data)</button>
 </footer>
 
-<div id="welcomeOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-  <div style="max-width:420px;width:100%;margin:auto;position:relative;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:26px 22px;text-align:center;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
+<div id="welcomeOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+  <div style="max-width:420px;width:100%;margin:auto;position:relative;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:20px;padding:24px 20px;text-align:center;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
     <button id="welcomeClose" aria-label="Tutup" style="position:absolute;top:10px;right:12px;border:none;background:none;color:#8a6f74;font-size:1.1rem;font-weight:800;cursor:pointer;">✕</button>
-    <div><img src="icon.png" alt="" style="width:76px;height:76px;border-radius:18px;object-fit:cover;box-shadow:0 0 22px rgba(212,165,165,.45);"></div>
-    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem;margin:8px 0 4px;color:#f2e4e6;">Selamat datang di NYALA</h2>
-    <p style="color:#c9aeb2;font-size:.88rem;font-weight:600;margin-bottom:14px;">Sebelum mulai, siapa nama panggilanmu?</p>
-    <input id="welcomeName" maxlength="20" placeholder="Ketik namamu di sini…" style="width:100%;border:1px solid rgba(212,165,165,.34);border-radius:14px;padding:12px 14px;font-weight:600;background:rgba(0,0,0,.3);color:#f2e4e6;text-align:center;">
-    <button id="welcomeSave" style="margin-top:12px;width:100%;border:none;border-radius:14px;padding:13px;font-weight:800;background:linear-gradient(120deg,#b76e79,#9c5a66);color:#fff;box-shadow:0 5px 0 #6f3f49;cursor:pointer;">Mulai Nyala 🔥</button>
-    <button id="welcomeSkip" style="margin-top:8px;background:none;border:none;color:#8a6f74;font-size:.78rem;font-weight:700;text-decoration:underline;cursor:pointer;">Lewati dulu</button>
+    <div><img src="icon.png" alt="" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 0 12px rgba(229,199,134,.5));"></div>
+    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.35rem;margin:8px 0 4px;color:#f2e4e6;">Selamat datang di NYALA</h2>
+    <p style="color:#c9aeb2;font-size:.86rem;font-weight:600;margin-bottom:13px;">Sebelum mulai, siapa nama panggilanmu?</p>
+    <input id="welcomeName" maxlength="20" placeholder="Ketik namamu di sini…" style="width:100%;border:1px solid rgba(212,165,165,.34);border-radius:13px;padding:12px 14px;font-weight:600;background:rgba(0,0,0,.3);color:#f2e4e6;text-align:center;">
+    <button id="welcomeSave" style="margin-top:11px;width:100%;border:none;border-radius:13px;padding:13px;font-weight:800;background:linear-gradient(120deg,#b76e79,#9c5a66);color:#fff;box-shadow:0 4px 0 #6f3f49;cursor:pointer;">Mulai Nyala 🔥</button>
+    <button id="welcomeSkip" style="margin-top:8px;background:none;border:none;color:#8a6f74;font-size:.76rem;font-weight:700;text-decoration:underline;cursor:pointer;">Lewati dulu</button>
   </div>
 </div>
 
-<div id="dayOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-  <div style="max-width:460px;width:100%;max-height:80vh;overflow-y:auto;margin:auto;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:22px;padding:22px 20px;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
+<div id="dayOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+  <div style="max-width:460px;width:100%;max-height:80vh;overflow-y:auto;margin:auto;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:20px;padding:20px 18px;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
-      <h3 id="dayOvTitle" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.05rem;color:#f2e4e6;">—</h3>
+      <h3 id="dayOvTitle" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1rem;color:#f2e4e6;">—</h3>
       <button id="dayOvClose" style="border:none;background:none;color:#8a6f74;font-size:1.1rem;font-weight:800;cursor:pointer;">✕</button>
     </div>
-    <div id="dayOvList" style="margin:12px 0;display:flex;flex-direction:column;gap:8px;"></div>
-    <div id="dayOvSyukur" style="display:none;margin:10px 0;padding:12px 14px;border:1px dashed rgba(212,165,165,.34);border-radius:14px;font-size:.82rem;color:#c9aeb2;font-weight:600;"></div>
-    <button id="dayOvCarry" style="width:100%;border:none;border-radius:14px;padding:12px;font-weight:800;background:linear-gradient(120deg,#b76e79,#9c5a66);color:#fff;box-shadow:0 5px 0 #6f3f49;cursor:pointer;">📥 Bawa tugas belum selesai ke hari ini</button>
+    <div id="dayOvList" style="margin:11px 0;display:flex;flex-direction:column;gap:7px;"></div>
+    <div id="dayOvSyukur" style="display:none;margin:9px 0;padding:11px 13px;border:1px dashed rgba(212,165,165,.34);border-radius:13px;font-size:.8rem;color:#c9aeb2;font-weight:600;"></div>
+    <button id="dayOvCarry" style="width:100%;border:none;border-radius:13px;padding:12px;font-weight:800;background:linear-gradient(120deg,#b76e79,#9c5a66);color:#fff;box-shadow:0 4px 0 #6f3f49;cursor:pointer;">📥 Bawa tugas belum selesai ke hari ini</button>
   </div>
 </div>
 
@@ -379,6 +378,18 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 <script src="app.js" defer></script>
 <script>
 (function(){
+  var root=document.documentElement;
+  function headH(){var h=document.querySelector('header.top');if(h)root.style.setProperty('--head-h',h.offsetHeight+'px');}
+  function scrolled(){var h=document.querySelector('header.top');if(h)h.classList.toggle('scrolled',window.scrollY>8);}
+  var muted=false;try{muted=localStorage.getItem('nyala_mute')==='1';}catch(e){}
+  function paintMute(){var b=document.getElementById('muteBtn');if(!b)return;b.textContent=muted?'🔕':'🔔';b.setAttribute('aria-pressed',muted?'true':'false');b.title=muted?'Suara mati — tap untuk nyalakan':'Suara nyala — tap untuk matikan';b.classList.toggle('off',muted);}
+  if(window.AudioParam){
+    var ap=AudioParam.prototype,sv=ap.setValueAtTime,ev=ap.exponentialRampToValueAtTime,lv=ap.linearRampToValueAtTime;
+    ap.setValueAtTime=function(v,t){return sv.call(this,muted?0.00001:v,t);};
+    ap.exponentialRampToValueAtTime=function(v,t){return ev.call(this,muted?0.00001:v,t);};
+    if(lv)ap.linearRampToValueAtTime=function(v,t){return lv.call(this,muted?0.00001:v,t);};
+  }
+  function toggleMute(){muted=!muted;try{localStorage.setItem('nyala_mute',muted?'1':'0');}catch(e){}paintMute();}
   function spy(){
     var links=document.querySelectorAll('nav.links a[href^="#"]');
     if(!links.length||!('IntersectionObserver' in window))return;
@@ -392,7 +403,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
           if(a)a.setAttribute('aria-current','true');
         }
       });
-    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    },{rootMargin:'-40% 0px -55% 0px',threshold:0});
     Object.keys(map).forEach(function(id){var s=document.getElementById(id);if(s)obs.observe(s);});
   }
   function overlayFix(){
@@ -401,8 +412,15 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     var c=document.getElementById('welcomeClose');
     if(c)c.addEventListener('click',function(){var k=document.getElementById('welcomeSkip');if(k)k.click();});
   }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){spy();overlayFix();});}
-  else{spy();overlayFix();}
+  function boot(){
+    headH();scrolled();paintMute();spy();overlayFix();
+    var mb=document.getElementById('muteBtn');if(mb)mb.addEventListener('click',toggleMute);
+    window.addEventListener('resize',headH);
+    window.addEventListener('scroll',scrolled,{passive:true});
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(headH).catch(function(){});
+    setTimeout(headH,600);
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',boot);}else{boot();}
 })();
 </script>
 </body>
