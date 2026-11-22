@@ -1,14 +1,36 @@
 {
-  "name": "NYALA — Anti Mager",
+  "name": "NYALA ✦ Anti Mager — Produktif dengan Elegan",
   "short_name": "NYALA",
-  "description": "Teman produktif harian anti mager dengan spiritual corner, jadwal sholat, tasbih, dzikir pagi-petang, dan mushaf digital.",
+  "description": "Teman produktif harian anti mager: tugas mikro, timer fokus, spiritual corner, kebun progres, dan laporan mingguan.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#0e0c0d",
   "theme_color": "#0e0c0d",
+  "orientation": "portrait",
   "icons": [
-    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    {
+      "src": "icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    { "name": "Dzikir Pagi & Petang", "short_name": "Dzikir", "url": "./dzikir.html" },
+    { "name": "Taman Qur'an", "short_name": "Qur'an", "url": "./quran.html" },
+    { "name": "Mode Fokus", "short_name": "Fokus", "url": "./index.html#fokus" }
   ]
 }
