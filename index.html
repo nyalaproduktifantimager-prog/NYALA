@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=8">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0e0c0d">
 <link rel="apple-touch-icon" href="icon.png">
@@ -113,6 +113,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   <div class="history reveal" style="transition-delay:.12s">
     <h3>🗓️ Jejak 14 hari terakhir <span style="font-size:.66rem;font-weight:600;color:var(--ink-mute)">(tap tanggal untuk rincian)</span></h3>
     <div class="h-strip" id="historyStrip"></div>
+    <p class="h-legend">Angka besar = tanggal · lencana emas = jumlah tugas beres hari itu.</p>
   </div>
   <div class="card reveal" style="margin-top:clamp(16px,3.4vw,26px);padding:var(--pad-card)">
     <h3 style="font-size:.92rem;font-weight:800;margin-bottom:9px;color:var(--ink-soft)">🌸 3 Hal yang Disyukuri Hari Ini</h3>
@@ -382,7 +383,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   function headH(){var h=document.querySelector('header.top');if(h)root.style.setProperty('--head-h',h.offsetHeight+'px');}
   function scrolled(){var h=document.querySelector('header.top');if(h)h.classList.toggle('scrolled',window.scrollY>8);}
   var muted=false;try{muted=localStorage.getItem('nyala_mute')==='1';}catch(e){}
-  function paintMute(){var b=document.getElementById('muteBtn');if(!b)return;b.textContent=muted?'🔕':'🔔';b.setAttribute('aria-pressed',muted?'true':'false');b.title=muted?'Suara mati — tap untuk nyalakan':'Suara nyala — tap untuk matikan';b.classList.toggle('off',muted);}
+  function paintMute(){var b=document.getElementById('muteBtn');if(!b)return;b.textContent=muted?'🔕':'';b.setAttribute('aria-pressed',muted?'true':'false');b.title=muted?'Suara mati — tap untuk nyalakan':'Suara nyala — tap untuk matikan';b.classList.toggle('off',muted);}
   if(window.AudioParam){
     var ap=AudioParam.prototype,sv=ap.setValueAtTime,ev=ap.exponentialRampToValueAtTime,lv=ap.linearRampToValueAtTime;
     ap.setValueAtTime=function(v,t){return sv.call(this,muted?0.00001:v,t);};
@@ -390,6 +391,29 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     if(lv)ap.linearRampToValueAtTime=function(v,t){return lv.call(this,muted?0.00001:v,t);};
   }
   function toggleMute(){muted=!muted;try{localStorage.setItem('nyala_mute',muted?'1':'0');}catch(e){}paintMute();}
+  function normalizeHistory(){
+    var cells=document.querySelectorAll('#historyStrip .h-cell:not([data-norm])');
+    cells.forEach(function(cell){
+      var title=cell.getAttribute('title')||'';
+      var parts=title.split(' · ');
+      var dateNum=(parts[0]||'').split(' ')[1]||'';
+      var done=parseInt((parts[1]||'0'),10)||0;
+      var n=cell.querySelector('.n');
+      if(n&&dateNum)n.textContent=dateNum;
+      if(done>0&&!cell.querySelector('.h-badge')){
+        var b=document.createElement('span');
+        b.className='h-badge';
+        b.textContent=done+'✓';
+        cell.appendChild(b);
+      }
+      cell.setAttribute('data-norm','1');
+    });
+  }
+  function watchHistory(){
+    var strip=document.getElementById('historyStrip');
+    if(!strip||!('MutationObserver' in window))return;
+    new MutationObserver(function(){normalizeHistory();}).observe(strip,{childList:true});
+  }
   function spy(){
     var links=document.querySelectorAll('nav.links a[href^="#"]');
     if(!links.length||!('IntersectionObserver' in window))return;
@@ -413,12 +437,12 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     if(c)c.addEventListener('click',function(){var k=document.getElementById('welcomeSkip');if(k)k.click();});
   }
   function boot(){
-    headH();scrolled();paintMute();spy();overlayFix();
+    headH();scrolled();paintMute();spy();overlayFix();normalizeHistory();watchHistory();
     var mb=document.getElementById('muteBtn');if(mb)mb.addEventListener('click',toggleMute);
     window.addEventListener('resize',headH);
     window.addEventListener('scroll',scrolled,{passive:true});
     if(document.fonts&&document.fonts.ready)document.fonts.ready.then(headH).catch(function(){});
-    setTimeout(headH,600);
+    setTimeout(function(){headH();normalizeHistory();},600);
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',boot);}else{boot();}
 })();
