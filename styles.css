@@ -1,4 +1,4 @@
-/* NYALA — styles.css v7: ritme vertikal lega, tipografi nyaman */
+/* NYALA — styles.css v8: jejak rapi + jarak antar-blok lega */
 :root{
 --bg-deep:#0e0c0d;--bg-soft:#171314;--card:#1e181a;
 --ink:#f2e4e6;--ink-soft:#c9aeb2;--ink-mute:#8a6f74;
@@ -128,17 +128,19 @@ section{margin-bottom:clamp(30px,5.6vw,54px);scroll-margin-top:calc(var(--head-h
 .rekapan{margin-top:14px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.25);border:1px solid var(--line);font-size:.88rem;font-weight:700;color:var(--ink-soft);display:none}
 
 /* ===== JEJAK ===== */
-.history{margin-top:clamp(18px,3.6vw,28px)}
-.history h3{font-size:.98rem;margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.history{margin-top:clamp(26px,5vw,40px)}
+.history h3{font-size:.98rem;margin-bottom:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .history h3 span{font-size:.74rem !important}
 .h-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.h-cell{border:1px solid var(--line);border-radius:11px;padding:6px 2px;text-align:center;font-size:.68rem;font-weight:700;color:var(--ink-mute);background:rgba(0,0,0,.22);cursor:pointer;transition:transform .15s,border-color .2s;display:flex;flex-direction:column;gap:2px;min-height:48px;justify-content:center}
+.h-cell{border:1px solid var(--line);border-radius:12px;padding:8px 2px 7px;text-align:center;font-size:.66rem;font-weight:700;color:var(--ink-mute);background:rgba(0,0,0,.22);cursor:pointer;transition:transform .15s,border-color .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:62px}
 .h-cell:hover{transform:translateY(-3px);border-color:var(--rose)}
-.h-cell .n{font-family:'Bricolage Grotesque';font-size:1rem;font-weight:800;color:var(--ink-soft)}
+.h-cell .n{font-family:'Bricolage Grotesque';font-size:1.05rem;font-weight:800;color:var(--ink-soft);line-height:1}
+.h-badge{display:inline-flex;align-items:center;gap:2px;font-size:.56rem;font-weight:800;color:#241a0c;background:linear-gradient(120deg,var(--gold),var(--gold-deep));border-radius:999px;padding:1px 6px;line-height:1.5;white-space:nowrap}
 .h-cell.done{background:linear-gradient(160deg,rgba(183,110,121,.55),rgba(143,79,91,.5));border-color:var(--rose)}
 .h-cell.done .n{color:#fff}
 .h-cell.today{border-color:var(--gold);box-shadow:var(--glow-gold)}
-#hari>.card{margin-top:clamp(20px,4vw,32px) !important}
+.h-legend{margin-top:9px;font-size:.7rem;color:var(--ink-mute);font-weight:600}
+#hari>.card{margin-top:clamp(22px,4.4vw,34px) !important}
 .syukur-in{font-size:.9rem !important;padding:10px 12px !important;border-radius:11px !important}
 #syukurNote{font-size:.8rem !important;margin-top:10px !important}
 #dateChip{font-size:.74rem !important}
