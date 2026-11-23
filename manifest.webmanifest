@@ -1,13 +1,11 @@
 {
   "name": "NYALA ✦ Anti Mager — Produktif dengan Elegan",
   "short_name": "NYALA",
-  "description": "Teman produktif harian anti mager: Spiritual Corner, jadwal sholat, fokus sampai adzan, tasbih, tugas mikro, timer fokus, pelacak kebiasaan, kebun progres, murottal yang terus mengalun, dan laporan mingguan shareable.",
   "id": "./index.html",
   "start_url": "./index.html",
   "scope": "./",
   "lang": "id",
   "dir": "ltr",
-  "categories": ["productivity", "lifestyle"],
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0e0c0d",
