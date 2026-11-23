@@ -34,18 +34,18 @@ img{max-width:100%;display:inline-block}
 header.top{position:sticky;top:0;z-index:50;background:rgba(14,12,13,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:box-shadow .25s}
 header.top.scrolled{box-shadow:0 10px 30px -18px rgba(0,0,0,.9)}
 .top-in{max-width:1020px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque';font-weight:800;font-size:1.18rem;letter-spacing:.4px}
+.logo{display:flex;align-items:center;gap:4px;font-family:'Bricolage Grotesque';font-weight:800;font-size:1.18rem;letter-spacing:.4px}
 .logo .word{background:linear-gradient(120deg,var(--rose-soft),var(--rose) 45%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo .tagline{font-size:.62rem;font-weight:700;letter-spacing:.28em;color:var(--ink-mute);text-transform:uppercase;align-self:center;margin-left:2px}
 .logo small{font-size:.6rem;font-weight:700;letter-spacing:.32em;color:var(--ink-mute);text-transform:uppercase}
 @media(max-width:479px){.logo small{display:none}}
 @keyframes flick{0%,100%{transform:scale(1) rotate(0deg);filter:brightness(1)}50%{transform:scale(1.05) rotate(-2deg);filter:brightness(1.22)}}
 .logo .flame{display:inline-block;animation:flick 2.6s ease-in-out infinite}
 .logo .mark{width:62px;height:62px;object-fit:contain;border-radius:0;background:transparent;box-shadow:none;mix-blend-mode:normal;filter:drop-shadow(0 0 10px rgba(229,199,134,.55)) brightness(1.12) saturate(1.15) contrast(1.05);display:inline-block;animation:flick 2.6s ease-in-out infinite}
 header.top .logo img{width:62px !important;height:62px !important;object-fit:contain !important;border-radius:0 !important;background:transparent !important;box-shadow:none !important;mix-blend-mode:normal !important;filter:drop-shadow(0 0 10px rgba(229,199,134,.55)) brightness(1.12) saturate(1.15) contrast(1.05) !important}
-.brand-mark{display:inline-block;vertical-align:-5px;object-fit:contain;background:transparent;border:none;box-shadow:none;mix-blend-mode:normal;filter:drop-shadow(0 0 7px rgba(229,199,134,.5)) brightness(1.12) saturate(1.15) contrast(1.05)}
-.chip .brand-mark{width:30px;height:30px;vertical-align:-8px}
-.rep-title .brand-mark{width:34px;height:34px;vertical-align:-9px}
-footer .heart .brand-mark{width:26px;height:26px;vertical-align:-7px}
+.brand-mark{display:inline-block;object-fit:contain;background:transparent;border:none;box-shadow:none;mix-blend-mode:normal;filter:drop-shadow(0 0 7px rgba(229,199,134,.5)) brightness(1.12) saturate(1.15) contrast(1.05)}
+.rep-title .brand-mark{width:38px;height:38px;vertical-align:-11px;margin-right:2px}
+footer .heart .brand-mark{width:30px;height:30px;vertical-align:-9px}
 nav.links{display:flex;gap:2px 16px;flex-wrap:wrap;justify-content:center;margin:0 auto;width:100%}
 nav.links a{color:var(--ink-soft);text-decoration:none;font-weight:700;font-size:.82rem;padding:5px 2px;position:relative;transition:color .2s;white-space:nowrap}
 nav.links a:hover{color:var(--rose-soft)}
@@ -272,7 +272,7 @@ section{margin-bottom:clamp(30px,5.6vw,54px);scroll-margin-top:calc(var(--head-h
 .wheel-result div{font-size:1rem !important}
 .wheel-result small{font-size:.82rem}
 .rep-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.rep-title{font-family:'Bricolage Grotesque';font-weight:800;font-size:1.1rem;display:inline-flex;align-items:center;gap:7px}
+.rep-title{font-family:'Bricolage Grotesque';font-weight:800;font-size:1.1rem;display:inline-flex;align-items:center;gap:8px}
 .rep-range{font-size:.78rem;font-weight:800;color:var(--ink-soft);border:1px solid var(--line-strong);border-radius:999px;padding:5px 11px}
 .rep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
 @media(max-width:640px){.rep-grid{grid-template-columns:repeat(2,1fr)}}
@@ -293,7 +293,7 @@ section{margin-bottom:clamp(30px,5.6vw,54px);scroll-margin-top:calc(var(--head-h
 .quote-card p:last-of-type{margin-top:9px;font-weight:800;letter-spacing:.18em;font-size:.76rem;color:var(--gold);transition:opacity .3s}
 .faded{opacity:0}
 footer{border-top:1px dashed var(--line-strong);margin-top:18px;padding:24px 14px 40px;text-align:center;color:var(--ink-soft);font-size:.86rem;font-weight:600}
-footer .heart{display:inline-block;animation:flick 2.4s ease-in-out infinite}
+footer .heart{display:inline-flex;align-items:center;gap:4px;animation:flick 2.4s ease-in-out infinite}
 footer b{color:var(--ink)}
 #backupBtn,#restoreBtn{font-size:.82rem !important}
 #resetBtn{margin-top:12px;display:inline-block;border:none;background:none;color:var(--ink-mute);text-decoration:underline;font-size:.78rem;font-weight:700;cursor:pointer}
