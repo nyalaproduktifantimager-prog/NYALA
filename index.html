@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -6,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>NYALA ✦ Anti Mager — Produktif dengan Elegan</title>
 <meta name="description" content="Teman produktif harian anti mager: Spiritual Corner, jadwal sholat, fokus sampai adzan, tasbih, tugas mikro, timer fokus, pelacak kebiasaan, kebun progres, murottal yang terus mengalun, dan laporan mingguan shareable.">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="icon" type="image/png" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=8">
-<link rel="manifest" href="manifest.webmanifest?v=7">
+<link rel="stylesheet" href="styles.css?v=11">
+<link rel="manifest" href="manifest.webmanifest?v=8">
 <meta name="theme-color" content="#0e0c0d">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.png">
 <style>
 #welcomeOverlay,#dayOverlay{overflow-y:auto;-webkit-overflow-scrolling:touch}
 #welcomeOverlay>div,#dayOverlay>div{margin:auto}
@@ -24,7 +23,7 @@
 .nframe.keep{z-index:-1;opacity:0;visibility:hidden;pointer-events:none}
 .nplayer{position:fixed;left:0;right:0;bottom:0;z-index:9500;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(23,19,20,.97),rgba(14,12,13,.99));border-top:1px solid rgba(212,165,165,.34);box-shadow:0 -14px 34px -18px rgba(0,0,0,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .nplayer[hidden]{display:none}
-.np-art{width:40px;height:40px;border-radius:11px;object-fit:contain;background:rgba(212,165,165,.08);border:1px solid rgba(212,165,165,.24);flex:none}
+.np-art{width:40px;height:40px;border-radius:11px;object-fit:contain;background:transparent;border:none;box-shadow:none;filter:drop-shadow(0 0 7px rgba(229,199,134,.5));flex:none}
 .np-meta{flex:1;min-width:120px}
 .np-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.9rem;color:#f2e4e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .np-sub{font-size:.7rem;font-weight:700;color:#c9aeb2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -72,7 +71,7 @@
 
 <header class="top">
   <div class="top-in">
-    <div class="logo"><img class="mark" src="icon.svg" alt="Logo NYALA"><span class="word">NYALA</span><small>anti&nbsp;mager</small></div>
+    <div class="logo"><img class="mark" src="icon.png" alt="Logo NYALA"><span class="word">NYALA</span><small>anti&nbsp;mager</small></div>
     <nav class="links" aria-label="Navigasi utama">
       <a href="#hari">Hari Ini</a><a href="#tugas">Tugas</a><a href="#fokus">Fokus</a>
       <a href="#spiritual">Spiritual</a><a href="#kebiasaan">Kebiasaan</a><a href="#kebun">Kebun</a>
@@ -83,7 +82,7 @@
       <span class="chip streak" id="streakChip" title="Streak check-in harianmu">🔥 0 hari</span>
       <span class="chip lvl" id="lvlChip">Lv.1</span>
       <button class="chip mute" id="muteBtn" type="button" aria-pressed="false" title="Suara nyala — tap untuk matikan">🔔</button>
-      <span class="chip" title="NYALA" aria-label="Logo NYALA"><svg viewBox="0 0 512 512" width="17" height="17" aria-hidden="true"><defs><linearGradient id="cA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4e6e7"/><stop offset=".5" stop-color="#d4a5a5"/><stop offset="1" stop-color="#8f4f5b"/></linearGradient><linearGradient id="cB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e7b6"/><stop offset="1" stop-color="#c9a35c"/></linearGradient></defs><path d="M256 452C170 452 116 392 116 322C116 268 146 236 168 206C176 232 190 244 206 250C186 200 200 130 252 60C266 120 300 148 322 186C334 168 336 150 334 132C372 176 396 240 396 318C396 392 342 452 256 452Z" fill="url(#cA)" stroke="url(#cB)" stroke-width="30" stroke-linejoin="round"/><path d="M310 302C310 280 292 264 268 264C240 264 220 286 220 312C220 344 246 368 276 368C310 368 338 340 338 300C338 254 302 220 258 220" fill="none" stroke="url(#cB)" stroke-width="30" stroke-linecap="round"/></svg></span>
+      <button class="chip mute" id="iconRefreshBtn" type="button" title="Pasang ulang ikon home screen & splash">🌹</button>
     </div>
   </div>
 </header>
@@ -386,7 +385,7 @@
 <div id="welcomeOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
   <div style="max-width:420px;width:100%;margin:auto;position:relative;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:20px;padding:24px 20px;text-align:center;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
     <button id="welcomeClose" aria-label="Tutup" style="position:absolute;top:10px;right:12px;border:none;background:none;color:#8a6f74;font-size:1.1rem;font-weight:800;cursor:pointer;">✕</button>
-    <div><img src="icon.svg" alt="" style="width:84px;height:84px;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 0 12px rgba(229,199,134,.5));"></div>
+    <div><img src="icon.png" alt="" style="width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 0 12px rgba(229,199,134,.5));"></div>
     <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.35rem;margin:8px 0 4px;color:#f2e4e6;">Selamat datang di NYALA</h2>
     <p style="color:#c9aeb2;font-size:.86rem;font-weight:600;margin-bottom:13px;">Sebelum mulai, siapa nama panggilanmu?</p>
     <input id="welcomeName" maxlength="20" placeholder="Ketik namamu di sini…" style="width:100%;border:1px solid rgba(212,165,165,.34);border-radius:13px;padding:12px 14px;font-weight:600;background:rgba(0,0,0,.3);color:#f2e4e6;text-align:center;">
@@ -412,7 +411,7 @@
 </div>
 
 <div id="nyalaPlayer" class="nplayer" hidden aria-label="Pemutar murottal">
-  <img class="np-art" src="icon.svg" alt="">
+  <img class="np-art" src="icon.png" alt="">
   <div class="np-meta">
     <div class="np-title" id="npTitle">Murottal</div>
     <div class="np-sub" id="npSub">Tetap mengalun walau pindah menu</div>
@@ -436,6 +435,9 @@
   var wrap=$('nyalaFrameWrap'),frame=$('nyalaFrame');
   var loadedPage='',visible=false,lastBtn=null,playing=false,nowTitle='',nowSub='';
   var muted=false;try{muted=localStorage.getItem('nyala_mute')==='1';}catch(e){}
+  var installEvt=null;
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();installEvt=e;});
+  window.__nyalaFrameVisible=function(){return visible;};
 
   function toast(m,g){
     var b=$('toasts');if(!b)return;
@@ -452,7 +454,7 @@
   function media(){
     if(!('mediaSession' in navigator))return;
     try{
-      if(nowTitle&&playing)navigator.mediaSession.metadata=new MediaMetadata({title:nowTitle,artist:nowSub,album:'NYALA · Taman Qur\u2019an',artwork:[{src:'icon.svg',sizes:'any',type:'image/svg+xml'}]});
+      if(nowTitle&&playing)navigator.mediaSession.metadata=new MediaMetadata({title:nowTitle,artist:nowSub,album:'NYALA · Taman Qur\u2019an',artwork:[{src:'icon.png',sizes:'512x512',type:'image/png'}]});
       navigator.mediaSession.playbackState=playing?'playing':'paused';
     }catch(e){}
   }
@@ -607,9 +609,27 @@
     var c=$('welcomeClose');
     if(c)c.addEventListener('click',function(){var k=$('welcomeSkip');if(k)k.click();});
   }
+  function reinstallIcon(){
+    if(installEvt){
+      installEvt.prompt();
+      installEvt.userChoice.then(function(r){
+        installEvt=null;
+        var ok=r&&r.outcome==='accepted';
+        toast(ok?'📲 Ikon PNG rose-gold dipasang ke layar utama & splash!':'Dibatalkan — data tetap aman.',ok);
+      }).catch(function(){installEvt=null;});
+      return;
+    }
+    var sa=false;try{sa=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;}catch(e){}
+    if(sa){
+      toast('Sudah terpasang. Hapus ikon NYALA di layar utama, lalu buka situs ini di Chrome dan pilih menu ⋮ → Tambahkan ke layar utama. Data tidak hilang.',true);
+    }else{
+      toast('Buka menu Chrome ⋮ → Tambahkan ke layar utama untuk memasang ikon PNG rose-gold.',true);
+    }
+  }
   function boot(){
     headH();scrolled();paintMute();spy();overlayFix();normalizeHistory();watchHistory();
     var mb=$('muteBtn');if(mb)mb.addEventListener('click',toggleMute);
+    var ib=$('iconRefreshBtn');if(ib)ib.addEventListener('click',function(e){e.preventDefault();reinstallIcon();});
     var tg=$('npToggle');if(tg)tg.addEventListener('click',togglePlayback);
     var op=$('npOpen');if(op)op.addEventListener('click',function(){showFrame('quran.html',true);});
     var sp=$('npStop');if(sp)sp.addEventListener('click',function(){stopPlayback();toast('⏹ Murottal dihentikan.');});
