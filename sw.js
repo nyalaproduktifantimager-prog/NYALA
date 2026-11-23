@@ -1,5 +1,5 @@
-/* NYALA — service worker v10: ikon & splash selalu segar, data pengguna tidak pernah disentuh */
-var VERSION='nyala-v10';
+/* NYALA — service worker v11: murottal lintas halaman, ikon segar, data pengguna aman */
+var VERSION='nyala-v11';
 var SHELL=['./','./index.html','./styles.css?v=8','./app.js','./dzikir.html','./quran.html'];
 
 self.addEventListener('install',function(e){
@@ -28,12 +28,19 @@ self.addEventListener('message',function(e){
 
 function isManifest(url){return url.pathname.endsWith('manifest.webmanifest');}
 function isIcon(url){return /\.(png|svg|jpg|jpeg|webp|ico)$/i.test(url.pathname);}
+function isMedia(url){return /\.(mp3|ogg|m4a|wav|opus)$/i.test(url.pathname);}
 
 self.addEventListener('fetch',function(e){
   var req=e.request;
   if(req.method!=='GET')return;
   var url=new URL(req.url);
-  if(url.origin!==self.location.origin)return;
+
+  if(url.origin!==self.location.origin){
+    if(isMedia(url))return;
+    return;
+  }
+  if(isMedia(url))return;
+  if(req.headers.has('range'))return;
 
   if(isManifest(url)||isIcon(url)){
     e.respondWith(
