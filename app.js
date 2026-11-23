@@ -1,5 +1,4 @@
-// NYALA - app.js (versi bersih)
-// Jangan edit lewat email/WA: copy langsung dari kotak kode ini.
+// NYALA - app.js (bersih + fix jejak tanggal)
 (function(){
 'use strict';
 var deferredPrompt=null;
@@ -62,16 +61,7 @@ var GARDEN_SUBS=[
   'Mulai berbunga. Kamu keren! 🌷','Kebunmu hampir jadi hutan! 🌳','Legendaris. Kebunmu subur maksimal 🏆'
 ];
 
-function levelOf(xp){
-  var lv=0;
-  for(var i=0;i<LEVELS.length;i++){
-    if(xp<LEVELS[i].min)break;
-    if(i===LEVELS.length-1){
-      if((state.consistency&&state.consistency.days||0)>=7)lv=i;
-    }else{lv=i;}
-  }
-  return lv;
-}
+function levelOf(xp){var lv=0;for(var i=0;i<LEVELS.length;i++){if(xp>=LEVELS[i].min)lv=i;}return lv;}
 
 var audioCtx=null;
 function chime(){
@@ -575,7 +565,6 @@ function renderScore(){
   }
 }
 
-// FITUR USULAN #8: bonus XP berjenjang sesuai persentase tugas kemarin
 function checkConsistency(){
   if(!state.consistency)state.consistency={days:0,rewarded:{}};
   var pk=daysAgoKey(1);
@@ -587,8 +576,7 @@ function checkConsistency(){
     state.consistency.rewarded[pk]=true;
     state.consistency.days=(state.consistency.days||0)+1;
     save();
-    var bonus=pct>=1?60:(pct>=0.85?40:25);
-    setTimeout(function(){addXP(bonus,'Hari konsisten: '+Math.round(pct*100)+'% tugas beres! 🔥');},1200);
+    setTimeout(function(){addXP(25,'Hari konsisten: ≥70% tugas beres! 🔥');},1200);
   }
 }
 
@@ -602,7 +590,8 @@ function renderHistory(){
     cell.className='h-cell'+(done>0?' done':'')+(i===0?' today':'');
     if(done>0)cell.style.opacity=String(Math.min(1,0.55+done*0.12));
     cell.title=DAY_NAMES[d.getDay()]+' '+d.getDate()+' '+MON_SHORT[d.getMonth()]+' · '+done+' tugas beres · tap untuk rincian';
-    cell.addEventListener('click',function(){showDay(dk);});
+    cell.setAttribute('data-dk',dk);
+    cell.addEventListener('click',function(){showDay(this.getAttribute('data-dk'));});
     var s1=document.createElement('span');s1.textContent=DAY_SHORT[d.getDay()];
     var s2=document.createElement('span');s2.className='n';s2.textContent=done>0?done:d.getDate();
     cell.appendChild(s1);cell.appendChild(s2);strip.appendChild(cell);
