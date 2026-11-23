@@ -1,4 +1,4 @@
-// NYALA - app.js (bersih + fix jejak tanggal)
+// app.js — versi bersih: jejak tanggal benar + logo rose-gold di gambar laporan (Kebun tetap mawar merah & bunga lain utuh)
 (function(){
 'use strict';
 var deferredPrompt=null;
@@ -32,7 +32,6 @@ if(saved){
 }
 
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
-
 function ensureToday(){
   var k=todayKey();
   if(state.today.key!==k){state.today={key:k,mood:-1,hype:''};}
@@ -41,7 +40,6 @@ function ensureToday(){
   if(state.streak.last!==k&&state.streak.last!==daysAgoKey(1)){if(state.streak.last!=='')state.streak.count=0;}
   save();
 }
-
 function touchStreak(){
   var k=todayKey();
   if(state.streak.last===k)return;
@@ -54,13 +52,11 @@ var LEVELS=[
   {min:380,name:'Mode Gas ⚡'},{min:620,name:'Pejuang Fokus 🔥'},{min:950,name:'Pendekar Produktif ⚔️'},
   {min:1400,name:'Master Anti-Mager 👑'}
 ];
-
 var GARDEN_SUBS=[
   'Masih benih nih — siram dengan satu tugas kecil 🌰','Kecambah pertama muncul! Jangan berhenti 🌱',
   'Akarmu menguat, lanjutkan ritmenya 🌿','Daunnya rimbun — fokusmu juga 🍃',
   'Mulai berbunga. Kamu keren! 🌷','Kebunmu hampir jadi hutan! 🌳','Legendaris. Kebunmu subur maksimal 🏆'
 ];
-
 function levelOf(xp){var lv=0;for(var i=0;i<LEVELS.length;i++){if(xp>=LEVELS[i].min)lv=i;}return lv;}
 
 var audioCtx=null;
@@ -80,7 +76,6 @@ function chime(){
     });
   }catch(e){}
 }
-
 function toast(msg,gold){
   var box=$('toasts');if(!box)return;
   var t=document.createElement('div');
@@ -97,9 +92,7 @@ function toast(msg,gold){
 var cfx=$('cfx'),ctxC=null,parts=[],cfxRunning=false;
 function sizeCanvas(){if(cfx){cfx.width=window.innerWidth;cfx.height=window.innerHeight;}}
 window.addEventListener('resize',sizeCanvas);
-
 var CONF_COLORS=['#d4a5a5','#e8c4c8','#e5c786','#b76e79','#f0dcdd','#c9a35c','#ffffff'];
-
 function burst(n,x,y){
   if(!cfx)return;
   if(!ctxC)ctxC=cfx.getContext('2d');
@@ -119,7 +112,6 @@ function burst(n,x,y){
   }
   if(!cfxRunning){cfxRunning=true;requestAnimationFrame(cfxLoop);}
 }
-
 function cfxLoop(){
   if(!ctxC){cfxRunning=false;return;}
   ctxC.clearRect(0,0,cfx.width,cfx.height);
@@ -138,7 +130,6 @@ function cfxLoop(){
   if(parts.length>0){requestAnimationFrame(cfxLoop);}
   else{cfxRunning=false;ctxC.clearRect(0,0,cfx.width,cfx.height);}
 }
-
 function addXP(n,msg){
   var before=levelOf(state.xp);
   state.xp+=n;save();
@@ -168,21 +159,17 @@ var CITIES=[
   {n:'Manokwari',la:-0.86,lo:134.06,tz:9},{n:'Merauke',la:-8.47,lo:140.33,tz:9},{n:'Nabire',la:-3.36,lo:135.55,tz:9},
   {n:'Wamena',la:-4.10,lo:138.95,tz:9},{n:'Sorong',la:-0.88,lo:131.25,tz:9}
 ];
-
 var PRAYER_KEYS=[['Fajr','Subuh'],['Dhuhr','Dzuhur'],['Asr','Ashr'],['Maghrib','Maghrib'],['Isha','Isya']];
 var prayerTimes=null,prayerComputedKey='',customLabel='';
-
 function rad(d){return d*Math.PI/180;}
 function deg(r){return r*180/Math.PI;}
 function fixA(a){a=a%360;return a<0?a+360:a;}
 function fixH(h){h=h%24;return h<0?h+24:h;}
-
 function julian(y,m,d){
   if(m<=2){y-=1;m+=12;}
   var A=Math.floor(y/100),B=2-A+Math.floor(A/4);
   return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;
 }
-
 function sunPos(jd){
   var D=jd-2451545.0;
   var g=rad(fixA(357.529+0.98560028*D));
@@ -194,12 +181,10 @@ function sunPos(jd){
   var eqt=q/15-RA;
   return{decl:decl,eqt:eqt};
 }
-
 function hm(h){
   var mins=Math.round(fixH(h)*60)%1440;
   return pad2(Math.floor(mins/60))+':'+pad2(mins%60);
 }
-
 function calcTimes(date,la,lo,tz){
   var jd=julian(date.getFullYear(),date.getMonth()+1,date.getDate())-lo/(15*24);
   var sp=sunPos(jd+0.5);
@@ -215,7 +200,6 @@ function calcTimes(date,la,lo,tz){
   if(fH==null)fH=6;if(sH==null)sH=6;if(aH==null)aH=4;if(iH==null)iH=6;
   return{fajr:hm(dhuhr-fH),dhuhr:hm(dhuhr),asr:hm(dhuhr+aH),maghrib:hm(dhuhr+sH),isha:hm(dhuhr+iH)};
 }
-
 function computePrayers(){
   var la,lo,tz;
   if(state.settings.mode==='gps'&&state.settings.lat){
@@ -232,7 +216,6 @@ function computePrayers(){
   prayerComputedKey=todayKey();
   renderPrayers();updatePrayerCountdown();
 }
-
 function updateClock(){
   var el=$('clockChip');
   if(el){var d=new Date();el.textContent=pad2(d.getHours())+':'+pad2(d.getMinutes())+':'+pad2(d.getSeconds());}
@@ -240,7 +223,6 @@ function updateClock(){
   updatePrayerCountdown();
 }
 setInterval(updateClock,1000);
-
 function renderHijri(){
   var el=$('hijriDate');if(!el)return;
   var NAMES=["Muharam","Safar","Rabiulawal","Rabiulakhir","Jumadilawal","Jumadilakhir","Rajab","Sya'ban","Ramadan","Syawal","Zulkaidah","Zulhijah"];
@@ -257,7 +239,6 @@ function renderHijri(){
   }
   el.textContent='';
 }
-
 function prayerDates(){
   if(!prayerTimes)return[];
   var now=new Date();
@@ -269,9 +250,7 @@ function prayerDates(){
     return{label:p[1],date:d};
   }).filter(Boolean);
 }
-
 function fmtHM(d){return pad2(d.getHours())+':'+pad2(d.getMinutes());}
-
 function nextPrayer(){
   var list=prayerDates();if(!list.length)return null;
   var now=new Date();
@@ -279,7 +258,6 @@ function nextPrayer(){
   var f=list[0],d=new Date(f.date.getTime()+86400000);
   return{label:f.label,date:d,tomorrow:true,fmt:fmtHM(d)};
 }
-
 function updatePrayerCountdown(){
   var lab=$('nextLabel'),tm=$('nextTime'),ct=$('nextCount');
   if(!prayerTimes){if(lab)lab.textContent='Menghitung…';if(tm)tm.textContent='--:--';if(ct)ct.textContent='';return;}
@@ -290,7 +268,6 @@ function updatePrayerCountdown(){
   var h=Math.floor(diff/3600),m=Math.floor((diff%3600)/60),s=diff%60;
   if(ct)ct.textContent=(h>0?h+' jam ':'')+m+' mnt '+s+' dtk lagi';
 }
-
 function renderPrayers(){
   var box=$('prayerList');if(!box)return;box.innerHTML='';
   var np=nextPrayer();
@@ -317,7 +294,6 @@ var DHIKR=[
   {id:'istighfar',t:'Astaghfirullah',tg:100}
 ];
 var curDhikr='subhan';
-
 function renderTasbih(){
   var chips=$('dhikrChips');
   if(chips){
@@ -338,7 +314,6 @@ function renderTasbih(){
   var tot=0;Object.keys(state.tasbih.counts||{}).forEach(function(k){tot+=state.tasbih.counts[k];});
   var tsum=$('tasTotal');if(tsum)tsum.textContent='Total dzikir hari ini: '+tot;
 }
-
 function tapTasbih(){
   if(!state.tasbih.counts)state.tasbih.counts={};
   state.tasbih.counts[curDhikr]=(state.tasbih.counts[curDhikr]||0)+1;
@@ -367,7 +342,6 @@ var MOOD_META=[
   {e:'😊',pct:80,label:'Mode cerah'},
   {e:'🤩',pct:95,label:'Mode turbo!'}
 ];
-
 var MOOD_LINES=[
   ['Nggak apa-apa, kita curi start 2 menit aja — sisanya bonus 🐢','Rebahan boleh, tapi sambil nunggu timer kilat ya 😉','Gerak dikiiit aja dulu. Mood biasanya nyusul belakangan 🐌'],
   ['Mode hemat energi: pilih satu hal yang paling ringan 🪫','Kamu tetap keren walau pelan. Istirahat juga bagian dari progres 🤍','Rehat 5 menit dulu, lanjut kalau sudah siap 🌿'],
@@ -375,7 +349,6 @@ var MOOD_LINES=[
   ['Mood bagus = waktu emas. Gas satu prioritas! ✨','Senyum dulu, lalu hajar satu tugas kecil 😄','Energi positifmu pas banget buat fokus sebentar 🌈'],
   ['Wah, energi penuh! Sikat tugas paling susah dulu 🔥','Gas sekarang mumpung lagi on fire! ⚡','Kamu lagi mode turbo — jangan lupa minum air ya 😄']
 ];
-
 function pickMood(i){
   var first=(state.today.mood===-1);
   state.today.mood=i;
@@ -391,15 +364,12 @@ function pickMood(i){
 }
 
 var SUGGESTIONS=['💧 Minum segelas air','🧹 Rapikan meja 2 menit','📖 Baca 1 halaman buku','💬 Balas 1 chat tertunda','🙆 Stretching ringan'];
-
 function getTasks(){var k=todayKey();if(!state.tasks[k])state.tasks[k]={items:[]};return state.tasks[k].items;}
-
 function addTask(text,pri){
   text=(text||'').trim();if(!text){toast('Tulis dulu tugasnya ya ✍️');return false;}
   getTasks().push({id:Date.now()+''+Math.floor(Math.random()*999),text:text,pri:!!pri,done:false});
   save();renderTasks();renderScore();renderReport();return true;
 }
-
 function renderTasks(){
   var list=$('taskList'),empty=$('emptyTasks');if(!list)return;
   var items=getTasks().slice().sort(function(a,b){return(b.pri?1:0)-(a.pri?1:0);});
@@ -448,7 +418,6 @@ function renderTasks(){
     attachGrip(li,t);
   });
 }
-
 function moveTask(t,dir){
   var arr=getTasks();
   var display=arr.slice().sort(function(a,b){return(b.pri?1:0)-(a.pri?1:0);});
@@ -460,13 +429,11 @@ function moveTask(t,dir){
   arr[ai]=other;arr[ao]=t;
   save();renderTasks();
 }
-
 function findTaskById(id){
   var arr=getTasks();
   for(var i=0;i<arr.length;i++){if(arr[i].id===id)return arr[i];}
   return null;
 }
-
 function commitDomOrder(){
   var list=$('taskList');if(!list)return;
   var ids=[];
@@ -479,7 +446,6 @@ function commitDomOrder(){
   save();renderTasks();renderScore();
   toast('🔀 Urutan tugas diperbarui');
 }
-
 function attachGrip(li,t){
   var grip=li.querySelector('.t-grip');
   if(!grip)return;
@@ -519,7 +485,6 @@ function attachGrip(li,t){
   grip.addEventListener('pointercancel',end);
   grip.addEventListener('contextmenu',function(e){e.preventDefault();});
 }
-
 function toggleTask(t,btn){
   t.done=!t.done;save();
   if(t.done){
@@ -530,9 +495,7 @@ function toggleTask(t,btn){
   }
   renderTasks();renderScore();renderGarden();renderHistory();renderReport();
 }
-
 function dayCounts(){var items=getTasks(),done=0;items.forEach(function(t){if(t.done)done++;});return{done:done,total:items.length};}
-
 function renderScore(){
   var c=dayCounts(),pct=c.total?Math.round(c.done/c.total*100):0;
   var ring=$('dayRing');if(ring)ring.style.strokeDashoffset=String(276.46*(1-pct/100));
@@ -564,7 +527,6 @@ function renderScore(){
     yn.style.display='block';
   }
 }
-
 function checkConsistency(){
   if(!state.consistency)state.consistency={days:0,rewarded:{}};
   var pk=daysAgoKey(1);
@@ -579,7 +541,6 @@ function checkConsistency(){
     setTimeout(function(){addXP(25,'Hari konsisten: ≥70% tugas beres! 🔥');},1200);
   }
 }
-
 function renderHistory(){
   var strip=$('historyStrip');if(!strip)return;strip.innerHTML='';
   for(var i=13;i>=0;i--){
@@ -597,7 +558,6 @@ function renderHistory(){
     cell.appendChild(s1);cell.appendChild(s2);strip.appendChild(cell);
   }
 }
-
 var dayOvKey='';
 function showDay(dk){
   dayOvKey=dk;
@@ -631,7 +591,6 @@ function showDay(dk){
   }
   ov.style.display='flex';
 }
-
 function bindDayOverlay(){
   var cl=$('dayOvClose');if(cl)cl.onclick=function(){var ov=$('dayOverlay');if(ov)ov.style.display='none';};
   var cv=$('dayOvCarry');
@@ -646,7 +605,6 @@ function bindDayOverlay(){
     toast('📥 '+undone.length+' tugas dibawa ke hari ini. Semangat!');
   };
 }
-
 function renderSyukur(){
   var k=todayKey();
   if(!state.gratitude)state.gratitude={};
@@ -656,7 +614,6 @@ function renderSyukur(){
   });
   updateSyukurNote();
 }
-
 function updateSyukurNote(){
   var k=todayKey();
   var arr=(state.gratitude&&state.gratitude[k])||['','',''];
@@ -664,7 +621,6 @@ function updateSyukurNote(){
   var n=$('syukurNote');
   if(n)n.textContent=filled>=3?'🌸 MasyaAllah, syukur hari ini lengkap. Semoga jadi kebiasaan indah!':('Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu. 🤍 ('+filled+'/3)');
 }
-
 function saveSyukur(inp){
   var k=todayKey();
   if(!state.gratitude)state.gratitude={};
@@ -678,7 +634,6 @@ function saveSyukur(inp){
   }
   updateSyukurNote();
 }
-
 function weekStats(){
   var days=[];for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);days.push(d);}
   var s={days:[],tasks:0,focus:0,sessions:0,habits:0,dhikr:0};
@@ -693,13 +648,11 @@ function weekStats(){
   });
   return s;
 }
-
 function repRangeText(){
   var a=new Date();a.setDate(a.getDate()-6);
   var b=new Date();
   return a.getDate()+' '+MON_SHORT[a.getMonth()]+' – '+b.getDate()+' '+MON_SHORT[b.getMonth()]+' '+b.getFullYear();
 }
-
 function renderReport(){
   var s=weekStats();
   var rg=$('repRange');if(rg)rg.textContent=repRangeText();
@@ -724,12 +677,10 @@ function renderReport(){
   var rq=$('repQuote');
   if(rq)rq.textContent=QUOTES[(lastQuote>=0?lastQuote:0)].q;
 }
-
 function rr(x,a,b,w,h,r){
   x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);
   x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath();
 }
-
 function wrapText(x,text,cx,cy,maxW,lh){
   var words=text.split(' '),line='',lines=[];
   words.forEach(function(w){
@@ -740,7 +691,25 @@ function wrapText(x,text,cx,cy,maxW,lh){
   lines.forEach(function(l,i){x.fillText(l,cx,cy+i*lh);});
   return lines.length;
 }
-
+var MARK_FLAME='M256 452C170 452 116 392 116 322C116 268 146 236 168 206C176 232 190 244 206 250C186 200 200 130 252 60C266 120 300 148 322 186C334 168 336 150 334 132C372 176 396 240 396 318C396 392 342 452 256 452Z';
+var MARK_SPIRAL='M310 302C310 280 292 264 268 264C240 264 220 286 220 312C220 344 246 368 276 368C310 368 338 340 338 300C338 254 302 220 258 220';
+function drawMark(x,cx,cy,s){
+  var k=s/512;
+  x.save();
+  x.translate(cx-s/2,cy-s/2);
+  x.scale(k,k);
+  var fg=x.createLinearGradient(0,0,512,512);
+  fg.addColorStop(0,'#f4e6e7');fg.addColorStop(.5,'#d4a5a5');fg.addColorStop(1,'#8f4f5b');
+  var gg=x.createLinearGradient(0,0,512,512);
+  gg.addColorStop(0,'#f7e7b6');gg.addColorStop(1,'#c9a35c');
+  x.lineJoin='round';x.lineCap='round';
+  x.fillStyle=fg;x.strokeStyle=gg;x.lineWidth=26;
+  var pf=new Path2D(MARK_FLAME);
+  x.fill(pf);x.stroke(pf);
+  x.strokeStyle=gg;x.lineWidth=26;
+  x.stroke(new Path2D(MARK_SPIRAL));
+  x.restore();
+}
 function drawReport(cb){
   var W=1080,H=1920,c=document.createElement('canvas');c.width=W;c.height=H;
   var x=c.getContext('2d');
@@ -760,7 +729,7 @@ function drawReport(cb){
   x.fillText('NYALA ✦ ANTI MAGER',84,150);
   x.fillStyle='#f2e4e6';x.font='800 96px "Bricolage Grotesque", sans-serif';
   x.fillText('Sepekan',84,268);
-  x.fillText('Barakahku 🌹',84,372);
+  x.fillText('Barakahku',84,372);
   x.fillStyle='#c9aeb2';x.font='600 38px "Plus Jakarta Sans", sans-serif';
   x.fillText(repRangeText(),84,442);
   var s=weekStats();
@@ -802,16 +771,20 @@ function drawReport(cb){
   x.fillText('— '+QUOTES[qi].b,W/2,1560+lines*70+30);
   x.fillStyle='#8a6f74';x.font='700 32px "Plus Jakarta Sans", sans-serif';
   x.fillText(location.hostname||'NYALA',W/2,1806);
-  x.fillText('Dibuat dengan 🌹 NYALA — produktif pelan-pelan',W/2,1852);
+  var foot='Dibuat dengan NYALA — produktif pelan-pelan';
+  x.font='700 32px "Plus Jakarta Sans", sans-serif';
+  var fw=x.measureText(foot).width;
+  var mx=W/2-fw/2-52;
+  drawMark(x,mx+22,1852-11,44);
+  x.fillStyle='#8a6f74';
+  x.fillText(foot,W/2,1852);
   x.textAlign='left';
   cb(c);
 }
-
 function reportCanvas(cb){
   var done=function(){drawReport(cb);};
   if(document.fonts&&document.fonts.ready){document.fonts.ready.then(done).catch(done);}else done();
 }
-
 function downloadReport(){
   reportCanvas(function(c){
     c.toBlob(function(bl){
@@ -825,7 +798,6 @@ function downloadReport(){
     },'image/png');
   });
 }
-
 function shareReport(){
   reportCanvas(function(c){
     c.toBlob(function(bl){
@@ -833,7 +805,7 @@ function shareReport(){
       try{
         var f=new File([bl],'nyala-sepekan.png',{type:'image/png'});
         if(navigator.canShare&&navigator.canShare({files:[f]})){
-          navigator.share({files:[f],title:'NYALA — Sepekan Barakahku',text:'Laporan produktivitas pekan ini 🌹'}).catch(function(){});
+          navigator.share({files:[f],title:'NYALA — Sepekan Barakahku',text:'Laporan produktivitas pekan ini'}).catch(function(){});
           return;
         }
       }catch(e){}
@@ -846,7 +818,6 @@ var MODES={fokus:1500,kilat:120,rehat:300,deep50:3000,deep90:5400};
 var MODE_LABEL={fokus:'Fokus',kilat:'Kilat',rehat:'Rehat',deep50:'Deep 50',deep90:'Deep 90',custom:'Custom',adhan:'Adzan'};
 var tMode='fokus',tTotal=1500,tRemain=1500,tTimer=null,tRunning=false,RING_C=678.58,customMin=25;
 var timerStartReal=0,timerPausedReal=0,timerPausedTotal=0;
-
 function renderTimer(){
   var tt=$('timeText');if(tt)tt.textContent=fmtTime(Math.max(0,tRemain));
   var fg=$('ringFg');if(fg)fg.style.strokeDashoffset=String(RING_C*(1-tRemain/tTotal));
@@ -861,23 +832,19 @@ function renderTimer(){
   var lbl=MODE_LABEL[tMode]||'Fokus';
   document.title=tRunning?'('+fmtTime(Math.max(0,tRemain))+') '+lbl+' — NYALA':'NYALA ✦ Anti Mager — Produktif dengan Elegan';
 }
-
 function setMode(m){
   stopTimer();customLabel='';tMode=m;tTotal=MODES[m];tRemain=MODES[m];
   document.querySelectorAll('.mode-chip').forEach(function(b){b.classList.toggle('on',b.dataset.mode===m);});
   var cr=$('customRow');if(cr)cr.classList.remove('on');
   var sb=$('startBtn');if(sb)sb.textContent='▶ Mulai';renderTimer();
 }
-
 function setCustomMode(mins){
   stopTimer();customLabel='';tMode='custom';tTotal=mins*60;tRemain=mins*60;
   document.querySelectorAll('.mode-chip').forEach(function(b){b.classList.remove('on');});
   var cr=$('customRow');if(cr)cr.classList.add('on');
   var sb=$('startBtn');if(sb)sb.textContent='▶ Mulai';renderTimer();
 }
-
 function stopTimer(){if(tTimer){clearInterval(tTimer);tTimer=null;}tRunning=false;timerStartReal=0;timerPausedReal=0;timerPausedTotal=0;try{localStorage.removeItem('nyala_timer_v1');}catch(e){}}
-
 function persistTimer(){
   try{
     if(tRunning&&timerStartReal>0){
@@ -887,7 +854,6 @@ function persistTimer(){
     }
   }catch(e){}
 }
-
 function restoreTimer(){
   try{
     var raw=localStorage.getItem('nyala_timer_v1');
@@ -910,7 +876,6 @@ function restoreTimer(){
     }
   }catch(e){}
 }
-
 function tickTimer(){
   if(timerStartReal>0){
     var elapsed=Math.floor((Date.now()-timerStartReal-timerPausedTotal)/1000);
@@ -922,7 +887,6 @@ function tickTimer(){
   }
   renderTimer();
 }
-
 function startTimer(){
   if(tRunning){stopTimer();var sb=$('startBtn');if(sb)sb.textContent='▶ Lanjut';renderTimer();toast('Jeda dulu, tarik napas 🌬️');return;}
   if(tRemain<=0)tRemain=tTotal;
@@ -930,7 +894,6 @@ function startTimer(){
   var sb=$('startBtn');if(sb)sb.textContent='⏸ Jeda';chime();
   tTimer=setInterval(tickTimer,1000);renderTimer();persistTimer();
 }
-
 function finishTimer(){
   stopTimer();var finishedMode=tMode;var doneSecs=tTotal;tRemain=tTotal;
   var sb=$('startBtn');if(sb)sb.textContent='▶ Mulai';renderTimer();
@@ -950,7 +913,6 @@ function finishTimer(){
   addXP(xp,msg);
   renderTomatoes();
 }
-
 function renderTomatoes(){
   var el=$('tomatoRow');if(!el)return;
   var k=todayKey(),dayT=state.tasks[k]||{},s=dayT.sessions||0;
@@ -960,7 +922,6 @@ function renderTomatoes(){
 }
 
 var HABIT_EMOJIS=['💧','📖','🧘','🧹','🍎','💤'],HABIT_PICK='💧';
-
 function renderHabits(){
   var grid=$('habitGrid');if(!grid)return;grid.innerHTML='';
   var days=[];for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);days.push(d);}
@@ -1008,14 +969,12 @@ function renderHabits(){
   adder.appendChild(lab);adder.appendChild(inp);adder.appendChild(er);adder.appendChild(ab);
   grid.appendChild(adder);
 }
-
 function addHabit(name){
   name=(name||'').trim();
   if(!name){toast('Isi dulu nama kebiasaannya ✍️');return;}
   state.habits.push({id:Date.now()+''+Math.floor(Math.random()*999),name:name,emoji:HABIT_PICK,hist:{}});
   save();renderHabits();renderScore();toast('Kebiasaan baru ditanam! 🌱');
 }
-
 function toggleHabitDay(h,dk,isToday){
   if(h.hist[dk]){delete h.hist[dk];save();renderHabits();return;}
   h.hist[dk]=true;save();
@@ -1024,7 +983,6 @@ function toggleHabitDay(h,dk,isToday){
 }
 
 var PLANTS=['🌱','🌿','🌸','🌺','🌻','🌷','🌹','🌳'];
-
 function renderGarden(){
   var row=$('plantsRow');if(!row)return;row.innerHTML='';
   var count=Math.min(2+state.totals.done,10);
@@ -1051,9 +1009,7 @@ var WHEEL_OPTS=[
   {e:'💌',t:'Kirim pesan semangat ke 1 teman',c:'#a05c68'},
   {e:'🌬️',t:'Napas 4-7-8 tiga putaran',c:'#e8c4c8'}
 ];
-
 var wheelAngle=0,spinning=false;
-
 function buildWheel(){
   var w=$('wheel');if(!w)return;
   var grad=WHEEL_OPTS.map(function(o,i){return o.c+' '+(i*12.5)+'% '+((i+1)*12.5)+'%';}).join(',');
@@ -1064,7 +1020,6 @@ function buildWheel(){
     w.appendChild(l);
   });
 }
-
 function spinWheel(){
   if(spinning)return;spinning=true;
   var sb=$('spinBtn');if(sb)sb.disabled=true;
@@ -1105,7 +1060,6 @@ var QUOTES=[
   {q:'"Yang berat itu bukan pekerjaannya, tapi memulainya."',b:'TIM NYALA'}
 ];
 var lastQuote=-1;
-
 function shuffleQuote(){
   var i;do{i=Math.floor(Math.random()*QUOTES.length);}while(i===lastQuote&&QUOTES.length>1);
   lastQuote=i;
@@ -1116,7 +1070,6 @@ function shuffleQuote(){
       qt.classList.remove('faded');qb.classList.remove('faded');renderReport();},300);
   }
 }
-
 function initReveal(){
   var els=document.querySelectorAll('.reveal');
   if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in');});return;}
@@ -1125,7 +1078,6 @@ function initReveal(){
   },{threshold:0.12});
   els.forEach(function(e){obs.observe(e);});
 }
-
 function renderGreeting(){
   var d=new Date(),h=d.getHours(),k='';
   if(h>=4&&h<10)k='SELAMAT PAGI ☀️';else if(h>=10&&h<15)k='SELAMAT SIANG 🌤️';
@@ -1138,7 +1090,6 @@ function renderGreeting(){
   var dc=$('dateChip');if(dc)dc.textContent=DAY_NAMES[d.getDay()]+', '+d.getDate()+' '+MON_SHORT[d.getMonth()];
   var nc=$('nameChip');if(nc)nc.textContent=state.name||'Kawan';
 }
-
 function doBackup(){
   try{
     var keys=['nyala_v1','nyala_quran_cache_v1','nyala_dzikir_pp_v1'];
@@ -1154,7 +1105,6 @@ function doBackup(){
     toast('Cadangan terunduh! Simpan file-nya di tempat aman 💾');
   }catch(e){toast('Gagal membuat cadangan 😔');}
 }
-
 function doRestore(file){
   var r=new FileReader();
   r.onload=function(){
@@ -1169,7 +1119,6 @@ function doRestore(file){
   };
   r.readAsText(file);
 }
-
 function maybeReminder(){
   try{
     var lb=parseInt(localStorage.getItem('nyala_last_backup')||'0',10);
@@ -1179,7 +1128,6 @@ function maybeReminder(){
     }
   }catch(e){}
 }
-
 function showWelcome(){
   var ov=$('welcomeOverlay');if(!ov)return;
   ov.style.display='flex';
@@ -1196,7 +1144,6 @@ function showWelcome(){
   var bk=$('welcomeSkip');if(bk)bk.onclick=function(){done(true);};
   if(inp)inp.onkeydown=function(e){if(e.key==='Enter')done(false);};
 }
-
 function bind(){
   document.querySelectorAll('#moodRow .mood').forEach(function(b){b.addEventListener('click',function(){pickMood(parseInt(b.dataset.i,10));});});
   var ti=$('taskInput'),addBtn=$('addTaskBtn');
@@ -1312,7 +1259,6 @@ function bind(){
   bindDayOverlay();
   document.addEventListener('pointerdown',function(){try{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}},{once:true});
 }
-
 function init(){
   sizeCanvas();ensureToday();checkConsistency();
   if(!state.name&&!localStorage.getItem('nyala_welcomed')){
@@ -1336,10 +1282,8 @@ function init(){
   }
   bind();initReveal();maybeReminder();
 }
-
 document.addEventListener('visibilitychange',function(){
   if(!document.hidden&&tRunning){tickTimer();}
 });
-
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
 })();
