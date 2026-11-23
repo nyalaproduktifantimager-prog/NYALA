@@ -1,6 +1,6 @@
-/* NYALA — service worker v11: murottal lintas halaman, ikon segar, data pengguna aman */
-var VERSION='nyala-v11';
-var SHELL=['./','./index.html','./styles.css?v=8','./app.js','./dzikir.html','./quran.html'];
+/* NYALA — service worker v12 */
+var VERSION='nyala-v12';
+var SHELL=['./','./index.html','./styles.css?v=8','./app.js','./dzikir.html','./quran.html','./quran-uthmani.json','./id.indonesian.json'];
 
 self.addEventListener('install',function(e){
   e.waitUntil(
@@ -29,16 +29,13 @@ self.addEventListener('message',function(e){
 function isManifest(url){return url.pathname.endsWith('manifest.webmanifest');}
 function isIcon(url){return /\.(png|svg|jpg|jpeg|webp|ico)$/i.test(url.pathname);}
 function isMedia(url){return /\.(mp3|ogg|m4a|wav|opus)$/i.test(url.pathname);}
+function isData(url){return /\.json$/i.test(url.pathname);}
 
 self.addEventListener('fetch',function(e){
   var req=e.request;
   if(req.method!=='GET')return;
   var url=new URL(req.url);
-
-  if(url.origin!==self.location.origin){
-    if(isMedia(url))return;
-    return;
-  }
+  if(url.origin!==self.location.origin)return;
   if(isMedia(url))return;
   if(req.headers.has('range'))return;
 
@@ -50,6 +47,20 @@ self.addEventListener('fetch',function(e){
         return res;
       }).catch(function(){
         return caches.match(req).then(function(hit){return hit||Response.error();});
+      })
+    );
+    return;
+  }
+
+  if(isData(url)){
+    e.respondWith(
+      caches.match(req).then(function(hit){
+        var net=fetch(req,{cache:'no-store'}).then(function(res){
+          var copy=res.clone();
+          caches.open(VERSION).then(function(c){c.put(req,copy);});
+          return res;
+        }).catch(function(){return hit||Response.error();});
+        return hit||net;
       })
     );
     return;
