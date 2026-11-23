@@ -1,24 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="NYALA — mawar berapi rose-gold">
   <defs>
-    <linearGradient id="fg" x1="0" y1="0" x2="0.6" y2="1">
-      <stop offset="0" stop-color="#f3e3e4"/>
-      <stop offset=".35" stop-color="#e3bfc4"/>
-      <stop offset=".7" stop-color="#c98f99"/>
+    <linearGradient id="fg" x1="0.2" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#f6e7e8"/>
+      <stop offset=".4" stop-color="#e6c2c7"/>
+      <stop offset=".72" stop-color="#c98f99"/>
       <stop offset="1" stop-color="#a76a76"/>
     </linearGradient>
     <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#eacd97"/>
+      <stop offset="0" stop-color="#efd29b"/>
       <stop offset=".5" stop-color="#d9ab66"/>
-      <stop offset="1" stop-color="#c08d4e"/>
+      <stop offset="1" stop-color="#bd8a4c"/>
     </linearGradient>
     <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#f8eeee"/>
-      <stop offset="1" stop-color="#dcb4ba"/>
+      <stop offset="0" stop-color="#fbeff0"/>
+      <stop offset="1" stop-color="#e2bcc2"/>
     </linearGradient>
   </defs>
-  <path d="M256 452C170 452 116 392 116 322C116 268 146 236 168 206C176 232 190 244 206 250C186 200 200 130 252 60C266 120 300 148 322 186C334 168 336 150 334 132C372 176 396 240 396 318C396 392 342 452 256 452Z" fill="url(#fg)" stroke="url(#gg)" stroke-width="6" stroke-linejoin="round"/>
-  <path d="M196 300C196 254 226 226 262 226C304 226 336 256 336 300C336 348 304 382 262 382C222 382 196 348 196 300Z" fill="url(#cg)" stroke="url(#gg)" stroke-width="5" stroke-linejoin="round"/>
-  <path d="M310 302C310 280 292 264 268 264C240 264 220 286 220 312C220 344 246 368 276 368C310 368 338 340 338 300C338 254 302 220 258 220" fill="none" stroke="url(#gg)" stroke-width="6" stroke-linecap="round"/>
-  <path d="M282 304C282 292 273 284 261 284C248 284 240 294 240 306C240 320 250 330 264 330" fill="none" stroke="url(#gg)" stroke-width="5" stroke-linecap="round"/>
-  <path d="M392 96L400 120L424 128L400 136L392 160L384 136L360 128L384 120Z" fill="url(#gg)"/>
+  <path d="M250 470C168 470 120 404 120 330C120 286 138 256 158 232C168 256 184 268 200 274C186 232 196 168 244 96C252 150 270 184 292 214C312 196 322 176 322 150C360 196 392 252 392 326C392 404 336 470 250 470Z" fill="url(#fg)" stroke="url(#gg)" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M176 332C176 286 210 256 252 256C300 256 336 290 336 336C336 388 300 424 252 424C208 424 176 386 176 332Z" fill="url(#cg)" stroke="url(#gg)" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M214 360C214 332 234 312 260 312C288 312 308 334 308 360" fill="none" stroke="url(#gg)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M300 332C300 312 284 298 262 298C238 298 220 318 220 342C220 370 244 392 272 392C304 392 330 366 330 330C330 288 296 256 254 256" fill="none" stroke="url(#gg)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M276 338C276 326 267 318 255 318C243 318 235 328 235 340C235 354 246 364 260 364" fill="none" stroke="url(#gg)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M372 150L381 178L409 187L381 196L372 224L363 196L335 187L363 178Z" fill="url(#gg)"/>
 </svg>
