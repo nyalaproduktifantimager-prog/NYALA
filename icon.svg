@@ -1,25 +1,62 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="NYALA — mawar berapi rose-gold">
   <defs>
-    <linearGradient id="fg" x1="0.2" y1="0" x2="0.7" y2="1">
-      <stop offset="0" stop-color="#f6e7e8"/>
-      <stop offset=".4" stop-color="#e6c2c7"/>
-      <stop offset=".72" stop-color="#c98f99"/>
-      <stop offset="1" stop-color="#a76a76"/>
+    <linearGradient id="flameFill" x1="0.18" y1="0.02" x2="0.78" y2="1">
+      <stop offset="0" stop-color="#f7e9ea"/>
+      <stop offset="0.34" stop-color="#eccdd1"/>
+      <stop offset="0.66" stop-color="#cf9aa3"/>
+      <stop offset="1" stop-color="#a86c78"/>
     </linearGradient>
-    <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#efd29b"/>
-      <stop offset=".5" stop-color="#d9ab66"/>
-      <stop offset="1" stop-color="#bd8a4c"/>
+    <linearGradient id="goldLine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0d49c"/>
+      <stop offset="0.5" stop-color="#d8aa64"/>
+      <stop offset="1" stop-color="#bb8849"/>
     </linearGradient>
-    <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fbeff0"/>
-      <stop offset="1" stop-color="#e2bcc2"/>
+    <linearGradient id="petalFill" x1="0.2" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#fbf1f2"/>
+      <stop offset="0.5" stop-color="#eccdd1"/>
+      <stop offset="1" stop-color="#c48994"/>
     </linearGradient>
   </defs>
-  <path d="M250 470C168 470 120 404 120 330C120 286 138 256 158 232C168 256 184 268 200 274C186 232 196 168 244 96C252 150 270 184 292 214C312 196 322 176 322 150C360 196 392 252 392 326C392 404 336 470 250 470Z" fill="url(#fg)" stroke="url(#gg)" stroke-width="7" stroke-linejoin="round"/>
-  <path d="M176 332C176 286 210 256 252 256C300 256 336 290 336 336C336 388 300 424 252 424C208 424 176 386 176 332Z" fill="url(#cg)" stroke="url(#gg)" stroke-width="6" stroke-linejoin="round"/>
-  <path d="M214 360C214 332 234 312 260 312C288 312 308 334 308 360" fill="none" stroke="url(#gg)" stroke-width="6" stroke-linecap="round"/>
-  <path d="M300 332C300 312 284 298 262 298C238 298 220 318 220 342C220 370 244 392 272 392C304 392 330 366 330 330C330 288 296 256 254 256" fill="none" stroke="url(#gg)" stroke-width="6" stroke-linecap="round"/>
-  <path d="M276 338C276 326 267 318 255 318C243 318 235 328 235 340C235 354 246 364 260 364" fill="none" stroke="url(#gg)" stroke-width="5" stroke-linecap="round"/>
-  <path d="M372 150L381 178L409 187L381 196L372 224L363 196L335 187L363 178Z" fill="url(#gg)"/>
+
+  <path d="M255 470
+           C176 470 126 408 126 336
+           C126 300 138 272 156 248
+           C162 270 176 284 196 290
+           C182 250 188 196 214 150
+           C226 124 240 104 252 86
+           C258 132 276 168 300 196
+           C312 178 318 158 316 138
+           C352 178 388 236 388 312
+           C388 392 336 470 255 470 Z"
+        fill="url(#flameFill)" stroke="url(#goldLine)" stroke-width="7" stroke-linejoin="round"/>
+
+  <path d="M186 330
+           C186 290 214 262 252 262
+           C292 262 322 292 322 332
+           C322 376 292 408 252 408
+           C214 408 186 374 186 330 Z"
+        fill="url(#petalFill)" stroke="url(#goldLine)" stroke-width="6" stroke-linejoin="round"/>
+
+  <path d="M300 322
+           C300 300 282 284 258 284
+           C232 284 214 304 214 330
+           C214 358 236 380 264 380
+           C294 380 318 356 318 324
+           C318 286 288 258 250 258"
+        fill="none" stroke="url(#goldLine)" stroke-width="6" stroke-linecap="round"/>
+
+  <path d="M278 330
+           C278 318 268 309 256 309
+           C243 309 234 319 234 332
+           C234 346 245 356 259 356"
+        fill="none" stroke="url(#goldLine)" stroke-width="5" stroke-linecap="round"/>
+
+  <path d="M256 332
+           C256 327 252 323 247 323
+           C242 323 238 327 238 332
+           C238 338 243 342 249 342"
+        fill="none" stroke="url(#goldLine)" stroke-width="4.5" stroke-linecap="round"/>
+
+  <path d="M372 150 L380 174 L404 182 L380 190 L372 214 L364 190 L340 182 L364 174 Z"
+        fill="url(#goldLine)"/>
 </svg>
