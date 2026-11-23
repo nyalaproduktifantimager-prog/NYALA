@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=13">
+<link rel="stylesheet" href="styles.css?v=14">
 <link rel="manifest" href="manifest.webmanifest?v=8">
 <meta name="theme-color" content="#0e0c0d">
 <meta name="mobile-web-app-capable" content="yes">
@@ -55,7 +55,7 @@
 
 <header class="top">
   <div class="top-in">
-    <div class="logo"><img class="mark" src="icon.png" alt="Logo NYALA"><span class="word">NYALA</span><small>anti&nbsp;mager</small></div>
+    <div class="logo"><img class="mark" src="icon.png" alt="Logo NYALA"><span class="word">NYALA</span><span class="tagline">Anti-Mager</span></div>
     <nav class="links" aria-label="Navigasi utama">
       <a href="#hari">Hari Ini</a><a href="#tugas">Tugas</a><a href="#fokus">Fokus</a>
       <a href="#spiritual">Spiritual</a><a href="#kebiasaan">Kebiasaan</a><a href="#kebun">Kebun</a>
@@ -66,7 +66,6 @@
       <span class="chip streak" id="streakChip" title="Streak check-in harianmu">🔥 0 hari</span>
       <span class="chip lvl" id="lvlChip">Lv.1</span>
       <button class="chip mute" id="muteBtn" type="button" aria-pressed="false" title="Suara nyala — tap untuk matikan">🔔</button>
-      <button class="chip mute" id="iconRefreshBtn" type="button" title="Pasang ulang ikon home screen & splash"><img class="brand-mark" src="icon.png" alt="" width="26" height="26"></button>
     </div>
   </div>
 </header>
@@ -323,7 +322,7 @@
   </div>
   <div class="card report-card reveal">
     <div class="rep-head">
-      <div class="rep-title"><img class="brand-mark" src="icon.png" alt="" width="28" height="28"> Sepekan Barakahku</div>
+      <div class="rep-title"><img class="brand-mark" src="icon.png" alt="" width="38" height="38"> Sepekan Barakahku</div>
       <div class="rep-range" id="repRange"></div>
     </div>
     <div class="rep-grid">
@@ -353,7 +352,7 @@
 </main>
 
 <footer>
-  Dibuat dengan <span class="heart"><img class="brand-mark" src="icon.png" alt="" width="22" height="22"></span> biar kamu nggak mager lagi.<br>
+  Dibuat dengan <span class="heart"><img class="brand-mark" src="icon.png" alt="" width="30" height="30"></span> biar kamu nggak mager lagi.<br>
   Semua datamu tersimpan aman di perangkat ini — tanpa akun, tanpa ribet.<br>
   <span style="display:inline-flex;align-items:center;gap:8px;margin-top:8px;">
     <img src="logo-wfh.png" onerror="this.onerror=null;this.src='logo-wfh.svg';" alt="Logo Muslimah WFH" style="width:32px;height:32px;border-radius:9px;object-fit:contain;">
@@ -613,7 +612,6 @@
   function boot(){
     headH();scrolled();paintMute();spy();overlayFix();normalizeHistory();watchHistory();
     var mb=$('muteBtn');if(mb)mb.addEventListener('click',toggleMute);
-    var ib=$('iconRefreshBtn');if(ib)ib.addEventListener('click',function(e){e.preventDefault();reinstallIcon();});
     var tg=$('npToggle');if(tg)tg.addEventListener('click',togglePlayback);
     var op=$('npOpen');if(op)op.addEventListener('click',function(){showFrame('quran.html',true);});
     var sp=$('npStop');if(sp)sp.addEventListener('click',function(){stopPlayback();toast('⏹ Murottal dihentikan.');});
