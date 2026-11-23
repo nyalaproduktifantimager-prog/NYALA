@@ -5,14 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>NYALA ✦ Anti Mager — Produktif dengan Elegan</title>
 <meta name="description" content="Teman produktif harian anti mager: Spiritual Corner, jadwal sholat, fokus sampai adzan, tasbih, tugas mikro, timer fokus custom & deep focus, pelacak kebiasaan, kebun progres, dan laporan mingguan shareable.">
-<link rel="icon" type="image/png" href="icon.png?v=2">
+<link rel="icon" type="image/png" href="icon.png?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=8">
-<link rel="manifest" href="manifest.webmanifest?v=2">
+<link rel="manifest" href="manifest.webmanifest?v=3">
 <meta name="theme-color" content="#0e0c0d">
-<link rel="apple-touch-icon" href="icon.png?v=2">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="icon.png?v=3">
 <style>
 #welcomeOverlay,#dayOverlay{overflow-y:auto;-webkit-overflow-scrolling:touch}
 #welcomeOverlay>div,#dayOverlay>div{margin:auto}
@@ -21,6 +22,7 @@
 (function(){
   if(!('serviceWorker' in navigator))return;
   var regP=null,reloaded=false;
+  window.__nyalaReg=function(){return regP;};
   window.addEventListener('load',function(){
     navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(reg){
       regP=reg;
@@ -62,7 +64,7 @@
 
 <header class="top">
   <div class="top-in">
-    <div class="logo"><img class="mark" src="icon.png?v=2" alt="Logo NYALA"><span class="word">NYALA</span><small>anti&nbsp;mager</small></div>
+    <div class="logo"><img class="mark" src="icon.png?v=3" alt="Logo NYALA"><span class="word">NYALA</span><small>anti&nbsp;mager</small></div>
     <nav class="links" aria-label="Navigasi utama">
       <a href="#hari">Hari Ini</a><a href="#tugas">Tugas</a><a href="#fokus">Fokus</a>
       <a href="#spiritual">Spiritual</a><a href="#kebiasaan">Kebiasaan</a><a href="#kebun">Kebun</a>
@@ -73,6 +75,7 @@
       <span class="chip streak" id="streakChip" title="Streak check-in harianmu">🔥 0 hari</span>
       <span class="chip lvl" id="lvlChip">Lv.1</span>
       <button class="chip mute" id="muteBtn" type="button" aria-pressed="false" title="Suara nyala — tap untuk matikan">🔔</button>
+      <button class="chip mute" id="iconRefreshBtn" type="button" title="Muat ulang ikon & splash tanpa install ulang">🌹</button>
     </div>
   </div>
 </header>
@@ -383,7 +386,7 @@
 <div id="welcomeOverlay" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(14,12,13,.86);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
   <div style="max-width:420px;width:100%;margin:auto;position:relative;background:linear-gradient(160deg,#1e181a,#241c1f);border:1px solid rgba(212,165,165,.34);border-radius:20px;padding:24px 20px;text-align:center;box-shadow:0 18px 44px -18px rgba(0,0,0,.7);">
     <button id="welcomeClose" aria-label="Tutup" style="position:absolute;top:10px;right:12px;border:none;background:none;color:#8a6f74;font-size:1.1rem;font-weight:800;cursor:pointer;">✕</button>
-    <div><img src="icon.png?v=2" alt="" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 0 12px rgba(229,199,134,.5));"></div>
+    <div><img src="icon.png?v=3" alt="" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 0 12px rgba(229,199,134,.5));"></div>
     <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.35rem;margin:8px 0 4px;color:#f2e4e6;">Selamat datang di NYALA</h2>
     <p style="color:#c9aeb2;font-size:.86rem;font-weight:600;margin-bottom:13px;">Sebelum mulai, siapa nama panggilanmu?</p>
     <input id="welcomeName" maxlength="20" placeholder="Ketik namamu di sini…" style="width:100%;border:1px solid rgba(212,165,165,.34);border-radius:13px;padding:12px 14px;font-weight:600;background:rgba(0,0,0,.3);color:#f2e4e6;text-align:center;">
@@ -422,6 +425,34 @@
     if(lv)ap.linearRampToValueAtTime=function(v,t){return lv.call(this,muted?0.00001:v,t);};
   }
   function toggleMute(){muted=!muted;try{localStorage.setItem('nyala_mute',muted?'1':'0');}catch(e){}paintMute();}
+  function nyToast(msg,gold){
+    var box=document.getElementById('toasts');if(!box)return;
+    var t=document.createElement('div');
+    t.className='toast'+(gold?' gold':'');
+    t.textContent=msg;
+    box.appendChild(t);
+    while(box.children.length>3)box.removeChild(box.firstChild);
+    setTimeout(function(){t.classList.add('go');setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},320);},3200);
+  }
+  function refreshIcon(){
+    var b=document.getElementById('iconRefreshBtn');
+    if(b){b.textContent='⏳';b.disabled=true;b.title='Memuat ulang ikon & splash…';}
+    var urls=['manifest.webmanifest?v=3','icon.png?v=3'];
+    Promise.all(urls.map(function(u){
+      return fetch(u,{cache:'no-store'}).then(function(r){
+        if(!r.ok)throw new Error('HTTP '+r.status);
+        return r.blob();
+      });
+    })).then(function(){
+      var reg=window.__nyalaReg&&window.__nyalaReg();
+      if(reg)reg.update().catch(function(){});
+      if(b){b.textContent='✅';b.disabled=false;b.title='Ikon & splash terbaru sudah dimuat — Android menyusul otomatis tanpa install ulang';}
+      nyToast('🌹 Ikon & splash terbaru dimuat. Semua data tetap aman.',true);
+    },function(){
+      if(b){b.textContent='⚠️';b.disabled=false;b.title='Gagal memuat ulang ikon — cek koneksi lalu tap lagi';}
+      nyToast('⚠️ Gagal memuat ikon. Cek koneksi, lalu tap 🌹 lagi.');
+    });
+  }
   function normalizeHistory(){
     var cells=document.querySelectorAll('#historyStrip .h-cell:not([data-norm])');
     cells.forEach(function(cell){
@@ -470,6 +501,15 @@
   function boot(){
     headH();scrolled();paintMute();spy();overlayFix();normalizeHistory();watchHistory();
     var mb=document.getElementById('muteBtn');if(mb)mb.addEventListener('click',toggleMute);
+    var ib=document.getElementById('iconRefreshBtn');
+    if(ib){
+      ib.addEventListener('click',refreshIcon);
+      try{
+        if(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches){
+          ib.title='Terpasang di home screen — tap untuk memaksa muat ulang ikon & splash tanpa install ulang';
+        }
+      }catch(e){}
+    }
     window.addEventListener('resize',headH);
     window.addEventListener('scroll',scrolled,{passive:true});
     if(document.fonts&&document.fonts.ready)document.fonts.ready.then(headH).catch(function(){});
