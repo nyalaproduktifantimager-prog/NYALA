@@ -1,5 +1,5 @@
-/* NYALA — service worker v9: manifest & ikon selalu segar dari jaringan */
-var VERSION='nyala-v9';
+/* NYALA — service worker v10: ikon & splash selalu segar, data pengguna tidak pernah disentuh */
+var VERSION='nyala-v10';
 var SHELL=['./','./index.html','./styles.css?v=8','./app.js','./dzikir.html','./quran.html'];
 
 self.addEventListener('install',function(e){
@@ -15,7 +15,9 @@ self.addEventListener('install',function(e){
 self.addEventListener('activate',function(e){
   e.waitUntil(
     caches.keys().then(function(keys){
-      return Promise.all(keys.map(function(k){if(k!==VERSION)return caches.delete(k);}));
+      return Promise.all(keys.map(function(k){
+        if(k!==VERSION&&k.indexOf('nyala-')===0)return caches.delete(k);
+      }));
     }).then(function(){return self.clients.claim();})
   );
 });
@@ -33,9 +35,13 @@ self.addEventListener('fetch',function(e){
   var url=new URL(req.url);
   if(url.origin!==self.location.origin)return;
 
-  if(isManifest(url)){
+  if(isManifest(url)||isIcon(url)){
     e.respondWith(
-      fetch(req,{cache:'no-store'}).catch(function(){
+      fetch(req,{cache:'no-store'}).then(function(res){
+        var copy=res.clone();
+        caches.open(VERSION).then(function(c){c.put(req,copy);});
+        return res;
+      }).catch(function(){
         return caches.match(req).then(function(hit){return hit||Response.error();});
       })
     );
@@ -50,19 +56,6 @@ self.addEventListener('fetch',function(e){
         return res;
       }).catch(function(){
         return caches.match(req).then(function(hit){return hit||caches.match('./index.html');});
-      })
-    );
-    return;
-  }
-
-  if(isIcon(url)){
-    e.respondWith(
-      fetch(req,{cache:'no-store'}).then(function(res){
-        var copy=res.clone();
-        caches.open(VERSION).then(function(c){c.put(req,copy);});
-        return res;
-      }).catch(function(){
-        return caches.match(req).then(function(hit){return hit||Response.error();});
       })
     );
     return;
