@@ -1,17 +1,18 @@
-// nyala-i18n.js — NYALA bilingual engine (ID ⇄ EN). Binds any existing #nyalaLangSel,
-// snapshot-based reversible translation, live re-translation of dynamic renders,
-// Arabic + transliteration permanently protected. Idempotent (safe if loaded twice).
+// nyala-i18n.js — NYALA bilingual engine (ID ⇄ EN). Fragment-safe, word-boundary-safe,
+// reversible via original-text snapshot, live re-translation of dynamic renders.
+// Arabic script & transliteration permanently protected. Idempotent.
 (function(){
 'use strict';
 if(window.__nyalaI18nLoaded)return;
 window.__nyalaI18nLoaded=true;
-
 var LANG='nyala_lang';
 function lang(){try{return localStorage.getItem(LANG)==='en'?'en':'id';}catch(e){return 'id';}}
 
-/* [Indonesian, English] — applied longest-first over the ORIGINAL node text */
 var PAIRS=[
 ["Produktif Anti-Mager","Productive Anti-Lazy"],
+["DZIKIR PAGI & PETANG","MORNING & EVENING DHIKR"],
+["📿 DZIKIR PAGI & PETANG","📿 MORNING & EVENING DHIKR"],
+["TAMAN QUR'AN","QUR'AN GARDEN"],
 ["— atau atur sendiri menitnya (tap angka ⏱️ untuk ketik bebas, mis. 23). XP sampai +100! 🚀 Timer tetap jalan walau aplikasi diminimkan."," — or set your own minutes (tap the ⏱️ number to type freely, e.g. 23). Up to +100 XP! 🚀 Timer keeps running even when the app is minimized."],
 ["Dzikir pagi setelah Subuh hingga terbit matahari; dzikir petang setelah Ashar hingga terbenam (boleh selepas Maghrib). Tap lingkaran hitungan sesuai jumlah anjuran. 🤍","Morning dhikr after Fajr until sunrise; evening dhikr after Asr until sunset (allowed after Maghrib). Tap the counter circle the recommended number of times. 🤍"],
 ["Teks Arab (Al-Qur'an & Hadits) = domain publik. Transliterasi & terjemahan Indonesia = tulisan asli aplikasi ini, dirilis CC0 / domain publik untuk dipakai umat tanpa batas.","Arabic text (Qur'an & Hadith) = public domain. Transliteration & Indonesian translation = original work of this app, released CC0 / public domain for unrestricted use by the ummah."],
@@ -21,16 +22,27 @@ var PAIRS=[
 ["Kebiasaan kecil yang diulang = perubahan besar. Ceklis hari ini, +10 XP per habit!","Small habits repeated = big change. Check today off, +10 XP per habit!"],
 ["Setiap tugas yang beres menumbuhkan tanaman baru. Makin rajin, makin rimbun 🌸","Every finished task grows a new plant. The more you do, the lusher it gets 🌸"],
 ["Otak nge-blank? Biar rodanya yang milih. Putar, lalu gas tanpa mikir!","Mind blank? Let the wheel choose. Spin, then go without thinking!"],
-["Apa pun hasilnya, kerjakan sekarang — maksimal 2 menit. Nggak pakai mikir, nggak pakai nanti.","Whatever it lands on, do it now — max 2 minutes. No overthinking, no later."],
-["Rahasianya: mulai dari yang paling kecil. Centang satu, dapat XP + konfeti. Serius. ⭐ = prioritas selalu di atas · ▲▼ atau tahan ⠿ lalu seret = atur urutan · tap teks tugas = edit typo ✏️.","The trick: start with the smallest. Tick one, earn XP + confetti. Seriously. ⭐ = priority always on top · ▲▼ or hold ⠿ and drag = reorder · tap task text = edit typo ✏️."],
+["Rahasianya: mulai dari yang ","The trick: start with the "],
+["paling kecil","smallest"],
+[". Centang satu, dapat XP + konfeti. Serius. ",". Tick one, earn XP + confetti. Seriously. "],
+["⭐ = prioritas selalu di atas · ▲▼ atau tahan ⠿ lalu seret = atur urutan · tap teks tugas = edit typo ✏️.","⭐ = priority always on top · ▲▼ or hold ⠿ and drag = reorder · tap task text = edit typo ✏️."],
 ["Pilih keadaanmu — Allah sudah menyiapkan ayatnya untukmu. 🤍","Pick your state — Allah has prepared verses for you. 🤍"],
-["Tap surah: abu-abu = belum, rose = proses, emas = hafal. Menandai hafal = +25 XP!","Tap a surah: grey = not yet, rose = in progress, gold = memorized. Marking memorized = +25 XP!"],
-["Lengkap dengan teks Arab, latin, arti, manfaat, dan sumbernya. 🤲","Complete with Arabic text, transliteration, meaning, benefits, and sources. 🤲"],
+["Tap surah: abu-abu = belum, rose = proses, emas = hafal. Menandai hafal = ","Tap a surah: grey = not yet, pink = in progress, gold = memorized. Marking memorized = "],
+["Lengkap dengan teks Arab, latin, arti, ","Complete with Arabic text, transliteration, meaning, "],
+["manfaat","benefits"],
+["sumber","sources"],
+[", dan ",", and "],
+["nya. 🤲",". 🤲"],
 ["Tulis 3 hal kecil yang kamu syukuri hari ini — tersimpan otomatis di HP-mu. 🤍","Write 3 small things you're grateful for today — saved automatically on your phone. 🤍"],
 ["🌸 MasyaAllah, syukur hari ini lengkap. Semoga jadi kebiasaan indah!","🌸 MashaAllah, today's gratitude is complete. May it become a beautiful habit!"],
 ["Angka besar = tanggal · lencana emas = jumlah tugas beres hari itu.","Big number = date · gold badge = tasks done that day."],
-["Selesai satu sesi = +30 XP (Deep Focus sampai +100 XP) dan tomat 🍅 masuk koleksi.","Finish one session = +30 XP (Deep Focus up to +100 XP) and a tomato 🍅 joins your collection."],
-["Nggak mood? Kilat 2 menit. Lagi ambis? Deep Focus 50/90 menit","Not in the mood? 2-min blitz. Feeling ambitious? Deep Focus 50/90 min"],
+["Selesai satu sesi = ","Finish one session = "],
+[" (Deep Focus sampai "," (Deep Focus up to "],
+[") dan tomat 🍅 masuk koleksi.",") and a tomato 🍅 joins your collection."],
+["Nggak mood? ","Not in the mood? "],
+["Kilat 2 menit","2-min blitz"],
+[". Lagi ambis? ",". Feeling ambitious? "],
+["Deep Focus 50/90 menit","Deep Focus 50/90 min"],
 ["Sore gini enak buat beresin satu hal kecil 🍵","Evenings like this are perfect for finishing one small thing 🍵"],
 ["Matahari udah start duluan. Yuk mulai pelan-pelan 🌅","The sun already started. Let's begin slowly 🌅"],
 ["Energi masih ada — gas tipis-tipis aja ☀️","Energy is still there — just go gently ☀️"],
@@ -86,7 +98,9 @@ var PAIRS=[
 ["Cadangan terunduh! Simpan file-nya di tempat aman 💾","Backup downloaded! Store the file somewhere safe 💾"],
 ["Tips: cadangkan datamu lewat tombol di bawah halaman ya.","Tip: back up your data via the button at the bottom of the page."],
 ["Gambar tersimpan! Tinggal upload ke IG Story 📸","Image saved! Just upload to IG Story 📸"],
-["Dibuat dengan NYALA — produktif pelan-pelan","Made with NYALA — productive, slowly but surely"],
+["Dibuat dengan ","Made with "],
+[" biar kamu nggak mager lagi."," so you never laze again."],
+["Semua datamu tersimpan aman di perangkat ini — tanpa akun, tanpa ribet.","All your data is stored safely on this device — no account, no hassle."],
 ["Laporan produktivitas pekan ini","This week's productivity report"],
 ["NYALA — Sepekan Barakahku","NYALA — My Barakah Week"],
 ["Hari konsisten: ≥70% tugas beres! 🔥","Consistent day: ≥70% tasks done! 🔥"],
@@ -108,7 +122,9 @@ var PAIRS=[
 ["Dihitung otomatis di perangkat (metode Kemenag: Subuh 20°, Isya 18°).","Calculated automatically on-device (Kemenag method: Fajr 20°, Isha 18°)."],
 ["metode Kemenag: Subuh 20°, Isya 18°.","Kemenag method: Fajr 20°, Isha 18°."],
 ["· metode Kemenag · koreksi ","· Kemenag method · correction "],
+["koreksi ","correction "],
 [" mnt via ⚙️"," min via ⚙️"],
+["Jumhur","Majority"],
 ["📍 Lokasimu (GPS)","📍 Your location (GPS)"],
 ["📍 Otomatis (GPS saya)","📍 Automatic (my GPS)"],
 ["🌐 Auto (dari lokasiku)","🌐 Auto (from my location)"],
@@ -150,6 +166,9 @@ var PAIRS=[
 ["🎡 PUTAR SEKARANG","🎡 SPIN NOW"],
 ["✅ Jadikan tugas","✅ Make it a task"],
 ["Kerjakan sekarang, maksimal 2 menit ⏱️","Do it now, max 2 minutes ⏱️"],
+["Apa pun hasilnya, kerjakan ","Whatever it lands on, do "],
+["sekarang","now"],
+[" — maksimal 2 menit. Nggak pakai mikir, nggak pakai nanti."," — max 2 minutes. No overthinking, no later."],
 ["📸 Unduh Gambar","📸 Download Image"],
 ["📤 Share ke Story","📤 Share to Story"],
 ["🔀 Kocok semangat lagi","🔀 Shuffle motivation"],
@@ -265,18 +284,17 @@ var PAIRS=[
 ["beres hari ini","done today"],
 [" tugas · "," tasks · "],
 [" sesi fokus · ⏱ "," focus sessions · ⏱ "],
-[" menit"," min"],
 [" tugas total"," tasks total"],
 [" habit aktif"," active habits"],
 [" hari konsisten"," consistent days"],
 [" hari"," days"],
+[" menit"," min"],
 ["Selasa","Tuesday"],["Senin","Monday"],["Rabu","Wednesday"],["Kamis","Thursday"],["Jumat","Friday"],["Sabtu","Saturday"],["Minggu","Sunday"],
+["Rb","Wed"],["Km","Thu"],["Jm","Fri"],["Sb","Sat"],["Mg","Sun"],["Sn","Mon"],["Sl","Tue"],
 ["Jan","Jan"],["Feb","Feb"],["Mar","Mar"],["Apr","Apr"],["Mei","May"],["Jun","Jun"],["Jul","Jul"],["Agu","Aug"],["Sep","Sep"],["Okt","Oct"],["Nov","Nov"],["Des","Dec"],
 ["Hari Ini","Today"],["Tugas","Tasks"],["Fokus","Focus"],["Spiritual","Spiritual"],["Kebiasaan","Habits"],["Kebun","Garden"],["Roda","Wheel"],["Laporan","Report"],
 ["📿 Dzikir","📿 Dhikr"],["🕌 Qur'an","🕌 Qur'an"],
 ["← NYALA","← NYALA"],
-["📿 DZIKIR PAGI & PETANG","📿 MORNING & EVENING DHIKR"],
-["TAMAN QUR'AN","QUR'AN GARDEN"],
 ["A · BACA & DENGAR","A · READ & LISTEN"],
 ["Mushaf Digital 114 Surah / 30 Juz","Digital Mushaf · 114 Surahs / 30 Juz"],
 ["Baca sendiri atau baca bareng murottal. 📖","Read alone or recite along with murottal. 📖"],
@@ -295,6 +313,8 @@ var PAIRS=[
 ["Doa Sehari-hari, Nabi & Masa Kini","Everyday, Prophetic & Modern Duas"],
 ["🌤️ Sehari-hari","🌤️ Everyday"],["🕌 Doa Para Nabi","🕌 Prophetic Duas"],["🕰️ Masa Kini","🕰️ Modern"],
 ["✨ Manfaat: ","✨ Benefit: "],["📚 Sumber: ","📚 Source: "],
+["📚 HR. ","📚 Narrated by: "],
+[" (sahih)"," (authentic)"],
 ["Kolaborasi: ","Collaboration: "],
 ["🔄 Memuat…","🔄 Loading…"],["📦 Memuat data…","📦 Loading data…"],["📥 Mengunduh data…","📥 Downloading data…"],
 ["📦 114 surah siap ✅ (dari cache HP)","📦 114 surahs ready ✅ (from phone cache)"],
@@ -314,12 +334,6 @@ var PAIRS=[
 ["Audio tidak tersedia 😔","Audio unavailable 😔"],
 ["Data belum termuat. Buka saat terhubung internet dulu ya 🙏","Data not loaded. Open while connected to the internet first 🙏"],
 ["Dengan menyebut nama Allah Yang Maha Pemurah lagi Maha Penyayang.","In the name of Allah, the Most Gracious, the Most Merciful."],
-["Segala puji bagi Allah, Tuhan semesta alam.","All praise is due to Allah, Lord of the worlds."],
-["Maha Pemurah lagi Maha Penyayang.","The Most Gracious, the Most Merciful."],
-["Yang menguasai di Hari Pembalasan.","Master of the Day of Judgment."],
-["Hanya Engkaulah yang kami sembah, dan hanya kepada Engkaulah kami meminta pertolongan.","You alone we worship, and You alone we ask for help."],
-["Tunjukilah kami jalan yang lurus,","Guide us to the straight path,"],
-["(yaitu) Jalan orang-orang yang telah Engkau beri nikmat kepada mereka; bukan (jalan) mereka yang dimurkai dan bukan (pula jalan) mereka yang sesat.","The path of those You have blessed, not of those who earned anger, nor of those who went astray."],
 ["Madaniyah","Medinan"],["Makkiyah","Meccan"],
 [" ayat"," verses"],
 ["Waktu utama:","Prime time:"],
@@ -382,19 +396,15 @@ var PAIRS=[
 ["🔔 Suara efek dinyalakan.","🔔 Sound effects unmuted."],
 ["🎧 Murottal tetap mengalun di latar belakang.","🎧 Murottal keeps playing in the background."],
 ["⏹ Murottal dihentikan.","⏹ Murottal stopped."],
-["📥 ","📥 "],
 [" tugas dibawa ke hari ini. Semangat!"," tasks carried to today. Keep going!"],
+["1. Contoh: ","1. Example: "],["2. Contoh: ","2. Example: "],["3. Contoh: ","3. Example: "],
 ["Contoh: hujan reda tepat sebelum berangkat…","Example: the rain stopped right before leaving…"],
 ["Contoh: ada teman yang menyapa dulu…","Example: a friend greeted me first…"],
 ["Contoh: tubuhku kuat puasa hari ini…","Example: my body stayed strong fasting today…"],
-["1. Contoh: ","1. Example: "],["2. Contoh: ","2. Example: "],["3. Contoh: ","3. Example: "],
 ["GAS!","GO!"],
-["Menit","Minutes"],
-["Custom · ","Custom · "],
-[" mnt"," min"],
 ["Menuju Adzan ","Until Adhan "],
 ["Fokus","Focus"],["Kilat","Blitz"],["Rehat","Break"],
-["belum","not yet"],["proses 🌱","in progress 🌱"],["hafal 🏆","memorized 🏆"],
+[": belum",": not yet"],[": proses 🌱",": in progress 🌱"],[": hafal 🏆",": memorized 🏆"],
 [" HAFAL! 🏆"," MEMORIZED! 🏆"],
 ["Sudah hafal","Already memorized"],
 ["Target ","Target "],
@@ -406,14 +416,55 @@ var PAIRS=[
 ["Habit \"","Habit \""],
 ["\" beres! 💪","\" done! 💪"],
 ["Mantap! ✨","Awesome! ✨"],
-["Indonesia","Indonesia"],["English","English"]
+["Aku ridha Allah sebagai Tuhan, Islam sebagai agama, dan Muhammad ﷺ sebagai nabi.","I am pleased with Allah as my Lord, Islam as my religion, and Muhammad ﷺ as my prophet."],
+["Maka apabila kamu telah selesai (dari sesuatu urusan), kerjakanlah dengan sungguh-sungguh (urusan) yang lain,","So when you have finished (one task), work diligently on (another) task,"],
+["Membawa berkah pada makanan dan menjauhkan setan dari rezeki kita.","Brings blessing to the food and keeps shaytan away from our provision."],
+["Menjadi sebab diampuninya dosa dan menumbuhkan syukur.","A means for sins to be forgiven and for gratitude to grow."],
+["Perlindungan selama tidur; bila wafat, wafat dalam fitrah.","Protection during sleep; if one passes away, it is upon the fitrah."],
+["Membuka hari dengan syukur dan pengingat kebangkitan.","Opens the day with gratitude and remembrance of the resurrection."],
+["Menjadi penghalang antara pandangan jin dan aurat kita.","A barrier between the gaze of the jinn and our awrah."],
+["Mengajarkan istighfar sekaligus syukur atas kesehatan setelah membuang kotoran.","Teaches istighfar alongside gratitude for health after relieving oneself."],
+["Dibukakan delapan pintu surga untuk dipilihnya.","Eight gates of Paradise are opened for him to choose from."],
+["Rumah diberkahi dan hati tertaut pada tawakal.","The home is blessed and the heart is anchored in reliance."],
+["Dijamin petunjuk, perlindungan, dan kecukupan dari Allah.","Guaranteed guidance, protection, and sufficiency from Allah."],
+["Memohon dibukakan pintu rahmat saat memasuki rumah Allah.","Asking that the gates of mercy be opened upon entering Allah's house."],
+["Memohon karunia Allah saat kembali ke urusan dunia.","Seeking Allah's bounty when returning to worldly affairs."],
+["Barangsiapa membaca doa ini setelah adzan, ia berhak mendapatkan syafaat Nabi ﷺ di hari kiamat.","Whoever says this after the adhan earns the right to the Prophet's ﷺ intercession on the Day of Judgment."],
+["Bentuk birrul walidain; doa anak saleh yang pahalanya tak terputus.","A form of honoring parents; the prayer of a righteous child whose reward never ceases."],
+["Mengubah hujan menjadi rahmat yang bermanfaat.","Turns the rain into a beneficial mercy."],
+["Meredam amarah dan mengusir bisikan setan.","Quells anger and drives away the whispers of shaytan."],
+["Perlindungan dalam perjalanan dan pengingat pulang kepada Allah.","Protection in travel and a reminder of the return to Allah."],
+["Membuka hati dan pikiran untuk menerima ilmu; bentuk tawakal kepada Allah sebelum belajar.","Opens the heart and mind to receive knowledge; a form of reliance on Allah before studying."],
+["Pembuka pintu taubat yang paling sempurna; mengakui dosa sekaligus memohon ampun dan rahmat.","The most complete opener of the gate of repentance; acknowledging sin while seeking forgiveness and mercy."],
+["Jalan keluar dari kesempitan.","A way out of distress."],
+["Kelapangan dada, kemudahan urusan, dan kelancaran berbicara — cocok sebelum presentasi, wawancara, atau berdakwah.","Expansion of the chest, ease of affairs, and fluency in speech — ideal before a presentation, interview, or da'wah."],
+["Istiqamah sholat bagi diri dan keturunan.","Steadfastness in prayer for oneself and one's lineage."],
+["Melatih syukur atas nikmat pribadi dan keluarga, sekaligus memohon taufik untuk amal saleh.","Trains gratitude for personal and family blessings while seeking enablement for righteous deeds."],
+["Permohonan keturunan yang saleh.","A plea for righteous offspring."],
+["Pembuka pintu rezeki.","An opener of the gate of provision."],
+["Merangkum kebaikan dunia-akhirat.","Encompasses the good of this world and the Hereafter."],
+["Ampunan meluas.","Expansive forgiveness."],
+["Adab mengadu kepada Allah.","The etiquette of complaining to Allah."],
+["Peneguh hati.","A steadier of the heart."],
+["Barangsiapa membaca dua ayat terakhir Al-Baqarah di malam hari, maka keduanya mencukupinya.","Whoever recites the last two verses of Al-Baqarah at night, they will suffice him."],
+["Mengawali hari dengan penyerahan diri total kepada Allah.","Beginning the day with total surrender to Allah."],
+["Menenangkan hati dan menyerahkan hasil kepada Allah.","Calms the heart and entrusts the outcome to Allah."],
+["Keluarga menjadi penyejuk hati dan teladan takwa.","Family becomes a delight to the eyes and an example of piety."],
+["Menjaga hati dari iri dan gelisah.","Guarding the heart from envy and unrest."],
+["Filter batin: ilmu bermanfaat, hati khusyuk, jiwa qanaah.","An inner filter: beneficial knowledge, a humble heart, a content soul."],
+["Menyempurnakan nikmat dengan syukur.","Perfecting the blessing with gratitude."],
+["Kecukupan dengan yang halal.","Sufficiency through the halal."],
+["Merangkum kebutuhan dunia-akhirat: ilmu, rezeki halal, dan ibadah yang diterima.","Encompasses the needs of this world and the Hereafter: knowledge, lawful provision, and accepted worship."]
 ];
 PAIRS.sort(function(a,b){return b[0].length-a[0].length;});
 function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
-var RX=PAIRS.map(function(p){return [new RegExp(esc(p[0]),'g'),p[1]];});
-var AR=/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+var RX=PAIRS.map(function(p){
+  var k=p[0];
+  var boundary=/^[A-Za-z0-9]+$/.test(k)&&k.length<=16;
+  return [new RegExp(boundary?('\\b'+esc(k)+'\\b'):esc(k),'g'),p[1]];
+});
+var AR=/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
 var SKIP='.arabic,.doa-ar,.latin,.doa-la,.surah-info .ar,[data-no-i18n],.nyalaHafDate,#nyalaLangSel';
-
 function toEN(t){
   if(!t||AR.test(t))return t;
   var s=t.trim();
@@ -421,13 +472,12 @@ function toEN(t){
   for(var i=0;i<PAIRS.length;i++){if(PAIRS[i][0]===s)return t.replace(s,PAIRS[i][1]);}
   var out=t;
   for(var j=0;j<RX.length;j++){out=out.replace(RX[j][0],RX[j][1]);}
-  var extra=window.NYALA_EN_DUA||{},extra2=window.NYALA_EN_DZIKR||{};
+  var e1=window.NYALA_EN_DUA||{},e2=window.NYALA_EN_DZIKR||{};
   var k=out.trim();
-  if(extra[k]!=null)out=out.replace(k,extra[k]);
-  else if(extra2[k]!=null)out=out.replace(k,extra2[k]);
+  if(e1[k]!=null)out=out.replace(k,e1[k]);
+  else if(e2[k]!=null)out=out.replace(k,e2[k]);
   return out;
 }
-
 var origText=new WeakMap(),origAttr=new WeakMap();
 function protectedNode(n){
   var e=n.parentElement;
