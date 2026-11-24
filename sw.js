@@ -1,4 +1,4 @@
-var VERSION='nyala-v17';
+var VERSION='nyala-v18';
 var SHELL=['./','./index.html','./styles.css?v=11','./app.js','./dzikir.html','./quran.html','./quran-uthmani.json','./id.indonesian.json'];
 
 self.addEventListener('install',function(e){
