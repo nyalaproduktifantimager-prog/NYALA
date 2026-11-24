@@ -1,6 +1,8 @@
-// nyala-i18n.js — FIXED: PHRASES format corrected to array of strings with | separator
+// nyala-i18n.js — SUPER DEFENSIVE VERSION with debug logs
 (function(){
 'use strict';
+console.log('[NYALA-I18N] Script loaded');
+
 var LANG='nyala_lang';
 function lang(){try{return localStorage.getItem(LANG)==='en'?'en':'id';}catch(e){return 'id';}}
 function setLang(l){try{localStorage.setItem(LANG,l==='en'?'en':'id');}catch(e){}apply();window.dispatchEvent(new CustomEvent('nyala:lang',{detail:l}));}
@@ -40,7 +42,6 @@ var DICT={
  "Madaniyah":"Medinan","Makkiyah":"Meccan"
 };
 
-// ===== PHRASES: FORMAT DIPERBAIKI (array string dengan pemisah |) =====
 var PHRASES=[
  "Masih benih nih — siram dengan satu tugas kecil 🌰|Still a seed — water it with one small task 🌰",
  "Kecambah pertama muncul! Jangan berhenti 🌱|First sprout! Don't stop 🌱",
@@ -140,8 +141,60 @@ function title(){var t=document.title;if(!t||lang()==='id')return;var nt=t;for(v
 var mo=null,pend=false;
 function schedule(){if(pend)return;pend=true;requestAnimationFrame(function(){pend=false;walk(document.body);attrs();title();});}
 function apply(){var l=lang();document.documentElement.lang=(l==='en'?'en':'id');walk(document.body);attrs();title();if(mo)mo.disconnect();mo=new MutationObserver(schedule);mo.observe(document.body,{childList:true,subtree:true,characterData:true});}
-function injectSwitch(){if(document.getElementById('nyalaLangSel'))return;var sel=document.createElement('select');sel.id='nyalaLangSel';sel.className='chip';sel.setAttribute('data-no-i18n','1');sel.setAttribute('aria-label','Language / Bahasa');var o1=document.createElement('option');o1.value='id';o1.textContent='🇮🇩 Bahasa Indonesia';var o2=document.createElement('option');o2.value='en';o2.textContent='🇬🇧 English';sel.appendChild(o1);sel.appendChild(o2);sel.value=lang();sel.addEventListener('change',function(){setLang(sel.value);});var anchor=document.querySelector('.chips')||document.querySelector('header .top-in')||document.querySelector('header')||document.body;if(anchor&&anchor.appendChild){if(anchor===document.body)sel.style.cssText='position:fixed;top:8px;right:8px;z-index:9999;';anchor.appendChild(sel);}var st=document.createElement('style');st.textContent='#nyalaLangSel{cursor:pointer;font-weight:700}';document.head.appendChild(st);}
+function injectSwitch(){
+  console.log('[NYALA-I18N] injectSwitch called');
+  if(document.getElementById('nyalaLangSel')){console.log('[NYALA-I18N] Switch already exists');return;}
+  var sel=document.createElement('select');
+  sel.id='nyalaLangSel';
+  sel.className='chip';
+  sel.setAttribute('data-no-i18n','1');
+  sel.setAttribute('aria-label','Language / Bahasa');
+  var o1=document.createElement('option');o1.value='id';o1.textContent='🇮🇩 Bahasa Indonesia';
+  var o2=document.createElement('option');o2.value='en';o2.textContent='🇬🇧 English';
+  sel.appendChild(o1);sel.appendChild(o2);
+  sel.value=lang();
+  sel.addEventListener('change',function(){setLang(sel.value);});
+  
+  // Cari anchor dengan multiple fallback
+  var anchor=document.querySelector('.chips');
+  console.log('[NYALA-I18N] .chips found:', !!anchor);
+  if(!anchor)anchor=document.querySelector('header .top-in');
+  console.log('[NYALA-I18N] header .top-in found:', !!anchor);
+  if(!anchor)anchor=document.querySelector('header');
+  console.log('[NYALA-I18N] header found:', !!anchor);
+  if(!anchor)anchor=document.body;
+  console.log('[NYALA-I18N] Using body as fallback');
+  
+  if(anchor&&anchor.appendChild){
+    if(anchor===document.body){
+      sel.style.cssText='position:fixed;top:8px;right:8px;z-index:9999;';
+    }
+    anchor.appendChild(sel);
+    console.log('[NYALA-I18N] Switch injected successfully');
+  }else{
+    console.error('[NYALA-I18N] Failed to inject switch - no valid anchor');
+  }
+  
+  var st=document.createElement('style');
+  st.textContent='#nyalaLangSel{cursor:pointer;font-weight:700}';
+  document.head.appendChild(st);
+}
 window.NYALA_I18N={lang:lang,set:setLang,refresh:schedule,extend:function(d,p,a){Object.keys(d||{}).forEach(function(k){DICT[k]=d[k];});(p||[]).forEach(function(x){PH.unshift([new RegExp(esc(x[0]),'g'),x[1]]);});Object.keys(a||{}).forEach(function(k){ATTR[k]=a[k];});schedule();}};
-function boot(){injectSwitch();apply();}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+function boot(){
+  console.log('[NYALA-I18N] boot called, readyState:', document.readyState);
+  try{
+    injectSwitch();
+    apply();
+    console.log('[NYALA-I18N] boot completed successfully');
+  }catch(e){
+    console.error('[NYALA-I18N] boot error:', e);
+  }
+}
+if(document.readyState==='loading'){
+  console.log('[NYALA-I18N] Waiting for DOMContentLoaded');
+  document.addEventListener('DOMContentLoaded',boot);
+}else{
+  console.log('[NYALA-I18N] DOM already ready, calling boot immediately');
+  boot();
+}
 })();
