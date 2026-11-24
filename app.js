@@ -1,4 +1,5 @@
 // app.js — versi bersih: jejak tanggal benar + logo rose-gold di gambar laporan (Kebun tetap mawar merah & bunga lain utuh)
+// PATCH GLOBAL: jadwal adzan akurat lintas-negara (metode per-wilayah + mazhab Ashr + aturan lintang-tinggi), dengan fallback aman ke angka Kemenag lama.
 (function(){
 'use strict';
 var deferredPrompt=null;
@@ -15,7 +16,8 @@ var MON_SHORT=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov'
 
 function loadState(){try{var raw=localStorage.getItem(KEY);if(raw){var s=JSON.parse(raw);if(s&&typeof s==='object')return s;}}catch(e){}return null;}
 var saved=loadState();
-var state={name:'',xp:0,streak:{count:0,last:''},tasks:{},habits:[],totals:{done:0,focusMin:0},today:{key:'',mood:-1,hype:''},settings:{city:'Jakarta',offset:0,mode:'city',lat:0,lon:0},tasbih:{key:'',counts:{},done:{},log:{}},gratitude:{},consistency:{days:0,rewarded:{}}};
+/* PATCH A: tambah method & madhab pada default settings */
+var state={name:'',xp:0,streak:{count:0,last:''},tasks:{},habits:[],totals:{done:0,focusMin:0},today:{key:'',mood:-1,hype:''},settings:{city:'Jakarta',offset:0,mode:'city',lat:0,lon:0,method:'',madhab:''},tasbih:{key:'',counts:{},done:{},log:{}},gratitude:{},consistency:{days:0,rewarded:{}}};
 
 if(saved){
   state.name=typeof saved.name==='string'?saved.name:'';
@@ -25,7 +27,8 @@ if(saved){
   if(Array.isArray(saved.habits))state.habits=saved.habits;
   if(saved.totals&&typeof saved.totals==='object')state.totals={done:saved.totals.done||0,focusMin:saved.totals.focusMin||0};
   if(saved.today&&typeof saved.today==='object')state.today={key:saved.today.key||'',mood:saved.today.mood!=null?saved.today.mood:-1,hype:saved.today.hype||''};
-  if(saved.settings&&typeof saved.settings==='object')state.settings={city:saved.settings.city||'Jakarta',offset:parseInt(saved.settings.offset,10)||0,mode:saved.settings.mode==='gps'?'gps':'city',lat:saved.settings.lat||0,lon:saved.settings.lon||0};
+  /* PATCH A2: pulihkan method & madhab (default '' = auto) */
+  if(saved.settings&&typeof saved.settings==='object')state.settings={city:saved.settings.city||'Jakarta',offset:parseInt(saved.settings.offset,10)||0,mode:saved.settings.mode==='gps'?'gps':'city',lat:saved.settings.lat||0,lon:saved.settings.lon||0,method:saved.settings.method||'',madhab:saved.settings.madhab||''};
   if(saved.tasbih&&typeof saved.tasbih==='object')state.tasbih={key:saved.tasbih.key||'',counts:saved.tasbih.counts||{},done:saved.tasbih.done||{},log:saved.tasbih.log||{}};
   if(saved.gratitude&&typeof saved.gratitude==='object')state.gratitude=saved.gratitude;
   if(saved.consistency&&typeof saved.consistency==='object')state.consistency={days:saved.consistency.days||0,rewarded:saved.consistency.rewarded||{}};
@@ -144,6 +147,43 @@ function addXP(n,msg){
   renderScore();renderGarden();renderReport();
 }
 
+/* ===== PATCH B: KONFIGURASI METODE & WILAYAH GLOBAL (blok baru, murni data) ===== */
+var METHODS={
+  kemenag:{fajr:20,isha:18,label:'Kemenag RI / MUIS SG / JAKIM MY'},
+  mwl:{fajr:18,isha:17,label:'Muslim World League (Eropa/Afrika/Asia umum)'},
+  isna:{fajr:15,isha:15,label:'ISNA (Amerika Utara)'},
+  egypt:{fajr:19.5,isha:17.5,label:'Egyptian GA (Mesir/Sudan/Levant)'},
+  ummqlura:{fajr:18,ishaInt:90,label:'Umm al-Qura (Arab Saudi)'},
+  karachi:{fajr:18,isha:18,label:'Karachi (PK/BD/IN/AF)'},
+  dubai:{fajr:18.2,isha:18.2,label:'Dubai (UEA)'},
+  qatar:{fajr:18,ishaInt:90,label:'Qatar'},
+  turkey:{fajr:18,isha:17,label:'Diyanet (Turki/Balkan/Rusia/Asia Tengah)'},
+  tehran:{fajr:17.5,isha:17.5,label:'Tehran (Iran)'}
+};
+/* Urutan penting: kotak sempit dulu, kotak luas belakangan (first-match-wins). */
+var REGIONS=[
+  {t:function(l,o){return l>=-11&&l<=7&&o>=95&&o<=127;},m:'kemenag',d:'shafii'},    // ID/MY/SG/BN/TL
+  {t:function(l,o){return l>=12&&l<=32&&o>=34&&o<=56;},m:'ummqlura',d:'shafii'},   // SA/YE
+  {t:function(l,o){return l>=22&&l<=27&&o>=51&&o<=57;},m:'dubai',d:'shafii'},      // AE
+  {t:function(l,o){return l>=24&&l<=27&&o>=50&&o<=52;},m:'qatar',d:'shafii'},      // QA
+  {t:function(l,o){return l>=25&&l<=40&&o>=44&&o<=64;},m:'tehran',d:'shafii'},     // IR
+  {t:function(l,o){return l>=5&&l<=38&&o>=60&&o<=98;},m:'karachi',d:'hanafi'},     // PK/IN/BD/AF
+  {t:function(l,o){return l>=18&&l<=33&&o>=24&&o<=40;},m:'egypt',d:'shafii'},      // EG/Libya/Sudan/Levant
+  {t:function(l,o){return l>=35&&l<=55&&o>=19&&o<=80;},m:'turkey',d:'hanafi'},     // TR/Balkan/Rusia/Asia Tengah
+  {t:function(l,o){return l>=10&&l<=72&&o>=-130&&o<=-55;},m:'isna',d:'shafii'},    // US/CA/MX/Karibia
+  {t:function(l,o){return l>=36&&l<=70&&o>=-10&&o<=40;},m:'mwl',d:'shafii'},       // Eropa (non-TR)
+  {t:function(l,o){return l>=-35&&l<=37&&o>=-18&&o<=51;},m:'mwl',d:'shafii'}       // Afrika (non-EG)
+];
+function regionFor(l,o){for(var i=0;i<REGIONS.length;i++){if(REGIONS[i].t(l,o))return{method:REGIONS[i].m,madhab:REGIONS[i].d};}return{method:'mwl',madhab:'shafii'};}
+function resolveCfg(l,o){
+  var auto=regionFor(l,o);
+  var mk=(state.settings.method&&METHODS[state.settings.method])?state.settings.method:auto.method;
+  var md=(state.settings.madhab==='hanafi'||state.settings.madhab==='shafii')?state.settings.madhab:auto.madhab;
+  var def=METHODS[mk]||METHODS.mwl;
+  return{key:mk,madhab:md,fajr:def.fajr,isha:def.isha,ishaInt:def.ishaInt};
+}
+
+/* ===== PATCH C: daftar kota — Indonesia UTUH seperti sebelumnya (indeks 11 = Jakarta, fallback aman), + kota internasional (tz:null → ikut jam perangkat & DST) ===== */
 var CITIES=[
   {n:'Banda Aceh',la:5.55,lo:95.32,tz:7},{n:'Medan',la:3.59,lo:98.67,tz:7},{n:'Padang',la:-0.95,lo:100.35,tz:7},
   {n:'Pekanbaru',la:0.51,lo:101.45,tz:7},{n:'Tanjung Pinang',la:0.92,lo:104.46,tz:7},{n:'Jambi',la:-1.61,lo:103.61,tz:7},
@@ -157,7 +197,36 @@ var CITIES=[
   {n:'Mamuju',la:-2.68,lo:118.88,tz:8},{n:'Makassar',la:-5.15,lo:119.43,tz:8},{n:'Kendari',la:-3.97,lo:122.60,tz:8},
   {n:'Ambon',la:-3.70,lo:128.18,tz:9},{n:'Sofifi',la:0.73,lo:127.95,tz:9},{n:'Jayapura',la:-2.53,lo:140.72,tz:9},
   {n:'Manokwari',la:-0.86,lo:134.06,tz:9},{n:'Merauke',la:-8.47,lo:140.33,tz:9},{n:'Nabire',la:-3.36,lo:135.55,tz:9},
-  {n:'Wamena',la:-4.10,lo:138.95,tz:9},{n:'Sorong',la:-0.88,lo:131.25,tz:9}
+  {n:'Wamena',la:-4.10,lo:138.95,tz:9},{n:'Sorong',la:-0.88,lo:131.25,tz:9},
+  {n:'Mekkah',la:21.42,lo:39.83,tz:null,cc:'SA'},{n:'Madinah',la:24.47,lo:39.61,tz:null,cc:'SA'},{n:'Riyadh',la:24.71,lo:46.68,tz:null,cc:'SA'},
+  {n:'Jeddah',la:21.49,lo:39.19,tz:null,cc:'SA'},{n:'Dubai',la:25.20,lo:55.27,tz:null,cc:'AE'},{n:'Abu Dhabi',la:24.45,lo:54.38,tz:null,cc:'AE'},
+  {n:'Doha',la:25.29,lo:51.53,tz:null,cc:'QA'},{n:'Kairo',la:30.04,lo:31.24,tz:null,cc:'EG'},{n:'Istanbul',la:41.01,lo:28.98,tz:null,cc:'TR'},
+  {n:'Ankara',la:39.93,lo:32.86,tz:null,cc:'TR'},{n:'London',la:51.51,lo:-0.13,tz:null,cc:'GB'},{n:'Paris',la:48.86,lo:2.35,tz:null,cc:'FR'},
+  {n:'Berlin',la:52.52,lo:13.40,tz:null,cc:'DE'},{n:'Amsterdam',la:52.37,lo:4.90,tz:null,cc:'NL'},{n:'Madrid',la:40.42,lo:-3.70,tz:null,cc:'ES'},
+  {n:'Roma',la:41.90,lo:12.50,tz:null,cc:'IT'},{n:'Moskow',la:55.76,lo:37.62,tz:null,cc:'RU'},{n:'New York',la:40.71,lo:-74.01,tz:null,cc:'US'},
+  {n:'Los Angeles',la:34.05,lo:-118.24,tz:null,cc:'US'},{n:'Chicago',la:41.88,lo:-87.63,tz:null,cc:'US'},{n:'Toronto',la:43.65,lo:-79.38,tz:null,cc:'CA'},
+  {n:'Karachi',la:24.86,lo:67.01,tz:null,cc:'PK'},{n:'Lahore',la:31.52,lo:74.36,tz:null,cc:'PK'},{n:'Dhaka',la:23.81,lo:90.41,tz:null,cc:'BD'},
+  {n:'Mumbai',la:19.08,lo:72.88,tz:null,cc:'IN'},{n:'Delhi',la:28.61,lo:77.21,tz:null,cc:'IN'},{n:'Hyderabad',la:17.39,lo:78.49,tz:null,cc:'IN'},
+  {n:'Kuala Lumpur',la:3.14,lo:101.69,tz:null,cc:'MY'},{n:'Singapura',la:1.35,lo:103.82,tz:null,cc:'SG'},{n:'Bangkok',la:13.76,lo:100.50,tz:null,cc:'TH'},
+  {n:'Tokyo',la:35.68,lo:139.69,tz:null,cc:'JP'},{n:'Beijing',la:39.90,lo:116.41,tz:null,cc:'CN'},{n:'Sydney',la:-33.87,lo:151.21,tz:null,cc:'AU'},
+  {n:'Melbourne',la:-37.81,lo:144.96,tz:null,cc:'AU'},{n:'Auckland',la:-36.85,lo:174.76,tz:null,cc:'NZ'},{n:'Johannesburg',la:-26.20,lo:28.05,tz:null,cc:'ZA'},
+  {n:'Lagos',la:6.52,lo:3.38,tz:null,cc:'NG'},{n:'Nairobi',la:-1.29,lo:36.82,tz:null,cc:'KE'},{n:'Casablanca',la:33.57,lo:-7.59,tz:null,cc:'MA'},
+  {n:'Tunis',la:36.81,lo:10.18,tz:null,cc:'TN'},{n:'Aljir',la:36.75,lo:3.06,tz:null,cc:'DZ'},{n:'Teheran',la:35.69,lo:51.39,tz:null,cc:'IR'},
+  {n:'Mashhad',la:36.30,lo:59.60,tz:null,cc:'IR'},{n:'Isfahan',la:32.65,lo:51.67,tz:null,cc:'IR'},{n:'Baku',la:40.41,lo:49.87,tz:null,cc:'AZ'},
+  {n:'Tashkent',la:41.30,lo:69.24,tz:null,cc:'UZ'},{n:'Almaty',la:43.24,lo:76.89,tz:null,cc:'KZ'},{n:'Sarajevo',la:43.86,lo:18.41,tz:null,cc:'BA'},
+  {n:'Skopje',la:42.00,lo:21.43,tz:null,cc:'MK'},{n:'Tirana',la:41.33,lo:19.82,tz:null,cc:'AL'},{n:'Sofia',la:42.70,lo:23.32,tz:null,cc:'BG'},
+  {n:'Bucharest',la:44.43,lo:26.10,tz:null,cc:'RO'},{n:'Warsawa',la:52.23,lo:21.01,tz:null,cc:'PL'},{n:'Praha',la:50.08,lo:14.44,tz:null,cc:'CZ'},
+  {n:'Wina',la:48.21,lo:16.37,tz:null,cc:'AT'},{n:'Stockholm',la:59.33,lo:18.07,tz:null,cc:'SE'},{n:'Oslo',la:59.91,lo:10.75,tz:null,cc:'NO'},
+  {n:'Helsinki',la:60.17,lo:24.94,tz:null,cc:'FI'},{n:'Kopenhagen',la:55.68,lo:12.57,tz:null,cc:'DK'},{n:'Dublin',la:53.35,lo:-6.26,tz:null,cc:'IE'},
+  {n:'Lisbon',la:38.72,lo:-9.14,tz:null,cc:'PT'},{n:'Jenewa',la:46.20,lo:6.14,tz:null,cc:'CH'},{n:'Zurich',la:47.38,lo:8.54,tz:null,cc:'CH'},
+  {n:'Brussel',la:50.85,lo:4.35,tz:null,cc:'BE'},{n:'Budapest',la:47.50,lo:19.04,tz:null,cc:'HU'},{n:'Beograd',la:44.79,lo:20.47,tz:null,cc:'RS'},
+  {n:'Athena',la:37.98,lo:23.73,tz:null,cc:'GR'},{n:'Nikosia',la:35.19,lo:33.38,tz:null,cc:'CY'},{n:'Amman',la:31.95,lo:35.93,tz:null,cc:'JO'},
+  {n:'Yerusalem',la:31.77,lo:35.21,tz:null,cc:'PS'},{n:'Beirut',la:33.89,lo:35.50,tz:null,cc:'LB'},{n:'Damaskus',la:33.51,lo:36.29,tz:null,cc:'SY'},
+  {n:'Baghdad',la:33.31,lo:44.37,tz:null,cc:'IQ'},{n:'Kota Kuwait',la:29.38,lo:47.99,tz:null,cc:'KW'},{n:'Manama',la:26.23,lo:50.59,tz:null,cc:'BH'},
+  {n:'Muscat',la:23.59,lo:58.41,tz:null,cc:'OM'},{n:"Sana'a",la:15.37,lo:44.19,tz:null,cc:'YE'},{n:'Addis Ababa',la:9.03,lo:38.74,tz:null,cc:'ET'},
+  {n:'Dar es Salaam',la:-6.79,lo:39.21,tz:null,cc:'TZ'},{n:'Kigali',la:-1.95,lo:30.06,tz:null,cc:'RW'},{n:'Kampala',la:0.35,lo:32.58,tz:null,cc:'UG'},
+  {n:'Accra',la:5.60,lo:-0.19,tz:null,cc:'GH'},{n:'Dakar',la:14.72,lo:-17.47,tz:null,cc:'SN'},{n:'Bamako',la:12.64,lo:-8.00,tz:null,cc:'ML'},
+  {n:'Tripoli',la:32.90,lo:13.19,tz:null,cc:'LY'},{n:'Alexandria',la:31.20,lo:29.92,tz:null,cc:'EG'}
 ];
 var PRAYER_KEYS=[['Fajr','Subuh'],['Dhuhr','Dzuhur'],['Asr','Ashr'],['Maghrib','Maghrib'],['Isha','Isya']];
 var prayerTimes=null,prayerComputedKey='',customLabel='';
@@ -185,7 +254,9 @@ function hm(h){
   var mins=Math.round(fixH(h)*60)%1440;
   return pad2(Math.floor(mins/60))+':'+pad2(mins%60);
 }
-function calcTimes(date,la,lo,tz){
+/* ===== PATCH D: calcTimes menerima cfg (sudut per-metode + mazhab Ashr + aturan lintang-tinggi one-seventh). cfg=null => angka Kemenag lama (fallback). ===== */
+function calcTimes(date,la,lo,tz,cfg){
+  if(!cfg)cfg={fajr:20,isha:18,madhab:'shafii'}; // legacy Kemenag
   var jd=julian(date.getFullYear(),date.getMonth()+1,date.getDate())-lo/(15*24);
   var sp=sunPos(jd+0.5);
   var decl=sp.decl;
@@ -195,25 +266,64 @@ function calcTimes(date,la,lo,tz){
     if(c<-1||c>1)return null;
     return deg(Math.acos(c))/15;
   }
-  var altAsr=deg(Math.atan(1/(1+Math.tan(rad(Math.abs(la-decl))))));
-  var fH=hourAngle(-20),sH=hourAngle(-0.833),aH=hourAngle(altAsr),iH=hourAngle(-18);
-  if(fH==null)fH=6;if(sH==null)sH=6;if(aH==null)aH=4;if(iH==null)iH=6;
-  return{fajr:hm(dhuhr-fH),dhuhr:hm(dhuhr),asr:hm(dhuhr+aH),maghrib:hm(dhuhr+sH),isha:hm(dhuhr+iH)};
+  var sH=hourAngle(-0.833);                 // setengah-hari terbenam (Maghrib)
+  var ssH=hourAngle(-0.833);                // setengah-hari terbit (untuk panjang malam)
+  var dayLen=(ssH!=null)?2*ssH:24;
+  var night=24-dayLen; if(night<0)night=0;
+  var sunrise=(ssH!=null)?dhuhr-ssH:dhuhr;
+  var sunset =(sH !=null)?dhuhr+sH :dhuhr;
+  var fH=hourAngle(-cfg.fajr);
+  var fajrAbs=(fH!=null)?(dhuhr-fH):(sunrise-night/7);          // lintang tinggi: one-seventh
+  var ishaAbs;
+  if(cfg.ishaInt!=null){ishaAbs=sunset+cfg.ishaInt/60;}         // Umm al-Qura / Qatar: interval tetap
+  else{var iH=hourAngle(-cfg.isha);ishaAbs=(iH!=null)?(dhuhr+iH):(sunset+night/7);}
+  var factor=(cfg.madhab==='hanafi')?2:1;
+  var altAsr=deg(Math.atan(1/(factor+Math.tan(rad(Math.abs(la-decl))))));
+  var aH=hourAngle(altAsr);
+  var asrAbs=(aH!=null)?(dhuhr+aH):(dhuhr+(dayLen>0?dayLen/2:3));
+  return{fajr:hm(fajrAbs),dhuhr:hm(dhuhr),asr:hm(asrAbs),maghrib:hm(sunset),isha:hm(ishaAbs),
+         raw:{fajr:fajrAbs,dhuhr:dhuhr,asr:asrAbs,maghrib:sunset,isha:ishaAbs}};
 }
+function normAround(x,c){while(x<c-12)x+=24;while(x>=c+12)x-=24;return x;}
+/* Sanity guard: urut & masuk akal (tidak melewati tengah malam) → kalau tidak, pemanggil akan fallback. */
+function saneOrder(t){
+  if(!t||!t.raw)return false;
+  var r=t.raw,c=r.dhuhr;
+  var f=normAround(r.fajr,c),a=normAround(r.asr,c),m=normAround(r.maghrib,c),i=normAround(r.isha,c);
+  if(![f,c,a,m,i].every(function(v){return isFinite(v);}))return false;
+  return (f>=c-12&&f<=c&&a>=c&&a<=m&&m<=i&&i<=c+12);
+}
+/* ===== PATCH E: computePrayers dengan try/catch + resolveCfg + tz perangkat untuk kota internasional + fallback ganda. ===== */
 function computePrayers(){
-  var la,lo,tz;
-  if(state.settings.mode==='gps'&&state.settings.lat){
-    la=+state.settings.lat;lo=+state.settings.lon;
-    tz=-(new Date().getTimezoneOffset())/60;
-  }else{
-    var c=null;
-    for(var i=0;i<CITIES.length;i++){if(CITIES[i].n===state.settings.city)c=CITIES[i];}
-    if(!c)c=CITIES[11];
-    la=c.la;lo=c.lo;tz=c.tz;
+  var la,lo,tz,cfg,t,ok=false;
+  try{
+    if(state.settings.mode==='gps'&&state.settings.lat){
+      la=+state.settings.lat;lo=+state.settings.lon;
+      tz=-(new Date().getTimezoneOffset())/60;
+    }else{
+      var c=null;
+      for(var i=0;i<CITIES.length;i++){if(CITIES[i].n===state.settings.city){c=CITIES[i];break;}}
+      if(!c)c=CITIES[11];
+      la=c.la;lo=c.lo;
+      tz=(c.tz!=null)?c.tz:(-(new Date().getTimezoneOffset())/60);
+    }
+    cfg=resolveCfg(la,lo);
+    t=calcTimes(new Date(),la,lo,tz,cfg);
+    ok=saneOrder(t);
+  }catch(e){ok=false;}
+  if(!ok){
+    try{
+      la=-6.20;lo=106.82;tz=7;
+      t=calcTimes(new Date(),la,lo,tz,null);   // angka Kemenag lama
+      cfg={key:'kemenag',madhab:'shafii'};
+    }catch(e2){
+      t={fajr:'04:30',dhuhr:'12:00',asr:'15:00',maghrib:'18:00',isha:'19:30'};
+      cfg={key:'kemenag',madhab:'shafii'};
+    }
   }
-  var t=calcTimes(new Date(),la,lo,tz);
   prayerTimes={Fajr:t.fajr,Dhuhr:t.dhuhr,Asr:t.asr,Maghrib:t.maghrib,Isha:t.isha};
   prayerComputedKey=todayKey();
+  window.__nyalaResolved={method:(cfg&&cfg.key)||'kemenag',madhab:(cfg&&cfg.madhab)||'shafii'};
   renderPrayers();updatePrayerCountdown();
 }
 function updateClock(){
@@ -279,10 +389,14 @@ function renderPrayers(){
     var s=document.createElement('span');s.textContent=it.date?fmtHM(it.date):'--:--';
     cell.appendChild(b);cell.appendChild(s);box.appendChild(cell);
   });
+  /* ===== PATCH F: catatan menyebut metode + mazhab yang benar-benar dipakai ===== */
   var note=$('prayerNote');
   if(note){
+    var r=window.__nyalaResolved||{method:'kemenag',madhab:'shafii'};
     var loc=state.settings.mode==='gps'?'📍 Lokasimu (GPS)':((state.settings&&state.settings.city)||'Jakarta');
-    note.textContent=loc+' · metode Kemenag · koreksi '+((state.settings&&state.settings.offset)||0)+' mnt via ⚙️';
+    var ml=(METHODS[r.method]&&METHODS[r.method].label)||r.method;
+    var md=(r.madhab==='hanafi')?'Hanafi':'Jumhur';
+    note.textContent=loc+' · '+ml+' · Ashr: '+md+' · koreksi '+((state.settings&&state.settings.offset)||0)+' mnt via ⚙️';
   }
 }
 
@@ -1175,10 +1289,17 @@ function bind(){
   var uc=$('useCustom');
   if(uc)uc.addEventListener('click',function(){setCustomMode(customMin);toast('⏱️ Timer custom '+customMin+' menit siap. Gas!');});
   renderCustomVal();
+  /* ===== PATCH G: dropdown kota (grup Indonesia + Internasional) + Metode + Mazhab, disuntik via JS (index.html tak berubah) ===== */
   var sel=$('citySelect');
   if(sel){
     var g=document.createElement('option');g.value='__gps';g.textContent='📍 Otomatis (GPS saya)';sel.appendChild(g);
-    CITIES.forEach(function(c){var o=document.createElement('option');o.value=c.n;o.textContent=c.n;sel.appendChild(o);});
+    var grpID=document.createElement('optgroup');grpID.label='Indonesia';
+    var grpINT=document.createElement('optgroup');grpINT.label='Internasional';
+    CITIES.forEach(function(c){
+      var o=document.createElement('option');o.value=c.n;o.textContent=(c.tz==null&&c.cc)?(c.n+' · '+c.cc):c.n;
+      (c.tz==null?grpINT:grpID).appendChild(o);
+    });
+    sel.appendChild(grpID);sel.appendChild(grpINT);
     sel.value=(state.settings.mode==='gps')?'__gps':(state.settings.city||'Jakarta');
     sel.addEventListener('change',function(){
       if(sel.value==='__gps'){
@@ -1188,18 +1309,32 @@ function bind(){
           state.settings.mode='gps';
           state.settings.lat=pos.coords.latitude.toFixed(4);
           state.settings.lon=pos.coords.longitude.toFixed(4);
-          save();computePrayers();toast('Lokasi terdeteksi! Jadwal disesuaikan 📍');
+          save();computePrayers();syncMethodUI();toast('Lokasi terdeteksi! Jadwal & metode disesuaikan 📍');
         },function(){
           toast('GPS ditolak — pilih kota manual ya 🙏');
           sel.value=(state.settings.mode==='gps')?'__gps':(state.settings.city||'Jakarta');
         },{timeout:12000,maximumAge:300000});
       }else{
-        state.settings.mode='city';state.settings.city=sel.value;save();computePrayers();
+        state.settings.mode='city';state.settings.city=sel.value;save();computePrayers();syncMethodUI();
       }
     });
+    var row=sel.parentNode;
+    var ms=document.createElement('select');ms.className='city-select';ms.id='methodSel';ms.setAttribute('aria-label','Metode perhitungan');
+    var mo=document.createElement('option');mo.value='';mo.textContent='🌐 Auto (dari lokasiku)';ms.appendChild(mo);
+    Object.keys(METHODS).forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=METHODS[k].label;ms.appendChild(o);});
+    ms.value=state.settings.method||'';
+    ms.addEventListener('change',function(){state.settings.method=ms.value;save();computePrayers();});
+    var ds=document.createElement('select');ds.className='city-select';ds.id='madhabSel';ds.setAttribute('aria-label','Mazhab Ashr');
+    var d0=document.createElement('option');d0.value='';d0.textContent='🌐 Auto (dari lokasiku)';ds.appendChild(d0);
+    var dj=document.createElement('option');dj.value='shafii';dj.textContent='Jumhur (Syafi‘i/Maliki/Hanbali)';ds.appendChild(dj);
+    var dh=document.createElement('option');dh.value='hanafi';dh.textContent='Hanafi';ds.appendChild(dh);
+    ds.value=state.settings.madhab||'';
+    ds.addEventListener('change',function(){state.settings.madhab=ds.value;save();computePrayers();});
+    if(row){row.appendChild(ms);row.appendChild(ds);}
+    window.syncMethodUI=function(){var m=$('methodSel'),d=$('madhabSel');if(m)m.value=state.settings.method||'';if(d)d.value=state.settings.madhab||'';};
   }
   var rbt=$('retryBtn');
-  if(rbt)rbt.addEventListener('click',function(){computePrayers();toast('Jadwal dihitung ulang ✅');});
+  if(rbt)rbt.addEventListener('click',function(){computePrayers();syncMethodUI();toast('Jadwal & metode dihitung ulang ✅');});
   var ob=$('offsetBtn');
   if(ob)ob.addEventListener('click',function(){
     var v=prompt('Koreksi jadwal adzan (menit). Contoh: -2 atau 3',String((state.settings.offset)||0));
