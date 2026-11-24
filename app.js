@@ -1,5 +1,6 @@
 // app.js — versi bersih: jejak tanggal benar + logo rose-gold di gambar laporan (Kebun tetap mawar merah & bunga lain utuh)
 // PATCH GLOBAL: jadwal adzan akurat lintas-negara (metode per-wilayah + mazhab Ashr + aturan lintang-tinggi), dengan fallback aman ke angka Kemenag lama.
+// PATCH v2: (1) edit typo tugas via tap teks, (2) timer custom bebas kelipatan 1 + ketik angka, (3) grafik harian dalam persen (halaman & gambar 9:16).
 (function(){
 'use strict';
 var deferredPrompt=null;
@@ -16,7 +17,6 @@ var MON_SHORT=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov'
 
 function loadState(){try{var raw=localStorage.getItem(KEY);if(raw){var s=JSON.parse(raw);if(s&&typeof s==='object')return s;}}catch(e){}return null;}
 var saved=loadState();
-/* PATCH A: tambah method & madhab pada default settings */
 var state={name:'',xp:0,streak:{count:0,last:''},tasks:{},habits:[],totals:{done:0,focusMin:0},today:{key:'',mood:-1,hype:''},settings:{city:'Jakarta',offset:0,mode:'city',lat:0,lon:0,method:'',madhab:''},tasbih:{key:'',counts:{},done:{},log:{}},gratitude:{},consistency:{days:0,rewarded:{}}};
 
 if(saved){
@@ -27,7 +27,6 @@ if(saved){
   if(Array.isArray(saved.habits))state.habits=saved.habits;
   if(saved.totals&&typeof saved.totals==='object')state.totals={done:saved.totals.done||0,focusMin:saved.totals.focusMin||0};
   if(saved.today&&typeof saved.today==='object')state.today={key:saved.today.key||'',mood:saved.today.mood!=null?saved.today.mood:-1,hype:saved.today.hype||''};
-  /* PATCH A2: pulihkan method & madhab (default '' = auto) */
   if(saved.settings&&typeof saved.settings==='object')state.settings={city:saved.settings.city||'Jakarta',offset:parseInt(saved.settings.offset,10)||0,mode:saved.settings.mode==='gps'?'gps':'city',lat:saved.settings.lat||0,lon:saved.settings.lon||0,method:saved.settings.method||'',madhab:saved.settings.madhab||''};
   if(saved.tasbih&&typeof saved.tasbih==='object')state.tasbih={key:saved.tasbih.key||'',counts:saved.tasbih.counts||{},done:saved.tasbih.done||{},log:saved.tasbih.log||{}};
   if(saved.gratitude&&typeof saved.gratitude==='object')state.gratitude=saved.gratitude;
@@ -147,7 +146,7 @@ function addXP(n,msg){
   renderScore();renderGarden();renderReport();
 }
 
-/* ===== PATCH B: KONFIGURASI METODE & WILAYAH GLOBAL (blok baru, murni data) ===== */
+/* ===== KONFIGURASI METODE & WILAYAH GLOBAL ===== */
 var METHODS={
   kemenag:{fajr:20,isha:18,label:'Kemenag RI / MUIS SG / JAKIM MY'},
   mwl:{fajr:18,isha:17,label:'Muslim World League (Eropa/Afrika/Asia umum)'},
@@ -160,19 +159,18 @@ var METHODS={
   turkey:{fajr:18,isha:17,label:'Diyanet (Turki/Balkan/Rusia/Asia Tengah)'},
   tehran:{fajr:17.5,isha:17.5,label:'Tehran (Iran)'}
 };
-/* Urutan penting: kotak sempit dulu, kotak luas belakangan (first-match-wins). */
 var REGIONS=[
-  {t:function(l,o){return l>=-11&&l<=7&&o>=95&&o<=127;},m:'kemenag',d:'shafii'},    // ID/MY/SG/BN/TL
-  {t:function(l,o){return l>=12&&l<=32&&o>=34&&o<=56;},m:'ummqlura',d:'shafii'},   // SA/YE
-  {t:function(l,o){return l>=22&&l<=27&&o>=51&&o<=57;},m:'dubai',d:'shafii'},      // AE
-  {t:function(l,o){return l>=24&&l<=27&&o>=50&&o<=52;},m:'qatar',d:'shafii'},      // QA
-  {t:function(l,o){return l>=25&&l<=40&&o>=44&&o<=64;},m:'tehran',d:'shafii'},     // IR
-  {t:function(l,o){return l>=5&&l<=38&&o>=60&&o<=98;},m:'karachi',d:'hanafi'},     // PK/IN/BD/AF
-  {t:function(l,o){return l>=18&&l<=33&&o>=24&&o<=40;},m:'egypt',d:'shafii'},      // EG/Libya/Sudan/Levant
-  {t:function(l,o){return l>=35&&l<=55&&o>=19&&o<=80;},m:'turkey',d:'hanafi'},     // TR/Balkan/Rusia/Asia Tengah
-  {t:function(l,o){return l>=10&&l<=72&&o>=-130&&o<=-55;},m:'isna',d:'shafii'},    // US/CA/MX/Karibia
-  {t:function(l,o){return l>=36&&l<=70&&o>=-10&&o<=40;},m:'mwl',d:'shafii'},       // Eropa (non-TR)
-  {t:function(l,o){return l>=-35&&l<=37&&o>=-18&&o<=51;},m:'mwl',d:'shafii'}       // Afrika (non-EG)
+  {t:function(l,o){return l>=-11&&l<=7&&o>=95&&o<=127;},m:'kemenag',d:'shafii'},
+  {t:function(l,o){return l>=12&&l<=32&&o>=34&&o<=56;},m:'ummqlura',d:'shafii'},
+  {t:function(l,o){return l>=22&&l<=27&&o>=51&&o<=57;},m:'dubai',d:'shafii'},
+  {t:function(l,o){return l>=24&&l<=27&&o>=50&&o<=52;},m:'qatar',d:'shafii'},
+  {t:function(l,o){return l>=25&&l<=40&&o>=44&&o<=64;},m:'tehran',d:'shafii'},
+  {t:function(l,o){return l>=5&&l<=38&&o>=60&&o<=98;},m:'karachi',d:'hanafi'},
+  {t:function(l,o){return l>=18&&l<=33&&o>=24&&o<=40;},m:'egypt',d:'shafii'},
+  {t:function(l,o){return l>=35&&l<=55&&o>=19&&o<=80;},m:'turkey',d:'hanafi'},
+  {t:function(l,o){return l>=10&&l<=72&&o>=-130&&o<=-55;},m:'isna',d:'shafii'},
+  {t:function(l,o){return l>=36&&l<=70&&o>=-10&&o<=40;},m:'mwl',d:'shafii'},
+  {t:function(l,o){return l>=-35&&l<=37&&o>=-18&&o<=51;},m:'mwl',d:'shafii'}
 ];
 function regionFor(l,o){for(var i=0;i<REGIONS.length;i++){if(REGIONS[i].t(l,o))return{method:REGIONS[i].m,madhab:REGIONS[i].d};}return{method:'mwl',madhab:'shafii'};}
 function resolveCfg(l,o){
@@ -183,7 +181,6 @@ function resolveCfg(l,o){
   return{key:mk,madhab:md,fajr:def.fajr,isha:def.isha,ishaInt:def.ishaInt};
 }
 
-/* ===== PATCH C: daftar kota — Indonesia UTUH seperti sebelumnya (indeks 11 = Jakarta, fallback aman), + kota internasional (tz:null → ikut jam perangkat & DST) ===== */
 var CITIES=[
   {n:'Banda Aceh',la:5.55,lo:95.32,tz:7},{n:'Medan',la:3.59,lo:98.67,tz:7},{n:'Padang',la:-0.95,lo:100.35,tz:7},
   {n:'Pekanbaru',la:0.51,lo:101.45,tz:7},{n:'Tanjung Pinang',la:0.92,lo:104.46,tz:7},{n:'Jambi',la:-1.61,lo:103.61,tz:7},
@@ -254,9 +251,8 @@ function hm(h){
   var mins=Math.round(fixH(h)*60)%1440;
   return pad2(Math.floor(mins/60))+':'+pad2(mins%60);
 }
-/* ===== PATCH D: calcTimes menerima cfg (sudut per-metode + mazhab Ashr + aturan lintang-tinggi one-seventh). cfg=null => angka Kemenag lama (fallback). ===== */
 function calcTimes(date,la,lo,tz,cfg){
-  if(!cfg)cfg={fajr:20,isha:18,madhab:'shafii'}; // legacy Kemenag
+  if(!cfg)cfg={fajr:20,isha:18,madhab:'shafii'};
   var jd=julian(date.getFullYear(),date.getMonth()+1,date.getDate())-lo/(15*24);
   var sp=sunPos(jd+0.5);
   var decl=sp.decl;
@@ -266,16 +262,16 @@ function calcTimes(date,la,lo,tz,cfg){
     if(c<-1||c>1)return null;
     return deg(Math.acos(c))/15;
   }
-  var sH=hourAngle(-0.833);                 // setengah-hari terbenam (Maghrib)
-  var ssH=hourAngle(-0.833);                // setengah-hari terbit (untuk panjang malam)
+  var sH=hourAngle(-0.833);
+  var ssH=hourAngle(-0.833);
   var dayLen=(ssH!=null)?2*ssH:24;
   var night=24-dayLen; if(night<0)night=0;
   var sunrise=(ssH!=null)?dhuhr-ssH:dhuhr;
   var sunset =(sH !=null)?dhuhr+sH :dhuhr;
   var fH=hourAngle(-cfg.fajr);
-  var fajrAbs=(fH!=null)?(dhuhr-fH):(sunrise-night/7);          // lintang tinggi: one-seventh
+  var fajrAbs=(fH!=null)?(dhuhr-fH):(sunrise-night/7);
   var ishaAbs;
-  if(cfg.ishaInt!=null){ishaAbs=sunset+cfg.ishaInt/60;}         // Umm al-Qura / Qatar: interval tetap
+  if(cfg.ishaInt!=null){ishaAbs=sunset+cfg.ishaInt/60;}
   else{var iH=hourAngle(-cfg.isha);ishaAbs=(iH!=null)?(dhuhr+iH):(sunset+night/7);}
   var factor=(cfg.madhab==='hanafi')?2:1;
   var altAsr=deg(Math.atan(1/(factor+Math.tan(rad(Math.abs(la-decl))))));
@@ -285,7 +281,6 @@ function calcTimes(date,la,lo,tz,cfg){
          raw:{fajr:fajrAbs,dhuhr:dhuhr,asr:asrAbs,maghrib:sunset,isha:ishaAbs}};
 }
 function normAround(x,c){while(x<c-12)x+=24;while(x>=c+12)x-=24;return x;}
-/* Sanity guard: urut & masuk akal (tidak melewati tengah malam) → kalau tidak, pemanggil akan fallback. */
 function saneOrder(t){
   if(!t||!t.raw)return false;
   var r=t.raw,c=r.dhuhr;
@@ -293,7 +288,6 @@ function saneOrder(t){
   if(![f,c,a,m,i].every(function(v){return isFinite(v);}))return false;
   return (f>=c-12&&f<=c&&a>=c&&a<=m&&m<=i&&i<=c+12);
 }
-/* ===== PATCH E: computePrayers dengan try/catch + resolveCfg + tz perangkat untuk kota internasional + fallback ganda. ===== */
 function computePrayers(){
   var la,lo,tz,cfg,t,ok=false;
   try{
@@ -314,7 +308,7 @@ function computePrayers(){
   if(!ok){
     try{
       la=-6.20;lo=106.82;tz=7;
-      t=calcTimes(new Date(),la,lo,tz,null);   // angka Kemenag lama
+      t=calcTimes(new Date(),la,lo,tz,null);
       cfg={key:'kemenag',madhab:'shafii'};
     }catch(e2){
       t={fajr:'04:30',dhuhr:'12:00',asr:'15:00',maghrib:'18:00',isha:'19:30'};
@@ -389,7 +383,6 @@ function renderPrayers(){
     var s=document.createElement('span');s.textContent=it.date?fmtHM(it.date):'--:--';
     cell.appendChild(b);cell.appendChild(s);box.appendChild(cell);
   });
-  /* ===== PATCH F: catatan menyebut metode + mazhab yang benar-benar dipakai ===== */
   var note=$('prayerNote');
   if(note){
     var r=window.__nyalaResolved||{method:'kemenag',madhab:'shafii'};
@@ -505,6 +498,8 @@ function renderTasks(){
     cb.addEventListener('click',function(){toggleTask(t,cb);});
     var sp=document.createElement('span');
     sp.className='t-text';sp.textContent=t.text;
+    sp.title='Tap untuk memperbaiki typo / mengedit tugas ✏️';
+    sp.addEventListener('click',function(e){e.stopPropagation();editTask(t);});
     li.appendChild(cb);li.appendChild(sp);
     var star=document.createElement('button');
     star.className='t-star'+(t.pri?' on':'');
@@ -531,6 +526,15 @@ function renderTasks(){
     li.appendChild(del);list.appendChild(li);
     attachGrip(li,t);
   });
+}
+function editTask(t){
+  var v=prompt('Edit tugas:',t.text);
+  if(v===null)return;
+  var nv=(v||'').trim();
+  if(!nv){toast('Tugas tidak boleh kosong 😅');return;}
+  if(nv===t.text)return;
+  t.text=nv.slice(0,90);save();renderTasks();renderScore();renderReport();
+  toast('✏️ Tugas diperbarui');
 }
 function moveTask(t,dir){
   var arr=getTasks();
@@ -753,11 +757,11 @@ function weekStats(){
   var s={days:[],tasks:0,focus:0,sessions:0,habits:0,dhikr:0};
   days.forEach(function(d){
     var dk=todayKey(d);
-    var t=state.tasks[dk],done=0,sess=0,fm=0;
-    if(t&&Array.isArray(t.items)){done=t.items.filter(function(x){return x.done;}).length;sess=t.sessions||0;fm=t.focusMin||0;}
+    var t=state.tasks[dk],done=0,total=0,sess=0,fm=0;
+    if(t&&Array.isArray(t.items)){total=t.items.length;done=t.items.filter(function(x){return x.done;}).length;sess=t.sessions||0;fm=t.focusMin||0;}
     var hb=0;state.habits.forEach(function(h){if(h.hist&&h.hist[dk])hb++;});
     var dz=(state.tasbih.log&&state.tasbih.log[dk])||0;
-    s.days.push({d:d,done:done});
+    s.days.push({d:d,done:done,total:total});
     s.tasks+=done;s.focus+=fm;s.sessions+=sess;s.habits+=hb;s.dhikr+=dz;
   });
   return s;
@@ -777,13 +781,13 @@ function renderReport(){
   var ch=$('repChart');
   if(ch){
     ch.innerHTML='';
-    var max=1;s.days.forEach(function(d){max=Math.max(max,d.done);});
     s.days.forEach(function(d){
+      var pct=d.total?Math.round(d.done/d.total*100):0;
       var bar=document.createElement('div');bar.className='rep-bar';
-      var val=document.createElement('span');val.className='val';val.textContent=d.done||'';
+      var val=document.createElement('span');val.className='val';val.textContent=pct+'%';
       var b=document.createElement('div');b.className='b';
-      b.style.height=Math.max(6,Math.round((d.done/max)*100))+'%';
-      if(!d.done)b.style.opacity='.3';
+      b.style.height=Math.max(6,pct)+'%';
+      if(!d.total||!d.done)b.style.opacity='.3';
       var n=document.createElement('span');n.className='n';n.textContent=DAY_SHORT[d.d.getDay()];
       bar.appendChild(val);bar.appendChild(b);bar.appendChild(n);ch.appendChild(bar);
     });
@@ -859,19 +863,19 @@ function drawReport(cb){
     x.fillText(bx[2],cx+30,cy+176);
   });
   x.fillStyle='#e8c4c8';x.font='800 34px "Bricolage Grotesque", sans-serif';
-  x.fillText('AKTIVITAS PER HARI',84,1080);
-  var max=1;s.days.forEach(function(d){max=Math.max(max,d.done);});
+  x.fillText('PROGRESS HARIAN (%)',84,1080);
   var bw=100,gap=28,x0=84,y0=1420,maxH=280;
   s.days.forEach(function(d,i){
-    var h=Math.max(10,Math.round(d.done/max*maxH));
+    var pct=d.total?Math.round(d.done/d.total*100):0;
+    var h=Math.max(10,Math.round(pct/100*maxH));
     var bx=x0+i*(bw+gap);
     var grad=x.createLinearGradient(0,y0-h,0,y0);
     grad.addColorStop(0,'#e5c786');grad.addColorStop(1,'#b76e79');
-    x.fillStyle=d.done?grad:'rgba(212,165,165,.2)';
+    x.fillStyle=(d.total&&d.done)?grad:'rgba(212,165,165,.2)';
     rr(x,bx,y0-h,bw,h,14);x.fill();
     x.textAlign='center';
     x.fillStyle='#f2e4e6';x.font='700 30px "Plus Jakarta Sans", sans-serif';
-    x.fillText(String(d.done),bx+bw/2,y0-h-16);
+    x.fillText(pct+'%',bx+bw/2,y0-h-16);
     x.fillStyle='#c9aeb2';x.font='700 28px "Plus Jakarta Sans", sans-serif';
     x.fillText(DAY_SHORT[d.d.getDay()],bx+bw/2,y0+44);
     x.textAlign='left';
@@ -1277,11 +1281,11 @@ function bind(){
   var cv=$('customVal');
   function renderCustomVal(){if(cv)cv.textContent=customMin;}
   var mm2=$('minMinus');
-  if(mm2)mm2.addEventListener('click',function(){customMin=Math.max(5,customMin-5);renderCustomVal();});
+  if(mm2)mm2.addEventListener('click',function(){customMin=Math.max(1,customMin-1);renderCustomVal();});
   var pp3=$('minPlus');
-  if(pp3)pp3.addEventListener('click',function(){customMin=Math.min(180,customMin+5);renderCustomVal();});
+  if(pp3)pp3.addEventListener('click',function(){customMin=Math.min(180,customMin+1);renderCustomVal();});
   if(cv)cv.addEventListener('click',function(){
-    var v=prompt('Berapa menit? (1–180)',String(customMin));
+    var v=prompt('Berapa menit? (1–180, bebas — mis. 23)',String(customMin));
     if(v===null)return;var n=parseInt(v,10);if(isNaN(n))return;
     customMin=Math.min(180,Math.max(1,n));renderCustomVal();
     toast('Angka diset: '+customMin+' menit — tap "Pakai" untuk mulai ⏱️');
@@ -1289,7 +1293,6 @@ function bind(){
   var uc=$('useCustom');
   if(uc)uc.addEventListener('click',function(){setCustomMode(customMin);toast('⏱️ Timer custom '+customMin+' menit siap. Gas!');});
   renderCustomVal();
-  /* ===== PATCH G: dropdown kota (grup Indonesia + Internasional) + Metode + Mazhab, disuntik via JS (index.html tak berubah) ===== */
   var sel=$('citySelect');
   if(sel){
     var g=document.createElement('option');g.value='__gps';g.textContent='📍 Otomatis (GPS saya)';sel.appendChild(g);
