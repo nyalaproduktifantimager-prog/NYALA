@@ -1,11 +1,28 @@
-var VERSION = 'nyala-v100';
-var SHELL=['./','./index.html','./styles.css?v=11','./app.js','./dzikir.html','./quran.html','./quran-uthmani.json','./id.indonesian.json'];
+var VERSION = 'nyala-v102';
+var SHELL=[
+  './',
+  './index.html',
+  './styles.css?v=19',
+  './app.js',
+  './nyala-i18n.js',       // <-- DITAMBAHKAN
+  './nyala-hafalan.js',    // <-- DITAMBAHKAN
+  './nyala-verses-en.js',  // <-- DITAMBAHKAN
+  './nyala-en-content.js', // <-- DITAMBAHKAN
+  './dzikir.html',
+  './quran.html',
+  './quran-uthmani.json',
+  './id.indonesian.json',
+  './en.pickthall.json'    // <-- DITAMBAHKAN
+];
 
 self.addEventListener('install',function(e){
   e.waitUntil(
     caches.open(VERSION).then(function(c){
       return Promise.all(SHELL.map(function(u){
-        return c.add(new Request(u,{cache:'reload'})).catch(function(){});
+        return c.add(new Request(u,{cache:'reload'})).catch(function(err){
+          console.warn('SW cache failed for', u, err);
+          return null; // Jangan biarkan satu file gagal menggagalkan seluruh install
+        });
       }));
     }).then(function(){return self.skipWaiting();})
   );
