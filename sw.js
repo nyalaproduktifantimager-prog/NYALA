@@ -1,28 +1,11 @@
-var VERSION = 'nyala-v102';
-var SHELL=[
-  './',
-  './index.html',
-  './styles.css?v=19',
-  './app.js',
-  './nyala-i18n.js',       // <-- DITAMBAHKAN
-  './nyala-hafalan.js',    // <-- DITAMBAHKAN
-  './nyala-verses-en.js',  // <-- DITAMBAHKAN
-  './nyala-en-content.js', // <-- DITAMBAHKAN
-  './dzikir.html',
-  './quran.html',
-  './quran-uthmani.json',
-  './id.indonesian.json',
-  './en.pickthall.json'    // <-- DITAMBAHKAN
-];
+var VERSION = 'nyala-v103';
+var SHELL=['./','./index.html','./styles.css?v=19','./app.js','./nyala-i18n.js','./nyala-hafalan.js','./nyala-verses-en.js','./nyala-en-content.js','./dzikir.html','./quran.html','./quran-uthmani.json','./id.indonesian.json','./en.pickthall.json'];
 
 self.addEventListener('install',function(e){
   e.waitUntil(
     caches.open(VERSION).then(function(c){
       return Promise.all(SHELL.map(function(u){
-        return c.add(new Request(u,{cache:'reload'})).catch(function(err){
-          console.warn('SW cache failed for', u, err);
-          return null; // Jangan biarkan satu file gagal menggagalkan seluruh install
-        });
+        return c.add(new Request(u,{cache:'reload'})).catch(function(){return null;});
       }));
     }).then(function(){return self.skipWaiting();})
   );
@@ -58,10 +41,7 @@ self.addEventListener('fetch',function(e){
   if(isManifest(url)||isIcon(url)){
     e.respondWith(
       fetch(req,{cache:'reload'}).then(function(res){
-        if(res&&res.ok){
-          var copy=res.clone();
-          caches.open(VERSION).then(function(c){c.put(req,copy);});
-        }
+        if(res&&res.ok){var copy=res.clone();caches.open(VERSION).then(function(c){c.put(req,copy);});}
         return res;
       }).catch(function(){
         return caches.match(req,{ignoreSearch:true}).then(function(hit){
@@ -76,10 +56,7 @@ self.addEventListener('fetch',function(e){
     e.respondWith(
       caches.match(req).then(function(hit){
         var net=fetch(req,{cache:'no-store'}).then(function(res){
-          if(res&&res.ok){
-            var copy=res.clone();
-            caches.open(VERSION).then(function(c){c.put(req,copy);});
-          }
+          if(res&&res.ok){var copy=res.clone();caches.open(VERSION).then(function(c){c.put(req,copy);});}
           return res;
         }).catch(function(){return hit||Response.error();});
         return hit||net;
@@ -91,8 +68,7 @@ self.addEventListener('fetch',function(e){
   if(req.mode==='navigate'){
     e.respondWith(
       fetch(req,{cache:'no-store'}).then(function(res){
-        var copy=res.clone();
-        caches.open(VERSION).then(function(c){c.put(req,copy);});
+        var copy=res.clone();caches.open(VERSION).then(function(c){c.put(req,copy);});
         return res;
       }).catch(function(){
         return caches.match(req).then(function(hit){return hit||caches.match('./index.html');});
@@ -103,10 +79,7 @@ self.addEventListener('fetch',function(e){
 
   e.respondWith(
     fetch(req,{cache:'no-store'}).then(function(res){
-      if(res&&res.ok){
-        var copy=res.clone();
-        caches.open(VERSION).then(function(c){c.put(req,copy);});
-      }
+      if(res&&res.ok){var copy=res.clone();caches.open(VERSION).then(function(c){c.put(req,copy);});}
       return res;
     }).catch(function(){
       return caches.match(req).then(function(hit){return hit||Response.error();});
