@@ -61,12 +61,16 @@
       <a href="#spiritual">Spiritual</a><a href="#kebiasaan">Kebiasaan</a><a href="#kebun">Kebun</a>
       <a href="#roda">Roda</a><a href="#laporan">Laporan</a><a href="dzikir.html">📿 Dzikir</a><a href="quran.html">🕌 Qur'an</a>
     </nav>
-    <div class="chips">
-      <span class="chip clock" id="clockChip">--:--:--</span>
-      <span class="chip streak" id="streakChip" title="Streak check-in harianmu">🔥 0 hari</span>
-      <span class="chip lvl" id="lvlChip">Lv.1</span>
-      <button class="chip mute" id="muteBtn" type="button" aria-pressed="false" title="Suara nyala — tap untuk matikan">🔔</button>
-    </div>
+<div class="chips">
+  <span class="chip clock" id="clockChip">--:--:--</span>
+  <span class="chip streak" id="streakChip" title="Streak check-in harianmu">🔥 0 hari</span>
+  <span class="chip lvl" id="lvlChip">Lv.1</span>
+  <button class="chip mute" id="muteBtn" type="button" aria-pressed="false" title="Suara nyala — tap untuk matikan">🔔</button>
+  <select id="nyalaLangSel" class="chip" style="cursor:pointer;font-weight:700;padding:6px 12px;border-radius:999px;font-size:.78rem;border:1px solid var(--line-strong);background:rgba(212,165,165,.06);color:var(--ink-soft)">
+    <option value="id">🇮🇩 Indonesia</option>
+    <option value="en">🇬🇧 English</option>
+  </select>
+</div>
   </div>
 </header>
 
