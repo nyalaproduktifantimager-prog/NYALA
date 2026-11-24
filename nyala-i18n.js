@@ -41,7 +41,7 @@ var DICT={
  "Madaniyah":"Medinan","Makkiyah":"Meccan"
 };
 
-// ===== FRASA EMBEDDED (substring; urutan panjang-dulu) =====
+// ===== FRASA EMBEDDED (substring; urutan panjang-dulu) - FORMAT DIPERBAIKI =====
 var PHRASES=[
  "Masih benih nih — siram dengan satu tugas kecil 🌰|Still a seed — water it with one small task 🌰",
  "Kecambah pertama muncul! Jangan berhenti 🌱|First sprout! Don't stop 🌱",
