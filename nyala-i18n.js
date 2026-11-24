@@ -1,11 +1,10 @@
-// nyala-i18n.js — Poin 5 (chrome ID<->EN) + dropdown bahasa + proteksi Arab/translit + hook konten. Drop-in, gagal-aman.
+// nyala-i18n.js — FIXED: PHRASES format corrected to array of strings with | separator
 (function(){
 'use strict';
 var LANG='nyala_lang';
 function lang(){try{return localStorage.getItem(LANG)==='en'?'en':'id';}catch(e){return 'id';}}
 function setLang(l){try{localStorage.setItem(LANG,l==='en'?'en':'id');}catch(e){}apply();window.dispatchEvent(new CustomEvent('nyala:lang',{detail:l}));}
 
-// ===== KAMUS CHROME (whole-node exact match) =====
 var DICT={
  "Produktif Anti-Mager":"Productive Anti-Lazy",
  "Hari Ini":"Today","Tugas":"Tasks","Fokus":"Focus","Spiritual":"Spiritual","Kebiasaan":"Habits","Kebun":"Garden","Roda":"Wheel","Laporan":"Report","📿 Dzikir":"📿 Dhikr","🕌 Qur'an":"🕌 Qur'an",
@@ -41,7 +40,7 @@ var DICT={
  "Madaniyah":"Medinan","Makkiyah":"Meccan"
 };
 
-// ===== FRASA EMBEDDED (substring; urutan panjang-dulu) - FORMAT DIPERBAIKI =====
+// ===== PHRASES: FORMAT DIPERBAIKI (array string dengan pemisah |) =====
 var PHRASES=[
  "Masih benih nih — siram dengan satu tugas kecil 🌰|Still a seed — water it with one small task 🌰",
  "Kecambah pertama muncul! Jangan berhenti 🌱|First sprout! Don't stop 🌱",
@@ -124,7 +123,6 @@ var PHRASES=[
  "Klik salah satu saran di atas, atau tulis tugasmu sendiri. Yang kecil aja dulu!|Tap a suggestion above, or write your own. Start small!"
 ];
 
-// ===== ATRIBUT =====
 var ATTR={"Tulis satu hal kecil… (misal: balas 1 email)":"Write one small thing… (e.g. reply to 1 email)","Ketik namamu di sini…":"Type your name here…","misal: Tilawah 1 halaman":"e.g. Read 1 page","Pilih kota atau GPS":"Choose city or GPS","Hitung ulang jadwal":"Recalculate schedule","Koreksi menit jadwal adzan":"Adjust adhan minutes","Suara nyala — tap untuk matikan":"Sound on — tap to mute","Suara mati — tap untuk nyalakan":"Sound off — tap to unmute","Streak check-in harianmu":"Your daily check-in streak","Klik untuk ganti nama":"Click to rename","Geser urutan tugas":"Reorder task","Hapus tugas":"Delete task","Hapus kebiasaan":"Delete habit","Tahan & seret untuk menggeser urutan":"Hold & drag to reorder","Tap untuk ketik angka persis, mis. 23":"Tap to type exact minutes, e.g. 23","Kurangi 1 menit":"Minus 1 minute","Tambah 1 menit":"Plus 1 minute","Tap untuk memperbaiki typo / mengedit tugas ✏️":"Tap to fix a typo / edit task ✏️","Mager banget":"So lazy","Capek":"Tired","Biasa aja":"Meh","Senang":"Happy","Semangat membara":"On fire","Hitung dzikir ":"Count dhikr "};
 
 var AR=/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
