@@ -665,12 +665,44 @@ function picker(){
     document.head.appendChild(st);
   }
 }
+var CHIPKEY={"tugastotal":"tasks total","habitaktif":"active habits","harikonsisten":"consistent days"};
+function chipFix(){
+  var en=lang()==="en", all=document.getElementsByTagName("*"), i, e, raw, ns, m, j, kids, kr, deeper, key, eng, nw;
+  var RE=/^(\D*?)(\d+)\s*(tugas\s*total|habit\s*aktif|hari\s*konsisten)$/;
+  for(i=0;i<all.length;i++){
+    e=all[i]; raw=e.textContent;
+    if(!raw||raw.length>90) continue;
+    ns=raw.replace(/\s+/g," ").replace(/^\s+|\s+$/g,"");
+    m=ns.match(RE);
+    if(!m) continue;
+    deeper=false; kids=e.children;
+    for(j=0;j<kids.length;j++){
+      kr=kids[j].textContent;
+      if(kr&&kr.replace(/\s+/g," ").replace(/^\s+|\s+$/g,"").match(RE)){deeper=true;break;}
+    }
+    if(deeper) continue;
+    if(en){
+      if(e.__nyChipOrig===undefined) e.__nyChipOrig=raw;
+      key=m[3].replace(/\s+/g,"").toLowerCase();
+      eng=CHIPKEY[key]||key;
+      nw=m[1]+m[2]+" "+eng;
+      if(e.textContent!==nw) e.textContent=nw;
+    }
+  }
+  if(!en){
+    for(i=0;i<all.length;i++){
+      e=all[i];
+      if(e.__nyChipOrig!==undefined){ e.textContent=e.__nyChipOrig; e.__nyChipOrig=undefined; }
+    }
+  }
+}
 var busy=false;
 function run(){
   if(busy)return;
   busy=true;
   try{
     document.documentElement.lang=lang()==="en"?"en":"id";
+    chipFix();
     picker();
     content();
     texts();
