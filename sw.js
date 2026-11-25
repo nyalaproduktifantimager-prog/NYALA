@@ -1,5 +1,5 @@
-/* sw.js — NYALA service worker v112 */
-var VERSION="nyala-v112";
+/* sw.js — NYALA service worker v113 */
+var VERSION="nyala-v113";
 var SHELL=["./","./index.html","./quran.html","./dzikir.html","./app.js","./nyala-i18n.js","./nyala-hafalan.js","./nyala-verses-en.js","./nyala-en-content.js","./styles.css?v=19","./manifest.webmanifest?v=9","./icon.png","./quran-uthmani.json","./id.indonesian.json","./en.pickthall.json"];
 
 self.addEventListener("install",function(e){
