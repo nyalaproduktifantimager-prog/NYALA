@@ -450,6 +450,10 @@ function patterns(o){
   o=o.replace(/\uD83D\uDCDA Sumber: /g,"\uD83D\uDCDA Source: ");
   o=o.replace(/\uD83D\uDCDA HR\. /g,"\uD83D\uDCDA Narrated by: ");
   o=o.replace(/ \(sahih\)/g," (authentic)");
+  /* --- FIX: serap spasi ganda / node terpisah pada 3 chip statistik --- */
+  o=o.replace(/tugas\s+total/g,"tasks total");
+  o=o.replace(/habit\s+aktif/g,"active habits");
+  o=o.replace(/hari\s+konsisten/g,"consistent days");
   return o;
 }
 
