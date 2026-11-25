@@ -1,6 +1,6 @@
-/* sw.js — NYALA service worker v110 */
-var VERSION="nyala-v110";
-var SHELL=["./","./index.html","./quran.html","./dzikir.html","./app.js","./nyala-i18n.js","./nyala-hafalan.js","./nyala-verses-en.js","./styles.css?v=19","./manifest.webmanifest?v=9","./icon.png","./quran-uthmani.json","./id.indonesian.json","./en.pickthall.json"];
+/* sw.js — NYALA service worker v112 */
+var VERSION="nyala-v112";
+var SHELL=["./","./index.html","./quran.html","./dzikir.html","./app.js","./nyala-i18n.js","./nyala-hafalan.js","./nyala-verses-en.js","./nyala-en-content.js","./styles.css?v=19","./manifest.webmanifest?v=9","./icon.png","./quran-uthmani.json","./id.indonesian.json","./en.pickthall.json"];
 
 self.addEventListener("install",function(e){
   e.waitUntil(caches.open(VERSION).then(function(c){
