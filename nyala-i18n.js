@@ -1,5 +1,5 @@
 /* nyala-i18n.js — NYALA ID⇄EN. ES5-friendly. Self-contained: UI + tagline + Dzikir + Doa
-   + worldwide cities + native dialogs (prompt/confirm/alert) + welcome card enforcement. */
+   + worldwide cities + native dialogs (prompt/confirm/alert) + welcome card (incl. language option). */
 (function(){
 "use strict";
 
@@ -545,11 +545,16 @@ function patterns(o){
   o=o.replace(/koreksi (\d+) (?:mnt|min) via/g,"correction $1 min via");
   o=o.replace(/Otomatis\s*\(GPS saya\)/g,"Automatic (my GPS)");
   o=o.replace(/Auto\s*\(dari lokasiku\)/g,"Auto (from my location)");
+  /* --- FIX BARU: toast sambutan nama (Siap,/Halo, + Kita nyala bareng/Ayo nyalakan harimu) --- */
+  o=o.replace(/^Siap,\s*/,"Ready, ");
+  o=o.replace(/!\s*Kita nyala bareng\s*\uD83D\uDD25/,"! Let's light up together \uD83D\uDD25");
+  o=o.replace(/^Halo,\s*/,"Hello, ");
+  o=o.replace(/!\s*Ayo nyalakan harimu\s*\u2728/,"! Let's light up your day \u2728");
   return o;
 }
 
 var AR=/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
-var SKIP=".arabic,.doa-ar,.latin,.doa-la,.surah-info .ar,.arti,.doa-id,.doa-m,.doa-t,.dz-title,.haf-cell,#hafTxt,[data-no-i18n],.nyalaHafDate,.nyala-saw,#nyalaLangSel";
+var SKIP=".arabic,.doa-ar,.latin,.doa-la,.surah-info .ar,.arti,.doa-id,.doa-m,.doa-t,.dz-title,.haf-cell,#hafTxt,[data-no-i18n],.nyalaHafDate,.nyala-saw,#nyalaLangSel,#nyalaWelLang";
 
 function toEN(t){
   if(!t||AR.test(t))return t;
@@ -561,8 +566,7 @@ function toEN(t){
   return patterns(o);
 }
 
-/* Native dialogs are not DOM. Translate their message with tolerant word-anchors so
-   emoji / spacing variants in app.js still match. Falls back to the general engine. */
+/* Native dialogs are not DOM. Translate their message with tolerant word-anchors. */
 function dlgEN(m){
   var s=String(m==null?"":m);
   if(/Siapa nama panggilanmu/i.test(s))return "What should we call you?"+(/[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(s)?" \uD83D\uDE0A":"");
@@ -704,8 +708,7 @@ function content(){
     }
   }
 }
-/* Welcome card: enforce language directly on its known nodes so it is always correct
-   regardless of how/when app.js renders it. Restores Indonesian when switched back. */
+/* Welcome card: enforce language on its known nodes + provide an in-card language option. */
 function welcome(){
   var ov=el("welcomeOverlay");
   if(!ov)return;
@@ -729,6 +732,32 @@ function welcome(){
     var st=oA.get(inp);
     var wp=en?"Type your name here\u2026":st.placeholder;
     if(inp.getAttribute("placeholder")!==wp)inp.setAttribute("placeholder",wp);
+  }
+  /* language option inside the welcome card */
+  var row=el("nyalaWelLang");
+  if(!row){
+    row=document.createElement("div");
+    row.id="nyalaWelLang";
+    row.setAttribute("data-no-i18n","1");
+    row.style.cssText="display:flex;gap:8px;justify-content:center;align-items:center;margin-top:12px;flex-wrap:wrap";
+    var mkB=function(v,label){
+      var b=document.createElement("button");
+      b.type="button";
+      b.setAttribute("data-wl",v);
+      b.textContent=label;
+      b.style.cssText="border:1px solid rgba(212,165,165,.34);background:rgba(212,165,165,.06);color:#f2e4e6;border-radius:999px;padding:8px 14px;font-weight:700;font-size:.8rem;cursor:pointer";
+      b.addEventListener("click",function(){choose(v);});
+      return b;
+    };
+    row.appendChild(mkB("id","\uD83C\uDDEE\uD83C\uDDE9 Indonesia"));
+    row.appendChild(mkB("en","\uD83C\uDDEC\uD83C\uDDE7 English"));
+    ov.appendChild(row);
+  }
+  for(var q=0;q<row.children.length;q++){
+    var bb=row.children[q],act=(bb.getAttribute("data-wl")===lang());
+    bb.style.background=act?"linear-gradient(120deg,#b76e79,#8f4f5b)":"rgba(212,165,165,.06)";
+    bb.style.borderColor=act?"#d4a5a5":"rgba(212,165,165,.34)";
+    bb.style.color=act?"#fff":"#f2e4e6";
   }
 }
 function worldCities(){
