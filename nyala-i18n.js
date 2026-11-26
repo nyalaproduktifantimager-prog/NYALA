@@ -1,4 +1,4 @@
-/* nyala-i18n.js — NYALA ID⇄EN. ES5 only. Self-contained: UI + tagline + Dzikir + Doa. */
+/* nyala-i18n.js — NYALA ID⇄EN. ES5 only. Self-contained: UI + tagline + Dzikir + Doa + worldwide cities. */
 (function(){
 "use strict";
 
@@ -402,6 +402,87 @@ var MON={"Jan":"Jan","Feb":"Feb","Mar":"Mar","Apr":"Apr","Mei":"May","Jun":"Jun"
 var LVL={"Kaum Rebahan":"Couch Crew","Mulai Geliat":"Starting to Stir","Pemanasan":"Warming Up","Mode Gas":"Gas Mode","Pejuang Fokus":"Focus Fighter","Pendekar Produktif":"Productivity Warrior","Master Anti-Mager":"Anti-Lazy Master"};
 var MOOD={"Mode mager terdeteksi":"Lazy mode detected","Mode hemat energi":"Energy-saver mode","Mode stabil":"Stable mode","Mode cerah":"Sunny mode","Mode turbo!":"Turbo mode!"};
 
+/* Worldwide cities [label, lat, lon] — appended to the city picker so any country works without GPS. */
+var WORLD=[
+["Kyiv, Ukraine",50.4501,30.5234],
+["London, United Kingdom",51.5074,-0.1278],
+["Paris, France",48.8566,2.3522],
+["Berlin, Germany",52.5200,13.4050],
+["Madrid, Spain",40.4168,-3.7038],
+["Rome, Italy",41.9028,12.4964],
+["Amsterdam, Netherlands",52.3676,4.9041],
+["Brussels, Belgium",50.8503,4.3517],
+["Vienna, Austria",48.2082,16.3738],
+["Warsaw, Poland",52.2297,21.0122],
+["Moscow, Russia",55.7558,37.6173],
+["Istanbul, Turkey",41.0082,28.9784],
+["Ankara, Turkey",39.9334,32.8597],
+["Cairo, Egypt",30.0444,31.2357],
+["Riyadh, Saudi Arabia",24.7136,46.6753],
+["Jeddah, Saudi Arabia",21.4858,39.1925],
+["Makkah, Saudi Arabia",21.3891,39.8579],
+["Madinah, Saudi Arabia",24.5247,39.5692],
+["Dubai, United Arab Emirates",25.2048,55.2708],
+["Abu Dhabi, United Arab Emirates",24.4539,54.3773],
+["Doha, Qatar",25.2854,51.5310],
+["Kuwait City, Kuwait",29.3759,47.9774],
+["Muscat, Oman",23.5880,58.3829],
+["Manama, Bahrain",26.2285,50.5860],
+["Amman, Jordan",31.9539,35.9106],
+["Jerusalem, Palestine",31.7683,35.2137],
+["Beirut, Lebanon",33.8938,35.5018],
+["Baghdad, Iraq",33.3152,44.3661],
+["Tehran, Iran",35.6892,51.3890],
+["Karachi, Pakistan",24.8607,67.0011],
+["Lahore, Pakistan",31.5204,74.3587],
+["Islamabad, Pakistan",33.6844,73.0479],
+["Delhi, India",28.6139,77.2090],
+["Mumbai, India",19.0760,72.8777],
+["Dhaka, Bangladesh",23.8103,90.4125],
+["Kuala Lumpur, Malaysia",3.1390,101.6869],
+["Singapore, Singapore",1.3521,103.8198],
+["Bangkok, Thailand",13.7563,100.5018],
+["Tokyo, Japan",35.6762,139.6503],
+["Seoul, South Korea",37.5665,126.9780],
+["Beijing, China",39.9042,116.4074],
+["Sydney, Australia",-33.8688,151.2093],
+["Melbourne, Australia",-37.8136,144.9631],
+["Auckland, New Zealand",-36.8485,174.7633],
+["New York, United States",40.7128,-74.0060],
+["Los Angeles, United States",34.0522,-118.2437],
+["Chicago, United States",41.8781,-87.6298],
+["Toronto, Canada",43.6532,-79.3832],
+["Vancouver, Canada",49.2827,-123.1207],
+["Mexico City, Mexico",19.4326,-99.1332],
+["Sao Paulo, Brazil",-23.5505,-46.6333],
+["Buenos Aires, Argentina",-34.6037,-58.3816],
+["Cape Town, South Africa",-33.9249,18.4241],
+["Johannesburg, South Africa",-26.2041,28.0473],
+["Nairobi, Kenya",-1.2921,36.8219],
+["Lagos, Nigeria",6.5244,3.3792],
+["Accra, Ghana",5.6037,-0.1870],
+["Casablanca, Morocco",33.5731,-7.5898],
+["Algiers, Algeria",36.7538,3.0588],
+["Tunis, Tunisia",36.8065,10.1815],
+["Khartoum, Sudan",15.5007,32.5599],
+["Addis Ababa, Ethiopia",9.0320,38.7469],
+["Dar es Salaam, Tanzania",-6.7924,39.2083],
+["Kampala, Uganda",0.3476,32.5825],
+["Mogadishu, Somalia",2.0469,45.3182],
+["Baku, Azerbaijan",40.4093,49.8671],
+["Tashkent, Uzbekistan",41.2995,69.2401],
+["Almaty, Kazakhstan",43.2220,76.8512],
+["Kabul, Afghanistan",34.5553,69.2075],
+["Kathmandu, Nepal",27.7172,85.3240],
+["Colombo, Sri Lanka",6.9271,79.8612],
+["Male, Maldives",4.1755,73.5093],
+["Hanoi, Vietnam",21.0285,105.8542],
+["Ho Chi Minh City, Vietnam",10.8231,106.6297],
+["Manila, Philippines",14.5995,120.9842],
+["Phnom Penh, Cambodia",11.5564,104.9282],
+["Yangon, Myanmar",16.8661,96.1951]
+];
+
 function patterns(o){
   var m;
   m=o.match(/^(Senin|Selasa|Rabu|Kamis|Jumat|Sabtu|Minggu), (\d+) (Jan|Feb|Mar|Apr|Mei|Jun|Jul|Agu|Sep|Okt|Nov|Des)$/);
@@ -454,6 +535,13 @@ function patterns(o){
   o=o.replace(/tugas\s+total/g,"tasks total");
   o=o.replace(/habit\s+aktif/g,"active habits");
   o=o.replace(/hari\s+konsisten/g,"consistent days");
+  /* --- FIX: baris catatan Spiritual (Ashr & koreksi) ikut Inggris --- */
+  o=o.replace(/Ashr: Jumhur/g,"Asr: Majority");
+  o=o.replace(/Ashr: Hanafi/g,"Asr: Hanafi");
+  o=o.replace(/koreksi (\d+) (?:mnt|min) via/g,"correction $1 min via");
+  /* --- FIX: label GPS / auto pada dropdown kota & metode, apa pun emoji/spasinya --- */
+  o=o.replace(/Otomatis\s*\(GPS saya\)/g,"Automatic (my GPS)");
+  o=o.replace(/Auto\s*\(dari lokasiku\)/g,"Auto (from my location)");
   return o;
 }
 
@@ -586,12 +674,41 @@ function content(){
     }
   }
 }
+/* Append a worldwide optgroup to the city picker, but ONLY when the app stores
+   coordinates as "lat,lon" (detected at runtime). Otherwise leave untouched and
+   let the GPS option handle any location — graceful, never breaks prayer calc. */
+function worldCities(){
+  var s=el("citySelect");
+  if(!s)return;
+  var en=lang()==="en";
+  var g=s.querySelector('optgroup[data-ny-world]');
+  if(g){g.label=en?"\uD83C\uDF0D World":"\uD83C\uDF0D Dunia";return;}
+  var ok=true,n=0,i,v;
+  for(i=0;i<s.options.length;i++){
+    v=s.options[i].value;
+    if(v==="gps"||v==="auto"||v==="")continue;
+    n++;
+    if(!/^-?\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?$/.test(v)){ok=false;break;}
+  }
+  if(!ok||n===0)return;
+  g=document.createElement("optgroup");
+  g.setAttribute("data-ny-world","1");
+  g.label=en?"\uD83C\uDF0D World":"\uD83C\uDF0D Dunia";
+  for(i=0;i<WORLD.length;i++){
+    var o=document.createElement("option");
+    o.value=WORLD[i][1]+","+WORLD[i][2];
+    o.textContent=WORLD[i][0];
+    g.appendChild(o);
+  }
+  s.appendChild(g);
+}
 function texts(){
   if(!document.body)return;
   var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
     if(guarded(n))return NodeFilter.FILTER_REJECT;
     var p=n.parentElement;
-    if(p&&/^(SCRIPT|STYLE|TEXTAREA|INPUT|CANVAS|OPTION)$/.test(p.tagName))return NodeFilter.FILTER_REJECT;
+    /* OPTION diizinkan agar label dropdown (kota/GPS/metode/mazhab) ikut diterjemahkan */
+    if(p&&/^(SCRIPT|STYLE|TEXTAREA|INPUT|CANVAS)$/.test(p.tagName))return NodeFilter.FILTER_REJECT;
     return NodeFilter.FILTER_ACCEPT;
   }});
   var list=[],n;
@@ -665,45 +782,14 @@ function picker(){
     document.head.appendChild(st);
   }
 }
-var CHIPKEY={"tugastotal":"tasks total","habitaktif":"active habits","harikonsisten":"consistent days"};
-function chipFix(){
-  var en=lang()==="en", all=document.getElementsByTagName("*"), i, e, raw, ns, m, j, kids, kr, deeper, key, eng, nw;
-  var RE=/^(\D*?)(\d+)\s*(tugas\s*total|habit\s*aktif|hari\s*konsisten)$/;
-  for(i=0;i<all.length;i++){
-    e=all[i]; raw=e.textContent;
-    if(!raw||raw.length>90) continue;
-    ns=raw.replace(/\s+/g," ").replace(/^\s+|\s+$/g,"");
-    m=ns.match(RE);
-    if(!m) continue;
-    deeper=false; kids=e.children;
-    for(j=0;j<kids.length;j++){
-      kr=kids[j].textContent;
-      if(kr&&kr.replace(/\s+/g," ").replace(/^\s+|\s+$/g,"").match(RE)){deeper=true;break;}
-    }
-    if(deeper) continue;
-    if(en){
-      if(e.__nyChipOrig===undefined) e.__nyChipOrig=raw;
-      key=m[3].replace(/\s+/g,"").toLowerCase();
-      eng=CHIPKEY[key]||key;
-      nw=m[1]+m[2]+" "+eng;
-      if(e.textContent!==nw) e.textContent=nw;
-    }
-  }
-  if(!en){
-    for(i=0;i<all.length;i++){
-      e=all[i];
-      if(e.__nyChipOrig!==undefined){ e.textContent=e.__nyChipOrig; e.__nyChipOrig=undefined; }
-    }
-  }
-}
 var busy=false;
 function run(){
   if(busy)return;
   busy=true;
   try{
     document.documentElement.lang=lang()==="en"?"en":"id";
-    chipFix();
     picker();
+    worldCities();
     content();
     texts();
     attrs();
