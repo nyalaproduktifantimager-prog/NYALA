@@ -546,6 +546,7 @@ function patterns(o){
   o=o.replace(/Otomatis\s*\(GPS saya\)/g,"Automatic (my GPS)");
   o=o.replace(/Auto\s*\(dari lokasiku\)/g,"Auto (from my location)");
   /* --- FIX BARU: toast sambutan nama (Siap,/Halo, + Kita nyala bareng/Ayo nyalakan harimu) --- */
+    o=o.replace(/Mendeteksi lokasimu/g,"Detecting your location");
   o=o.replace(/^Siap,\s*/,"Ready, ");
   o=o.replace(/!\s*Kita nyala bareng\s*\uD83D\uDD25/,"! Let's light up together \uD83D\uDD25");
   o=o.replace(/^Halo,\s*/,"Hello, ");
