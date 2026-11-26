@@ -1,27 +1,16 @@
 {
-  "name": "NYALA ✦ Anti Mager — Produktif dengan Elegan",
+  "name": "NYALA — Produktif Anti-Mager",
   "short_name": "NYALA",
-  "description": "Teman produktif harian anti mager: Spiritual Corner, jadwal sholat, fokus sampai adzan, tasbih, tugas mikro, timer fokus, pelacak kebiasaan, kebun progres, murottal yang terus mengalun, dan laporan mingguan shareable.",
-  "id": "./index.html",
-  "start_url": "./index.html",
+  "description": "Teman produktif harian anti mager: tugas mikro, timer fokus, jadwal sholat, dzikir, Qur'an, kebiasaan, dan laporan mingguan. Data tersimpan di perangkatmu.",
+  "start_url": "./",
   "scope": "./",
-  "lang": "id",
-  "dir": "ltr",
-  "categories": ["productivity", "lifestyle"],
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0e0c0d",
   "theme_color": "#0e0c0d",
-  "prefer_related_applications": false,
+  "lang": "id",
   "icons": [
-    { "src": "icon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icon.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
     { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
-  ],
-  "shortcuts": [
-    { "name": "Dzikir Pagi & Petang", "short_name": "Dzikir", "url": "./dzikir.html", "icons": [{ "src": "icon.png", "sizes": "192x192", "type": "image/png" }] },
-    { "name": "Taman Qur'an", "short_name": "Qur'an", "url": "./quran.html", "icons": [{ "src": "icon.png", "sizes": "192x192", "type": "image/png" }] },
-    { "name": "Mode Fokus", "short_name": "Fokus", "url": "./index.html#fokus", "icons": [{ "src": "icon.png", "sizes": "192x192", "type": "image/png" }] }
   ]
 }
