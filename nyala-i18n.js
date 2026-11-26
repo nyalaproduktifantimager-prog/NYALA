@@ -1,4 +1,5 @@
-/* nyala-i18n.js — NYALA ID⇄EN. ES5 only. Self-contained: UI + tagline + Dzikir + Doa + worldwide cities + native dialogs. */
+/* nyala-i18n.js — NYALA ID⇄EN. ES5-friendly. Self-contained: UI + tagline + Dzikir + Doa
+   + worldwide cities + native dialogs (prompt/confirm/alert) + welcome card enforcement. */
 (function(){
 "use strict";
 
@@ -408,7 +409,6 @@ var MON={"Jan":"Jan","Feb":"Feb","Mar":"Mar","Apr":"Apr","Mei":"May","Jun":"Jun"
 var LVL={"Kaum Rebahan":"Couch Crew","Mulai Geliat":"Starting to Stir","Pemanasan":"Warming Up","Mode Gas":"Gas Mode","Pejuang Fokus":"Focus Fighter","Pendekar Produktif":"Productivity Warrior","Master Anti-Mager":"Anti-Lazy Master"};
 var MOOD={"Mode mager terdeteksi":"Lazy mode detected","Mode hemat energi":"Energy-saver mode","Mode stabil":"Stable mode","Mode cerah":"Sunny mode","Mode turbo!":"Turbo mode!"};
 
-/* Worldwide cities [label, lat, lon] — appended to the city picker so any country works without GPS. */
 var WORLD=[
 ["Kyiv, Ukraine",50.4501,30.5234],
 ["London, United Kingdom",51.5074,-0.1278],
@@ -537,15 +537,12 @@ function patterns(o){
   o=o.replace(/\uD83D\uDCDA Sumber: /g,"\uD83D\uDCDA Source: ");
   o=o.replace(/\uD83D\uDCDA HR\. /g,"\uD83D\uDCDA Narrated by: ");
   o=o.replace(/ \(sahih\)/g," (authentic)");
-  /* --- FIX: serap spasi ganda / node terpisah pada 3 chip statistik --- */
   o=o.replace(/tugas\s+total/g,"tasks total");
   o=o.replace(/habit\s+aktif/g,"active habits");
   o=o.replace(/hari\s+konsisten/g,"consistent days");
-  /* --- FIX: baris catatan Spiritual (Ashr & koreksi) ikut Inggris --- */
   o=o.replace(/Ashr: Jumhur/g,"Asr: Majority");
   o=o.replace(/Ashr: Hanafi/g,"Asr: Hanafi");
   o=o.replace(/koreksi (\d+) (?:mnt|min) via/g,"correction $1 min via");
-  /* --- FIX: label GPS / auto pada dropdown kota & metode, apa pun emoji/spasinya --- */
   o=o.replace(/Otomatis\s*\(GPS saya\)/g,"Automatic (my GPS)");
   o=o.replace(/Auto\s*\(dari lokasiku\)/g,"Auto (from my location)");
   return o;
@@ -562,6 +559,33 @@ function toEN(t){
   var o=t,j;
   for(j=0;j<PH.length;j++){if(o.indexOf(PH[j][0])>-1)o=o.split(PH[j][0]).join(PH[j][1]);}
   return patterns(o);
+}
+
+/* Native dialogs are not DOM. Translate their message with tolerant word-anchors so
+   emoji / spacing variants in app.js still match. Falls back to the general engine. */
+function dlgEN(m){
+  var s=String(m==null?"":m);
+  if(/Siapa nama panggilanmu/i.test(s))return "What should we call you?"+(/[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(s)?" \uD83D\uDE0A":"");
+  if(/^\s*Edit tugas/i.test(s))return "Edit task:"+s.slice(s.indexOf(":")+1);
+  if(/Berapa menit/i.test(s))return "How many minutes? (1\u2013180, free \u2014 e.g. 23)";
+  if(/Koreksi jadwal adzan/i.test(s))return "Adjust adhan schedule (minutes). E.g. -2 or 3";
+  var h=s.match(/Hapus kebiasaan\s*"(.*)"\s*\?/);
+  if(h)return 'Delete habit "'+h[1]+'"?';
+  var r=s.match(/Pulihkan data dari cadangan\s*([\s\S]*?)\s*\?/);
+  if(r)return "Restore data from backup "+r[1]+"? Current data will be overwritten.";
+  if(/Yakin mau menghapus SEMUA data/i.test(s))return "Sure you want to delete ALL NYALA data on this device?";
+  if(/Beneran yakin/i.test(s))return "Really sure? Your streak and XP will be gone \uD83D\uDE22";
+  if(/Hapus tugas/i.test(s))return "Delete this task?";
+  return toEN(s);
+}
+function installNative(){
+  if(window.__nyNative)return;
+  window.__nyNative=true;
+  var p=window.prompt,c=window.confirm,a=window.alert;
+  function tr(m){return lang()==="en"?dlgEN(m):m;}
+  window.prompt=function(m,d){return p.call(window,tr(m),d);};
+  window.confirm=function(m){return c.call(window,tr(m));};
+  window.alert=function(m){return a.call(window,tr(m));};
 }
 
 /* ---- Dzikir & Doa English (index keyed) ---- */
@@ -636,7 +660,7 @@ function mk(t){
 }
 function setH(node,txt){var h=mk(txt);if(node.innerHTML!==h)node.innerHTML=h;}
 
-var oT=new WeakMap(),oA=new WeakMap(),oH=new WeakMap();
+var oT=new WeakMap(),oA=new WeakMap(),oH=new WeakMap(),oW=new WeakMap();
 function guarded(n){
   var e=n.parentElement;
   while(e&&e!==document.body){
@@ -680,9 +704,33 @@ function content(){
     }
   }
 }
-/* Append a worldwide optgroup to the city picker, but ONLY when the app stores
-   coordinates as "lat,lon" (detected at runtime). Otherwise leave untouched and
-   let the GPS option handle any location — graceful, never breaks prayer calc. */
+/* Welcome card: enforce language directly on its known nodes so it is always correct
+   regardless of how/when app.js renders it. Restores Indonesian when switched back. */
+function welcome(){
+  var ov=el("welcomeOverlay");
+  if(!ov)return;
+  var en=lang()==="en";
+  var nodes=[
+    [ov.querySelector("h2"),"Selamat datang di NYALA","Welcome to NYALA"],
+    [ov.querySelector("p"),"Sebelum mulai, siapa nama panggilanmu?","Before we start, what should we call you?"],
+    [el("welcomeSave"),"Mulai Nyala \uD83D\uDD25","Start Lighting Up \uD83D\uDD25"],
+    [el("welcomeSkip"),"Lewati dulu","Skip for now"]
+  ];
+  for(var k=0;k<nodes.length;k++){
+    var nd=nodes[k][0];
+    if(!nd)continue;
+    if(!oW.has(nd))oW.set(nd,nd.textContent);
+    var want=en?nodes[k][2]:oW.get(nd);
+    if(nd.textContent!==want)nd.textContent=want;
+  }
+  var inp=el("welcomeName");
+  if(inp){
+    if(!oA.has(inp))oA.set(inp,{placeholder:inp.getAttribute("placeholder")||""});
+    var st=oA.get(inp);
+    var wp=en?"Type your name here\u2026":st.placeholder;
+    if(inp.getAttribute("placeholder")!==wp)inp.setAttribute("placeholder",wp);
+  }
+}
 function worldCities(){
   var s=el("citySelect");
   if(!s)return;
@@ -713,7 +761,6 @@ function texts(){
   var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
     if(guarded(n))return NodeFilter.FILTER_REJECT;
     var p=n.parentElement;
-    /* OPTION diizinkan agar label dropdown (kota/GPS/metode/mazhab) ikut diterjemahkan */
     if(p&&/^(SCRIPT|STYLE|TEXTAREA|INPUT|CANVAS)$/.test(p.tagName))return NodeFilter.FILTER_REJECT;
     return NodeFilter.FILTER_ACCEPT;
   }});
@@ -733,7 +780,7 @@ function attrs(){
   var en=lang()==="en",list=document.querySelectorAll("[placeholder],[title],[aria-label]"),k,e,st,ks,j,key,v,want;
   for(k=0;k<list.length;k++){
     e=list[k];
-    if(e.id==="nyalaLangSel")continue;
+    if(e.id==="nyalaLangSel"||e.id==="welcomeName")continue;
     if(e.matches&&e.matches(SKIP))continue;
     st=oA.get(e);
     if(!st){st={};oA.set(e,st);}
@@ -753,17 +800,6 @@ function docTitle(){
   if(!window.__nyTitle)window.__nyTitle=t;
   var w=lang()==="en"?toEN(window.__nyTitle):window.__nyTitle;
   if(t!==w)document.title=w;
-}
-/* Native browser dialogs (prompt/confirm/alert) are NOT DOM, so the walker can't
-   reach them. Wrap them once and translate the message when English is active. */
-function installNative(){
-  if(window.__nyNative)return;
-  window.__nyNative=true;
-  var p=window.prompt,c=window.confirm,a=window.alert;
-  function tr(m){return lang()==="en"?toEN(String(m==null?"":m)):m;}
-  window.prompt=function(m,d){return p.call(window,tr(m),d);};
-  window.confirm=function(m){return c.call(window,tr(m));};
-  window.alert=function(m){return a.call(window,tr(m));};
 }
 function picker(){
   var s=el("nyalaLangSel"),host,st;
@@ -806,6 +842,7 @@ function run(){
   try{
     document.documentElement.lang=lang()==="en"?"en":"id";
     picker();
+    welcome();
     worldCities();
     content();
     texts();
