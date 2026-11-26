@@ -1,4 +1,4 @@
-/* nyala-i18n.js — NYALA ID⇄EN. ES5 only. Self-contained: UI + tagline + Dzikir + Doa + worldwide cities. */
+/* nyala-i18n.js — NYALA ID⇄EN. ES5 only. Self-contained: UI + tagline + Dzikir + Doa + worldwide cities + native dialogs. */
 (function(){
 "use strict";
 
@@ -225,9 +225,15 @@ var P=[
 "Mulai ulang dari nol (hapus semua data)","Start from zero (delete all data)",
 "Selamat datang di NYALA","Welcome to NYALA",
 "Sebelum mulai, siapa nama panggilanmu?","Before we start, what should we call you?",
+"Siapa nama panggilanmu? \uD83D\uDE0A","What should we call you? \uD83D\uDE0A",
 "Ketik namamu di sini\u2026","Type your name here\u2026",
 "Mulai Nyala \uD83D\uDD25","Start Lighting Up \uD83D\uDD25",
 "Lewati dulu","Skip for now",
+"Edit tugas:","Edit task:",
+"Berapa menit? (1\u2013180, bebas \u2014 mis. 23)","How many minutes? (1\u2013180, free \u2014 e.g. 23)",
+"Koreksi jadwal adzan (menit). Contoh: -2 atau 3","Adjust adhan schedule (minutes). E.g. -2 or 3",
+"Hapus kebiasaan \"","Delete habit \"",
+"Pulihkan data dari cadangan ","Restore data from backup ",
 "\uD83D\uDCE5 Bawa tugas belum selesai ke hari ini","\uD83D\uDCE5 Carry unfinished tasks to today",
 "Tidak ada tugas tercatat hari itu.","No tasks recorded that day.",
 "\uD83C\uDF38 Syukur hari itu:","\uD83C\uDF38 Gratitude that day:",
@@ -748,6 +754,17 @@ function docTitle(){
   var w=lang()==="en"?toEN(window.__nyTitle):window.__nyTitle;
   if(t!==w)document.title=w;
 }
+/* Native browser dialogs (prompt/confirm/alert) are NOT DOM, so the walker can't
+   reach them. Wrap them once and translate the message when English is active. */
+function installNative(){
+  if(window.__nyNative)return;
+  window.__nyNative=true;
+  var p=window.prompt,c=window.confirm,a=window.alert;
+  function tr(m){return lang()==="en"?toEN(String(m==null?"":m)):m;}
+  window.prompt=function(m,d){return p.call(window,tr(m),d);};
+  window.confirm=function(m){return c.call(window,tr(m));};
+  window.alert=function(m){return a.call(window,tr(m));};
+}
 function picker(){
   var s=el("nyalaLangSel"),host,st;
   if(!s){
@@ -805,6 +822,7 @@ function choose(v){
 window.NYALA_I18N={lang:lang,set:choose,refresh:run};
 
 function start(){
+  installNative();
   run();
   if(!window.__nyDeleg){
     window.__nyDeleg=true;
